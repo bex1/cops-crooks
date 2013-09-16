@@ -36,8 +36,7 @@ public abstract class AbstractScreen implements Screen {
     }
     
     @Override
-    public void show()
-    {
+    public void show() {
         Gdx.app.log(CopsAndCrooks.LOG, "Showing screen: " + getName());
 
         // set the stage as the input processor
@@ -45,13 +44,12 @@ public abstract class AbstractScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height )
-    {
+    public void resize(int width, int height ) {
         Gdx.app.log(CopsAndCrooks.LOG, "Resizing screen: " + getName() + " to: " + width + " x " + height);
     }
 
     @Override
-    public void render(float delta ){
+    public void render(float delta ) {
         // update the actors
         stage.act(delta);
         
@@ -64,28 +62,24 @@ public abstract class AbstractScreen implements Screen {
     }
 
     @Override
-    public void hide()
-    {
+    public void hide() {
         Gdx.app.log(CopsAndCrooks.LOG, "Hiding screen: " + getName());
 
         dispose();
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         Gdx.app.log(CopsAndCrooks.LOG, "Pausing screen: " + getName());
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         Gdx.app.log(CopsAndCrooks.LOG, "Resuming screen: " + getName());
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         Gdx.app.log(CopsAndCrooks.LOG, "Disposing screen: " + getName());
 
         stage.dispose();
