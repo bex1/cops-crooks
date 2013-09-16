@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.dat255.project.android.copsandcrooks.screens.SplashScreen;
 
 /**
  * TODO docs here
@@ -33,6 +34,8 @@ public class CopsAndCrooks extends Game {
     {
         super.resize( width, height );
         Gdx.app.log( CopsAndCrooks.LOG, "Resizing game to: " + width + " x " + height );
+        
+        setScreen(new SplashScreen(this));
     }
 
     @Override

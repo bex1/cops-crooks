@@ -1,0 +1,12 @@
+
+pages.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+splash
+  rotate: false
+  xy: 2, 2
+  size: 680, 340
+  orig: 680, 340
+  offset: 0, 0
+  index: -1
