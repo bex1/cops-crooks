@@ -14,7 +14,9 @@ public class Crook extends AbstractPawn {
 	 * @param money the cash thr crook will hold.
 	 */
 	public void setCash(int money) {
+		int oldValue = cash;
 		cash = money;
+		pcs.firePropertyChange("Cash", oldValue, cash);
 	}
 	
 	/**
@@ -30,7 +32,9 @@ public class Crook extends AbstractPawn {
 	 * @param money the money to increment with
 	 */
 	public void incrementCash(int money) {
+		int oldValue = cash;
 		cash += money;
+		pcs.firePropertyChange("Cash", oldValue, cash);
 	}
 	
 	/**
@@ -43,7 +47,9 @@ public class Crook extends AbstractPawn {
 		if (cash < money) {
 			return false;
 		}
+		int oldValue = cash;
 		cash -= money;
+		pcs.firePropertyChange("Cash", oldValue, cash);
 		return true;
 		
 	}
