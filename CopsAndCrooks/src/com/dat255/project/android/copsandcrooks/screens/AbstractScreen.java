@@ -2,9 +2,12 @@ package com.dat255.project.android.copsandcrooks.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 
 /**
@@ -17,7 +20,9 @@ public abstract class AbstractScreen implements Screen {
     protected final CopsAndCrooks game;
     protected final Stage stage;
 
+    private Skin skin;
     private TextureAtlas atlas;
+    private Table table;
 
     public AbstractScreen(CopsAndCrooks game ) {
         this.game = game;
@@ -33,6 +38,28 @@ public abstract class AbstractScreen implements Screen {
             atlas = new TextureAtlas(Gdx.files.internal("image-atlases/pages.atlas"));
         }
         return atlas;
+    }
+    
+    protected Skin getSkin()
+    {
+        if( skin == null ) {
+            FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");
+            skin = new Skin(skinFile);
+        }
+        return skin;
+    }
+
+    protected Table getTable()
+    {
+        if( table == null ) {
+            table = new Table(getSkin());
+            table.setFillParent( true );
+            if(CopsAndCrooks.DEV_MODE ) {
+                table.debug();
+            }
+            stage.addActor( table );
+        }
+        return table;
     }
     
     @Override
@@ -85,6 +112,7 @@ public abstract class AbstractScreen implements Screen {
         stage.dispose();
 
         // lazily loaded, may be null
-        if( atlas != null ) atlas.dispose();
+        if(atlas != null) atlas.dispose();
+        if(skin != null) skin.dispose();
     }
 }
