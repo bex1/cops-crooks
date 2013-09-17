@@ -1,8 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-public class TravelAgency extends RobableBuilding {
+public abstract class AbstractTile {
 
-	public TravelAgency() {
+	public AbstractTile() {
 		// TODO Auto-generated constructor stub
 	}
 
