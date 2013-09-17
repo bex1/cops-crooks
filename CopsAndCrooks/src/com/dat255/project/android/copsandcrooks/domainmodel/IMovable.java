@@ -1,5 +1,39 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-public interface IMovable {
+import java.util.LinkedList;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+
+/**
+ * Interface describing a movable object.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
+public interface IMovable {
+	
+	/**
+	 * Updates the state of the movable.
+	 * @param deltaTime the time between current frame and last.
+	 */
+	public void update(float deltaTime);
+	
+	/**
+	 * Returns the tile on which the movable is currently standing on.
+	 * @return the walkable tile on which the movable is currently standing on.
+	 */
+	IWalkableTile getCurrentTile();
+	
+	/**
+	 * Sets the current tile on which the movable is standing on.
+	 */
+	void setCurrentTile(IWalkableTile currTile);
+	
+	/**
+	 * Moves the movable object along the given path.
+	 * @param path list of walkable tiles in the path.
+	 */
+	void Move(LinkedList<IWalkableTile> path);
+	
+	
 }
