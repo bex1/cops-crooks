@@ -11,7 +11,7 @@ public class Crook extends AbstractPawn {
 	
 	/**
 	 * Sets the cash for the crook.
-	 * @param money the cash thr crook will hold.
+	 * @param money the cash the crook will hold.
 	 */
 	public void setCash(int money) {
 		int oldValue = cash;

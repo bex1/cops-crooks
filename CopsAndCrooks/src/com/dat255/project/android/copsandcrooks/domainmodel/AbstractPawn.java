@@ -27,7 +27,12 @@ public abstract class AbstractPawn implements IMovable {
 
 	@Override
 	public void setCurrentTile(IWalkableTile currTile) {
+		IWalkableTile oldTile = currentTile;
 		this.currentTile = currTile;
+		
+		 // The current tiled changed, someone moved us -> notify
+        pcs.firePropertyChange("CurrentTile", oldTile, currentTile);
+		
 	}
 
 	@Override
@@ -51,21 +56,14 @@ public abstract class AbstractPawn implements IMovable {
 			// Take steps with delay
 			moveTimer += deltaTime;
 		    if (moveTimer >= MOVE_DELAY) {
-		    	IWalkableTile oldTile = currentTile;
-		        currentTile = pathToMove.pollFirst();
-		        
-		        // The current tiled changed, ie we moved -> notify
-		        pcs.firePropertyChange("CurrentTile", oldTile, currentTile);
-		        
+		    	this.setCurrentTile(pathToMove.pollFirst());
+		       
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
 		        	isMoving = false;
-		        	// Check if the endTile is an interactive tile
-		        	if (currentTile instanceof IInteractiveTile) {
-		        		IInteractiveTile interactableTile = (IInteractiveTile) currentTile;
-		        		// Lets interact with it
-		        		interactableTile.interact(this);
-		        	}
+		        	
+		        	// Try to interact with the tile
+		        	this.interactWithTile();
 		        }
 		        	
 		        // Reset timer
@@ -74,6 +72,15 @@ public abstract class AbstractPawn implements IMovable {
 		}
 	}
 	
+	private void interactWithTile() {
+		// Check if the endTile is an interactive tile
+		if (currentTile instanceof IInteractiveTile) {
+			IInteractiveTile interactableTile = (IInteractiveTile) currentTile;
+			// Lets interact with it
+		    interactableTile.interact(this);
+		}
+	}
+
 	@Override
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
