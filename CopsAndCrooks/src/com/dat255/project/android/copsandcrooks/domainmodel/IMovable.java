@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.LinkedList;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 /**
  * Interface describing a movable object.
@@ -10,7 +11,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public interface IMovable {
+public interface IMovable extends IObservable {
 	
 	/**
 	 * Updates the state of the movable.
@@ -31,7 +32,7 @@ public interface IMovable {
 	
 	/**
 	 * Moves the movable object along the given path.
-	 * @param path list of walkable tiles in the path.
+	 * @param path list of walkable tiles in the path. Not allowed to be null or empty.
 	 */
 	void Move(LinkedList<IWalkableTile> path);
 	
