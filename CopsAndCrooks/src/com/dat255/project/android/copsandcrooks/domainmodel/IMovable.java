@@ -17,7 +17,7 @@ public interface IMovable extends IObservable {
 	 * Updates the state of the movable.
 	 * @param deltaTime the time between current frame and last.
 	 */
-	public void update(float deltaTime);
+	void update(float deltaTime);
 	
 	/**
 	 * Returns the tile on which the movable is currently standing on.
@@ -27,6 +27,9 @@ public interface IMovable extends IObservable {
 	
 	/**
 	 * Sets the current tile on which the movable is standing on.
+	 *
+	 * @param currTile the current tile on which the movable is standing on.
+	 * Allowed to be null to move the pawn out of the game.
 	 */
 	void setCurrentTile(IWalkableTile currTile);
 	
@@ -37,8 +40,8 @@ public interface IMovable extends IObservable {
 	void move(LinkedList<IWalkableTile> path);
 	
 	/**
-	 * Alerts the IMovable that it has collided with another IMovable.
+	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
-	void collision(IMovable pawn);
+	void collisionAfterMove(IMovable pawn);
 }
