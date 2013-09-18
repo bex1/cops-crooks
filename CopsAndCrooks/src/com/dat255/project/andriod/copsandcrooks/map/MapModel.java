@@ -85,14 +85,34 @@ public class MapModel {
 		}		
 	}
 	
+	/**
+	 * 
+	 * @return - A point containing the coordinate of the Spawningpoint of the police car
+	 */
+	public Point getPolicaCarRespawnPoint(){
+		return (Point) policeCarStart.clone();
+	}
+	
+	/**
+	 * 
+	 * @return - Returns the 2 d array containing the interactive tiles
+	 */
 	public IWalkableTile[][] getWalkableTiles(){
 		return walkable.clone();
 	}
 	
+	/**
+	 * 
+	 * @return - This returns the background layer 
+	 */
 	public TiledMapTileLayer getBackground(){
 		return mapLayerBack;
 	}
 	
+	/**
+	 * 
+	 * @return - the whole map that's created
+	 */
 	public TiledMap getMap(){
 		return map;
 	}
