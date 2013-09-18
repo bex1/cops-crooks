@@ -1,11 +1,13 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import java.awt.Point;
+
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 
-public class GetAway implements IInteractiveTile {
+public class GetAway extends AbstractTile implements IInteractiveTile {
 
-	public GetAway() {
-		// TODO Auto-generated constructor stub
+	public GetAway(Point position) {
+		super(position);
 	}
 
 	@Override

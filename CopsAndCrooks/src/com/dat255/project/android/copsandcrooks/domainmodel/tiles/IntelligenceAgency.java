@@ -1,11 +1,13 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import java.awt.Point;
+
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 
-public class IntelligenceAgency implements IInteractiveTile {
+public class IntelligenceAgency extends AbstractTile implements IInteractiveTile {
 
-	public IntelligenceAgency() {
-		// TODO Auto-generated constructor stub
+	public IntelligenceAgency(Point position) {
+		super(position);
 	}
 
 	@Override
