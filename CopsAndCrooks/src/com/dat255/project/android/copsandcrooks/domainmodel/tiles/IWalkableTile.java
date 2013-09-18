@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+import java.awt.Point;
+
 
 /**
  * This class represents a walkable tile.
@@ -25,10 +26,10 @@ public interface IWalkableTile {
 	 * Get the position of this tile
 	 * @return the position of this tile
 	 */
-	public Vector2d getPosition();
+	public Point getPosition();
 	
 	/**
 	 * Set the position of this tile
 	 */
-	public void setPosition(Vector2d position);
+	public void setPosition(Point position);
 }

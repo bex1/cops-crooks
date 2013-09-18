@@ -1,12 +1,13 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+
+import java.awt.Point;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 
 public class TravelAgency extends RobbableBuilding {
 	
-	public TravelAgency(Vector2d position, int value) {
+	public TravelAgency(Point position, int value) {
 		super(position,value);
 	}
 

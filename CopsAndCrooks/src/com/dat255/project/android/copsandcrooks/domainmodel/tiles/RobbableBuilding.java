@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+import java.awt.Point;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
@@ -20,7 +20,7 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	 * @param position the building's position
 	 * @param value the building's value
 	 */
-	public RobbableBuilding(Vector2d position, int value) {
+	public RobbableBuilding(Point position, int value) {
 		super(position);
 		this.value = value;
 	}
