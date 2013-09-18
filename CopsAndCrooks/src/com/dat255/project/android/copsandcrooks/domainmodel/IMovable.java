@@ -34,7 +34,11 @@ public interface IMovable extends IObservable {
 	 * Moves the movable object along the given path.
 	 * @param path list of walkable tiles in the path. Not allowed to be null or empty.
 	 */
-	void Move(LinkedList<IWalkableTile> path);
+	void move(LinkedList<IWalkableTile> path);
 	
-	
+	/**
+	 * Alerts the IMovable that it has collided with another IMovable.
+	 * @param pawn the IMovable pawn that collided with this one.
+	 */
+	void collision(IMovable pawn);
 }
