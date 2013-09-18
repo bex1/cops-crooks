@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+import java.awt.Point;
+
 
 /**
  * This class represents all tiles with a position 
@@ -12,13 +13,13 @@ import javax.vecmath.Vector2d;
 public abstract class AbstractTile implements IWalkableTile{
 
 	private boolean occupied;	
-	private Vector2d position;
+	private Point position;
 	
 	/**
 	 * Construct a new AbstractTile with a position.
 	 * @param position the tile's position
 	 */
-	public AbstractTile(Vector2d position) {
+	public AbstractTile(Point position) {
 		this.position = position;
 	}
 
@@ -33,12 +34,12 @@ public abstract class AbstractTile implements IWalkableTile{
 	}
 	
 	@Override
-	public Vector2d getPosition(){
+	public Point getPosition(){
 		return this.position;
 	}
 	
 	@Override
-	public void setPosition(Vector2d position){
+	public void setPosition(Point position){
 		this.position = position;
 	}
 }

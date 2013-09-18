@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+import java.awt.Point;
+
 
 /**
  * This class represents the road as a tile.
@@ -10,7 +11,7 @@ import javax.vecmath.Vector2d;
  */
 public class RoadTile extends AbstractTile {
 
-	public RoadTile(Vector2d position) {
+	public RoadTile(Point position) {
 		super(position);
 	}
 

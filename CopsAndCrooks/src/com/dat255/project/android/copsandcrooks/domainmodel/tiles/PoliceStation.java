@@ -1,12 +1,13 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import javax.vecmath.Vector2d;
+
+import java.awt.Point;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 
 public class PoliceStation extends AbstractTile implements IInteractiveTile {
 
-	public PoliceStation(Vector2d position) {
+	public PoliceStation(Point position) {
 		super(position);
 	}
 
