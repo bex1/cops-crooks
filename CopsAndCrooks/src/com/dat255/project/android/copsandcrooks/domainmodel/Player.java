@@ -117,8 +117,9 @@ public class Player implements IObservable {
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
     
-    // TODO Add method that moves along a chosen path.
-
+    // TODO Add method that moves along a chosen path. -> if we make a path class we just select one of the possible paths.
+    // Dont forget to change diceResult to 0 after move...
+    
     @Override
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
