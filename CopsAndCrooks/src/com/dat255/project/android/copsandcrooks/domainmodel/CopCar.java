@@ -6,9 +6,11 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class CopCar extends AbstractPawn {
+	
+	// TODO add another tile, as the car covers two, or maybe just check for collision on the previous tile
 
 	public CopCar(IMediator mediator) {
-		super(mediator);
+		super(Role.Police, mediator);
 	}
 
 	@Override
@@ -22,5 +24,10 @@ public class CopCar extends AbstractPawn {
 				crook.setIsInPoliceStation(true);
 			}
 		}
+	}
+
+	@Override
+	public int tilesMovedEachStep() {
+		return 2;
 	}
 }

@@ -12,13 +12,18 @@ public abstract class AbstractWalkingPawn extends AbstractPawn {
 	
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 
-	protected AbstractWalkingPawn(IMediator mediator) {
-		super(mediator);
+	protected AbstractWalkingPawn(Role pawnRole, IMediator mediator) {
+		super(pawnRole, mediator);
 	}
 
 	public void setIsInPoliceStation(boolean inHouse) {
 		boolean oldValue = isInPoliceHouse;
 		isInPoliceHouse = inHouse;
 		pcs.firePropertyChange(PROPERTY_IS_IN_POLICE_HOUSE, oldValue, isInPoliceHouse);
+	}
+	
+	@Override
+	public int tilesMovedEachStep() {
+		return 1;
 	}
 }

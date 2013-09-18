@@ -13,7 +13,7 @@ public class Crook extends AbstractWalkingPawn {
 	private Wallet wallet;
 	
 	public Crook(IMediator mediator) {
-		super(mediator);
+		super(Role.Crook, mediator);
 		wallet = new Wallet();
 	}
 	

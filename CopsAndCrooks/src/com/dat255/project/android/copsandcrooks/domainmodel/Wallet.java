@@ -15,10 +15,9 @@ public class Wallet implements IObservable {
 	
 	private int cash;
 	
+	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public static final String PROPERTY_CASH = "Cash";
 	
-	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
 	/**
 	 * Sets the cash for the crook.
 	 * @param money the cash the crook will hold.
