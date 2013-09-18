@@ -69,6 +69,15 @@ public interface IMediator {
 	 */
 	int rollDice();
 
-	List<LinkedList<IWalkableTile>> getPossiblePaths(Role playerRole, 
-			IMovable currentPawn, int stepsToMove);
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to calculate the possible paths a pawn can move.
+	 * 
+	 * @param role The role of the pawn.
+	 * @param pawn The pawn itself.
+	 * @param stepsToMove The number of steps to be moved.
+	 * @return A list with linkedlists representing paths that can be walked
+	 */
+	List<LinkedList<IWalkableTile>> getPossiblePaths(Role role, 
+			IMovable pawn, int stepsToMove);
 }

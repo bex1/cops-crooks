@@ -62,6 +62,10 @@ public class Mediator implements IMediator {
 	@Override
 	public List<LinkedList<IWalkableTile>> getPossiblePaths(Role role,
 			IMovable pawn, int stepsToMove) {
-		return pathFinder.calculatePossiblePaths(role, pawn, stepsToMove);
+		if (pathFinder != null) {
+			return pathFinder.calculatePossiblePaths(role, pawn, stepsToMove);
+		} else {
+				throw new NullPointerException("No dice is registered");
+		}
 	}
 }
