@@ -61,4 +61,10 @@ public class Crook extends AbstractPawn {
 	public boolean isWanted() {
 		return cash > 0;
 	}
+
+	@Override
+	public void collision(IMovable pawn) {
+		// TODO Auto-generated method stub
+		
+	}
 }

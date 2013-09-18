@@ -6,4 +6,11 @@ public class Cop extends AbstractPawn {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void collision(IMovable pawn) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 }
