@@ -17,6 +17,7 @@ public class MenuScreen extends AbstractScreen {
         super.show();
         // retrieve the default table actor
         Table table = super.getTable();
+        
         table.add("Cops & crooks!").spaceBottom(50);
         table.row();
 
@@ -28,6 +29,7 @@ public class MenuScreen extends AbstractScreen {
                 super.touchUp(event, x, y, pointer, button);
                 // TODO click sound
                 // TODO switch to game screen or (in online -> start new or join existing game) 
+                game.setScreen(new GameScreen(game));
             }
         } );
         table.add(startGameButton).size(350, 60).uniform().spaceBottom(10);
