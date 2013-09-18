@@ -1,57 +1,20 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.Hideout;
+
 /**
  * A crook pawn in the game Cops&Crooks.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class Crook extends AbstractPawn {
-	private int cash;
+public class Crook extends AbstractWalkingPawn {
 	
-	/**
-	 * Sets the cash for the crook.
-	 * @param money the cash the crook will hold.
-	 */
-	public void setCash(int money) {
-		int oldValue = cash;
-		cash = money;
-		pcs.firePropertyChange("Cash", oldValue, cash);
-	}
+	private Wallet wallet;
 	
-	/**
-	 * Returns the cash on the crook.
-	 * @return the cash on the crook.
-	 */
-	public int getCash() {
-		return cash;
-	}
-	
-	/**
-	 * Increments the cash amount on the crook.
-	 * @param money the money to increment with
-	 */
-	public void incrementCash(int money) {
-		int oldValue = cash;
-		cash += money;
-		pcs.firePropertyChange("Cash", oldValue, cash);
-	}
-	
-	/**
-	 * Decrements the cash amount on the crook.
-	 * 
-	 * @param money the money to decrement with
-	 * @return true if there was enough cash
-	 */
-	public boolean decrementCash(int money) {
-		if (cash < money) {
-			return false;
-		}
-		int oldValue = cash;
-		cash -= money;
-		pcs.firePropertyChange("Cash", oldValue, cash);
-		return true;
-		
+	public Crook(IMediator mediator) {
+		super(mediator);
+		wallet = new Wallet();
 	}
 	
 	/**
@@ -59,12 +22,22 @@ public class Crook extends AbstractPawn {
 	 * @return true if the crook is wanted.
 	 */
 	public boolean isWanted() {
-		return cash > 0;
+		return wallet.getCash() > 0;
+	}
+	
+	/**
+	 * Returns the wallet of the crook.
+	 * @return the wallet of the crook.
+	 */
+	public Wallet getWallet() {
+		return wallet;
 	}
 
 	@Override
-	public void collision(IMovable pawn) {
-		// TODO Auto-generated method stub
-		
+	public void collisionAfterMove(IMovable pawn) {
+		if (!(currentTile instanceof Hideout && pawn instanceof Crook)) {
+			// Should not happen, crooks can only move to an occupied tile when its an Hideout.
+			assert false;
+		}
 	}
 }

@@ -36,9 +36,9 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	 * Determines what happens when the building is robbed.
 	 * @param robber the crook that's robbing the building
 	 */
-	public void robBuilding(Crook robber){
+	protected void robBuilding(Crook robber){
 		if(value > 0){
-			robber.incrementCash(value);
+			robber.getWallet().incrementCash(value);
 		}
 	}
 	

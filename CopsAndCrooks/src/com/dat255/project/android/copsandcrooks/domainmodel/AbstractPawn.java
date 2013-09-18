@@ -14,6 +14,10 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  *
  */
 public abstract class AbstractPawn implements IMovable {
+	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	
+	// Used to communicate within the module
+	protected final IMediator mediator;
 	
 	protected IWalkableTile currentTile;
 	
@@ -24,6 +28,13 @@ public abstract class AbstractPawn implements IMovable {
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
+	protected AbstractPawn(IMediator mediator) {
+		if (mediator == null) {
+			throw new IllegalArgumentException("mediator not allowed to be null");
+		}
+		this.mediator = mediator;
+	}
 
 	@Override
 	public void setCurrentTile(IWalkableTile currTile) {
@@ -31,7 +42,7 @@ public abstract class AbstractPawn implements IMovable {
 		this.currentTile = currTile;
 		
 		 // The current tiled changed, someone moved us -> notify
-        pcs.firePropertyChange("CurrentTile", oldTile, currentTile);
+        pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 		
 	}
 
@@ -62,10 +73,15 @@ public abstract class AbstractPawn implements IMovable {
 		        if (pathToMove.isEmpty()) {
 		        	isMoving = false;
 		        	
+		        	
+		        	if (currentTile != null && currentTile.isOccupied()) {
+		        		// We collided, communicate with the module via the mediator	
+		        		mediator.didCollideAfterMove(this);
+		        	}
 		        	// Try to interact with the tile
 		        	this.interactWithTile();
-		        }
 		        	
+		        }
 		        // Reset timer
 		        moveTimer -= MOVE_DELAY;
 		    }
