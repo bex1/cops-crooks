@@ -7,8 +7,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 
 public class TravelAgency extends RobbableBuilding {
 	
-	public TravelAgency(Point position, int value) {
-		super(position,value);
+	public TravelAgency(Point position) {
+		super(position, 0);
 	}
 
 	@Override

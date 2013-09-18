@@ -1,13 +1,15 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import java.awt.Point;
+
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 
-public class Hideout implements IInteractiveTile {
+public class Hideout extends AbstractTile implements IInteractiveTile {
 	
 	// TODO Storing the hideout's cash along with the owner.
 
-	public Hideout() {
-		// TODO Auto-generated constructor stub
+	public Hideout(Point position) {
+		super(position);
 	}
 
 	@Override
