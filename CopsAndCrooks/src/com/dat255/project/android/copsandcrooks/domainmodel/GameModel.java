@@ -8,12 +8,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStation;
 
 public class GameModel  {
 	
-	// Handles communication within the module
-	private IMediator mediator;
-	
 	private List<Player> players;
-	private IWalkableTile[][] tiles;
-	private PathFinder pathFinder;
 	private List<PoliceStation> policeStationTiles;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
@@ -24,9 +19,7 @@ public class GameModel  {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		
-		this.mediator = mediator;
 		this.players = players;
-		this.tiles = tiles;
 		
 		mediator.registerGameModel(this);
 		

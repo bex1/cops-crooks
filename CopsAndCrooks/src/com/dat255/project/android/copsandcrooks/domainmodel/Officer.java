@@ -5,7 +5,7 @@ import com.dat255.project.android.copsandcrooks.utils.Constants;
 public class Officer extends AbstractWalkingPawn {
 	
 	public Officer(IMediator mediator) {
-		super(mediator);
+		super(Role.Police, mediator);
 		// All officers start in the police house
 		this.setIsInPoliceStation(true);
 	}
@@ -22,8 +22,8 @@ public class Officer extends AbstractWalkingPawn {
 				crook.setIsInPoliceStation(true);
 				this.setIsInPoliceStation(true);
 				
-				//Steal cash
-				mediator.addCashToOurPlayer((int)(crook.getWallet().getCash() * 
+				//Take bounty
+				mediator.addCashToMyPlayer((int)(crook.getWallet().getCash() * 
 						Constants.POLICE_CASH_REWARD_FACTOR), this);
 				crook.getWallet().setCash(0);
 			}

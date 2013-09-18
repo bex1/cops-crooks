@@ -1,5 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
  * cross-reference which decouples dependencies.
@@ -18,6 +23,20 @@ public interface IMediator {
 	void registerGameModel(GameModel gameModel);
 	
 	/**
+	 * Register the dice for communication.
+	 * 
+	 * @param dice to register for communication.
+	 */
+	void registerDice(Dice dice);
+	
+	/**
+	 * Register the pathfinder for communication.
+	 * 
+	 * @param pathfinder to register for communication.
+	 */
+	void registerPathFinder(PathFinder pathFinder);
+	
+	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to move the movable to the police station.
 	 * 
@@ -33,5 +52,23 @@ public interface IMediator {
 	 */
 	void didCollideAfterMove(IMovable movable);
 
-	void addCashToOurPlayer(int cash, IMovable movable);
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to add cash to the player who controls the movable.
+	 * 
+	 * @param cash the cash to add.
+	 * @param movable the movable which the player should control.
+	 */
+	void addCashToMyPlayer(int cash, IMovable movable);
+
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to roll the dice.
+	 * 
+	 * @return the result.
+	 */
+	int rollDice();
+
+	List<LinkedList<IWalkableTile>> getPossiblePaths(Role playerRole, 
+			IMovable currentPawn, int stepsToMove);
 }

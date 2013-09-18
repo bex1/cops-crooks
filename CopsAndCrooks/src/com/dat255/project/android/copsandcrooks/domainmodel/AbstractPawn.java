@@ -14,25 +14,28 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  *
  */
 public abstract class AbstractPawn implements IMovable {
-	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	
+	private Role pawnRole;
 	
 	// Used to communicate within the module
 	protected final IMediator mediator;
 	
 	protected IWalkableTile currentTile;
-	
+	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private LinkedList<IWalkableTile> pathToMove;
-	private boolean isMoving;
 	
+	private boolean isMoving;
 	private static final float MOVE_DELAY = 0.5f;
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
 	
-	protected AbstractPawn(IMediator mediator) {
+	protected AbstractPawn(Role pawnRole, IMediator mediator) {
 		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
+		this.pawnRole = pawnRole;
 		this.mediator = mediator;
 	}
 
@@ -96,6 +99,11 @@ public abstract class AbstractPawn implements IMovable {
 		    interactableTile.interact(this);
 		}
 	}
+	
+	@Override
+	public Role getPawnRole() {
+		return pawnRole;
+	}
 
 	@Override
 	public void addObserver(PropertyChangeListener l) {
@@ -106,5 +114,4 @@ public abstract class AbstractPawn implements IMovable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-	
 }

@@ -44,4 +44,16 @@ public interface IMovable extends IObservable {
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
 	void collisionAfterMove(IMovable pawn);
+	
+	/**
+	 * Returns the role of this pawn.
+	 * @return the role of this pawn.
+	 */
+	Role getPawnRole();
+	
+	/**
+	 * Returns the number of tiles the pawn can move over in one step.
+	 * @return the number of tiles the pawn can move over in one step.
+	 */
+	int tilesMovedEachStep();
 }
