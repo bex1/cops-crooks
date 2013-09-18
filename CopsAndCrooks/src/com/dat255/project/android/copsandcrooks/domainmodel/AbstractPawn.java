@@ -41,7 +41,7 @@ public abstract class AbstractPawn implements IMovable {
 	}
 
 	@Override
-	public void Move(LinkedList<IWalkableTile> path) {
+	public void move(LinkedList<IWalkableTile> path) {
 		if (path == null || path.size() < 1) {
 			throw new IllegalArgumentException("path is null or empty");
 		}
@@ -90,4 +90,5 @@ public abstract class AbstractPawn implements IMovable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
+	
 }
