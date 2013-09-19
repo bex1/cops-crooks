@@ -41,7 +41,11 @@ public interface IWalkableTile {
 	 */
 	public void setPosition(Point position);
 	
+
+	/**
+	 * Get the allowed pawntypes for this tile
+	 * @return the allowed pawntypes
+	 */
 	public List<PawnType> getAllowedPawnTypes();
-	
-	
+
 }

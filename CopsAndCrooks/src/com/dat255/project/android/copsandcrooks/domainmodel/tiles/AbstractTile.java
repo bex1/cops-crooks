@@ -1,6 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
@@ -17,6 +21,7 @@ public abstract class AbstractTile implements IWalkableTile{
 	private PawnType occupiedBy;
 	private boolean isOccupied;
 	private Point position;
+	protected List<PawnType> pawnTypes;
 	
 	/**
 	 * Construct a new AbstractTile with a position.
@@ -24,6 +29,8 @@ public abstract class AbstractTile implements IWalkableTile{
 	 */
 	public AbstractTile(Point position) {
 		this.position = position;
+		
+		pawnTypes = new ArrayList<PawnType>();
 	}
 
 	@Override
@@ -47,5 +54,10 @@ public abstract class AbstractTile implements IWalkableTile{
 	@Override
 	public void setPosition(Point position){
 		this.position = position;
+	}
+
+	@Override
+	public List<PawnType> getAllowedPawnTypes() {
+		return pawnTypes;
 	}
 }
