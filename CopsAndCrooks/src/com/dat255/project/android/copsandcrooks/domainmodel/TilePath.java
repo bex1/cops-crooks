@@ -18,8 +18,8 @@ public class TilePath implements IObservable {
 	private LinkedList<IWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	public TilePath(LinkedList<IWalkableTile> path) {
-		pathList = path;
+	public TilePath() {
+		pathList = new LinkedList<IWalkableTile>();
 	}
 	
 	public IWalkableTile getNextTile() {
@@ -28,6 +28,10 @@ public class TilePath implements IObservable {
 	
 	public boolean isEmpty() {
 		return pathList.isEmpty();
+	}
+	
+	public void addTile(IWalkableTile tile){
+		pathList.addFirst(tile);
 	}
 
 	@Override
