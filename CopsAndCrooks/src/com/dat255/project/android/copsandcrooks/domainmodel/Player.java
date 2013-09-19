@@ -21,7 +21,7 @@ public class Player implements IObservable {
 	private List<IMovable> pawns;
 	private IMovable currentPawn;
 	private int diceResult;
-	private List<LinkedList<IWalkableTile>> possiblePaths;
+	private List<TilePath> possiblePaths;
 	
 	private Role playerRole;
 	

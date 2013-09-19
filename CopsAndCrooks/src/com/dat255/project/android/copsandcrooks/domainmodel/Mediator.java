@@ -61,7 +61,7 @@ public class Mediator implements IMediator {
 	}
 
 	@Override
-	public List<LinkedList<IWalkableTile>> getPossiblePaths(PawnType pawnType,
+	public List<TilePath> getPossiblePaths(PawnType pawnType,
 			IMovable pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawnType, pawn, stepsToMove);
