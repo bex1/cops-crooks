@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import java.awt.Point;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+
 
 /**
  * This class represents all tiles with a position 
@@ -12,7 +14,8 @@ import java.awt.Point;
  */
 public abstract class AbstractTile implements IWalkableTile{
 
-	private boolean occupied;	
+	private PawnType occupiedBy;
+	private boolean isOccupied;
 	private Point position;
 	
 	/**
@@ -25,12 +28,15 @@ public abstract class AbstractTile implements IWalkableTile{
 
 	@Override
 	public boolean isOccupied(){
-		return this.occupied;
+		return this.isOccupied;
 	}
 
 	@Override
-	public void setOccupied(boolean occupied) {
-		this.occupied = occupied;
+	public void setOccupiedBy(PawnType pawnType) {
+		this.occupiedBy = occupiedBy;
+	}
+	public PawnType getOccupiedBy(){
+		return occupiedBy;
 	}
 	
 	@Override
