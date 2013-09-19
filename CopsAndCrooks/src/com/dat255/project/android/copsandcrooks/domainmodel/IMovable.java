@@ -35,9 +35,9 @@ public interface IMovable extends IObservable {
 	
 	/**
 	 * Moves the movable object along the given path.
-	 * @param path list of walkable tiles in the path. Not allowed to be null or empty.
+	 * @param path the path of walkable tiles in the path. Not allowed to be null or empty.
 	 */
-	void move(LinkedList<IWalkableTile> path);
+	void move(TilePath path);
 	
 	/**
 	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
@@ -52,8 +52,20 @@ public interface IMovable extends IObservable {
 	Role getPawnRole();
 	
 	/**
+	 * Returns the type of this pawn.
+	 * @return the type of this pawn.
+	 */
+	PawnType getPawnType();
+	
+	/**
 	 * Returns the number of tiles the pawn can move over in one step.
 	 * @return the number of tiles the pawn can move over in one step.
 	 */
 	int tilesMovedEachStep();
+	
+	public enum PawnType {
+		Crook,
+		Officer,
+		Car,
+	}
 }

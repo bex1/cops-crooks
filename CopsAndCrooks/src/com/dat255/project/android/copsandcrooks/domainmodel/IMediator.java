@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 /**
@@ -73,11 +74,11 @@ public interface IMediator {
 	 * Ask the mediator to communicate with the necessary objects
 	 * to calculate the possible paths a pawn can move.
 	 * 
-	 * @param role The role of the pawn.
+	 * @param pawnType The type of the pawn.
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
 	 * @return A list with linkedlists representing paths that can be walked
 	 */
-	List<LinkedList<IWalkableTile>> getPossiblePaths(Role role, 
+	List<LinkedList<IWalkableTile>> getPossiblePaths(PawnType pawnType, 
 			IMovable pawn, int stepsToMove);
 }
