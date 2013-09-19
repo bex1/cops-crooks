@@ -42,6 +42,7 @@ public abstract class AbstractTile implements IWalkableTile{
 	public void setOccupiedBy(PawnType pawnType) {
 		this.occupiedBy = occupiedBy;
 	}
+	
 	public PawnType getOccupiedBy(){
 		return occupiedBy;
 	}
