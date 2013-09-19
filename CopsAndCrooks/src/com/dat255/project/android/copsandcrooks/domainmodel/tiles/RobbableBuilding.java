@@ -30,7 +30,7 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		if(value <= 0 && target instanceof Crook){
+		if(value > 0 && target instanceof Crook){
 			robBuilding((Crook)target); //TODO fix this... interaction(?)
 		}
 	}
@@ -40,9 +40,7 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	 * @param robber the crook that's robbing the building
 	 */
 	protected void robBuilding(Crook robber){
-		if(value > 0){
-			robber.getWallet().incrementCash(value);
-		}
+		robber.getWallet().incrementCash(value);
 	}
 	
 	/**

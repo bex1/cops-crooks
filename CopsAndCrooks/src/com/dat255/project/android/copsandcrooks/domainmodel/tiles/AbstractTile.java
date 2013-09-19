@@ -19,7 +19,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 public abstract class AbstractTile implements IWalkableTile{
 
 	private PawnType occupiedBy;
-	private boolean isOccupied;
 	private Point position;
 	protected List<PawnType> pawnTypes;
 	
