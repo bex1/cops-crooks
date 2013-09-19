@@ -33,7 +33,7 @@ public interface IMediator {
 	/**
 	 * Register the pathfinder for communication.
 	 * 
-	 * @param pathfinder to register for communication.
+	 * @param pathFinder to register for communication.
 	 */
 	void registerPathFinder(PathFinder pathFinder);
 	
@@ -49,7 +49,7 @@ public interface IMediator {
 	 * Ask the mediator to communicate with the necessary objects
 	 * to alert the movable of what it collided with.
 	 * 
-	 * @param the movable that requests information about what it collided with.
+	 * @param movable the movable that requests information about what it collided with.
 	 */
 	void didCollideAfterMove(IMovable movable);
 
