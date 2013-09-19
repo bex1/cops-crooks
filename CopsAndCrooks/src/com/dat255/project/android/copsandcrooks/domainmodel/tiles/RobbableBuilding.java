@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
 /**
  * This class represents all tiles that a crook can rob.
@@ -23,12 +24,14 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	public RobbableBuilding(Point position, int value) {
 		super(position);
 		this.value = value;
+		
+		pawnTypes.add(PawnType.Crook);
 	}
 
 	@Override
 	public void interact(IMovable target) {
 		if(value <= 0 && target instanceof Crook){
-			robBuilding((Crook)target);
+			robBuilding((Crook)target); //TODO fix this... interaction(?)
 		}
 	}
 	
