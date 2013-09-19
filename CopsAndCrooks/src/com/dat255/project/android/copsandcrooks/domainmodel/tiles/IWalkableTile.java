@@ -23,7 +23,12 @@ public interface IWalkableTile {
 	/**
 	 * Set the occupied-status of this tile
 	 */
-	public void setOccupied(boolean occupied);
+	public void setOccupiedBy(PawnType pawnType);
+	
+	/**
+	 * Get the occupied-status of this tile
+	 */
+	public PawnType getOccupiedBy();
 	
 	/**
 	 * Get the position of this tile
@@ -36,9 +41,11 @@ public interface IWalkableTile {
 	 */
 	public void setPosition(Point position);
 	
+
 	/**
 	 * Get the allowed pawntypes for this tile
 	 * @return the allowed pawntypes
 	 */
 	public List<PawnType> getAllowedPawnTypes();
+
 }
