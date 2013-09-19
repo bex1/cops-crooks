@@ -27,7 +27,7 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 		
 		storedCash = new HashMap<Crook, Integer>();
 		
-		//TODO getPlayers().getCrooks() store them here
+		//TODO GAMEMODEL.getPlayers().getCrooks() store them here
 		
 		//Adds all crooks to the hideouts storedCash list.
 		/*for(Player p: players){
