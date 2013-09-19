@@ -3,8 +3,13 @@
  */
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -13,6 +18,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
 
 /**
  * @author Bex
@@ -135,10 +143,11 @@ public class CrookTest {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
 				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});
-		int testMoves = test.tilesMovedEachStep();
-		assertTrue("Crook should start unwanted", testMoves == 1);
+		test.setCurrentTile(new RoadTile(new Point()));
+		
 	}
 
 	/**
@@ -146,7 +155,11 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testGetCurrentTile() {
-		fail("Not yet implemented"); // TODO
+		final Crook test = new Crook(new Mediator());
+		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
+		IWalkableTile walkable = new RoadTile(new Point());
+		test.setCurrentTile(walkable);
+		assertSame("The set tile should be returned", walkable, test.getCurrentTile());
 	}
 
 	/**
