@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.dat255.project.andriod.copsandcrooks.map.MapModel;
 import com.dat255.project.android.copsandcrooks.screens.SplashScreen;
 
 /**
