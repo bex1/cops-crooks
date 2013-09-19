@@ -24,9 +24,7 @@ public final class PathFinder {
 		// TODO implement this... note to get current tile just do pawn.getCurrentTile()
 		// maybe we need to make the paths of a Path class. since we later need to choose one path.
 
-
-
-		return null;
+		return calculatePossiblePaths_(pawn.getPawnType(), stepsToMove, pawn.getCurrentTile(), null);
 	}
 	private List<TilePath> calculatePossiblePaths_(PawnType pawnType,
 			int stepsToMove, IWalkableTile currentTile, IWalkableTile previousTile) {
