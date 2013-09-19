@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import java.awt.Point;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+
 
 /**
  * This class represents the road as a tile.
@@ -13,6 +15,10 @@ public class RoadTile extends AbstractTile {
 
 	public RoadTile(Point position) {
 		super(position);
+
+		pawnTypes.add(PawnType.Crook);
+		pawnTypes.add(PawnType.Car);
+		pawnTypes.add(PawnType.Officer);
 	}
 
 }
