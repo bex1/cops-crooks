@@ -1,6 +1,9 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import java.awt.Point;
+import java.util.List;
+
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
 
 /**
@@ -32,4 +35,10 @@ public interface IWalkableTile {
 	 * Set the position of this tile
 	 */
 	public void setPosition(Point position);
+	
+	/**
+	 * Get the allowed pawntypes for this tile
+	 * @return the allowed pawntypes
+	 */
+	public List<PawnType> getAllowedPawnTypes();
 }
