@@ -16,7 +16,14 @@ public class IntelligenceAgency extends AbstractTile implements IInteractiveTile
 	@Override
 	public void interact(IMovable target) {
 		// TODO Auto-generated method stub
-		
+		hinderGetAway();
 	}
-
+	
+	private void hinderGetAway(){
+		/*if(getEscapingCrooks() > 0)
+		 * 
+		 * 
+		 * 
+		 */
+	}
 }
