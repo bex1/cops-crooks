@@ -11,10 +11,12 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.Hideout;
 public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
+	private boolean attemptingGetAway;
 	
 	public Crook(IMediator mediator) {
 		super(Role.Crook, PawnType.Crook, mediator);
 		wallet = new Wallet();
+		attemptingGetAway = false;
 	}
 	
 	/**
@@ -39,5 +41,21 @@ public class Crook extends AbstractWalkingPawn {
 			// Should not happen, crooks can only move to an occupied tile when its an Hideout.
 			assert false;
 		}
+	}
+
+	/**
+	 * Return true if the crook is attempting to escape.
+	 * @return true if the crook is attempting to escape
+	 */
+	public boolean isAttemptingGetAway() {
+		return attemptingGetAway;
+	}
+
+	/**
+	 * Set attempting get away status for this crook.
+	 * @param attemptingGetAway the new get away status
+	 */
+	public void setAttemptingGetAway(boolean attemptingGetAway) {
+		this.attemptingGetAway = attemptingGetAway;
 	}
 }
