@@ -5,7 +5,7 @@ import com.dat255.project.android.copsandcrooks.utils.Constants;
 public class Officer extends AbstractWalkingPawn {
 	
 	public Officer(IMediator mediator) {
-		super(Role.Police, mediator);
+		super(Role.Police, PawnType.Officer, mediator);
 		// All officers start in the police house
 		this.setIsInPoliceStation(true);
 	}

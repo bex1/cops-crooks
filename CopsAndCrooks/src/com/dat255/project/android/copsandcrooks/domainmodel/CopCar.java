@@ -10,7 +10,7 @@ public class CopCar extends AbstractPawn {
 	// TODO add another tile, as the car covers two, or maybe just check for collision on the previous tile
 
 	public CopCar(IMediator mediator) {
-		super(Role.Police, mediator);
+		super(Role.Police, PawnType.Car, mediator);
 	}
 
 	@Override

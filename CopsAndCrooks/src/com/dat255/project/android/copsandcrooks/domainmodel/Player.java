@@ -113,7 +113,7 @@ public class Player implements IObservable {
      */
     public void updatePossiblePaths() {
     	int steps = diceResult * currentPawn.tilesMovedEachStep();
-    	possiblePaths = mediator.getPossiblePaths(playerRole, currentPawn, steps);
+    	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
     

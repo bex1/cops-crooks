@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 
@@ -60,12 +61,12 @@ public class Mediator implements IMediator {
 	}
 
 	@Override
-	public List<LinkedList<IWalkableTile>> getPossiblePaths(Role role,
+	public List<LinkedList<IWalkableTile>> getPossiblePaths(PawnType pawnType,
 			IMovable pawn, int stepsToMove) {
 		if (pathFinder != null) {
-			return pathFinder.calculatePossiblePaths(role, pawn, stepsToMove);
+			return pathFinder.calculatePossiblePaths(pawnType, pawn, stepsToMove);
 		} else {
-				throw new NullPointerException("No dice is registered");
+				throw new NullPointerException("No pathfinder is registered");
 		}
 	}
 }

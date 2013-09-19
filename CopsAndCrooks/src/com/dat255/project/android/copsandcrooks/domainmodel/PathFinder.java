@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 public final class PathFinder {
@@ -16,7 +17,7 @@ public final class PathFinder {
 		mediator.registerPathFinder(this);
 	}
 
-	public List<LinkedList<IWalkableTile>> calculatePossiblePaths(Role role,
+	public List<LinkedList<IWalkableTile>> calculatePossiblePaths(PawnType pawnType,
 			IMovable pawn, int stepsToMove) {
 		// TODO implement this... note to get current tile just do pawn.getCurrentTile()
 		// maybe we need to make the paths of a Path class. since we later need to choose one path.
