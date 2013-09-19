@@ -60,7 +60,7 @@ public final class PathFinder {
 					nextTile = tiles[x][y-1];
 				break;
 			}
-			if(nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
+			if(nextTile!=null && nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
 				List<TilePath> subPaths = calculatePossiblePaths_(pawnType, stepsToMove-1, nextTile, currentTile);
 				for(TilePath subPath : subPaths){
 					subPath.addTile(currentTile);
