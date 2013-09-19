@@ -44,7 +44,7 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		setOccupied(true);
+		setOccupiedBy(target.getPawnType());
 		//setInHideout(true);
 	}
 	
