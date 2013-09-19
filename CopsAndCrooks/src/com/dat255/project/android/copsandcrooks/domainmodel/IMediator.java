@@ -79,6 +79,6 @@ public interface IMediator {
 	 * @param stepsToMove The number of steps to be moved.
 	 * @return A list with linkedlists representing paths that can be walked
 	 */
-	List<LinkedList<IWalkableTile>> getPossiblePaths(PawnType pawnType, 
+	List<TilePath> getPossiblePaths(PawnType pawnType, 
 			IMovable pawn, int stepsToMove);
 }
