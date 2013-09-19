@@ -1,7 +1,6 @@
-/**
- * 
- */
 package com.dat255.project.android.copsandcrooks.domainmodel;
+
+
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -23,11 +22,9 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
 
-/**
- * @author Bex
- *
- */
-public class CrookTest {
+
+
+public class CopCarTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -58,50 +55,25 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#Crook(com.dat255.project.android.copsandcrooks.domainmodel.IMediator)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.CopCar#CopCar(com.dat255.project.android.copsandCopCars.domainmodel.IMediator)}.
 	 */
 	@Test
-	public final void testCrook() {
+	public final void testCopCar() {
 		try {
-			Crook test = new Crook(null);
+			CopCar test = new CopCar(null);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
 		} 
 	}
 
-	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#isWanted()}.
-	 */
-	@Test
-	public final void testIsWanted() {
-		Crook test = new Crook(new Mediator());
-		boolean testWanted = test.isWanted();
-		assertFalse("Crook should start unwanted", testWanted);
-		test.getWallet().incrementCash(1);
-		testWanted = test.isWanted();
-		assertTrue("Crook should now be wanted since it has cash", testWanted);
-		test.getWallet().setCash(0);
-		testWanted = test.isWanted();
-		assertFalse("Crook should now be unwanted since cash is 0", testWanted);
-	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#getWallet()}.
-	 */
-	@Test
-	public final void testGetWallet() {
-		Crook test = new Crook(new Mediator());
-		Wallet wallet = test.getWallet();
-		assertTrue("Crook should start unwanted", wallet != null);
-	}
-
-	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#collisionAfterMove(com.dat255.project.android.copsandcrooks.domainmodel.IMovable)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.CopCar#collisionAfterMove(com.dat255.project.android.copsandCopCars.domainmodel.IMovable)}.
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
-		Crook test = new Crook(new Mediator());
+		CopCar test = new CopCar(new Mediator());
 		try {
 			test.collisionAfterMove(new Officer(new Mediator()));
 			fail("Should throw Assertion error");
@@ -111,11 +83,11 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkingPawn#setIsInPoliceStation(boolean)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractWalkingPawn#setIsInPoliceStation(boolean)}.
 	 */
 	@Test
 	public final void testSetIsInPoliceStation() {
-		Crook test = new Crook(new Mediator());
+		CopCar test = new CopCar(new Mediator());
 		try {
 			test.collisionAfterMove(new Officer(new Mediator()));
 			fail("Should throw Assertion error");
@@ -125,21 +97,21 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkingPawn#tilesMovedEachStep()}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractWalkingPawn#tilesMovedEachStep()}.
 	 */
 	@Test
 	public final void testTilesMovedEachStep() {
-		Crook test = new Crook(new Mediator());
+		CopCar test = new CopCar(new Mediator());
 		int testMoves = test.tilesMovedEachStep();
-		assertTrue("Crook should start unwanted", testMoves == 1);
+		assertTrue("CopCar should move 2 steps", testMoves == 2);
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#setCurrentTile(com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#setCurrentTile(com.dat255.project.android.copsandCopCars.domainmodel.tiles.IWalkableTile)}.
 	 */
 	@Test
 	public final void testSetCurrentTile() {
-		final Crook test = new Crook(new Mediator());
+		final CopCar test = new CopCar(new Mediator());
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
@@ -152,11 +124,11 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#getCurrentTile()}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#getCurrentTile()}.
 	 */
 	@Test
 	public final void testGetCurrentTile() {
-		final Crook test = new Crook(new Mediator());
+		final CopCar test = new CopCar(new Mediator());
 		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
 		IWalkableTile walkable = new RoadTile(new Point());
 		test.setCurrentTile(walkable);
@@ -164,12 +136,12 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#move(com.dat255.project.android.copsandcrooks.domainmodel.TilePath)}.
-	 * and {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#update(float)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#move(com.dat255.project.android.copsandCopCars.domainmodel.TilePath)}.
+	 * and {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#update(float)}.
 	 */ 
 	@Test
 	public final void testMoveAndUpdate() {
-		final Crook test = new Crook(new Mediator());
+		final CopCar test = new CopCar(new Mediator());
 		IWalkableTile walkable = new RoadTile(new Point(0, 0));
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
@@ -183,29 +155,29 @@ public class CrookTest {
 	}
 	
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#getPawnRole()}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#getPawnRole()}.
 	 */
 	@Test
 	public final void testGetPawnRole() {
-		final Crook test = new Crook(new Mediator());
-		assertSame("The role of the crook should be crook", test.getPawnRole(), Role.Crook);
+		final CopCar test = new CopCar(new Mediator());
+		assertSame("The role of the CopCar should be CopCar", test.getPawnRole(), Role.Police);
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#getPawnType()}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#getPawnType()}.
 	 */
 	@Test
 	public final void testGetPawnType() {
-		final Crook test = new Crook(new Mediator());
-		assertSame("The type of the crook should be crook", test.getPawnType(), PawnType.Crook);
+		final CopCar test = new CopCar(new Mediator());
+		assertSame("The type of the CopCar should be CopCar", test.getPawnType(), PawnType.Car);
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn#addObserver(java.beans.PropertyChangeListener)}.
+	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.AbstractPawn#addObserver(java.beans.PropertyChangeListener)}.
 	 */
 	@Test
 	public final void testAddObserver() {
-		final Crook test = new Crook(new Mediator());
+		final CopCar test = new CopCar(new Mediator());
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
