@@ -25,7 +25,6 @@ public class CopsAndCrooks extends Game {
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
-        
         fpsLogger = new FPSLogger();
     }
 
