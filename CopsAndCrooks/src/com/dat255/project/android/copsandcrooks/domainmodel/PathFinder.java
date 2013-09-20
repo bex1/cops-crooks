@@ -15,6 +15,8 @@ public final class PathFinder {
 	public PathFinder(IWalkableTile[][] tiles, IMediator mediator) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
+		if (mediator == null)
+			throw new IllegalArgumentException("Mediator not allowed to be null");
 
 		this.tiles = tiles;
 		mediator.registerPathFinder(this);
