@@ -81,6 +81,15 @@ public class Player implements IObservable {
     }
     
     /**
+     * Returns the current pawn of the player.
+     * 
+     * @return the current pawn of the player.
+     */
+    public IMovable getCurrentPawn() {
+    	return currentPawn;
+    }
+    
+    /**
      * Returns the name of the player.
      * 
      * @return the name of the player.
