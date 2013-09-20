@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStation;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
 
 public class GameModel  {
 	
 	private List<Player> players;
-	private List<PoliceStation> policeStationTiles;
+	private List<PoliceStationTile> policeStationTiles;
+	private Player currentPlayer;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -20,28 +21,37 @@ public class GameModel  {
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		
 		this.players = players;
+		currentPlayer = players.get(0);
 		
 		mediator.registerGameModel(this);
 		
-		policeStationTiles = new ArrayList<PoliceStation>();
+		policeStationTiles = new ArrayList<PoliceStationTile>();
 		
 		// Extract police station tiles
 		for (IWalkableTile[] tileArray : tiles) {
 			for (IWalkableTile tile : tileArray) {
-				if (tile instanceof PoliceStation) {
-					policeStationTiles.add((PoliceStation)tile);
+				if (tile instanceof PoliceStationTile) {
+					policeStationTiles.add((PoliceStationTile)tile);
 				}
+			}
+		}
+	}
+	
+	public void update(float deltaTime) {
+		for (Player player : players) {
+			for (IMovable pawn : player.getPawns()) {
+				pawn.update(deltaTime);
 			}
 		}
 	}
 
 	void moveToEmptyPoliceStationTile(IMovable movable) {
-		PoliceStation policeStationTile = findEmptyPoliceStationTile();
+		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
 		movable.setCurrentTile(policeStationTile);
 	}
 
-	private PoliceStation findEmptyPoliceStationTile() {
-		for (PoliceStation tile : policeStationTiles) {
+	private PoliceStationTile findEmptyPoliceStationTile() {
+		for (PoliceStationTile tile : policeStationTiles) {
 			if (!tile.isOccupied()) {
 				return tile;
 			}

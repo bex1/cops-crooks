@@ -15,6 +15,8 @@ public final class PathFinder {
 	public PathFinder(IWalkableTile[][] tiles, IMediator mediator) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
+		if (mediator == null)
+			throw new IllegalArgumentException("Mediator not allowed to be null");
 
 		this.tiles = tiles;
 		mediator.registerPathFinder(this);
@@ -60,7 +62,7 @@ public final class PathFinder {
 					nextTile = tiles[x][y-1];
 				break;
 			}
-			if(nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
+			if(nextTile!=null && nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
 				List<TilePath> subPaths = calculatePossiblePaths_(pawnType, stepsToMove-1, nextTile, currentTile);
 				for(TilePath subPath : subPaths){
 					subPath.addTile(currentTile);

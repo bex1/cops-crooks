@@ -24,6 +24,11 @@ public interface IWalkableTile {
 	 * Set the occupied-status of this tile
 	 */
 	public void setOccupiedBy(PawnType pawnType);
+
+	/**
+	 * Set the occupied-status of this tile to none
+	 */
+	public void setNotOccupied();
 	
 	/**
 	 * Get the occupied-status of this tile
