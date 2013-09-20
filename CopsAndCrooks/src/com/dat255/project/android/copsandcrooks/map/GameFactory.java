@@ -1,14 +1,19 @@
 package com.dat255.project.android.copsandcrooks.map;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.*;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 /**
@@ -44,7 +49,14 @@ public class GameFactory {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}		
+		}	
+		
+		ArrayList<Player> player = new ArrayList<Player>();
+		ArrayList<IMovable> pawn = new ArrayList<IMovable>();
+		pawn.add(new Crook(mediator));
+		player.add(new Player("Gunnar", pawn, Role.Crook, mediator));
+		
+		
 		
 		//Creates a matrix that will contain all the diffrent tiles
 		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
@@ -100,7 +112,7 @@ public class GameFactory {
 			}
 		}
 		//create a game model
-		GameModel gameModel =new GameModel(mediator, null, walkable);
+		GameModel gameModel =new GameModel(mediator, player, walkable);
 		
 		// create the controller and view of the game
 		return new GameScreen(game, gameModel, map, mapLayerBack);
