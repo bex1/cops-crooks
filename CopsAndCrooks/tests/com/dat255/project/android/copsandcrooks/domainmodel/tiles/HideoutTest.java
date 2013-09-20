@@ -47,10 +47,8 @@ public class HideoutTest {
 	@Test
 	public void testHasStoredCash(){
 		Crook testCrook = new Crook(new Mediator());
-		List<Crook> crookList = new LinkedList<Crook>();
-		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		Hideout testHideout = new Hideout(new Point(0,0));
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -60,10 +58,8 @@ public class HideoutTest {
 	@Test
 	public void testGetStoredCashAmount(){
 		Crook testCrook = new Crook(new Mediator());
-		List<Crook> crookList = new LinkedList<Crook>();
-		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		Hideout testHideout = new Hideout(new Point(0,0));
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -73,10 +69,8 @@ public class HideoutTest {
 	@Test
 	public void testDepositCash(){
 		Crook testCrook = new Crook(new Mediator());
-		List<Crook> crookList = new LinkedList<Crook>();
-		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		Hideout testHideout = new Hideout(new Point(0,0));
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 13;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -86,10 +80,8 @@ public class HideoutTest {
 	@Test
 	public void testWithdrawCash(){
 		Crook testCrook = new Crook(new Mediator());
-		List<Crook> crookList = new LinkedList<Crook>();
-		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		Hideout testHideout = new Hideout(new Point(0,0));
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);

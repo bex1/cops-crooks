@@ -22,23 +22,11 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 	 * @param position the hideout's position
 	 * @param players a list of all players
 	 */
-	public Hideout(Point position, List<Crook> crook) {
+	public Hideout(Point position) {
 		super(position);
 		
 		storedCash = new HashMap<Crook, Integer>();
 		
-		//TODO GAMEMODEL.getPlayers().getCrooks() store them here
-		
-		//Adds all crooks to the hideouts storedCash list.
-		/*for(Player p: players){
-			if(p.getPlayerRole() == Role.Crook){
-				IMovable[] pawns = (IMovable[]) p.getPawns().toArray();
-				if(pawns[0] instanceof Crook){
-					storedCash.put((Crook) pawns[0], 0);
-				}
-			}
-		}*/
-
 		pawnTypes.add(PawnType.Crook);
 	}
 
