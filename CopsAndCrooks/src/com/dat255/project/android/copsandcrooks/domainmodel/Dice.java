@@ -12,6 +12,9 @@ public final class Dice implements IObservable {
 	private final Random rand = new Random();
 
 	public Dice(IMediator mediator) {
+		if (mediator == null)
+			throw new IllegalArgumentException("Mediator not allowed to be null");
+		
 		mediator.registerDice(this);
 	}
 	

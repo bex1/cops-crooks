@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
+import org.junit.Test;
 
 public class PathFinderTest {
 	
@@ -35,6 +36,7 @@ public class PathFinderTest {
 		pathFinder = new PathFinder(tiles, mediator);
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 1);
+		IWalkableTile[][] tiles = new IWalkableTile[3][3];
 		
 		for(TilePath path: pathList){
 			System.out.println(pathList.size());
