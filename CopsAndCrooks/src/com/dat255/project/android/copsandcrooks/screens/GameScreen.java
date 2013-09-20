@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
@@ -19,6 +18,7 @@ public class GameScreen extends AbstractScreen{
 	GameModel model;
 	TiledMap mapToRender;
 	TiledMapTileLayer gameBackground; //kan heta layertorender
+	int mapWidth, mapHeight;
 	
 	public GameScreen(CopsAndCrooks game, GameModel gameModel, TiledMap tiledmap, TiledMapTileLayer backgroundLayer) {
 		super(game);
@@ -26,6 +26,9 @@ public class GameScreen extends AbstractScreen{
 		model =gameModel;
 		mapToRender = tiledmap;
 		gameBackground = backgroundLayer;
+		mapWidth = (int) (gameBackground.getWidth()*gameBackground.getTileWidth());
+		mapHeight = (int) (gameBackground.getHeight()*gameBackground.getTileHeight());
+				
 	}
 	
 	@Override
@@ -33,27 +36,32 @@ public class GameScreen extends AbstractScreen{
 		Gdx.gl20.glClearColor(0, 0, 0, 1);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-			camera.translate(new Vector2(0 , 20));
+			if(camera.position.y < mapHeight - camera.viewportHeight*camera.zoom/2)
+				camera.translate(new Vector2(0 , 20));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			camera.translate(new Vector2(-20 , 0));
+			if(camera.position.x > camera.viewportWidth*camera.zoom/2)
+				camera.translate(new Vector2(-20 , 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			camera.translate(new Vector2(20 , 0));
+			if(camera.position.x < mapWidth- camera.viewportWidth*camera.zoom/2)
+				camera.translate(new Vector2(20 , 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-			camera.translate(new Vector2(0 , -20));
+			if(camera.position.y > camera.viewportHeight*camera.zoom/2)
+				camera.translate(new Vector2(0 , -20));
 		}
-		
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			camera.zoom = 0.1f+camera.zoom;
+			if(camera.zoom <2.5f )
+				camera.zoom = 0.1f+camera.zoom;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			camera.zoom = 0.1f-camera.zoom;
+			if(camera.zoom > .6f)
+				camera.zoom = camera.zoom- 0.1f;
 		}
-		System.out.print(camera.position);
-		camera.update();
 		
+		
+		camera.update();
 		renderer.setView(camera);
 		renderer.getSpriteBatch().begin();
 		renderer.renderTileLayer(gameBackground);
@@ -69,8 +77,11 @@ public class GameScreen extends AbstractScreen{
 	@Override
 	public void show(){
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
+		System.out.println(gameBackground.getWidth());
 		camera = new OrthographicCamera();
-		camera.position.set(0, 0, 0);
+		camera.position.set(GAME_VIEWPORT_WIDTH/2, GAME_VIEWPORT_HEIGHT/2, 0);
+
+		
 	}
 	
 	@Override
