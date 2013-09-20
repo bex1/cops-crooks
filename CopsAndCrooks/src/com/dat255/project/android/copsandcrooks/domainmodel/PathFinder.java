@@ -25,10 +25,16 @@ public final class PathFinder {
 
 	public List<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
 		numberOfSteps = stepsToMove;
-		return calculatePossiblePaths_(pawn.getPawnType(), stepsToMove, pawn.getCurrentTile(), null);
+		// Note that the current tile might be null
+		IWalkableTile currentTile = pawn.getCurrentTile();
+		if (currentTile != null) {
+			return calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, pawn.getCurrentTile(), null);
+		} else {
+			return null;
+		}
 	}
 
-	private List<TilePath> calculatePossiblePaths_(PawnType pawnType,
+	private List<TilePath> calculateActualPossiblePaths(PawnType pawnType,
 			int stepsToMove, IWalkableTile currentTile, IWalkableTile previousTile) {
 		
 		if(stepsToMove==0){
@@ -37,7 +43,6 @@ public final class PathFinder {
 			List<TilePath> subPaths = new LinkedList<TilePath>();
 			subPaths.add(path);
 			return subPaths;
-			
 		}
 		
 		int x = currentTile.getPosition().x;
@@ -51,22 +56,30 @@ public final class PathFinder {
 			case 0:
 				if(x+1<tiles.length)
 					nextTile = tiles[x+1][y];
+				else
+					nextTile = null;
 				break;
 			case 1:
 				if(y+1<tiles[x].length)
 					nextTile = tiles[x][y+1];
+				else
+					nextTile = null;
 				break;
 			case 2:
 				if(x-1>=0)
 					nextTile = tiles[x-1][y];
+				else
+					nextTile = null;
 				break;
 			case 3:
 				if(y-1>=0)
 					nextTile = tiles[x][y-1];
+				else
+					nextTile = null;
 				break;
 			}
-			if(nextTile!=null && nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
-				List<TilePath> subPaths = calculatePossiblePaths_(pawnType, stepsToMove-1, nextTile, currentTile);
+			if(nextTile != null && nextTile != previousTile && canMoveTo(nextTile, pawnType)){
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsToMove-1, nextTile, currentTile);
 				if(numberOfSteps != stepsToMove){
 					for(TilePath subPath : subPaths){
 						subPath.addTile(currentTile);
@@ -78,6 +91,7 @@ public final class PathFinder {
 		
 		return subPathsAllDirections;
 	}
+	
 	private boolean canMoveTo(IWalkableTile tile, PawnType pawnType){
 		return (!tile.isOccupied() && tile.getAllowedPawnTypes().contains(pawnType))
 				|| (tile.getOccupiedBy() == PawnType.Crook && pawnType==PawnType.Officer);
