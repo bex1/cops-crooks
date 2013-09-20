@@ -10,6 +10,7 @@ public class GameModel  {
 	
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
+	private Player currentPlayer;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -20,6 +21,7 @@ public class GameModel  {
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		
 		this.players = players;
+		currentPlayer = players.get(0);
 		
 		mediator.registerGameModel(this);
 		
@@ -31,6 +33,14 @@ public class GameModel  {
 				if (tile instanceof PoliceStationTile) {
 					policeStationTiles.add((PoliceStationTile)tile);
 				}
+			}
+		}
+	}
+	
+	public void update(float deltaTime) {
+		for (Player player : players) {
+			for (IMovable pawn : player.getPawns()) {
+				pawn.update(deltaTime);
 			}
 		}
 	}

@@ -117,8 +117,17 @@ public class Player implements IObservable {
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
     
-    // TODO Add method that moves along a chosen path. -> if we make a path class we just select one of the possible paths.
-    // Dont forget to change diceResult to 0 after move...
+    /**
+     * The player choose a path and the current pawn then moves along it.
+     * 
+     * @param path The selected path.
+     */
+    public void choosePath(TilePath path){
+    	if (possiblePaths.contains(path)) {
+    		// The path passed the test -> move
+    		currentPawn.move(path);
+    	}
+    }
     
     @Override
 	public void addObserver(PropertyChangeListener l) {
