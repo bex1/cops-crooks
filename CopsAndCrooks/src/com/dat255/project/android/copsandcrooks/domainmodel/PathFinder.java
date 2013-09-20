@@ -67,8 +67,10 @@ public final class PathFinder {
 			}
 			if(nextTile!=null && nextTile!=previousTile && canMoveTo(nextTile, pawnType)){
 				List<TilePath> subPaths = calculatePossiblePaths_(pawnType, stepsToMove-1, nextTile, currentTile);
-				for(TilePath subPath : subPaths){
-					subPath.addTile(currentTile);
+				if(numberOfSteps != stepsToMove){
+					for(TilePath subPath : subPaths){
+						subPath.addTile(currentTile);
+					}
 				}
 				subPathsAllDirections.addAll(subPaths);
 			}

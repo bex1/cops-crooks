@@ -35,14 +35,17 @@ public class PathFinderTest {
 		
 		pathFinder = new PathFinder(tiles, mediator);
 		
-		pathList = pathFinder.calculatePossiblePaths(crook, 1);
+		pathList = pathFinder.calculatePossiblePaths(crook, 2);
 		IWalkableTile[][] tiles = new IWalkableTile[3][3];
 		
-		for(TilePath path: pathList){
 			System.out.println(pathList.size());
-			//System.out.println(path.getPathSize);
-			assertTrue(pathList.size() == 2);
+		for(TilePath path: pathList){
+			System.out.println(path.getPathSize());
+			while(!path.isEmpty()){
+				System.out.println(path.getNextTile().getPosition());
+			}
 		}
+			assertTrue(pathList.size() == 2);
 	}
 
 }
