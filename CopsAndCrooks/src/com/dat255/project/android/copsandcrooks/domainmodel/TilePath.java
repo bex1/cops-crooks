@@ -22,18 +22,36 @@ public class TilePath implements IObservable {
 		pathList = new LinkedList<IWalkableTile>();
 	}
 	
+	/**
+	 * Returns the next tile on the path.
+	 * @return the next tile on path.
+	 */
 	public IWalkableTile getNextTile() {
 		return pathList.pollFirst();
 	}
 	
+	/**
+	 * Checks to see if the path is empty.
+	 * @return true if the path list is empty.
+	 */
 	public boolean isEmpty() {
 		return pathList.isEmpty();
 	}
-	
+	/**
+	 * Add a tile to the path.
+	 * @param tile - the tile to be added to the path.
+	 */
 	public void addTile(IWalkableTile tile){
 		pathList.addFirst(tile);
 	}
-
+	/**
+	 * Returns the size of the path.
+	 * @return the size of the path.
+	 */
+	public int getPathSize(){
+		return pathList.size();
+	}
+	
 	@Override
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
