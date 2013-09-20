@@ -75,7 +75,7 @@ public class GameFactory {
 						walkable[i][j] = new GetAway(new Point(i, j));
 						break;
 					case 3: 	// Acording to the tileset case 3 is the polisoffice tiles
-						walkable[i][j] = new PoliceStation(new Point(i, j));
+						walkable[i][j] = new PoliceStationTile(new Point(i, j));
 						break;
 					case 4: 	// Acording to the tileset case 4 is the tramstops tiles
 						walkable[i][j] = new TramStop(new Point(i, j));
