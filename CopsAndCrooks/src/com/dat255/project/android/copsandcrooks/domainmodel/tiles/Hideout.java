@@ -22,7 +22,7 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 	 * @param position the hideout's position
 	 * @param players a list of all players
 	 */
-	public Hideout(Point position, List<Player> players) {
+	public Hideout(Point position, List<Crook> crook) {
 		super(position);
 		
 		storedCash = new HashMap<Crook, Integer>();
@@ -44,8 +44,7 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		setOccupiedBy(target.getPawnType());
-		//setInHideout(true);
+		//TODO would you like to deposit/withdraw cash?
 	}
 	
 	/**
@@ -54,14 +53,17 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 	 * @param amount the amount to store
 	 */
 	public void depositCash(Crook crook, int amount){
+		//Adds the crook to the list of crooks that have stored cash
+		if(storedCash.containsKey(crook)){
+			storedCash.put(crook, 0);
+		}
+		
 		if(amount <= crook.getWallet().getCash()){
-			if(storedCash.containsKey(crook)){
-				storedCash.put(crook, amount + storedCash.get(crook));
-				crook.getWallet().decrementCash(amount);
-			}else{
-				storedCash.put(crook, amount);
-				crook.getWallet().decrementCash(amount);
-			}
+			storedCash.put(crook, amount + getStoredCashAmount(crook));
+			crook.getWallet().decrementCash(amount);
+		}else{
+			storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
+			crook.getWallet().setCash(0);
 		}
 	}
 	
@@ -74,8 +76,8 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 		int cash;
 		
 		//Checks if the crook has any cash in the hideout.
-		if(storedCash.containsKey(crook) || !(crook==null)){
-			cash = storedCash.get(crook);
+		if(hasStoredCash(crook)){
+			cash = getStoredCashAmount(crook);
 		}else{
 			throw new NullPointerException("The crook can't be null!");
 		}
@@ -88,6 +90,34 @@ public class Hideout extends AbstractTile implements IInteractiveTile {
 			storedCash.put(crook, cash-amount);
 			crook.getWallet().incrementCash(amount);
 		}
+	}
+	
+	/**
+	 * Get the stored cash in this hideout for a specific crook.
+	 * @param crook the crook
+	 * @return the amount of cash stored by a crook
+	 */
+	public int getStoredCashAmount(Crook crook){
+		if(crook==null){
+			return 0;
+		}
+		
+		int cash = 0;
+		if(hasStoredCash(crook)){
+			cash = storedCash.get(crook);
+		}
+		return cash;
+	}
+	
+	/**
+	 * Check if a crook has any cash in this hideout.
+	 * @param crook the crook
+	 */
+	public boolean hasStoredCash(Crook crook){
+		if(!(crook==null) && storedCash.containsKey(crook) && storedCash.get(crook) > 0){
+			return true;
+		}
+		return false;
 	}
 	
 }
