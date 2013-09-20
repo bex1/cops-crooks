@@ -9,6 +9,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 public final class PathFinder {
 	private IWalkableTile[][] tiles;
 	private List<TilePath> paths;
+	private int numberOfSteps;
 	
 
 
@@ -23,6 +24,7 @@ public final class PathFinder {
 	}
 
 	public List<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
+		numberOfSteps = stepsToMove;
 		return calculatePossiblePaths_(pawn.getPawnType(), stepsToMove, pawn.getCurrentTile(), null);
 	}
 
@@ -35,6 +37,7 @@ public final class PathFinder {
 			List<TilePath> subPaths = new LinkedList<TilePath>();
 			subPaths.add(path);
 			return subPaths;
+			
 		}
 		
 		int x = currentTile.getPosition().x;
