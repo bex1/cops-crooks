@@ -36,14 +36,6 @@ public class GameModel  {
 			}
 		}
 	}
-	
-	public void update(float deltaTime) {
-		for (Player player : players) {
-			for (IMovable pawn : player.getPawns()) {
-				pawn.update(deltaTime);
-			}
-		}
-	}
 
 	void moveToEmptyPoliceStationTile(IMovable movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
