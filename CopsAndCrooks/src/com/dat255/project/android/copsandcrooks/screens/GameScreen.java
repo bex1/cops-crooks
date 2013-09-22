@@ -44,30 +44,39 @@ public class GameScreen extends AbstractScreen{
 		for (Actor actor : actors) {
 			stage.addActor(actor);
 		}
-				
 	}
 	
 	@Override
 	public void render(float delta){
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-			if(camera.position.y < mapHeight - camera.viewportHeight*camera.zoom/2)
+			if(camera.position.y < getCameraBoundryUp())
 				camera.translate(new Vector2(0 , 20));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			if(camera.position.x > camera.viewportWidth*camera.zoom/2)
+			if(camera.position.x > getCameraBoundryLeft())
 				camera.translate(new Vector2(-20 , 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			if(camera.position.x < mapWidth- camera.viewportWidth*camera.zoom/2)
+			if(camera.position.x < getCameraBoundryRight())
 				camera.translate(new Vector2(20 , 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-			if(camera.position.y > camera.viewportHeight*camera.zoom/2)
+			if(camera.position.y > getCameraBoundryDown())
 				camera.translate(new Vector2(0 , -20));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			if(camera.zoom <2.5f )
+			if(camera.zoom < 2.2f ) {
 				camera.zoom = 0.1f+camera.zoom;
+				// Keep within map
+				if(camera.position.x > getCameraBoundryRight())
+					camera.position.x = getCameraBoundryRight();
+				if(camera.position.x < getCameraBoundryLeft())
+					camera.position.x = getCameraBoundryLeft();
+				if(camera.position.y > getCameraBoundryUp())
+					camera.position.y = getCameraBoundryUp();
+				if(camera.position.y < getCameraBoundryDown())
+					camera.position.y = getCameraBoundryDown();
+			}
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.D)){
 			if(camera.zoom > .6f)
@@ -105,4 +114,21 @@ public class GameScreen extends AbstractScreen{
 		renderer.dispose();
 		mapToRender.dispose();
 	}
+	
+	private float getCameraBoundryRight() {
+		return  mapWidth - camera.viewportWidth*camera.zoom/2;
+	}
+	
+	private float getCameraBoundryLeft() {
+		return camera.viewportWidth*camera.zoom/2;
+	}
+	
+	private float getCameraBoundryDown() {
+		return camera.viewportHeight*camera.zoom/2;
+	}
+	
+	private float getCameraBoundryUp() {
+		return mapHeight - camera.viewportHeight*camera.zoom/2;
+	}
+	
 }
