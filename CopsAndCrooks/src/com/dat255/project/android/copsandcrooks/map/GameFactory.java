@@ -2,9 +2,8 @@ package com.dat255.project.android.copsandcrooks.map;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,11 +12,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.CrookActor;
+import com.dat255.project.android.copsandcrooks.actors.CrookActor.CrookAnimations;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
@@ -76,7 +75,9 @@ public class GameFactory {
 		
 		// Testing of crookactor
 		Crook crook = new Crook(mediator);
-		Map<String, Animation> crookAnimations = new HashMap<String, Animation>();
+		
+		// Using an enumeration map makes sure that all keys passed are valid keys
+		EnumMap<CrookAnimations, Animation> crookAnimations = new EnumMap<CrookAnimations, Animation>(CrookAnimations.class);
 		
 		AtlasRegion[] stopAnimation = new AtlasRegion[8];
 		for(int i = 0; i < 8; i++)
@@ -84,7 +85,17 @@ public class GameFactory {
 			stopAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/stopped"+String.format("%04d", i));
 		}
 		Animation idle = new Animation(1f, stopAnimation);
-		crookAnimations.put(CrookActor.IDLE_ANIM, idle);
+		
+		crookAnimations.put(CrookAnimations.IDLE_ANIM, idle);
+		
+		AtlasRegion[] walkEastAnimation = new AtlasRegion[8];
+		for(int i = 0; i < 8; i++)
+		{
+			walkEastAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking e"+String.format("%04d", i));
+		}
+		Animation walkEast = new Animation(0.2f, walkEastAnimation);
+		
+		crookAnimations.put(CrookAnimations.WALK_EAST_ANIM, walkEast);
 		
 		// Specify the first drawable frame
         TextureRegionDrawable drawable = new TextureRegionDrawable(stopAnimation[0]);
