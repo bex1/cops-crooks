@@ -9,7 +9,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Point;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 

@@ -1,7 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 
-import java.awt.Point;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
