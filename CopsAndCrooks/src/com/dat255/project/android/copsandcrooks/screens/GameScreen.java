@@ -25,7 +25,6 @@ public class GameScreen extends AbstractScreen{
 	private int mapWidth, mapHeight;
 	private List<Actor> actors;
 	
-	
 	public GameScreen(CopsAndCrooks game, GameModel gameModel,
 			TiledMap tiledmap, TiledMapTileLayer backgroundLayer,
 			List<Actor> actors) {
