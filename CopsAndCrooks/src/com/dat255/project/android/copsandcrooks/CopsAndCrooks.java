@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.dat255.project.android.copsandcrooks.screens.SplashScreen;
+import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 /**
  * TODO docs here
@@ -72,5 +73,6 @@ public class CopsAndCrooks extends Game {
     {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
+        Utilities.disposeUtils();
     }
 }

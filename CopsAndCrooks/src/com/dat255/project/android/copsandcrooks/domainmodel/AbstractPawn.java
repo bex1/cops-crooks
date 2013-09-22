@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IInteractiveTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.utils.Constants;
 
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
@@ -27,7 +28,6 @@ public abstract class AbstractPawn implements IMovable {
 	private TilePath pathToMove;
 	
 	private boolean isMoving;
-	private static final float MOVE_DELAY = 0.5f;
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -72,7 +72,7 @@ public abstract class AbstractPawn implements IMovable {
 		if (isMoving) {
 			// Take steps with delay
 			moveTimer += deltaTime;
-		    if (moveTimer >= MOVE_DELAY) {
+		    if (moveTimer >= Constants.PAWN_MOVE_DELAY) {
 		    	this.setCurrentTile(pathToMove.getNextTile());
 		       
 		        // Check if we stepped on the endtile of the path
@@ -89,7 +89,7 @@ public abstract class AbstractPawn implements IMovable {
 		        	
 		        }
 		        // Reset timer
-		        moveTimer -= MOVE_DELAY;
+		        moveTimer -= Constants.PAWN_MOVE_DELAY;
 		    }
 		}
 	}

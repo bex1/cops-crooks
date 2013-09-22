@@ -2,20 +2,39 @@ package com.dat255.project.android.copsandcrooks.map;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.CrookActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.*;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.GetAway;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.Hideout;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgency;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RobbableBuilding;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStop;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgency;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
+import com.dat255.project.android.copsandcrooks.utils.Utilities;
 /**
  * 
  * @author Group 25
@@ -51,12 +70,35 @@ public class GameFactory {
 			return null;
 		}	
 		
-		ArrayList<Player> player = new ArrayList<Player>();
-		ArrayList<IMovable> pawn = new ArrayList<IMovable>();
-		pawn.add(new Crook(mediator));
-		player.add(new Player("Gunnar", pawn, Role.Crook, mediator));
+		List<Player> players = new ArrayList<Player>();
+		List<IMovable> pawns = new ArrayList<IMovable>();
+		List<Actor> actors = new ArrayList<Actor>();
 		
+		// Testing of crookactor
+		Crook crook = new Crook(mediator);
+		Map<String, Animation> crookAnimations = new HashMap<String, Animation>();
 		
+		AtlasRegion[] stopAnimation = new AtlasRegion[8];
+		for(int i = 0; i < 8; i++)
+		{
+			stopAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/stopped"+String.format("%04d", i));
+		}
+		Animation idle = new Animation(1f, stopAnimation);
+		crookAnimations.put(CrookActor.IDLE_ANIM, idle);
+		
+		// Specify the first drawable frame
+        TextureRegionDrawable drawable = new TextureRegionDrawable(stopAnimation[0]);
+     	
+        // Create our crook actor
+        CrookActor crookActor = new CrookActor(drawable, Scaling.none, crook, crookAnimations);
+        
+        
+        
+        actors.add(crookActor);
+		
+		pawns.add(crook);
+		
+		players.add(new Player("Gunnar", pawns, Role.Crook, mediator));
 		
 		//Creates a matrix that will contain all the diffrent tiles
 		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
@@ -112,10 +154,10 @@ public class GameFactory {
 			}
 		}
 		//create a game model
-		GameModel gameModel =new GameModel(mediator, player, walkable);
-		
+		GameModel gameModel =new GameModel(mediator, players, walkable);
+	
 		// create the controller and view of the game
-		return new GameScreen(game, gameModel, map, mapLayerBack);
+		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
 		
 	}
 	
