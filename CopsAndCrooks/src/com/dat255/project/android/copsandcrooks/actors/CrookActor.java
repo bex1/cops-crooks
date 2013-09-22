@@ -65,8 +65,8 @@ public class CrookActor extends Image implements PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if (evt.getSource() == crook) {
-			switch (evt.getPropertyName()) {
-			case Crook.PROPERTY_CURRENT_TILE:
+			String property = evt.getPropertyName();
+			if (property == Crook.PROPERTY_CURRENT_TILE) {
 				// test
 				currentAnimation = CrookAnimations.WALK_EAST_ANIM;
 				animTimer = 0;
@@ -81,10 +81,9 @@ public class CrookActor extends Image implements PropertyChangeListener {
 						return true;
 					}
 				}));
-				break;
-			case Crook.PROPERTY_IS_IN_POLICE_HOUSE:
+			}
+			else if (property == Crook.PROPERTY_IS_IN_POLICE_HOUSE) {
 				// use fade out fade in 
-				break;
 			}
 		}
 	}
