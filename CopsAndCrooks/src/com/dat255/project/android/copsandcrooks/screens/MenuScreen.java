@@ -1,15 +1,18 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.utils.Constants;
 
 public class MenuScreen extends AbstractScreen {
 
 	public MenuScreen(CopsAndCrooks game) {
-		super(game);
+		super(game, Constants.GAME_VIEWPORT_WIDTH, Constants.GAME_VIEWPORT_HEIGHT);
 	}
 	
 	@Override
@@ -60,4 +63,12 @@ public class MenuScreen extends AbstractScreen {
         } );
         table.add(highScoresButton).uniform().fill();
     }
+	
+	@Override
+	public void render(float delta) {
+        // clear the screen with the given RGB color (black)
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		super.render(delta);
+	}
 }
