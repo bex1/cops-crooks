@@ -1,8 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.*;
+import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class HideoutTest {
 

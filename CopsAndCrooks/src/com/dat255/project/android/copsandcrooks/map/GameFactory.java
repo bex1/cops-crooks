@@ -1,10 +1,10 @@
 package com.dat255.project.android.copsandcrooks.map;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -33,6 +33,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RobbableBuildi
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStop;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgency;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
 /**
  * 
@@ -54,7 +55,7 @@ public class GameFactory {
 		Point policeCarStart = new Point();
 		
 		// This loads a TMX file
-		TiledMap map = new TmxMapLoader().load("../CopsAndCrooks/etc/map-images/cops-crooks-map-v1.tmx");  
+		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v1.tmx");  
 		
 		// Takes out the layer that will contain the background graphics
 		TiledMapTileLayer mapLayerBack;
@@ -138,7 +139,7 @@ public class GameFactory {
 						break;
 					case 6: 	// Acording to tileset case 6 will be the coordinate of the poliscar(this will be a road tile)
 						walkable[i][j] = new RoadTile(new Point(i, j));
-						policeCarStart.setLocation(i, j);
+						policeCarStart.set(i, j);
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
 						walkable[i][j] = new Hideout(new Point(i, j), null);

@@ -3,7 +3,6 @@ package com.dat255.project.android.copsandcrooks.actors;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class CrookActor extends Image implements PropertyChangeListener {
 	

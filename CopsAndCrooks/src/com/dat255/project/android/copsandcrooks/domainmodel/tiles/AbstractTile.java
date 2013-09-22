@@ -1,12 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 
 /**

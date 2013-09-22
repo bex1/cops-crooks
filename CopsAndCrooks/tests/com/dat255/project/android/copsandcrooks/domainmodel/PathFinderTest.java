@@ -2,7 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.*;
 
-import java.awt.Point;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 import java.util.List;
 
 import org.junit.Test;
