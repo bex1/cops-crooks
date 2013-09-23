@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.Hideout;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 
 /**
  * A crook pawn in the game Cops&Crooks.
@@ -37,7 +37,7 @@ public class Crook extends AbstractWalkingPawn {
 
 	@Override
 	public void collisionAfterMove(IMovable pawn) {
-		if (!(currentTile instanceof Hideout && pawn instanceof Crook)) {
+		if (!(currentTile instanceof HideoutTile && pawn instanceof Crook)) {
 			// Should not happen, crooks can only move to an occupied tile when its an Hideout.
 			assert false;
 		}
