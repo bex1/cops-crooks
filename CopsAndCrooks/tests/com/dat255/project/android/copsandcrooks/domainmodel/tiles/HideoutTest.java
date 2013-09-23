@@ -51,7 +51,7 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList);
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -64,7 +64,7 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList);
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -77,7 +77,7 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList);
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 13;
 		testHideout.depositCash(testCrook, depositAmount);
@@ -90,7 +90,7 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		Hideout testHideout = new Hideout(new Point(0,0), crookList);
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList);
 		testCrook.getWallet().setCash(10);
 		int depositAmount = 7;
 		testHideout.depositCash(testCrook, depositAmount);
