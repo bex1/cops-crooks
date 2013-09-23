@@ -22,10 +22,10 @@ public abstract class AbstractTile implements IWalkableTile{
 	
 	/**
 	 * Construct a new AbstractTile with a position.
-	 * @param position the tile's position
+	 * @param position2 the tile's position
 	 */
-	public AbstractTile(Point position) {
-		this.position = position;
+	public AbstractTile(Point position2) {
+		this.position = position2;
 		
 		pawnTypes = new ArrayList<PawnType>();
 	}

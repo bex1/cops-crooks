@@ -6,9 +6,9 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
-public class TramStop extends AbstractTile implements IInteractiveTile{
+public class TramStopTile extends AbstractTile implements IInteractiveTile{
 	
-	public TramStop(Point position) {
+	public TramStopTile(Point position) {
 		super(position);
 		
 		pawnTypes.add(PawnType.Crook);
