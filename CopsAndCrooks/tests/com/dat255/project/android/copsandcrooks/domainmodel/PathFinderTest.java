@@ -22,9 +22,9 @@ public class PathFinderTest {
 	public void testCalculatePossiblePaths1() {
 		mediator = new Mediator();
 		
-		IWalkableTile[][] tiles = {{new RoadTile(new Point(0,0)), null, new RoadTile(new Point(0,2))}, 
-									{new RoadTile(new Point(1,0)), null, new RoadTile(new Point(1,2))}, 
-									{new RoadTile(new Point(2,0)), new RoadTile(new Point(2,1)), new RoadTile(new Point(2,2))}};
+		IWalkableTile[][] tiles = {{new RoadTile(new Point(0,0), new Mediator()), null, new RoadTile(new Point(0,2), new Mediator())}, 
+									{new RoadTile(new Point(1,0), new Mediator()), null, new RoadTile(new Point(1,2), new Mediator())}, 
+									{new RoadTile(new Point(2,0), new Mediator()), new RoadTile(new Point(2,1), new Mediator()), new RoadTile(new Point(2,2), new Mediator())}};
 
 		
 		crook = new Crook(mediator);
@@ -46,7 +46,7 @@ public class PathFinderTest {
 		tiles = new IWalkableTile[3][3];
 		for(int i =0; i<3; i++){
 			for(int j =0; j<3; j++){
-				tiles[i][j] = new RoadTile(new Point(i,j));
+				tiles[i][j] = new RoadTile(new Point(i,j), new Mediator());
 			}
 		}
 		
@@ -65,13 +65,21 @@ public class PathFinderTest {
 	public void testCalculatePossiblePaths3() {
 		mediator = new Mediator();
 		
-		IWalkableTile[][] tiles = {{new RoadTile(new Point(0,0)), null, new RoadTile(new Point(0,2))}, 
-									{new RoadTile(new Point(1,0)), null, new RoadTile(new Point(1,2))},
-									{new RoadTile(new Point(2,0)), null, new RoadTile(new Point(2,2))}, 
-									{new RoadTile(new Point(3,0)), null, new RoadTile(new Point(3,2))}, 
-									{new RoadTile(new Point(4,0)), null, new RoadTile(new Point(4,2))}, 
-									{new RoadTile(new Point(5,0)), null, new RoadTile(new Point(5,2))}, 
-									{new RoadTile(new Point(6,0)), new RoadTile(new Point(6,1)), new RoadTile(new Point(6,2))}};
+		IWalkableTile[][] tiles = {{new RoadTile(new Point(0,0), new Mediator()), 
+									null, new RoadTile(new Point(0,2), new Mediator())}, 
+									{new RoadTile(new Point(1,0), new Mediator()), 
+									null, new RoadTile(new Point(1,2), new Mediator())},
+									{new RoadTile(new Point(2,0), new Mediator()), 
+									null, new RoadTile(new Point(2,2), new Mediator())}, 
+									{new RoadTile(new Point(3,0), new Mediator()), 
+									null, new RoadTile(new Point(3,2), new Mediator())}, 
+									{new RoadTile(new Point(4,0), new Mediator()), 
+									null, new RoadTile(new Point(4,2), new Mediator())}, 
+									{new RoadTile(new Point(5,0), new Mediator()), 
+									null, new RoadTile(new Point(5,2), new Mediator())}, 
+									{new RoadTile(new Point(6,0), new Mediator()), 
+									new RoadTile(new Point(6,1), new Mediator()), 
+									new RoadTile(new Point(6,2), new Mediator())}};
 
 		
 		crook = new Crook(mediator);
@@ -93,7 +101,7 @@ public class PathFinderTest {
 		tiles = new IWalkableTile[3][3];
 		for(int i =0; i<3; i++){
 			for(int j =0; j<3; j++){
-				tiles[i][j] = new RoadTile(new Point(i,j));
+				tiles[i][j] = new RoadTile(new Point(i,j), new Mediator());
 			}
 		}
 		
