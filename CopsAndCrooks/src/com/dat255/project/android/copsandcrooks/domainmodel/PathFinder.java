@@ -94,7 +94,8 @@ public final class PathFinder {
 	
 	private boolean canMoveTo(IWalkableTile tile, PawnType pawnType){
 		return (!tile.isOccupied() && tile.getAllowedPawnTypes().contains(pawnType))
-				|| (tile.getOccupiedBy() == PawnType.Crook && pawnType==PawnType.Officer);
+				|| (tile.getOccupiedBy() == PawnType.Crook && pawnType==PawnType.Officer
+				&& tile.getAllowedPawnTypes().contains(pawnType));
 	}
 
 }
