@@ -111,7 +111,7 @@ public class OfficerTest {
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});
-		test.setCurrentTile(new RoadTile(new Point()));
+		test.setCurrentTile(new RoadTile(new Point(), new Mediator()));
 		
 	}
 
@@ -122,7 +122,7 @@ public class OfficerTest {
 	public final void testGetCurrentTile() {
 		final Officer test = new Officer(new Mediator());
 		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
-		IWalkableTile walkable = new RoadTile(new Point());
+		IWalkableTile walkable = new RoadTile(new Point(), new Mediator());
 		test.setCurrentTile(walkable);
 		assertSame("The set tile should be returned", walkable, test.getCurrentTile());
 	}
@@ -134,12 +134,12 @@ public class OfficerTest {
 	@Test
 	public final void testMoveAndUpdate() {
 		final Officer test = new Officer(new Mediator());
-		IWalkableTile walkable = new RoadTile(new Point(0, 0));
+		IWalkableTile walkable = new RoadTile(new Point(0, 0), new Mediator());
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
-		final RoadTile end = new RoadTile(new Point(0, 2));
+		final RoadTile end = new RoadTile(new Point(0, 2), new Mediator());
 		path.addTile(end);
-		path.addTile(new RoadTile(new Point(0, 1)));
+		path.addTile(new RoadTile(new Point(0, 1), new Mediator()));
 		test.move(path);
 		for (int i = 0; i < 10; i++)
 			test.update(0.2f);

@@ -1,10 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import com.dat255.project.android.copsandcrooks.utils.Point;
-
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
  * This class represents all tiles that a crook can rob.
@@ -12,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
+public class RobbableBuildingTile extends AbstractTile implements IInteractiveTile {
 	
 	private int value;
 
@@ -21,8 +21,8 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	 * @param position the building's position
 	 * @param value the building's value
 	 */
-	public RobbableBuilding(Point position, int value) {
-		super(position);
+	public RobbableBuildingTile(Point position, IMediator mediator, int value) {
+		super(position, mediator);
 		this.value = value;
 		
 		pawnTypes.add(PawnType.Crook);
