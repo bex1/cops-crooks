@@ -11,7 +11,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
-	private boolean attemptingGetAway;
+	private boolean attemptingGetAway, isWanted;
 	
 	public Crook(IMediator mediator) {
 		super(Role.Crook, PawnType.Crook, mediator);
@@ -24,7 +24,15 @@ public class Crook extends AbstractWalkingPawn {
 	 * @return true if the crook is wanted.
 	 */
 	public boolean isWanted() {
-		return wallet.getCash() > 0;
+		return isWanted;
+	}
+	
+	/**
+	 * Sets if the crook is wanted or not.
+	 * @param wanted true if the crook is wanted, false otherwise.
+	 */
+	public void setWanted(boolean wanted) {
+		this.isWanted = wanted;
 	}
 	
 	/**

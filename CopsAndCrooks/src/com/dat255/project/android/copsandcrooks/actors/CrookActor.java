@@ -16,23 +16,30 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
+import com.dat255.project.android.copsandcrooks.utils.Constants;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class CrookActor extends Image implements PropertyChangeListener {
-	
+
 	private final Crook crook;
 	private final EnumMap<CrookAnimations, Animation> animations;
 	private final TextureRegionDrawable currentDrawable;
 	private float animTimer;
 	private CrookAnimations currentAnimation;
-	
+
 	public enum CrookAnimations {
 		IDLE_ANIM,
 		WALK_EAST_ANIM,
+		WALK_SOUTH_ANIM,
+		WALK_WEST_ANIM,
+		WALK_NORTH_ANIM,
 	}
-	
+
 	/** Creates a crook aligned center.
 	 * @param drawable May be null. */
 	public CrookActor(final TextureRegionDrawable drawable, final Scaling scaling, final Crook crook, final EnumMap<CrookAnimations, Animation> animations) {
@@ -42,24 +49,43 @@ public class CrookActor extends Image implements PropertyChangeListener {
 		currentDrawable = drawable;
 		currentAnimation = CrookAnimations.IDLE_ANIM;
 		crook.addObserver(this);
-		
+
 		this.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				// For testing, moves the guy
-				crook.setCurrentTile((new RoadTile(new Point(500, 0), new Mediator())));
+				if (!crook.isMoving()) {
+					TilePath path = new TilePath();
+					Mediator mediator = new Mediator();
+					path.addTile(new RoadTile(new Point(0, 2), mediator));
+					path.addTile(new RoadTile(new Point(1, 2), mediator));
+					path.addTile(new RoadTile(new Point(2, 2), mediator));
+					path.addTile(new RoadTile(new Point(2, 3), mediator));
+					path.addTile(new RoadTile(new Point(3, 3), mediator));
+					path.addTile(new RoadTile(new Point(3, 4), mediator));
+					path.addTile(new RoadTile(new Point(3, 5), mediator));
+					path.addTile(new RoadTile(new Point(2, 5), mediator));
+					path.addTile(new RoadTile(new Point(1, 5), mediator));
+					path.addTile(new RoadTile(new Point(0, 5), mediator));
+					path.addTile(new RoadTile(new Point(0, 4), mediator));
+					path.addTile(new RoadTile(new Point(0, 3), mediator));
+					crook.move(path);
+				}
 				return super.touchDown(event, x, y, pointer, button);
 			}
-        } );
+		} );
+		
+		//test
+		crook.setCurrentTile(new RoadTile(new Point(0,2), new Mediator()));
+		//test end
 	}
-	
+
 	@Override
 	public void act(float delta) {
 		crook.update(delta);
 		animTimer += delta;
 		currentDrawable.setRegion(animations.get(currentAnimation).getKeyFrame(animTimer, true));
-		
 		super.act(delta);
 	}
 
@@ -67,25 +93,52 @@ public class CrookActor extends Image implements PropertyChangeListener {
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if (evt.getSource() == crook) {
 			String property = evt.getPropertyName();
-			if (property == Crook.PROPERTY_CURRENT_TILE) {
-				// test
-				currentAnimation = CrookAnimations.WALK_EAST_ANIM;
-				animTimer = 0;
-				// test end
-				Point crookTilePosition = crook.getCurrentTile().getPosition();
-				this.addAction(sequence(moveTo(crookTilePosition.x, crookTilePosition.y, 3f, Interpolation.linear), 
-						new Action() {
-					@Override
-					public boolean act(float delta) {
-						currentAnimation = CrookAnimations.IDLE_ANIM;
-						animTimer = 0;
-						return true;
-					}
-				}));
-			}
-			else if (property == Crook.PROPERTY_IS_IN_POLICE_HOUSE) {
+			if (property == Crook.PROPERTY_NEXT_TILE) {
+				animateWalk();
+			} else if (property == Crook.PROPERTY_CURRENT_TILE) {
+				if (!crook.isMoving()) {
+					moveDirectly();
+				}
+			} else if (property == Crook.PROPERTY_IS_IN_POLICE_HOUSE) {
 				// use fade out fade in 
+			} 
+		}
+	}
+	
+	private void moveDirectly() {
+		// Make sure we move into idle
+		currentAnimation = CrookAnimations.IDLE_ANIM;
+		animTimer = 0;
+		
+		// Just set the position according to mocel
+		Point currentPos = crook.getCurrentTile().getPosition();
+		this.setPosition(currentPos.x *60 - 20, currentPos.y * 60);
+	}
+
+	private void animateWalk() {
+		if (crook.isMoving()) {
+			// Animate according to direction
+			Direction direction = crook.getDirection();
+			switch (direction) {
+			case EAST:
+				currentAnimation = CrookAnimations.WALK_EAST_ANIM;
+				break;
+			case NORTH:
+				currentAnimation = CrookAnimations.WALK_NORTH_ANIM;
+				break;
+			case SOUTH:
+				currentAnimation = CrookAnimations.WALK_SOUTH_ANIM;
+				break;
+			case WEST:
+				currentAnimation = CrookAnimations.WALK_WEST_ANIM;
+				break;
 			}
+			
+			// Check where we will walk
+			Point crookNextPosition = crook.getNextTile().getPosition();
+			
+			// Add move action
+			this.addAction(moveTo(crookNextPosition.x *60 - 20, crookNextPosition.y * 60, Constants.PAWN_MOVE_DELAY, Interpolation.linear));
 		}
 	}
 }

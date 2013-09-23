@@ -98,12 +98,38 @@ public class GameFactory {
 		
 		crookAnimations.put(CrookAnimations.WALK_EAST_ANIM, walkEast);
 		
+		AtlasRegion[] walkNorthAnimation = new AtlasRegion[8];
+		for(int i = 0; i < 8; i++)
+		{
+			walkNorthAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking n"+String.format("%04d", i));
+		}
+		Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
+		
+		crookAnimations.put(CrookAnimations.WALK_NORTH_ANIM, walkNorth);
+		
+		AtlasRegion[] walkSouthAnimation = new AtlasRegion[8];
+		for(int i = 0; i < 8; i++)
+		{
+			walkSouthAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking s"+String.format("%04d", i));
+		}
+		Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
+		
+		crookAnimations.put(CrookAnimations.WALK_SOUTH_ANIM, walkSouth);
+		
+		AtlasRegion[] walkWestAnimation = new AtlasRegion[8];
+		for(int i = 0; i < 8; i++)
+		{
+			walkWestAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking w"+String.format("%04d", i));
+		}
+		Animation walkWest = new Animation(0.2f, walkWestAnimation);
+		
+		crookAnimations.put(CrookAnimations.WALK_WEST_ANIM, walkWest);
+		
 		// Specify the first drawable frame
         TextureRegionDrawable drawable = new TextureRegionDrawable(stopAnimation[0]);
      	
         // Create our crook actor
         CrookActor crookActor = new CrookActor(drawable, Scaling.none, crook, crookAnimations);
-        
         
         
         actors.add(crookActor);
@@ -165,6 +191,7 @@ public class GameFactory {
 				}
 			}
 		}
+		
 		//create a game model
 		GameModel gameModel =new GameModel(mediator, players, walkable);
 	
