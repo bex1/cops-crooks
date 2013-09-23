@@ -34,6 +34,12 @@ public interface IMovable extends IObservable {
 	void setCurrentTile(IWalkableTile currTile);
 	
 	/**
+	 * Returns the next tile where the movable is heading.
+	 * @return the next tile where the movable is heading.
+	 */
+	IWalkableTile getNextTile();
+	
+	/**
 	 * Moves the movable object along the given path.
 	 * @param path the path of walkable tiles in the path. Not allowed to be null or empty.
 	 */
@@ -62,6 +68,19 @@ public interface IMovable extends IObservable {
 	 * @return the number of tiles the pawn can move over in one step.
 	 */
 	int tilesMovedEachStep();
+	
+	/**
+	 * Returns the direction of the pawn.
+	 * @return the direction of the pawn.
+	 */
+	Direction getDirection();
+	
+	/**
+	 * Returns true if the pawn is moving, false otherwise.
+	 * @return true if the pawn is moving, false otherwise.
+	 */
+	boolean isMoving();
+	
 	
 	public enum PawnType {
 		Crook,

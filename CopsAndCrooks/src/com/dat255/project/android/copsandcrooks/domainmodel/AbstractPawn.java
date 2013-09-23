@@ -2,12 +2,12 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.badlogic.gdx.Gdx;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IInteractiveTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
@@ -24,6 +24,9 @@ public abstract class AbstractPawn implements IMovable {
 	protected final IMediator mediator;
 	
 	protected IWalkableTile currentTile;
+	protected IWalkableTile nextTile;
+	protected Direction direction;
+	
 	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
 	
@@ -31,6 +34,7 @@ public abstract class AbstractPawn implements IMovable {
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	public static final String PROPERTY_NEXT_TILE = "NextTile";
 	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
 	
 	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator) {
@@ -40,6 +44,7 @@ public abstract class AbstractPawn implements IMovable {
 		this.pawnRole = pawnRole;
 		this.pawnType = pawnType;
 		this.mediator = mediator;
+		this.direction = Direction.SOUTH;
 	}
 
 	@Override
@@ -51,10 +56,22 @@ public abstract class AbstractPawn implements IMovable {
         pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 		
 	}
-
+	
 	@Override
 	public IWalkableTile getCurrentTile() {
 		return currentTile;
+	}
+	
+	private void setNextTile(IWalkableTile nextTile) {
+		IWalkableTile oldTile = this.nextTile;
+		this.nextTile = nextTile;
+		
+        pcs.firePropertyChange(PROPERTY_NEXT_TILE, oldTile, nextTile);
+	}
+
+	@Override
+	public IWalkableTile getNextTile() {
+		return nextTile;
 	}
 
 	@Override
@@ -63,7 +80,10 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("path is null or empty");
 		}
 		this.pathToMove = path;
+		IWalkableTile next = pathToMove.getNextTile();
+		updateDirection(currentTile, next);
 		this.isMoving = true;
+		setNextTile(next);
 	}
 
 	@Override
@@ -73,11 +93,12 @@ public abstract class AbstractPawn implements IMovable {
 			// Take steps with delay
 			moveTimer += deltaTime;
 		    if (moveTimer >= Constants.PAWN_MOVE_DELAY) {
-		    	this.setCurrentTile(pathToMove.getNextTile());
-		       
+		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
 		        	isMoving = false;
+		        	this.setCurrentTile(nextTile);
+		        	nextTile = null;
 		        	
 		        	
 		        	if (currentTile != null && currentTile.isOccupied()) {
@@ -87,6 +108,11 @@ public abstract class AbstractPawn implements IMovable {
 		        	// Try to interact with the tile
 		        	this.interactWithTile();
 		        	
+		        } else {
+		        	this.setCurrentTile(nextTile);
+		        	IWalkableTile next = pathToMove.getNextTile();
+		        	updateDirection(currentTile, next);
+		        	this.setNextTile(next);
 		        }
 		        // Reset timer
 		        moveTimer -= Constants.PAWN_MOVE_DELAY;
@@ -94,6 +120,15 @@ public abstract class AbstractPawn implements IMovable {
 		}
 	}
 	
+	private void updateDirection(IWalkableTile current, IWalkableTile next) {
+		Point currentPos = current.getPosition();
+		Point nextPos = next.getPosition();
+		int deltaX = nextPos.x - currentPos.x;
+		int deltaY = nextPos.y - currentPos.y;
+		setDirection(deltaY < 0 ? Direction.SOUTH : deltaY > 0 ? Direction.NORTH : 
+									deltaX > 0 ? Direction.EAST : Direction.WEST);
+	}
+
 	private void interactWithTile() {
 		// Check if the endTile is an interactive tile
 		if (currentTile instanceof IInteractiveTile) {
@@ -111,6 +146,20 @@ public abstract class AbstractPawn implements IMovable {
 	@Override
 	public PawnType getPawnType() {
 		return pawnType;
+	}
+
+	@Override
+	public Direction getDirection() {
+		return direction;
+	}
+
+	private void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+	
+	@Override
+	public boolean isMoving() {
+		return isMoving;
 	}
 
 	@Override
