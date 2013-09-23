@@ -27,6 +27,7 @@ public class CopsAndCrooks extends Game {
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         fpsLogger = new FPSLogger();
+        setScreen(new SplashScreen(this));
     }
 
     @Override
@@ -34,8 +35,6 @@ public class CopsAndCrooks extends Game {
     {
         super.resize( width, height );
         Gdx.app.log( CopsAndCrooks.LOG, "Resizing game to: " + width + " x " + height );
-        
-        setScreen(new SplashScreen(this));
     }
 
     @Override
