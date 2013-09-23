@@ -1,10 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 
-import com.dat255.project.android.copsandcrooks.utils.Point;
-
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
  * A class representing a travel agency.
@@ -18,8 +18,8 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	 * Create a new travel agency tile.
 	 * @param position the position
 	 */
-	public TravelAgencyTile(Point position) {
-		super(position, 0);
+	public TravelAgencyTile(Point position, IMediator mediator) {
+		super(position, mediator, 0);
 	}
 
 	@Override

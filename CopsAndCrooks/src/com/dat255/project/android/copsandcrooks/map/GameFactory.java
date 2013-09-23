@@ -123,41 +123,41 @@ public class GameFactory {
 					
 					switch(mapLayerInteract.getCell(i, j).getTile().getId()){
 					case 1: 	// Acording to the tileset case 1 is the road tiles
-						walkable[i][j] = new RoadTile(new Point(i, j));
+						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
 						break;						
 					case 2: 	// Acording to the tileset case 2 is the get away tiles
-						walkable[i][j] = new GetAwayTile(new Point(i, j));
+						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
 						break;
 					case 3: 	// Acording to the tileset case 3 is the polisoffice tiles
-						walkable[i][j] = new PoliceStationTile(new Point(i, j));
+						walkable[i][j] = new PoliceStationTile(new Point(i, j), mediator);
 						break;
 					case 4: 	// Acording to the tileset case 4 is the tramstops tiles
-						walkable[i][j] = new TramStopTile(new Point(i, j));
+						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
 						break;
 					case 5: 	// Acording to the tileset case 5 is the IntelligenceAgency tiles
-						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j));
+						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
 						break;
 					case 6: 	// Acording to tileset case 6 will be the coordinate of the poliscar(this will be a road tile)
-						walkable[i][j] = new RoadTile(new Point(i, j));
+						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
 						policeCarStart.set(i, j);
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), null);
+						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
 						break;
 					case 8: 	// Acording to the tileset case 8 is the Travelagency tiles
-						walkable[i][j] = new TravelAgencyTile(new Point(i, j));
+						walkable[i][j] = new TravelAgencyTile(new Point(i, j), mediator);
 						break;
 					case 9: 	// Acording to the tileset case 9 is the Bank tiles containing 2000
-						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), 2000);
+						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
 						break;
 					case 10: 	// Acording to the tileset case 10 is the Bank tiles containing 5000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), 5000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
 						break;
 					case 11: 	// Acording to the tileset case 11 is the Bank tiles containing 10000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), 10000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
 						break;
 					case 12: 	// Acording to the tileset case 12 is the Bank tiles containing 20000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), 20000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
 						break;
 					}
 				} catch (NullPointerException e){

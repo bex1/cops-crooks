@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -47,7 +48,7 @@ public class CrookActor extends Image implements PropertyChangeListener {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				// For testing, moves the guy
-				crook.setCurrentTile((new RoadTile(new Point(500, 0))));
+				crook.setCurrentTile((new RoadTile(new Point(500, 0), new Mediator())));
 				return super.touchDown(event, x, y, pointer, button);
 			}
         } );

@@ -1,8 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import com.dat255.project.android.copsandcrooks.utils.Point;
-
+import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 
 /**
@@ -13,8 +13,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  */
 public class RoadTile extends AbstractTile {
 
-	public RoadTile(Point position) {
-		super(position);
+	public RoadTile(Point position, IMediator mediator) {
+		super(position, mediator);
 
 		pawnTypes.add(PawnType.Crook);
 		pawnTypes.add(PawnType.Car);
