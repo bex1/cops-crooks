@@ -22,8 +22,8 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	 * @param position the hideout's position
 	 * @param players a list of all players
 	 */
-	public HideoutTile(Point position, List<Crook> crook) {
-		super(position);
+	public HideoutTile(Point position, List<Crook> crook, IMediator mediator) {
+		super(position, mediator);
 		
 		storedCash = new HashMap<Crook, Integer>();
 

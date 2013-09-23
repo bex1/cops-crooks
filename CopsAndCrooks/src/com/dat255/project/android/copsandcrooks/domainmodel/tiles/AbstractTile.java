@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -19,13 +20,15 @@ public abstract class AbstractTile implements IWalkableTile{
 	private PawnType occupiedBy;
 	private Point position;
 	protected List<PawnType> pawnTypes;
+	protected IMediator mediator;
 	
 	/**
 	 * Construct a new AbstractTile with a position.
 	 * @param position2 the tile's position
 	 */
-	public AbstractTile(Point position2) {
+	public AbstractTile(Point position2, IMediator mediator) {
 		this.position = position2;
+		this.mediator = mediator;
 		
 		pawnTypes = new ArrayList<PawnType>();
 	}

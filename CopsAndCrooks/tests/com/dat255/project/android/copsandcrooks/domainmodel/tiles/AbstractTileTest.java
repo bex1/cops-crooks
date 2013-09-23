@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -17,7 +18,7 @@ public class AbstractTileTest {
 	public class AbstractTileMock extends AbstractTile{
 
 		public AbstractTileMock(Point position) {
-			super(position);
+			super(position, new Mediator());
 		}
 		
 	}
