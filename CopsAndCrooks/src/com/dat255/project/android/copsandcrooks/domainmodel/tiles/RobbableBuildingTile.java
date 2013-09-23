@@ -12,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
+public class RobbableBuildingTile extends AbstractTile implements IInteractiveTile {
 	
 	private int value;
 
@@ -21,7 +21,7 @@ public class RobbableBuilding extends AbstractTile implements IInteractiveTile {
 	 * @param position the building's position
 	 * @param value the building's value
 	 */
-	public RobbableBuilding(Point position, int value) {
+	public RobbableBuildingTile(Point position, int value) {
 		super(position);
 		this.value = value;
 		
