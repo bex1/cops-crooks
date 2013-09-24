@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import com.badlogic.gdx.Gdx;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IInteractiveTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -92,7 +92,7 @@ public abstract class AbstractPawn implements IMovable {
 		if (isMoving) {
 			// Take steps with delay
 			moveTimer += deltaTime;
-		    if (moveTimer >= Constants.PAWN_MOVE_DELAY) {
+		    if (moveTimer >= Values.PAWN_MOVE_DELAY) {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
@@ -115,7 +115,7 @@ public abstract class AbstractPawn implements IMovable {
 		        	this.setNextTile(next);
 		        }
 		        // Reset timer
-		        moveTimer -= Constants.PAWN_MOVE_DELAY;
+		        moveTimer -= Values.PAWN_MOVE_DELAY;
 		    }
 		}
 	}
