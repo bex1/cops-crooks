@@ -81,6 +81,10 @@ public interface IMovable extends IObservable {
 	 */
 	boolean isMoving();
 	
+	public static final String PROPERTY_NEXT_TILE = "NextTile";
+	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
+	
 	
 	public enum PawnType {
 		Crook,
