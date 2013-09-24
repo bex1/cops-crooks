@@ -79,7 +79,7 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("path is null or empty");
 		}
 		this.pathToMove = path;
-		IWalkableTile next = pathToMove.getNextTile();
+		IWalkableTile next = pathToMove.consumeNextTile();
 		updateDirection(currentTile, next);
 		this.isMoving = true;
 		setNextTile(next);
@@ -109,7 +109,7 @@ public abstract class AbstractPawn implements IMovable {
 		        	
 		        } else {
 		        	this.setCurrentTile(nextTile);
-		        	IWalkableTile next = pathToMove.getNextTile();
+		        	IWalkableTile next = pathToMove.consumeNextTile();
 		        	updateDirection(currentTile, next);
 		        	this.setNextTile(next);
 		        }
