@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
@@ -104,7 +104,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 			Point pawnNextPosition = pawn.getNextTile().getPosition();
 
 			// Add move action
-			this.addAction(moveTo(pawnNextPosition.x *60 - 20, pawnNextPosition.y * 60, Constants.PAWN_MOVE_DELAY, Interpolation.linear));
+			this.addAction(moveTo(pawnNextPosition.x *60 - 20, pawnNextPosition.y * 60, Values.PAWN_MOVE_DELAY, Interpolation.linear));
 		}
 	}
 }
