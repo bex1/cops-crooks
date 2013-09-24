@@ -34,8 +34,7 @@ public abstract class AbstractPawn implements IMovable {
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	public static final String PROPERTY_NEXT_TILE = "NextTile";
-	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	
 	
 	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator) {
 		if (mediator == null) {
