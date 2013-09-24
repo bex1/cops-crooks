@@ -1,7 +1,6 @@
 package com.dat255.project.android.copsandcrooks.actors;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,7 +8,6 @@ import java.util.EnumMap;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,7 +17,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -138,7 +135,7 @@ public class CrookActor extends Image implements PropertyChangeListener {
 			Point crookNextPosition = crook.getNextTile().getPosition();
 			
 			// Add move action
-			this.addAction(moveTo(crookNextPosition.x *Values.TILE_WIDTH - 20, crookNextPosition.y * Values.TILE_HEIGTH, Values.PAWN_MOVE_DELAY, Interpolation.linear));
+			this.addAction(moveTo(crookNextPosition.x *60 - 20, crookNextPosition.y * 60, Values.PAWN_MOVE_DELAY, Interpolation.linear));
 		}
 	}
 }
