@@ -21,8 +21,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class CrookActor extends Image implements PropertyChangeListener {
 
@@ -138,7 +138,7 @@ public class CrookActor extends Image implements PropertyChangeListener {
 			Point crookNextPosition = crook.getNextTile().getPosition();
 			
 			// Add move action
-			this.addAction(moveTo(crookNextPosition.x *60 - 20, crookNextPosition.y * 60, Constants.PAWN_MOVE_DELAY, Interpolation.linear));
+			this.addAction(moveTo(crookNextPosition.x *Values.TILE_WIDTH - 20, crookNextPosition.y * Values.TILE_HEIGTH, Values.PAWN_MOVE_DELAY, Interpolation.linear));
 		}
 	}
 }
