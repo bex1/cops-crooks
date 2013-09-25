@@ -32,10 +32,7 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		/*TODO would you like to deposit/withdraw cash?
-		//remove wanted status(?)
-		//isWanted(false)
-		offTheRun();*/
+		//TODO would you like to deposit/withdraw cash? PropertyChange
 	}
 	
 	/**
@@ -55,6 +52,10 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 		}else{
 			storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 			crook.getWallet().setCash(0);
+		}
+		
+		if(crook.getWallet().getCash() == 0){
+			crook.setWanted(false);
 		}
 	}
 	
@@ -80,6 +81,10 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 		}else{
 			storedCash.put(crook, cash-amount);
 			crook.getWallet().incrementCash(amount);
+		}
+		
+		if(crook.getWallet().getCash() > 0){
+			crook.setWanted(true);
 		}
 	}
 	
