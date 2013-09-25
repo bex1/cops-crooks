@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -8,6 +8,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 
 public class IntelligenceAgencyTile extends AbstractTile implements IInteractiveTile {
 
@@ -19,15 +21,22 @@ public class IntelligenceAgencyTile extends AbstractTile implements IInteractive
 
 	@Override
 	public void interact(IMovable target) {
-		hinderGetAway();
+		hinderGetAway(mediator.getGameModel().getPlayers());
 	}
 	
-	private void hinderGetAway(){
-		//TODO access the crooks that are escaping and stop them
-		ArrayList<Crook> crooks = new ArrayList<Crook>();
-		for(Crook crook: crooks){
-			if(crook.isAttemptingGetAway()){
-				crook.setAttemptingGetAway(false);
+	public void hinderGetAway(List<Player> playerList){
+		//Access the players via the mediator
+		for(Player player:playerList){
+			//Check the role of the player, 
+			//if it's a crook you stop the get away attempt.
+			if(player.getPlayerRole().equals(Role.Crook)){
+				IMovable movable = player.getPawns().iterator().next();
+				if(movable instanceof Crook){
+					Crook crook = (Crook)movable;
+					if(crook.isAttemptingGetAway()){
+						crook.setAttemptingGetAway(false);
+					}
+				}
 			}
 		}
 	}

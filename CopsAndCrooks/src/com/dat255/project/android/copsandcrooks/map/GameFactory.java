@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -12,17 +11,20 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.CrookActor;
 import com.dat255.project.android.copsandcrooks.actors.CrookActor.CrookAnimations;
+import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.GetAwayTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
@@ -133,13 +135,14 @@ public class GameFactory {
      	
         // Create our crook actor
         CrookActor crookActor = new CrookActor(drawable, Scaling.none, crook, crookAnimations);
-        
+      
         
         actors.add(crookActor);
 		
 		pawns.add(crook);
 		
-		players.add(new Player("Gunnar", pawns, Role.Crook, mediator));
+		Player player = new Player("Gunnar", pawns, Role.Crook, mediator);
+		players.add(player);
 		
 		//Creates a matrix that will contain all the diffrent tiles
 		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
@@ -197,10 +200,68 @@ public class GameFactory {
 		
 		//create a game model
 		GameModel gameModel =new GameModel(mediator, players, walkable);
+		
+		// Test for path actors
+		/*TilePath path = new TilePath();
+		path.addTile(new RoadTile(new Point(1, 2), mediator));
+		path.addTile(new RoadTile(new Point(2, 2), mediator));
+		path.addTile(new RoadTile(new Point(2, 3), mediator));
+		path.addTile(new RoadTile(new Point(3, 3), mediator));
+		path.addTile(new RoadTile(new Point(3, 4), mediator));
+		path.addTile(new RoadTile(new Point(3, 5), mediator));
+		path.addTile(new RoadTile(new Point(2, 5), mediator));
+		path.addTile(new RoadTile(new Point(1, 5), mediator));
+		path.addTile(new RoadTile(new Point(0, 5), mediator));
+		path.addTile(new RoadTile(new Point(0, 4), mediator));
+		
+		List<TilePath> paths = new ArrayList<TilePath>();
+		paths.add(path);
+		List<PathActor> pathActors = getPathActorsFor(paths, player);
+		
+		actors.addAll(pathActors);
+		For the test to work, uncomment the check in Player.choosePath*/
+		// Test end
 	
 		// create the controller and view of the game
 		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
 		
+	}
+	
+	/**
+	 * Creates path actors for the specified paths connected to the specified player.
+	 * 
+	 * @param paths The paths to create PathActors for.
+	 * @param player The player who can click the paths.
+	 * @return A list of PathActors.
+	 */
+	public static List<PathActor> getPathActorsFor(List<TilePath> paths, Player player) {
+		
+		List<PathActor> pathActors = new ArrayList<PathActor>();
+	
+		List<Image> pathImages = new ArrayList<Image>();
+		
+		for (TilePath path : paths) {
+			
+			for (int i = 0; i < path.getPathSize() - 1; i++) {
+				AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPath");
+				
+				Image pathImage = new Image(region);
+				Point pathTilePos = path.getTile(i).getPosition();
+				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
+									  pathTilePos.y * Values.TILE_HEIGTH);
+				pathImages.add(pathImage);
+				
+			}
+			
+			AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPathEnd");
+			Image pathEnd = new Image(region);
+			Point pathEndPos = path.getTile(path.getPathSize()-1).getPosition();
+			pathEnd.setPosition(pathEndPos.x * Values.TILE_WIDTH, 
+								pathEndPos.y * Values.TILE_HEIGTH);
+			
+			pathActors.add(new PathActor(path, pathImages, pathEnd, player));
+		}
+		return pathActors;
 	}
 	
 }

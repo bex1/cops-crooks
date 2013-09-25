@@ -30,8 +30,8 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	@Override
 	public void robBuilding(Crook robber){
 		if(getValue() > 0){
-			this.setValue(0);
 			super.robBuilding(robber);
+			this.setValue(0);
 		}
 	}
 	

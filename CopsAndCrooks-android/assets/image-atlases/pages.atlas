@@ -3,6 +3,39 @@ pages.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+game-screen/copcar/copcar e
+  rotate: false
+  xy: 2, 20
+  size: 92, 52
+  orig: 92, 52
+  offset: 0, 0
+  index: -1
+game-screen/copcar/copcar n
+  rotate: false
+  xy: 97, 65
+  size: 59, 61
+  orig: 59, 61
+  offset: 0, 0
+  index: -1
+game-screen/copcar/copcar s
+  rotate: false
+  xy: 96, 2
+  size: 59, 61
+  orig: 59, 61
+  offset: 0, 0
+  index: -1
+game-screen/copcar/copcar w
+  rotate: false
+  xy: 2, 74
+  size: 93, 52
+  orig: 93, 52
+  offset: 0, 0
+  index: -1
+
+pages2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 game-screen/crook/paused e0000
   rotate: false
   xy: 2, 884
@@ -185,1344 +218,464 @@ game-screen/crook/paused n0011
   orig: 96, 96
   offset: 0, 0
   index: -1
-game-screen/crook/paused ne0000
-  rotate: false
-  xy: 100, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0001
-  rotate: false
-  xy: 198, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0002
-  rotate: false
-  xy: 296, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0003
-  rotate: false
-  xy: 394, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0004
-  rotate: false
-  xy: 492, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0005
-  rotate: false
-  xy: 590, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0006
-  rotate: false
-  xy: 2, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0012
-  rotate: false
-  xy: 2, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0007
-  rotate: false
-  xy: 100, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0011
-  rotate: false
-  xy: 100, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0008
-  rotate: false
-  xy: 198, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0009
-  rotate: false
-  xy: 296, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused ne0010
-  rotate: false
-  xy: 394, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0000
-  rotate: false
-  xy: 492, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0001
-  rotate: false
-  xy: 590, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0002
-  rotate: false
-  xy: 688, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0003
-  rotate: false
-  xy: 2, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0004
-  rotate: false
-  xy: 100, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0005
-  rotate: false
-  xy: 198, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0006
-  rotate: false
-  xy: 296, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0012
-  rotate: false
-  xy: 296, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0007
-  rotate: false
-  xy: 394, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0008
-  rotate: false
-  xy: 492, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0010
-  rotate: false
-  xy: 492, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0009
-  rotate: false
-  xy: 590, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused nw0011
-  rotate: false
-  xy: 688, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
 game-screen/crook/paused s0000
   rotate: false
-  xy: 786, 884
+  xy: 100, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0001
   rotate: false
-  xy: 2, 2
+  xy: 198, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0002
   rotate: false
-  xy: 100, 100
+  xy: 296, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0003
   rotate: false
-  xy: 198, 198
+  xy: 394, 688
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0004
   rotate: false
-  xy: 296, 296
+  xy: 492, 786
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0005
   rotate: false
-  xy: 394, 394
+  xy: 590, 884
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0006
   rotate: false
-  xy: 492, 492
+  xy: 2, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0012
   rotate: false
-  xy: 492, 492
+  xy: 2, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0007
   rotate: false
-  xy: 590, 590
+  xy: 100, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0011
   rotate: false
-  xy: 590, 590
+  xy: 100, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0008
   rotate: false
-  xy: 688, 688
+  xy: 198, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0010
   rotate: false
-  xy: 688, 688
+  xy: 198, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused s0009
   rotate: false
-  xy: 786, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0000
-  rotate: false
-  xy: 884, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0001
-  rotate: false
-  xy: 100, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0002
-  rotate: false
-  xy: 198, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0003
-  rotate: false
-  xy: 296, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0004
-  rotate: false
-  xy: 394, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0005
-  rotate: false
-  xy: 492, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0006
-  rotate: false
-  xy: 590, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0012
-  rotate: false
-  xy: 590, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0007
-  rotate: false
-  xy: 688, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0011
-  rotate: false
-  xy: 688, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0008
-  rotate: false
-  xy: 786, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0009
-  rotate: false
-  xy: 884, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused se0010
-  rotate: false
-  xy: 198, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0000
-  rotate: false
-  xy: 296, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0001
-  rotate: false
-  xy: 394, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0002
-  rotate: false
-  xy: 492, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0003
-  rotate: false
-  xy: 590, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0004
-  rotate: false
-  xy: 688, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0005
-  rotate: false
-  xy: 786, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0006
-  rotate: false
-  xy: 884, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0012
-  rotate: false
-  xy: 884, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0007
-  rotate: false
-  xy: 296, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0011
-  rotate: false
-  xy: 296, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0008
-  rotate: false
-  xy: 394, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0009
-  rotate: false
-  xy: 492, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/paused sw0010
-  rotate: false
-  xy: 590, 296
+  xy: 296, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0000
   rotate: false
-  xy: 688, 394
+  xy: 394, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0001
   rotate: false
-  xy: 786, 492
+  xy: 492, 688
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0002
   rotate: false
-  xy: 884, 590
+  xy: 590, 786
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0003
   rotate: false
-  xy: 394, 2
+  xy: 688, 884
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0004
   rotate: false
-  xy: 492, 100
+  xy: 2, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0005
   rotate: false
-  xy: 590, 198
+  xy: 100, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0006
   rotate: false
-  xy: 688, 296
+  xy: 198, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0012
   rotate: false
-  xy: 688, 296
+  xy: 198, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0007
   rotate: false
-  xy: 786, 394
+  xy: 296, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0011
   rotate: false
-  xy: 786, 394
+  xy: 296, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0008
   rotate: false
-  xy: 884, 492
+  xy: 394, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0009
   rotate: false
-  xy: 492, 2
+  xy: 492, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/paused w0010
   rotate: false
-  xy: 590, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0000
-  rotate: false
-  xy: 688, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0001
-  rotate: false
-  xy: 786, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0002
-  rotate: false
-  xy: 884, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0003
-  rotate: false
-  xy: 590, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0004
-  rotate: false
-  xy: 688, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0005
-  rotate: false
-  xy: 786, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0006
-  rotate: false
-  xy: 884, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running e0007
-  rotate: false
-  xy: 688, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0000
-  rotate: false
-  xy: 786, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0001
-  rotate: false
-  xy: 884, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0002
-  rotate: false
-  xy: 786, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0003
-  rotate: false
-  xy: 884, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0004
-  rotate: false
-  xy: 884, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-
-pages2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-game-screen/crook/running n0005
-  rotate: false
-  xy: 2, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0006
-  rotate: false
-  xy: 2, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running n0007
-  rotate: false
-  xy: 100, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0000
-  rotate: false
-  xy: 2, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0001
-  rotate: false
-  xy: 100, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0002
-  rotate: false
-  xy: 198, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0003
-  rotate: false
-  xy: 2, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0004
-  rotate: false
-  xy: 100, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0005
-  rotate: false
-  xy: 198, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0006
-  rotate: false
-  xy: 296, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running ne0007
-  rotate: false
-  xy: 2, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0000
-  rotate: false
-  xy: 100, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0001
-  rotate: false
-  xy: 198, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0002
-  rotate: false
-  xy: 296, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0003
-  rotate: false
-  xy: 394, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0004
-  rotate: false
-  xy: 2, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0005
-  rotate: false
-  xy: 100, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0006
-  rotate: false
-  xy: 198, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running nw0007
-  rotate: false
-  xy: 296, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0000
-  rotate: false
-  xy: 394, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0001
-  rotate: false
-  xy: 492, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0002
-  rotate: false
-  xy: 2, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0003
-  rotate: false
-  xy: 100, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0004
-  rotate: false
-  xy: 198, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0005
-  rotate: false
-  xy: 296, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0006
-  rotate: false
-  xy: 394, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running s0007
-  rotate: false
-  xy: 492, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0000
-  rotate: false
-  xy: 590, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0001
-  rotate: false
-  xy: 2, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0002
-  rotate: false
-  xy: 100, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0003
-  rotate: false
-  xy: 198, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0004
-  rotate: false
-  xy: 296, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0005
-  rotate: false
-  xy: 394, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0006
-  rotate: false
-  xy: 492, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running se0007
-  rotate: false
-  xy: 590, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0000
-  rotate: false
-  xy: 688, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0001
-  rotate: false
-  xy: 2, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0002
-  rotate: false
-  xy: 100, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0003
-  rotate: false
-  xy: 198, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0004
-  rotate: false
-  xy: 296, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0005
-  rotate: false
-  xy: 394, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0006
-  rotate: false
-  xy: 492, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running sw0007
-  rotate: false
   xy: 590, 688
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0000
-  rotate: false
-  xy: 688, 786
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0001
-  rotate: false
-  xy: 786, 884
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0002
-  rotate: false
-  xy: 2, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0003
-  rotate: false
-  xy: 100, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0004
-  rotate: false
-  xy: 198, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0005
-  rotate: false
-  xy: 296, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0006
-  rotate: false
-  xy: 394, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/running w0007
-  rotate: false
-  xy: 492, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0000
   rotate: false
-  xy: 590, 590
+  xy: 688, 786
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0001
   rotate: false
-  xy: 688, 688
+  xy: 786, 884
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0002
   rotate: false
-  xy: 786, 786
+  xy: 2, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0003
   rotate: false
-  xy: 884, 884
+  xy: 100, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0004
   rotate: false
-  xy: 100, 2
+  xy: 198, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0005
   rotate: false
-  xy: 198, 100
+  xy: 296, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0006
   rotate: false
-  xy: 296, 198
+  xy: 394, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/stopped0007
   rotate: false
-  xy: 394, 296
+  xy: 492, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0000
   rotate: false
-  xy: 492, 394
+  xy: 590, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0001
   rotate: false
-  xy: 590, 492
+  xy: 688, 688
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0002
   rotate: false
-  xy: 688, 590
+  xy: 786, 786
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0003
   rotate: false
-  xy: 786, 688
+  xy: 884, 884
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0004
   rotate: false
-  xy: 884, 786
+  xy: 100, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0005
   rotate: false
-  xy: 198, 2
+  xy: 198, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0006
   rotate: false
-  xy: 296, 100
+  xy: 296, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking e0007
   rotate: false
-  xy: 394, 198
+  xy: 394, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0000
   rotate: false
-  xy: 492, 296
+  xy: 492, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0001
   rotate: false
-  xy: 590, 394
+  xy: 590, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0002
   rotate: false
-  xy: 688, 492
+  xy: 688, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0003
   rotate: false
-  xy: 786, 590
+  xy: 786, 688
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0004
   rotate: false
-  xy: 884, 688
+  xy: 884, 786
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0005
   rotate: false
-  xy: 296, 2
+  xy: 198, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0006
   rotate: false
-  xy: 394, 100
+  xy: 296, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking n0007
   rotate: false
-  xy: 492, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0000
-  rotate: false
-  xy: 590, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0001
-  rotate: false
-  xy: 688, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0002
-  rotate: false
-  xy: 786, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0003
-  rotate: false
-  xy: 884, 590
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0004
-  rotate: false
-  xy: 394, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0005
-  rotate: false
-  xy: 492, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0006
-  rotate: false
-  xy: 590, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking ne0007
-  rotate: false
-  xy: 688, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0000
-  rotate: false
-  xy: 786, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0001
-  rotate: false
-  xy: 884, 492
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0002
-  rotate: false
-  xy: 492, 2
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0003
-  rotate: false
-  xy: 590, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0004
-  rotate: false
-  xy: 688, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0005
-  rotate: false
-  xy: 786, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0006
-  rotate: false
-  xy: 884, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking nw0007
-  rotate: false
-  xy: 590, 2
+  xy: 394, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0000
   rotate: false
-  xy: 688, 100
+  xy: 492, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0001
   rotate: false
-  xy: 786, 198
+  xy: 590, 394
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0002
   rotate: false
-  xy: 884, 296
+  xy: 688, 492
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0003
   rotate: false
-  xy: 688, 2
+  xy: 786, 590
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0004
   rotate: false
-  xy: 786, 100
+  xy: 884, 688
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0005
   rotate: false
-  xy: 884, 198
+  xy: 296, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0006
   rotate: false
-  xy: 786, 2
+  xy: 394, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 game-screen/crook/walking s0007
   rotate: false
-  xy: 884, 100
+  xy: 492, 198
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-game-screen/crook/walking se0000
+game-screen/crook/walking w0000
   rotate: false
-  xy: 884, 2
+  xy: 590, 296
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0001
+  rotate: false
+  xy: 688, 394
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0002
+  rotate: false
+  xy: 786, 492
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0003
+  rotate: false
+  xy: 884, 590
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0004
+  rotate: false
+  xy: 394, 2
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0005
+  rotate: false
+  xy: 492, 100
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0006
+  rotate: false
+  xy: 590, 198
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+game-screen/crook/walking w0007
+  rotate: false
+  xy: 688, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -1532,169 +685,146 @@ pages3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-game-screen/crook/walking se0001
+game-screen/officer/stopped s1
   rotate: false
-  xy: 2, 394
-  size: 96, 96
-  orig: 96, 96
+  xy: 2, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking se0002
-  rotate: false
-  xy: 2, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking se0003
-  rotate: false
-  xy: 100, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking se0004
-  rotate: false
-  xy: 2, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking se0005
-  rotate: false
-  xy: 100, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking se0006
-  rotate: false
-  xy: 198, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking se0007
-  rotate: false
-  xy: 2, 100
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking sw0000
-  rotate: false
-  xy: 100, 198
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking sw0001
-  rotate: false
-  xy: 198, 296
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking sw0002
-  rotate: false
-  xy: 296, 394
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-game-screen/crook/walking sw0003
+game-screen/officer/walking e1
   rotate: false
   xy: 2, 2
-  size: 96, 96
-  orig: 96, 96
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking sw0004
+game-screen/officer/walking e2
   rotate: false
-  xy: 100, 100
-  size: 96, 96
-  orig: 96, 96
+  xy: 84, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking sw0005
+game-screen/officer/walking e3
   rotate: false
-  xy: 198, 198
-  size: 96, 96
-  orig: 96, 96
+  xy: 84, 2
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking sw0006
+game-screen/officer/walking e4
   rotate: false
-  xy: 296, 296
-  size: 96, 96
-  orig: 96, 96
+  xy: 166, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking sw0007
+game-screen/officer/walking n1
   rotate: false
-  xy: 394, 394
-  size: 96, 96
-  orig: 96, 96
+  xy: 166, 2
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0000
+game-screen/officer/walking n2
   rotate: false
-  xy: 100, 2
-  size: 96, 96
-  orig: 96, 96
+  xy: 248, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0001
+game-screen/officer/walking n3
   rotate: false
-  xy: 198, 100
-  size: 96, 96
-  orig: 96, 96
+  xy: 248, 2
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0002
+game-screen/officer/walking n4
   rotate: false
-  xy: 296, 198
-  size: 96, 96
-  orig: 96, 96
+  xy: 330, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0003
+game-screen/officer/walking s1
   rotate: false
-  xy: 394, 296
-  size: 96, 96
-  orig: 96, 96
+  xy: 330, 2
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0004
+game-screen/officer/walking s2
   rotate: false
-  xy: 198, 2
-  size: 96, 96
-  orig: 96, 96
+  xy: 412, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0005
+game-screen/officer/walking s3
   rotate: false
-  xy: 296, 100
-  size: 96, 96
-  orig: 96, 96
+  xy: 412, 2
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0006
+game-screen/officer/walking s4
   rotate: false
-  xy: 394, 198
-  size: 96, 96
-  orig: 96, 96
+  xy: 494, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
-game-screen/crook/walking w0007
+game-screen/officer/walking w1
   rotate: false
-  xy: 296, 2
-  size: 96, 96
-  orig: 96, 96
+  xy: 494, 2
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: -1
+game-screen/officer/walking w2
+  rotate: false
+  xy: 576, 94
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: -1
+game-screen/officer/walking w3
+  rotate: false
+  xy: 576, 2
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: -1
+game-screen/officer/walking w4
+  rotate: false
+  xy: 658, 94
+  size: 80, 90
+  orig: 80, 90
   offset: 0, 0
   index: -1
 
 pages4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+game-screen/path/GreenDotPath
+  rotate: false
+  xy: 2, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+game-screen/path/GreenDotPathEnd
+  rotate: false
+  xy: 64, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+
+pages5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

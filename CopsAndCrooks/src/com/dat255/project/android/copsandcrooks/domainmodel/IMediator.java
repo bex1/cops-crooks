@@ -81,4 +81,10 @@ public interface IMediator {
 	 */
 	List<TilePath> getPossiblePaths(PawnType pawnType, 
 			IMovable pawn, int stepsToMove);
+	
+	/**
+	 * Get the GameModel of this mediator.
+	 * @return the GameModel
+	 */
+	GameModel getGameModel();
 }
