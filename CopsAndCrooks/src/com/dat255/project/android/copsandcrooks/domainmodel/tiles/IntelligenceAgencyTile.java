@@ -35,7 +35,10 @@ public class IntelligenceAgencyTile extends AbstractTile implements IInteractive
 					Crook crook = (Crook)movable;
 					if(crook.isAttemptingGetAway()){
 						crook.setAttemptingGetAway(false);
-						//TODO arrest the crook
+						
+						//TODO should a cop accompany the crook the policestation?
+						mediator.moveToPoliceStation(crook);
+						crook.setIsInPoliceStation(true);
 					}
 				}
 			}
