@@ -4,15 +4,20 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.EnumMap;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 /**
@@ -27,7 +32,8 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private final TextureRegionDrawable currentDrawable;
 	private float animTimer;
 	private Animations currentAnimation;
-
+	private IMediator mediator;
+	
 	public enum Animations{
 		IDLE_ANIM,
 		MOVE_NORTH_ANIM,
@@ -37,13 +43,24 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	}
 
 	public MovableActor(final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
-			final EnumMap<Animations, Animation> animations){
+			final EnumMap<Animations, Animation> animations, final IMediator mediator){
 		super(drawable, scaling);
+		this.mediator = mediator;
 		this.pawn = pawn;
 		this.animations = animations;
 		currentDrawable = drawable;
 		currentAnimation = Animations.IDLE_ANIM;
 		pawn.addObserver(this);
+		
+		this.addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				// TODO select ?
+				mediator.changePawn(pawn);
+				return super.touchDown(event, x, y, pointer, button);
+			}
+		});
 
 
 	}
@@ -57,7 +74,6 @@ public class MovableActor extends Image implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-
 		if (evt.getSource() == this.pawn) {
 			String property = evt.getPropertyName();
 			if (property == IMovable.PROPERTY_NEXT_TILE) {
