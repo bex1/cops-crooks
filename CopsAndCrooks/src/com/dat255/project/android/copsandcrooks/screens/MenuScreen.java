@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class MenuScreen extends AbstractScreen {
 
 	public MenuScreen(CopsAndCrooks game) {
-		super(game, Constants.GAME_VIEWPORT_WIDTH, Constants.GAME_VIEWPORT_HEIGHT);
+		super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 	}
 	
 	@Override
@@ -52,16 +52,16 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "exit"
-        TextButton highScoresButton = new TextButton("Quit", getSkin());
-        highScoresButton.addListener(new ClickListener() {
+        TextButton quitButton = new TextButton("Quit", getSkin());
+        quitButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 // TODO click sound
-                // TODO kill app
+                Gdx.app.exit();
             }
         } );
-        table.add(highScoresButton).uniform().fill();
+        table.add(quitButton).uniform().fill();
     }
 	
 	@Override

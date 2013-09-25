@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import com.badlogic.gdx.Gdx;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IInteractiveTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -34,8 +34,7 @@ public abstract class AbstractPawn implements IMovable {
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	public static final String PROPERTY_NEXT_TILE = "NextTile";
-	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	
 	
 	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator) {
 		if (mediator == null) {
@@ -80,7 +79,7 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("path is null or empty");
 		}
 		this.pathToMove = path;
-		IWalkableTile next = pathToMove.getNextTile();
+		IWalkableTile next = pathToMove.consumeNextTile();
 		updateDirection(currentTile, next);
 		this.isMoving = true;
 		setNextTile(next);
@@ -92,7 +91,7 @@ public abstract class AbstractPawn implements IMovable {
 		if (isMoving) {
 			// Take steps with delay
 			moveTimer += deltaTime;
-		    if (moveTimer >= Constants.PAWN_MOVE_DELAY) {
+		    if (moveTimer >= Values.PAWN_MOVE_DELAY) {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
@@ -110,12 +109,12 @@ public abstract class AbstractPawn implements IMovable {
 		        	
 		        } else {
 		        	this.setCurrentTile(nextTile);
-		        	IWalkableTile next = pathToMove.getNextTile();
+		        	IWalkableTile next = pathToMove.consumeNextTile();
 		        	updateDirection(currentTile, next);
 		        	this.setNextTile(next);
 		        }
 		        // Reset timer
-		        moveTimer -= Constants.PAWN_MOVE_DELAY;
+		        moveTimer -= Values.PAWN_MOVE_DELAY;
 		    }
 		}
 	}

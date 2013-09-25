@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class Officer extends AbstractWalkingPawn {
 	
@@ -24,7 +24,7 @@ public class Officer extends AbstractWalkingPawn {
 				
 				//Take bounty
 				mediator.addCashToMyPlayer((int)(crook.getWallet().getCash() * 
-						Constants.POLICE_CASH_REWARD_FACTOR), this);
+						Values.POLICE_CASH_REWARD_FACTOR), this);
 				crook.getWallet().setCash(0);
 			}
 		}

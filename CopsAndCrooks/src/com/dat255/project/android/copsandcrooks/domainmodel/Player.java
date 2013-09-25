@@ -132,7 +132,8 @@ public class Player implements IObservable {
      * @param path The selected path.
      */
     public void choosePath(TilePath path){
-    	if (possiblePaths.contains(path)) {
+    	if (possiblePaths != null && possiblePaths.contains(path)) {
+    		possiblePaths = null;
     		// The path passed the test -> move
     		currentPawn.move(path);
     	}
