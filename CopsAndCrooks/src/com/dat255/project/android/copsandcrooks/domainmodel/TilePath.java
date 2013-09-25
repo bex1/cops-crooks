@@ -27,7 +27,7 @@ public class TilePath implements IObservable {
 	 * @return the next tile on path.
 	 */
 	public IWalkableTile consumeNextTile() {
-		return pathList.pollLast();
+		return pathList.pollFirst();
 	}
 	
 	/**
