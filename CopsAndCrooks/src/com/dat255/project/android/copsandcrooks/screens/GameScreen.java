@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.utils.Constants;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen {
 
@@ -49,43 +49,6 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta){
-		// start: for desktop debugging only -> will be removed
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-			if(camera.position.y < getCameraBoundryUp())
-				camera.translate(new Vector2(0 , 20));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			if(camera.position.x > getCameraBoundryLeft())
-				camera.translate(new Vector2(-20 , 0));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			if(camera.position.x < getCameraBoundryRight())
-				camera.translate(new Vector2(20 , 0));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-			if(camera.position.y > getCameraBoundryDown())
-				camera.translate(new Vector2(0 , -20));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			if(camera.zoom <2.2f ) {
-				camera.zoom = 0.1f+camera.zoom;
-
-				if(camera.position.x > getCameraBoundryRight())
-					camera.position.x = getCameraBoundryRight();
-				if(camera.position.x < getCameraBoundryLeft())
-					camera.position.x = getCameraBoundryLeft();
-				if(camera.position.y > getCameraBoundryUp())
-					camera.position.y = getCameraBoundryUp();
-				if(camera.position.y < getCameraBoundryDown())
-					camera.position.y = getCameraBoundryDown();
-			}
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			if(camera.zoom > .6f)
-				camera.zoom = camera.zoom- 0.1f;
-		}
-		// end
-
 		camera.update();
 		renderer.setView(camera);
 		renderer.getSpriteBatch().begin();
@@ -98,7 +61,7 @@ public class GameScreen extends AbstractScreen {
 	public void show(){
 		super.show();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
-		camera = new OrthographicCamera(Constants.GAME_VIEWPORT_WIDTH, Constants.GAME_VIEWPORT_HEIGHT);
+		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		stage.setCamera(camera);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
@@ -110,9 +73,9 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void dispose(){
-		super.dispose();
 		renderer.dispose();
 		mapToRender.dispose();
+		super.dispose();
 	}
 
 	private float getCameraBoundryRight() {

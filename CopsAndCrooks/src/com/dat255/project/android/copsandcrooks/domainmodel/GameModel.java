@@ -5,12 +5,15 @@ import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
 public class GameModel  {
 	
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
+	
+	private TravelAgencyTile travelAgency;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -73,5 +76,13 @@ public class GameModel  {
 			}
 		}
 		
+	}
+	
+	public List<Player> getPlayers(){
+		return this.players;
+	}
+	
+	public TravelAgencyTile getTravelAgency(){
+		return this.travelAgency;
 	}
 }

@@ -35,6 +35,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTi
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * 
  * @author Group 25
@@ -68,7 +69,9 @@ public class GameFactory {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}	
+		}
+		Values.TILE_WIDTH = (int) mapLayerBack.getTileWidth();
+		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 		
 		List<Player> players = new ArrayList<Player>();
 		List<IMovable> pawns = new ArrayList<IMovable>();
