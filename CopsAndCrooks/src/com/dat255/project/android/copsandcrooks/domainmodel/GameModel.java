@@ -8,6 +8,7 @@ import java.util.List;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
 public class GameModel implements IObservable  {
 	
@@ -19,6 +20,8 @@ public class GameModel implements IObservable  {
 	public static final String PROPERTY_NEW_TURN_CROOK = "ACrooksTurn";
 	public static final String PROPERTY_NEW_TURN_POLICE = "APoliceTurn";
 	public static final String PROPERTY_NEW_ROUND = "NewRound";
+	
+	private TravelAgencyTile travelAgency;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -107,7 +110,7 @@ public class GameModel implements IObservable  {
 		}
 		
 	}
-
+	
 	@Override
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
@@ -116,5 +119,12 @@ public class GameModel implements IObservable  {
 	@Override
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
+	}
+	public List<Player> getPlayers(){
+		return this.players;
+	}
+	
+	public TravelAgencyTile getTravelAgency(){
+		return this.travelAgency;
 	}
 }

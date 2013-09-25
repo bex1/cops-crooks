@@ -32,7 +32,10 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		//TODO would you like to deposit/withdraw cash?
+		/*TODO would you like to deposit/withdraw cash?
+		//remove wanted status(?)
+		//isWanted(false)
+		offTheRun();*/
 	}
 	
 	/**
@@ -108,4 +111,8 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 		return false;
 	}
 	
+	@Override
+	public boolean isOccupied(){
+		return false;
+	}
 }

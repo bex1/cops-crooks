@@ -34,8 +34,7 @@ public abstract class AbstractPawn implements IMovable {
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	public static final String PROPERTY_NEXT_TILE = "NextTile";
-	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
+	
 	
 	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator) {
 		if (mediator == null) {
@@ -80,7 +79,7 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("path is null or empty");
 		}
 		this.pathToMove = path;
-		IWalkableTile next = pathToMove.getNextTile();
+		IWalkableTile next = pathToMove.consumeNextTile();
 		updateDirection(currentTile, next);
 		this.isMoving = true;
 		setNextTile(next);
@@ -110,7 +109,7 @@ public abstract class AbstractPawn implements IMovable {
 		        	
 		        } else {
 		        	this.setCurrentTile(nextTile);
-		        	IWalkableTile next = pathToMove.getNextTile();
+		        	IWalkableTile next = pathToMove.consumeNextTile();
 		        	updateDirection(currentTile, next);
 		        	this.setNextTile(next);
 		        }
