@@ -21,10 +21,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -35,7 +38,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final GameModel model;
 	private TiledMap mapToRender;
 	private TiledMapTileLayer gameBackground; //kan heta layertorender
-	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private int mapWidth, mapHeight;
 
@@ -48,12 +50,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
 
 		model = gameModel;
+		model.addObserver(this);
 		mapToRender = tiledmap;
 		gameBackground = backgroundLayer;
 		this.actors = actors;
 		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
 		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
-
+		for(Player player : model.getPlayers()){
+			player.addObserver(this);
+		}
 		for (Actor actor : actors) {
 			stage.addActor(actor);
 		}
@@ -74,6 +79,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void show(){
 		super.show();
+		model.startGame();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		camera.position.set(mapWidth/2, mapHeight/2, 0);
@@ -164,60 +170,112 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
-		if(evt.getPropertyName().equals(GameModel.PROPERTY_NEW_TURN_CROOK)){
-			final Table table = super.getTable();
-			
-			table.add(model.getCurrentPlayer().getName() + " it's your turn please roll the dice").spaceBottom(50);
-	        table.row();
-			
-			// register the button "roll dice"
-			final TextButton rollTheDiceButton = new TextButton("Roll the dice", getSkin());
-			rollTheDiceButton.addListener(new ClickListener() {
-			 @Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				 super.touchUp(event, x, y, pointer, button);
-			     	// TODO click sound
-				 	// TODO roll the die
-				 	model.getCurrentPlayer().rollDice();
-				 	table.clear();
-			     }
-			} );
-			table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
-			table.row();
-			
-			//TODO if the player is standing at a tramstop
-			if(((Crook)model.getCurrentPlayer().getCurrentPawn()).getIsWaitingOnTram()){
-				// register the button "go by tram"
-				final TextButton goByTramButton = new TextButton("Go by tram", getSkin());
-				goByTramButton.addListener(new ClickListener() {
+		if(evt.getSource() != null){
+			String property = evt.getPropertyName();
+			//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
+			if(property.equals(GameModel.PROPERTY_NEW_TURN_CROOK)){
+				final Table table = super.getTable();
+
+				table.add(model.getCurrentPlayer().getName() + " it's your turn please roll the dice").spaceBottom(50);
+		        table.row();
+				
+				// register the button "roll dice"
+				final TextButton rollTheDiceButton = new TextButton("Roll the dice", getSkin());
+				rollTheDiceButton.addListener(new ClickListener() {
 				 @Override
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					 super.touchUp(event, x, y, pointer, button);
 				     	// TODO click sound
-					 	// TODO go by tram
+					 	// TODO roll the die
+					 	model.getCurrentPlayer().rollDice();
 					 	table.clear();
 				     }
 				} );
-				table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
+				table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
 				table.row();
-			}
-		}else if(evt.getPropertyName().equals(GameModel.PROPERTY_NEW_TURN_POLICE)){	
-			
-			
-		}else if(evt.getPropertyName().equals(Player.PROPERTY_DICE_RESULT)){ 
-			//TODO show the results
-			if(model.getCurrentPlayer().getPlayerRole().equals(Role.Crook)){
-				model.getCurrentPlayer().g
-			}
-		}else if (evt.getPropertyName().equals(Player.PROPERTY_POSSIBLE_PATHS)){
-			//TODO call for the pathactor 
-			if(model.getCurrentPlayer().getPlayerRole().equals(Role.Crook)){
 				
+				//TODO if the player is standing at a tramstop
+				if(model.getCurrentPlayer().isAnyPawnOnTramstop()){
+					// register the button "go by tram"
+					final TextButton goByTramButton = new TextButton("Go by tram", getSkin());
+					goByTramButton.addListener(new ClickListener() {
+					 @Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						 super.touchUp(event, x, y, pointer, button);
+					     	// TODO click sound
+						 	// TODO go by tram
+						 	table.clear();
+					     }
+					} );
+					table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
+					table.row();
+				}
+			}else if(property.equals(GameModel.PROPERTY_NEW_TURN_POLICE)){	
+				//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
+				if(property.equals(GameModel.PROPERTY_NEW_TURN_CROOK)){
+					final Table table = super.getTable();
+					
+					table.add(model.getCurrentPlayer().getName() + " it's your turn please roll the dice").spaceBottom(50);
+			        table.row();
+					
+					// register the button "roll dice"
+					final TextButton rollTheDiceButton = new TextButton("Roll the dice", getSkin());
+					rollTheDiceButton.addListener(new ClickListener() {
+					 @Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						 super.touchUp(event, x, y, pointer, button);
+					     	// TODO click sound
+						 	// TODO roll the die
+						 	model.getCurrentPlayer().rollDice();
+						 	table.clear();
+					     }
+					} );
+					table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
+					table.row();
+					
+					//TODO if the player is standing at a tramstop
+					if(model.getCurrentPlayer().isAnyPawnOnTramstop()){
+						// register the button "go by tram"
+						final TextButton goByTramButton = new TextButton("Go by tram", getSkin());
+						goByTramButton.addListener(new ClickListener() {
+						 @Override
+						public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+							 super.touchUp(event, x, y, pointer, button);
+						     	// TODO click sound
+							 	// TODO go by tram
+							 	table.clear();
+						     }
+						} );
+						table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
+						table.row();
+					}
+				}
+			}else if(property.equals(Player.PROPERTY_DICE_RESULT)){ 
+				//TODO show the results
+				if(model.getCurrentPlayer().getPlayerRole().equals(Role.Police)){
+					
+				}
+			}else if (property.equals(Player.PROPERTY_POSSIBLE_PATHS)){
+				if(model.getCurrentPlayer().getPlayerRole() == Role.Crook){
+					System.out.println(evt.getNewValue());
+					List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
+					for(PathActor pathActor: tmp){
+						stage.addActor(pathActor);
+					}
+				}else if(model.getCurrentPlayer().getPlayerRole() == Role.Police){
+					List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
+					for(PathActor pathActor: tmp){
+						stage.addActor(pathActor);
+					}
+				}
+			}else if(property.equals(Player.PROPERTY_CHOOSEN_PAWN)){
+				if(model.getCurrentPlayer().getPlayerRole() == Role.Police){
+					model.getCurrentPlayer().updatePossiblePaths();
+				}
 			}
+	
+			
 		}
-
-		
 	}
 
 
