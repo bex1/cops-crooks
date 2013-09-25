@@ -20,12 +20,10 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 		return travelAgencyInstance;
 	}
 	
-	public static IWalkableTile createTravelAgency(Point position, IMediator mediator){
+	public static void createTravelAgency(Point position, IMediator mediator){
 		if(travelAgencyInstance == null){
 			travelAgencyInstance = new TravelAgencyTile(position, mediator);
-			return getInstance();
 		}
-		return null;
 	}
 
 	/**
