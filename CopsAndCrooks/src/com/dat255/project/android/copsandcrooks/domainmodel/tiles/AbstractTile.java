@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public abstract class AbstractTile implements IWalkableTile{
 	private Point position;
 	protected List<PawnType> pawnTypes;
 	protected IMediator mediator;
+	
+	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	/**
 	 * Construct a new AbstractTile with a position.
@@ -67,4 +71,15 @@ public abstract class AbstractTile implements IWalkableTile{
 	public List<PawnType> getAllowedPawnTypes() {
 		return pawnTypes;
 	}
+	
+	@Override
+	public void addObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
+	}
+
+	@Override
+	public void removeObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
+	}
+	
 }
