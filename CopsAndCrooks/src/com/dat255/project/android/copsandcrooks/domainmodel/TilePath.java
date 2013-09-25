@@ -23,11 +23,19 @@ public class TilePath implements IObservable {
 	}
 	
 	/**
+	 * Returns and consumes the next tile on the path.
+	 * @return the next tile on path.
+	 */
+	public IWalkableTile consumeNextTile() {
+		return pathList.pollLast();
+	}
+	
+	/**
 	 * Returns the next tile on the path.
 	 * @return the next tile on path.
 	 */
-	public IWalkableTile getNextTile() {
-		return pathList.pollFirst();
+	public IWalkableTile getTile(int i) {
+		return pathList.get(i);
 	}
 	
 	/**
@@ -42,7 +50,7 @@ public class TilePath implements IObservable {
 	 * @param tile - the tile to be added to the path.
 	 */
 	public void addTile(IWalkableTile tile){
-		pathList.addFirst(tile);
+		pathList.addLast(tile);
 	}
 	/**
 	 * Returns the size of the path.
