@@ -12,8 +12,6 @@ public class GameModel  {
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
-	
-	private TravelAgencyTile travelAgency;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -80,9 +78,5 @@ public class GameModel  {
 	
 	public List<Player> getPlayers(){
 		return this.players;
-	}
-	
-	public TravelAgencyTile getTravelAgency(){
-		return this.travelAgency;
 	}
 }

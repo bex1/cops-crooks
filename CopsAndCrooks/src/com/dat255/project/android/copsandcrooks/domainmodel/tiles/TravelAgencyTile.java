@@ -13,12 +13,26 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class TravelAgencyTile extends RobbableBuildingTile {
+	
+	private static TravelAgencyTile travelAgencyInstance;
+	
+	public static TravelAgencyTile getInstance(){
+		return travelAgencyInstance;
+	}
+	
+	public static IWalkableTile createTravelAgency(Point position, IMediator mediator){
+		if(travelAgencyInstance == null){
+			travelAgencyInstance = new TravelAgencyTile(position, mediator);
+			return getInstance();
+		}
+		return null;
+	}
 
 	/**
 	 * Create a new travel agency tile.
 	 * @param position the position
 	 */
-	public TravelAgencyTile(Point position, IMediator mediator) {
+	private TravelAgencyTile(Point position, IMediator mediator) {
 		super(position, mediator, 0);
 	}
 
