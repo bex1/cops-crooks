@@ -69,4 +69,8 @@ public class Mediator implements IMediator {
 				throw new NullPointerException("No pathfinder is registered");
 		}
 	}
+	
+	public void turnDone(){
+		gameModel.nextPlayer();
+	}
 }
