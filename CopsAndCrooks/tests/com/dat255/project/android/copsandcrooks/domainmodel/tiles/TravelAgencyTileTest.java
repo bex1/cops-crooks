@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -45,8 +44,8 @@ public class TravelAgencyTileTest {
 
 	@Test
 	public void testRobBuilding(){
-		TravelAgencyTile travelAgency = (TravelAgencyTile) 
-				TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
+		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
+		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
 		Crook crook = new Crook(new Mediator());
 		
 		travelAgency.robBuilding(crook);
@@ -62,8 +61,8 @@ public class TravelAgencyTileTest {
 	
 	@Test
 	public void testAddCash(){
-		TravelAgencyTile travelAgency = (TravelAgencyTile) 
-				TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
+		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
+		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
 		//Default value should be zero
 		travelAgency.addCash(5000);
 		
