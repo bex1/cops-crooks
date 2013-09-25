@@ -52,8 +52,7 @@ public class GetAwayTile extends AbstractTile implements IInteractiveTile {
 	private void purchaseTicket(Crook crook){
 		if(crook.getWallet().getCash() >= TICKET_COST){
 			crook.getWallet().decrementCash(TICKET_COST);
-			//TODO Add cash to TravelAgency!
-			crook.setAttemptingGetAway(true);
+			mediator.getGameModel().getTravelAgency().addCash(TICKET_COST);
 		}
 	}
 }
