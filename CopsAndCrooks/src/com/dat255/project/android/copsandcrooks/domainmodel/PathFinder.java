@@ -66,13 +66,13 @@ public final class PathFinder {
 					nextTile = null;
 				break;
 			case 2:
-				if(x-1>=0)
+				if(x-1>0)
 					nextTile = tiles[x-1][y];
 				else
 					nextTile = null;
 				break;
 			case 3:
-				if(y-1>=0)
+				if(y-1>0)
 					nextTile = tiles[x][y-1];
 				else
 					nextTile = null;

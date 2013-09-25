@@ -15,7 +15,7 @@ public class GameModel implements IObservable  {
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
-	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private PropertyChangeSupport pcs;
 	
 	public static final String PROPERTY_NEW_TURN_CROOK = "ACrooksTurn";
 	public static final String PROPERTY_NEW_TURN_POLICE = "APoliceTurn";
@@ -46,17 +46,19 @@ public class GameModel implements IObservable  {
 				}
 			}
 		}
-		
-		currentPlayer = players.get(0);
+		pcs = new PropertyChangeSupport(this);
+	}
+	
+	public void startGame(){
+		System.out.println("hej");
+		pcs.firePropertyChange(PROPERTY_NEW_TURN_CROOK, 0, currentPlayer);
 	}
 	
 	public void nextPlayer(){
 		Player oldPlayer = currentPlayer;
-		int i;
-		for (i = 0; i < players.size(); i++){
-			if(players.equals(currentPlayer)){
-				break;
-			}
+		int i= 0;
+		while (players.get(i) != currentPlayer){
+			++i;
 		}
 		if(i < players.size()-1){
 			currentPlayer= players.get(i+1);
@@ -120,6 +122,7 @@ public class GameModel implements IObservable  {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
 	}
+	
 	public List<Player> getPlayers(){
 		return this.players;
 	}
