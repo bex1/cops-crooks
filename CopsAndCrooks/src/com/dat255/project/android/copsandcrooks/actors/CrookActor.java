@@ -51,24 +51,7 @@ public class CrookActor extends Image implements PropertyChangeListener {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				// For testing, moves the guy
-				if (!crook.isMoving()) {
-					TilePath path = new TilePath();
-					Mediator mediator = new Mediator();
-					path.addTile(new RoadTile(new Point(0, 2), mediator));
-					path.addTile(new RoadTile(new Point(1, 2), mediator));
-					path.addTile(new RoadTile(new Point(2, 2), mediator));
-					path.addTile(new RoadTile(new Point(2, 3), mediator));
-					path.addTile(new RoadTile(new Point(3, 3), mediator));
-					path.addTile(new RoadTile(new Point(3, 4), mediator));
-					path.addTile(new RoadTile(new Point(3, 5), mediator));
-					path.addTile(new RoadTile(new Point(2, 5), mediator));
-					path.addTile(new RoadTile(new Point(1, 5), mediator));
-					path.addTile(new RoadTile(new Point(0, 5), mediator));
-					path.addTile(new RoadTile(new Point(0, 4), mediator));
-					path.addTile(new RoadTile(new Point(0, 3), mediator));
-					crook.move(path);
-				}
+				// TODO select ?
 				return super.touchDown(event, x, y, pointer, button);
 			}
 		} );
