@@ -32,14 +32,16 @@ public class Player implements IObservable {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
+	public static final String PROPERTY_CURRENT_PAWN = "CurrentPawn";
 
 	/**
 	 * Initializes a new player.
 	 * 
-	 * @param name the name of the player.
+	 * @param name the name of the player. Allowed to be null.
 	 * @param pawns the pawns controlled by the player, not allowed to be null or empty.
 	 * The role of the pawns must match the role of the player.
 	 * @param role the role of the player.
+	 * @param mediator module communication unit. Not allowed to be null.
 	 */
 	public Player(String name, List<IMovable> pawns, Role role, IMediator mediator) {
 		if (pawns == null || pawns.isEmpty()) {
@@ -47,6 +49,9 @@ public class Player implements IObservable {
 		}
 		if (mediator == null) {
 			throw new IllegalArgumentException("Mediator not allowed to be null");
+		}
+		if (name == null) {
+			name = "";
 		}
 		// Check so the pawn roles match the player role.
 		for (IMovable pawn : pawns) {
@@ -90,6 +95,20 @@ public class Player implements IObservable {
     }
     
     /**
+     * Sets the currentpawn of the player to the specified
+     * if its really one of the players pawns.
+     * 
+     * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.
+     */
+    public void setCurrentPawn(IMovable pawn) {
+    	if (pawns.contains(pawn)) {
+    		IMovable oldValue = currentPawn;
+    		currentPawn = pawn;
+    		pcs.firePropertyChange(PROPERTY_CURRENT_PAWN, oldValue, currentPawn);
+    	}
+    }
+    
+    /**
      * Returns the name of the player.
      * 
      * @return the name of the player.
@@ -120,7 +139,7 @@ public class Player implements IObservable {
     /**
      * Updates the possible paths that the pawn can move in.
      */
-    public void updatePossiblePaths() {
+    private void updatePossiblePaths() {
     	int steps = diceResult * currentPawn.tilesMovedEachStep();
     	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
