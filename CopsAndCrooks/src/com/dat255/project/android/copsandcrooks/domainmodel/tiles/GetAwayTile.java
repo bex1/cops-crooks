@@ -31,17 +31,14 @@ public class GetAwayTile extends AbstractTile implements IInteractiveTile {
 	public void interact(IMovable target) {
 		if(target instanceof Crook){
 			Crook crook = (Crook)target;
-			attemptGetAway(crook);
+			if(crook.isAttemptingGetAway()){
+				//TODO victory/out of game
+			}else if(crook.getWallet().getCash() >= TICKET_COST){
+				//Attempt getaway if the crook can afford a ticket
+				purchaseTicket(crook);
+				crook.setAttemptingGetAway(true);
+			}
 		}
-	}
-	
-	/**
-	 * A crook attempts a get away.
-	 * @param crook the escaping crook
-	 */
-	private void attemptGetAway(Crook crook){
-		purchaseTicket(crook);
-		crook.setAttemptingGetAway(true);
 	}
 	
 	/**
@@ -50,9 +47,7 @@ public class GetAwayTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook that is purchasing the ticket
 	 */
 	private void purchaseTicket(Crook crook){
-		if(crook.getWallet().getCash() >= TICKET_COST){
-			crook.getWallet().decrementCash(TICKET_COST);
-			mediator.getGameModel().getTravelAgency().addCash(TICKET_COST);
-		}
+		crook.getWallet().decrementCash(TICKET_COST);
+		TravelAgencyTile.getInstance().addCash(TICKET_COST);
 	}
 }
