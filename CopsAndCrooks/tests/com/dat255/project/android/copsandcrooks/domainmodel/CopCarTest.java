@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -150,7 +152,7 @@ public class CopCarTest {
 		path.addTile(new RoadTile(new Point(0, 1), new Mediator()));
 		test.move(path);
 		for (int i = 0; i < 10; i++)
-			test.update(0.2f);
+			test.update(Values.PAWN_MOVE_DELAY);
 		assertSame("The set tile should be returned", test.getCurrentTile(), end);
 	}
 	

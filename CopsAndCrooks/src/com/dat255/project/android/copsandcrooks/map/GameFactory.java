@@ -203,16 +203,16 @@ public class GameFactory {
 		
 		// Test for path actors
 		/*TilePath path = new TilePath();
-		path.addTile(new RoadTile(new Point(1, 2), mediator));
-		path.addTile(new RoadTile(new Point(2, 2), mediator));
-		path.addTile(new RoadTile(new Point(2, 3), mediator));
-		path.addTile(new RoadTile(new Point(3, 3), mediator));
-		path.addTile(new RoadTile(new Point(3, 4), mediator));
-		path.addTile(new RoadTile(new Point(3, 5), mediator));
-		path.addTile(new RoadTile(new Point(2, 5), mediator));
-		path.addTile(new RoadTile(new Point(1, 5), mediator));
-		path.addTile(new RoadTile(new Point(0, 5), mediator));
 		path.addTile(new RoadTile(new Point(0, 4), mediator));
+		path.addTile(new RoadTile(new Point(0, 5), mediator));
+		path.addTile(new RoadTile(new Point(1, 5), mediator));
+		path.addTile(new RoadTile(new Point(2, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 4), mediator));
+		path.addTile(new RoadTile(new Point(3, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 2), mediator));
+		path.addTile(new RoadTile(new Point(1, 2), mediator));
 		
 		List<TilePath> paths = new ArrayList<TilePath>();
 		paths.add(path);
@@ -242,7 +242,7 @@ public class GameFactory {
 		
 		for (TilePath path : paths) {
 			
-			for (int i = 0; i < path.getPathSize() - 1; i++) {
+			for (int i = 1; i < path.getPathSize(); i++) {
 				AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPath");
 				
 				Image pathImage = new Image(region);
@@ -255,7 +255,7 @@ public class GameFactory {
 			
 			AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPathEnd");
 			Image pathEnd = new Image(region);
-			Point pathEndPos = path.getTile(path.getPathSize()-1).getPosition();
+			Point pathEndPos = path.getTile(0).getPosition();
 			pathEnd.setPosition(pathEndPos.x * Values.TILE_WIDTH, 
 								pathEndPos.y * Values.TILE_HEIGTH);
 			
