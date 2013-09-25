@@ -10,10 +10,20 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 public abstract class AbstractWalkingPawn extends AbstractPawn {
 	private boolean isInPoliceHouse;
 	
+	private boolean isWaitingOnTram= false;
+	
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 
 	protected AbstractWalkingPawn(Role pawnRole, PawnType type, IMediator mediator) {
 		super(pawnRole, type, mediator);
+	}
+	
+	public boolean getIsWaitingOnTram(){
+		return isWaitingOnTram;
+	}
+	
+	public void setIsWaitingOnTram(boolean waiting){
+		this.isWaitingOnTram = waiting;
 	}
 
 	public void setIsInPoliceStation(boolean inHouse) {
