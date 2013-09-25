@@ -24,6 +24,7 @@ import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -202,12 +203,18 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				table.row();
 			}
 		}else if(evt.getPropertyName().equals(GameModel.PROPERTY_NEW_TURN_POLICE)){	
-		
+			
 			
 		}else if(evt.getPropertyName().equals(Player.PROPERTY_DICE_RESULT)){ 
 			//TODO show the results
+			if(model.getCurrentPlayer().getPlayerRole().equals(Role.Crook)){
+				model.getCurrentPlayer().g
+			}
 		}else if (evt.getPropertyName().equals(Player.PROPERTY_POSSIBLE_PATHS)){
 			//TODO call for the pathactor 
+			if(model.getCurrentPlayer().getPlayerRole().equals(Role.Crook)){
+				
+			}
 		}
 
 		
