@@ -130,9 +130,9 @@ public class Player implements IObservable {
      * Roll the dice.
      */
     public void rollDice() {
-    	int oldValue = diceResult;
+    	//int oldValue = diceResult;
     	diceResult = mediator.rollDice();
-    	pcs.firePropertyChange(PROPERTY_DICE_RESULT, oldValue, diceResult);
+    	pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
     	updatePossiblePaths();
     }
     
@@ -144,7 +144,7 @@ public class Player implements IObservable {
     	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
-    
+
     /**
      * The player choose a path and the current pawn then moves along it.
      * 

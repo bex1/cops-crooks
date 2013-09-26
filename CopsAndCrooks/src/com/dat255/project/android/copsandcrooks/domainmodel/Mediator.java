@@ -70,6 +70,10 @@ public class Mediator implements IMediator {
 		}
 	}
 	
+	public void turnDone(){
+		gameModel.nextPlayer();
+	}
+
 	@Override
 	public GameModel getGameModel(){
 		return this.gameModel;

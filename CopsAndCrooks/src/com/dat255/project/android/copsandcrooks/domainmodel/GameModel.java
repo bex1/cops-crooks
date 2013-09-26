@@ -1,17 +1,25 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
-public class GameModel  {
+public class GameModel implements IObservable  {
 	
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
+	public static final String PROPERTY_NEW_TURN_CROOK = "ACrooksTurn";
+	public static final String PROPERTY_NEW_TURN_POLICE = "APoliceTurn";
+	public static final String PROPERTY_NEW_ROUND = "NewRound";
 	
 	private TravelAgencyTile travelAgency;
 
@@ -38,7 +46,32 @@ public class GameModel  {
 				}
 			}
 		}
+		
+		currentPlayer = players.get(0);
 	}
+	
+	public void nextPlayer(){
+		Player oldPlayer = currentPlayer;
+		int i;
+		for (i = 0; i < players.size(); i++){
+			if(players.equals(currentPlayer)){
+				break;
+			}
+		}
+		if(i < players.size()-1){
+			currentPlayer= players.get(i+1);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN_CROOK, oldPlayer, currentPlayer);
+		}else{
+			currentPlayer= players.get(0);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN_POLICE, oldPlayer, currentPlayer);
+			pcs.firePropertyChange(PROPERTY_NEW_ROUND, oldPlayer, currentPlayer);
+		}
+	}
+	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
+	}
+	
 
 	void moveToEmptyPoliceStationTile(IMovable movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
@@ -78,6 +111,15 @@ public class GameModel  {
 		
 	}
 	
+	@Override
+	public void addObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
+	}
+
+	@Override
+	public void removeObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
+	}
 	public List<Player> getPlayers(){
 		return this.players;
 	}
