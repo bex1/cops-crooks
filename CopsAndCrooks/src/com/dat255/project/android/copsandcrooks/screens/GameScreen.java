@@ -208,7 +208,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		}else if(evt.getPropertyName().equals(Player.PROPERTY_DICE_RESULT)){ 
 			//TODO show the results
 			if(model.getCurrentPlayer().getPlayerRole().equals(Role.Crook)){
-				model.getCurrentPlayer().g
+				
 			}
 		}else if (evt.getPropertyName().equals(Player.PROPERTY_POSSIBLE_PATHS)){
 			//TODO call for the pathactor 

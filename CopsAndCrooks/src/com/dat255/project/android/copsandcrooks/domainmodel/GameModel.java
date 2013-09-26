@@ -23,6 +23,7 @@ public class GameModel implements IObservable  {
 	
 	private TravelAgencyTile travelAgency;
 
+
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
@@ -122,9 +123,5 @@ public class GameModel implements IObservable  {
 	}
 	public List<Player> getPlayers(){
 		return this.players;
-	}
-	
-	public TravelAgencyTile getTravelAgency(){
-		return this.travelAgency;
 	}
 }

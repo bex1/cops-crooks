@@ -12,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
-public class TravelAgencyTileTest {
+public class GetAwayTileTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -41,32 +41,25 @@ public class TravelAgencyTileTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
 	@Test
-	public void testRobBuilding(){
-		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
-		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
+	public void testInteract(){
 		Crook crook = new Crook(new Mediator());
+		GetAwayTile getAway = new GetAwayTile(new Point(), new Mediator());
 		
-		travelAgency.robBuilding(crook);
-		
-		if(crook.getWallet().getCash() != 0){
+		crook.getWallet().setCash(1000);
+		//Ticket cost is 5000
+		getAway.interact(crook);
+		if(crook.isAttemptingGetAway()){
 			fail();
 		}
 		
-		travelAgency.setValue(2000);
-		travelAgency.robBuilding(crook);
-		assertTrue(crook.getWallet().getCash() == 2000);
-	}
-	
-	@Test
-	public void testAddCash(){
-		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
-		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
-		//Default value should be zero
-		travelAgency.addCash(5000);
-		
-		assertTrue(travelAgency.getValue() == 5000);
+		TravelAgencyTile.createTravelAgency(null, null);
+		crook.getWallet().setCash(6000);
+		getAway.interact(crook);
+		if(crook.isAttemptingGetAway() == false){
+			fail();
+		}
 	}
 
 }

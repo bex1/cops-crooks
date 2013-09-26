@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	
 	private Map<Crook, Integer> storedCash;
+	
+	public static final String PROPERTY_HIDEOUT_INTERACT = "Hideout_Interact";
 
 	/**
 	 * Create a new hideout.
@@ -32,10 +35,8 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 
 	@Override
 	public void interact(IMovable target) {
-		/*TODO would you like to deposit/withdraw cash?
-		//remove wanted status(?)
-		//isWanted(false)
-		offTheRun();*/
+		//this needs to be listened to by something
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, ((Crook)target), this);
 	}
 	
 	/**
@@ -55,6 +56,10 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 		}else{
 			storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 			crook.getWallet().setCash(0);
+		}
+		
+		if(crook.getWallet().getCash() == 0){
+			crook.setWanted(false);
 		}
 	}
 	
@@ -81,6 +86,10 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 			storedCash.put(crook, cash-amount);
 			crook.getWallet().incrementCash(amount);
 		}
+		
+		if(crook.getWallet().getCash() > 0){
+			crook.setWanted(true);
+		}
 	}
 	
 	/**
@@ -105,7 +114,7 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook
 	 */
 	public boolean hasStoredCash(Crook crook){
-		if(!(crook==null) && storedCash.containsKey(crook) && storedCash.get(crook) > 0){
+		if(crook!=null && storedCash.containsKey(crook) && storedCash.get(crook) > 0){
 			return true;
 		}
 		return false;
