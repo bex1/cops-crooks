@@ -27,6 +27,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -169,7 +170,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	};
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
+	public void propertyChange(final PropertyChangeEvent evt) {
 		if(evt.getSource() != null){
 			String property = evt.getPropertyName();
 			//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
@@ -231,6 +232,53 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			}else if(property.equals(Player.PROPERTY_CHOOSEN_PAWN)){
 				if(model.getCurrentPlayer().getPlayerRole() == Role.Police){
 					model.getCurrentPlayer().updatePossiblePaths();
+				}
+			}else if(property.equals(HideoutTile.PROPERTY_HIDEOUT_INTERACT)){
+				if(model.getCurrentPlayer().getPlayerRole() == Role.Crook){
+					final Table table = super.getTable();
+	
+					table.add("Hideout").spaceBottom(50);
+			        table.row();
+					
+					// register the button "deposit"
+					final TextButton depositButton = new TextButton("Deposit", getSkin());
+					depositButton.addListener(new ClickListener() {
+					 @Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						 super.touchUp(event, x, y, pointer, button);
+						 	HideoutTile hideout = (HideoutTile)evt.getSource();
+						 	hideout.depositCash((Crook)model.getCurrentPlayer().getCurrentPawn());
+						 	table.clear();
+					     }
+					} );
+					table.add(depositButton).size(350, 60).uniform().spaceBottom(10);
+					table.row();
+					
+					// register the button "withdraw"
+					final TextButton withdrawButton = new TextButton("Withdraw", getSkin());
+					withdrawButton.addListener(new ClickListener() {
+					 @Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						 super.touchUp(event, x, y, pointer, button);
+						 	HideoutTile hideout = (HideoutTile)evt.getSource();
+						 	hideout.withdrawCash((Crook)model.getCurrentPlayer().getCurrentPawn());
+						 	table.clear();
+					     }
+					} );
+					table.add(withdrawButton).size(350, 60).uniform().spaceBottom(10);
+					table.row();
+					
+					// register the button "cancel"
+					final TextButton cancelButton = new TextButton("Cancel", getSkin());
+					cancelButton.addListener(new ClickListener() {
+					 @Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						 super.touchUp(event, x, y, pointer, button);
+						 	table.clear();
+					     }
+					} );
+					table.add(cancelButton).size(350, 60).uniform().spaceBottom(10);
+					table.row();
 				}
 			}
 	
