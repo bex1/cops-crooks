@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,6 +29,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -66,11 +69,14 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	@Override
 	public void render(float delta){
-		camera.update();
+		
+		stage.setCamera(camera);
 		renderer.setView(camera);
 		renderer.getSpriteBatch().begin();
 		renderer.renderTileLayer(gameBackground);
 		renderer.getSpriteBatch().end();
+		getTable().setBounds(camera.position.x- camera.viewportWidth/2, camera.position.y- camera.viewportHeight/2, 
+				Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		super.render(delta);
 		
 		
@@ -82,9 +88,10 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		model.startGame();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
-		stage.setCamera(camera);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
 		
+		
+		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(gestureDetector, stage);
@@ -174,8 +181,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			String property = evt.getPropertyName();
 			//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
 			if(property.equals(GameModel.PROPERTY_NEW_TURN)){
+				
 				final Table table = super.getTable();
-
+				
 				table.add(model.getCurrentPlayer().getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
 		        table.row();
 				
@@ -204,7 +212,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 						 super.touchUp(event, x, y, pointer, button);
 					     	// TODO click sound
 						 	// TODO go by tram
-						 	table.clear();
 					     }
 					} );
 					table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
@@ -212,6 +219,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				}
 			}else if(property.equals(Player.PROPERTY_DICE_RESULT)){ 
 				//TODO show the results
+				getTable().clear();
 				if(model.getCurrentPlayer().getPlayerRole().equals(Role.Police)){
 					
 				}
