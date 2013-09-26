@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
+import com.dat255.project.android.copsandcrooks.actors.OfficerActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
@@ -85,7 +86,7 @@ public class GameFactory {
 		List<Actor> actors = new ArrayList<Actor>();
 		
 		String[] listOfPlayerName = new String[userInfo.size()];
-		userInfo.keySet().toArray(listOfPlayerName);
+		listOfPlayerName = userInfo.keySet().toArray(listOfPlayerName);
 		int numberOfPlayers;
 		
 		for(int i = 0; i < userInfo.size(); i ++){
@@ -144,20 +145,25 @@ public class GameFactory {
 		        
 		        if(userInfo.get(listOfPlayerName[i]) == Role.Police){
 		        	pawns.add(0, new Officer(mediator));
+		        	// Create our actor		        
+			        actors.add(new OfficerActor(drawable, Scaling.none, (Officer)pawns.get(0), pawnAnimations));
 		        }else if(userInfo.get(listOfPlayerName[i]) == Role.Police && numberOfPlayers == 1){
 		        	pawns.add(0, new CopCar(mediator));
+		        	// Create our actor		        
+			        actors.add(new MovableActor(drawable, Scaling.none, pawns.get(0), pawnAnimations));
 				}else{
 					pawns.add(0, new Crook(mediator));
+					// Create our actor		        
+			        actors.add(new MovableActor(drawable, Scaling.none, pawns.get(0), pawnAnimations));
 		        }
 		        // Create our actor		        
-		        actors.add(new MovableActor(drawable, Scaling.none, pawns.get(0), pawnAnimations, mediator));
+		        actors.add(new MovableActor(drawable, Scaling.none, pawns.get(0), pawnAnimations));
 			}while(userInfo.get(listOfPlayerName[i]) == Role.Police && numberOfPlayers > 0);
-			
-			numberOfPlayers = userInfo.size();
+		
 			if(userInfo.get(listOfPlayerName[i]) == Role.Police){
-				players.add(new Player(listOfPlayerName[i], pawns, Role.Police, mediator));
+				players.add(0, new Player(listOfPlayerName[i], pawns, Role.Police, mediator));
 			}else{
-				players.add(new Player(listOfPlayerName[i], pawns, Role.Crook, mediator));
+				players.add( new Player(listOfPlayerName[i], pawns, Role.Crook, mediator));
 			}
 			
 		}

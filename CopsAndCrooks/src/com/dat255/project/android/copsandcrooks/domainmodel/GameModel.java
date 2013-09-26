@@ -55,7 +55,7 @@ public class GameModel implements IObservable  {
 	public void nextPlayer(){
 		int i= 0;
 		while (players.get(i) != currentPlayer){
-			++i;
+			i += i;
 		}
 		if(i < players.size()-1){
 			currentPlayer= players.get(i+1);
