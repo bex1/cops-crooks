@@ -2,8 +2,10 @@ package com.dat255.project.android.copsandcrooks.actors;
 
 import java.util.List;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
@@ -47,6 +49,19 @@ public class PathActor extends Group {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				player.choosePath(tilePath);
+				
+				Stage stage = getStage();
+				
+				// Fins all other PathActors in stage and remove them.
+				if (stage != null) {
+					for (Actor actor : stage.getActors()) {
+						if (actor instanceof PathActor && actor != thisActor) {
+							actor.remove();
+						}
+					}
+				}
+				
+				// Remove ourself from stage.
 				thisActor.remove();
 			}
 		});
