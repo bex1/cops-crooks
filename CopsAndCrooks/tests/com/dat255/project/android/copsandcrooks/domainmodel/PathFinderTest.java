@@ -1,22 +1,21 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import com.dat255.project.android.copsandcrooks.utils.Point;
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
-import org.junit.Test;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class PathFinderTest {
 	
 	private IMovable crook;
 	private IMediator mediator;
 	private PathFinder pathFinder;
-	private List<TilePath> pathList;
+	private Collection<TilePath> pathList;
 
 	@Test
 	public void testCalculatePossiblePaths1() {

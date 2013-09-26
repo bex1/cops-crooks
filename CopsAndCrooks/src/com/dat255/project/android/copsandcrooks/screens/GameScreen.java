@@ -200,7 +200,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		
 		// Check source, i.e. Who sent the event?
 		if(evt.getSource() == model) {
-			if(property == GameModel.PROPERTY_NEW_TURN){
+			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
 				// New turn -> show buttons where the player can select its next move
 				showActButtons();
 			}
@@ -246,23 +246,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showPossiblePaths(Player player) {
-		Role role = player.getPlayerRole();
-		if (role == Role.Crook) {
-			try{
-				List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
-				for(PathActor pathActor: tmp){
-					stage.addActor(pathActor);
-				}
-			}catch(NullPointerException e){
-				model.nextPlayer();
-			}
-		} else if (role == Role.Police) {
-			try{
-				List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
-				for(PathActor pathActor: tmp){
-					stage.addActor(pathActor);
-				}
-			}catch(NullPointerException e){}
+		List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+		for(PathActor pathActor: tmp){
+			stage.addActor(pathActor);
 		}
 	}
 }

@@ -19,7 +19,7 @@ public class Player implements IObservable {
 	private List<IMovable> pawns;
 	private IMovable currentPawn;
 	private int diceResult;
-	private List<TilePath> possiblePaths;
+	private Collection<TilePath> possiblePaths;
 	
 	private Role playerRole;
 	
@@ -146,6 +146,10 @@ public class Player implements IObservable {
     public void updatePossiblePaths() {
     	int steps = diceResult * currentPawn.tilesMovedEachStep();
     	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
+    	// No possible paths and crook... -> Next player
+    	if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
+    		mediator.playerTurnDone();
+    	}
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
     

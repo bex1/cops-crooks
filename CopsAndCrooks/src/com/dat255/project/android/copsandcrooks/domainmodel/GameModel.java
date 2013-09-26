@@ -20,8 +20,10 @@ public final class GameModel implements IObservable  {
 	private Player currentPlayer;
 	private final PropertyChangeSupport pcs;
 	
-	public static final String PROPERTY_NEW_TURN = "APlayersNewTurn";
-	public static final String PROPERTY_NEW_ROUND = "NewRound";
+	private int round;
+	
+	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
+	public static final String PROPERTY_ROUND = "NewRound";
 	
 	private TravelAgencyTile travelAgency;
 
@@ -35,7 +37,6 @@ public final class GameModel implements IObservable  {
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		
 		this.players = players;
-		this.currentPlayer = players.get(0);
 		
 		mediator.registerGameModel(this);
 		
@@ -53,27 +54,21 @@ public final class GameModel implements IObservable  {
 	}
 	
 	public void startGame(){
-		pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
+		round = 1;
+		pcs.firePropertyChange(PROPERTY_ROUND, -1, round);
+		this.currentPlayer = players.get(0);
+		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
 	}
 	
 	public void nextPlayer(){
-		int i= 0;
-		while (players.get(i) != currentPlayer){
-			i += i;
-		}
-		if(i < players.size()-1){
-			currentPlayer= players.get(i+1);
-			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
-		}else{
-			currentPlayer= players.get(0);
-			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
-		}
+		int i = players.indexOf(currentPlayer);
+		currentPlayer = players.get((i + 1) % players.size());
+		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
 	}
 	
 	public Player getCurrentPlayer(){
 		return currentPlayer;
 	}
-	
 
 	void moveToEmptyPoliceStationTile(IMovable movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
@@ -110,7 +105,6 @@ public final class GameModel implements IObservable  {
 				player.getWallet().incrementCash(cash);
 			}
 		}
-		
 	}
 	
 	@Override
@@ -118,6 +112,19 @@ public final class GameModel implements IObservable  {
 		pcs.addPropertyChangeListener(l);
 	}
 
+	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
+		if (intelligenceAgencyTile == null) {
+			throw new IllegalArgumentException("Intelligence Agency not allowed to be null");
+		}
+		intelligenceAgencyTile.hinderGetAway(getPlayers());
+	}
+
+	void officerSelected(Officer pawn) {
+		if (currentPlayer.getPlayerRole() == Role.Police) {
+			currentPlayer.setCurrentPawn(pawn);
+		}
+	}
+	
 	@Override
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
@@ -125,9 +132,5 @@ public final class GameModel implements IObservable  {
 	
 	public Collection<Player> getPlayers(){
 		return Collections.unmodifiableCollection(this.players);
-	}
-
-	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
-		intelligenceAgencyTile.hinderGetAway(getPlayers());
 	}
 }

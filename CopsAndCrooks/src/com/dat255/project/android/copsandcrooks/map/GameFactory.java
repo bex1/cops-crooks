@@ -253,8 +253,8 @@ public class GameFactory {
 		}
 	
 		// create the controller and view of the game
-		mediator.registerDice(new Dice(mediator));
-		mediator.registerPathFinder(new PathFinder(walkable, mediator));
+		new Dice(mediator);
+		new PathFinder(walkable, mediator);
 		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
 		
 	}
@@ -269,6 +269,10 @@ public class GameFactory {
 	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, Player player) {
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
+		
+		if (paths.isEmpty()) {
+			return null;
+		}
 	
 		List<Image> pathImages = new ArrayList<Image>();
 		
@@ -293,7 +297,12 @@ public class GameFactory {
 			pathEnd.setPosition(pathEndPos.x * Values.TILE_WIDTH, 
 								pathEndPos.y * Values.TILE_HEIGTH);
 			
-			pathActors.add(new PathActor(path, pathImages, pathEnd, player));
+			AtlasRegion clickRegion = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPathEndClick");
+			Image pathEndClick = new Image(clickRegion);
+			pathEndClick.setPosition(pathEndPos.x * Values.TILE_WIDTH, 
+								pathEndPos.y * Values.TILE_HEIGTH);
+			
+			pathActors.add(new PathActor(path, pathImages, pathEnd, pathEndClick, player));
 		}
 		return pathActors;
 	}

@@ -25,6 +25,8 @@ public class PathActor extends Group {
 	private final Player player;
 	private final Timer removeTimer;
 	
+	private final Image pathEndImage, pathEndImageClicked;
+	
 	private final Task removeTask = new Task() {
 		@Override
 		public void run () {
@@ -48,10 +50,12 @@ public class PathActor extends Group {
 	 * @param pathEndImage The end image of the path.
 	 * @param player The player who can interact with the paths.
 	 */
-	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Player player) {
+	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Image pathEndImageClicked, final Player player) {
 		this.tilePath = path;
 		this.player = player;
 		this.removeTimer = new Timer();
+		this.pathEndImage = pathEndImage;
+		this.pathEndImageClicked = pathEndImageClicked;
 		
 		this.addActor(pathEndImage);
 		for (Image img : pathImages) {
@@ -67,7 +71,7 @@ public class PathActor extends Group {
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
-			
+			pathEndImage.setDrawable(pathEndImageClicked.getDrawable());
 			return super.touchDown(event, x, y, pointer, button);
 		}
 

@@ -4,22 +4,17 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.EnumMap;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
-import com.dat255.project.android.copsandcrooks.utils.IObservable;
-import com.dat255.project.android.copsandcrooks.utils.Values;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
  * 
@@ -68,21 +63,28 @@ public class MovableActor extends Image implements PropertyChangeListener {
 				if (!pawn.isMoving()) {
 					moveDirectly();
 				}
+			} else if (property == IMovable.PROPERTY_IS_MOVING) {
+				if (!pawn.isMoving()) {
+					currentAnimation = Animations.IDLE_ANIM;
+				}
+				// use fade out fade in 
 			} else if (property == IMovable.PROPERTY_IS_IN_POLICE_HOUSE) {
 				// use fade out fade in 
 			} 
 		}
 
 	}
+	
 	private void moveDirectly() {
 		// Make sure we move into idle
-		currentAnimation = Animations.IDLE_ANIM;
 		animTimer = 0;
 
 		// Just set the position according to mocel
 		Point currentPos = pawn.getCurrentTile().getPosition();
-		this.setPosition(currentPos.x *60 - 20, currentPos.y * 60);
+		this.setPosition(currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
+				  	     currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2));
 	}
+	
 	private void animateWalk() {
 		if (pawn.isMoving()) {
 			// Animate according to direction
@@ -106,7 +108,9 @@ public class MovableActor extends Image implements PropertyChangeListener {
 			Point pawnNextPosition = pawn.getNextTile().getPosition();
 
 			// Add move action
-			this.addAction(moveTo(pawnNextPosition.x *60 - 20, pawnNextPosition.y * 60, Values.PAWN_MOVE_DELAY, Interpolation.linear));
+			this.addAction(moveTo(pawnNextPosition.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
+								  pawnNextPosition.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2), 
+								  Values.PAWN_MOVE_DELAY/2, Interpolation.linear));
 		}
 	}
 }

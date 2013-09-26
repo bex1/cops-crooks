@@ -1,10 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 
@@ -15,7 +13,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAg
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class Mediator implements IMediator {
+public final class Mediator implements IMediator {
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;
@@ -41,8 +39,9 @@ public class Mediator implements IMediator {
 	}
 	
 	@Override
-	public void changePawn(IMovable pawn){
-		gameModel.getCurrentPlayer().setCurrentPawn(pawn);
+	public void changePawn(Officer pawn){
+		if (gameModel != null)
+			gameModel.officerSelected(pawn);
 	}
 	
 	@Override
@@ -67,7 +66,7 @@ public class Mediator implements IMediator {
 	}
 
 	@Override
-	public List<TilePath> getPossiblePaths(PawnType pawnType,
+	public Collection<TilePath> getPossiblePaths(PawnType pawnType,
 			IMovable pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);

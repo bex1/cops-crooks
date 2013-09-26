@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+
+import java.util.Collection;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
@@ -52,6 +54,6 @@ public interface IWalkableTile extends IObservable{
 	 * Get the allowed pawntypes for this tile
 	 * @return the allowed pawntypes
 	 */
-	public List<PawnType> getAllowedPawnTypes();
+	public Collection<PawnType> getAllowedPawnTypes();
 
 }

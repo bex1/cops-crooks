@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
@@ -14,8 +15,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  *
  */
 public class GetAwayTile extends AbstractTile implements IInteractiveTile {
-
-	public static final int TICKET_COST = 5000;
 	
 	/**
 	 * Create a new GetAway with a position.
@@ -33,7 +32,7 @@ public class GetAwayTile extends AbstractTile implements IInteractiveTile {
 			Crook crook = (Crook)target;
 			if(crook.isAttemptingGetAway()){
 				//TODO victory/out of game
-			}else if(crook.getWallet().getCash() >= TICKET_COST){
+			}else if(crook.getWallet().getCash() >= Values.GETAWAY_TICKET_COST){
 				//Attempt getaway if the crook can afford a ticket
 				purchaseTicket(crook);
 				crook.setAttemptingGetAway(true);
@@ -47,7 +46,7 @@ public class GetAwayTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook that is purchasing the ticket
 	 */
 	private void purchaseTicket(Crook crook){
-		crook.getWallet().decrementCash(TICKET_COST);
-		TravelAgencyTile.getInstance().addCash(TICKET_COST);
+		crook.getWallet().decrementCash(Values.GETAWAY_TICKET_COST);
+		TravelAgencyTile.getInstance().addCash(Values.GETAWAY_TICKET_COST);
 	}
 }
