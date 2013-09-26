@@ -19,7 +19,6 @@ public class TramStopTile extends AbstractTile implements IInteractiveTile{
 	@Override
 	public void interact(IMovable target) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
