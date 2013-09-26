@@ -227,9 +227,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				 super.touchUp(event, x, y, pointer, button);
 			     	// TODO click sound
-				 	// TODO go by tram
-				 	table.clear();
-			     }
+				 // TODO go by tram
+				 table.clear();
+			 }
 			} );
 			table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
 			table.row();
@@ -237,9 +237,23 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showPossiblePaths(Player player) {
-		List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
-		for(PathActor pathActor: tmp){
-			stage.addActor(pathActor);
+		Role role = player.getPlayerRole();
+		if (role == Role.Crook) {
+			try{
+				List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+				for(PathActor pathActor: tmp){
+					stage.addActor(pathActor);
+				}
+			}catch(NullPointerException e){
+				model.nextPlayer();
+			}
+		} else if (role == Role.Police) {
+			try{
+				List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+				for(PathActor pathActor: tmp){
+					stage.addActor(pathActor);
+				}
+			}catch(NullPointerException e){}
 		}
 	}
 }
