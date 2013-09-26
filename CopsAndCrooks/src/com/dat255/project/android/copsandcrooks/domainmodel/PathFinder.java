@@ -8,7 +8,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 public final class PathFinder {
 	private IWalkableTile[][] tiles;
-	private List<TilePath> paths;
 	private int numberOfSteps;
 	
 
