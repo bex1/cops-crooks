@@ -19,6 +19,10 @@ public interface IMovable extends IObservable {
 	 */
 	void update(float deltaTime);
 	
+	boolean isWaitingOnTram();
+	
+	void standingOnTramstop(boolean standing);
+	
 	/**
 	 * Returns the tile on which the movable is currently standing on.
 	 * @return the walkable tile on which the movable is currently standing on.

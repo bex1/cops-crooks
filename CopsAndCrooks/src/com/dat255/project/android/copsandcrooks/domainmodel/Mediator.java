@@ -40,6 +40,11 @@ public class Mediator implements IMediator {
 	}
 	
 	@Override
+	public void changePawn(IMovable pawn){
+		gameModel.getCurrentPlayer().setCurrentPawn(pawn);
+	}
+	
+	@Override
 	public void moveToPoliceStation(IMovable movable) {
 		if (gameModel != null)
 			gameModel.moveToEmptyPoliceStationTile(movable);
@@ -70,6 +75,11 @@ public class Mediator implements IMediator {
 		}
 	}
 	
+	@Override
+	public void turnDone(){
+		gameModel.nextPlayer();
+	}
+
 	@Override
 	public GameModel getGameModel(){
 		return this.gameModel;
