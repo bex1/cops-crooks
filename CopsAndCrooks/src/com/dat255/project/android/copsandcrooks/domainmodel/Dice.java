@@ -18,7 +18,7 @@ public final class Dice implements IObservable {
 		mediator.registerDice(this);
 	}
 	
-	public int roll() {
+	int roll() {
 		return 1 + rand.nextInt(6);
 	}
 

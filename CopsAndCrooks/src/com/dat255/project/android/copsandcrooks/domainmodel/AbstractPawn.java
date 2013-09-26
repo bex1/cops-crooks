@@ -83,7 +83,7 @@ public abstract class AbstractPawn implements IMovable {
 		this.pathToMove = path;
 		IWalkableTile next = pathToMove.consumeNextTile();
 		updateDirection(currentTile, next);
-		this.isMoving = true;
+		this.setMoving(true);
 		setNextTile(next);
 	}
 
@@ -97,7 +97,7 @@ public abstract class AbstractPawn implements IMovable {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
-		        	isMoving = false;
+		        	this.setMoving(false);
 		        	this.setCurrentTile(nextTile);
 		        	nextTile = null;
 		        	
@@ -121,6 +121,12 @@ public abstract class AbstractPawn implements IMovable {
 		}
 	}
 	
+	private void setMoving(boolean moving) {
+		boolean oldValue = isMoving;
+		isMoving = moving;
+		pcs.firePropertyChange(PROPERTY_IS_MOVING, oldValue, isMoving);
+	}
+
 	private void updateDirection(IWalkableTile current, IWalkableTile next) {
 		Point currentPos = current.getPosition();
 		Point nextPos = next.getPosition();

@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
@@ -30,8 +32,13 @@ public abstract class AbstractTile implements IWalkableTile{
 	 * Construct a new AbstractTile with a position.
 	 * @param position2 the tile's position
 	 */
-	public AbstractTile(Point position2, IMediator mediator) {
-		this.position = position2;
+	public AbstractTile(Point pos, IMediator mediator) {
+		if (pos == null) 
+			throw new IllegalArgumentException("Position not allowed to be null");
+		if (mediator == null)
+			throw new IllegalArgumentException("Mediator not allowed to be null");
+		
+		this.position = pos;
 		this.mediator = mediator;
 		
 		pawnTypes = new ArrayList<PawnType>();
@@ -68,8 +75,8 @@ public abstract class AbstractTile implements IWalkableTile{
 	}
 
 	@Override
-	public List<PawnType> getAllowedPawnTypes() {
-		return pawnTypes;
+	public Collection<PawnType> getAllowedPawnTypes() {
+		return Collections.unmodifiableCollection(pawnTypes);
 	}
 	
 	@Override

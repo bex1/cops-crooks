@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.utils;
 
-public class Point {
+public final class Point {
 	public int x, y;
 	
 	public Point() {

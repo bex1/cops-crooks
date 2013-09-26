@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,11 +26,11 @@ public final class PathFinder {
 		mediator.registerPathFinder(this);
 	}
 
-	public List<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
+	public Collection<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
 		// Note that the current tile might be null
 		IWalkableTile currentTile = pawn.getCurrentTile();
 		if (currentTile != null) {
-			return calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), null);
+			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), null));
 		} else {
 			return null;
 		}

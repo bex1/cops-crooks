@@ -1,6 +1,11 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,8 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class AbstractTileTest {
@@ -107,9 +112,10 @@ public class AbstractTileTest {
 		abstractTile.pawnTypes.add(PawnType.Car);
 		abstractTile.pawnTypes.add(PawnType.Crook);
 		
-		assertTrue(abstractTile.getAllowedPawnTypes().get(0).
-				equals(PawnType.Car) && abstractTile.getAllowedPawnTypes().
-				get(1).equals(PawnType.Crook));
+		List<PawnType> pawnTypes = new ArrayList<PawnType>(abstractTile.getAllowedPawnTypes());
+		
+		assertTrue(pawnTypes.get(0).equals(PawnType.Car) && 
+				pawnTypes.get(1).equals(PawnType.Crook));
 	}
 
 }

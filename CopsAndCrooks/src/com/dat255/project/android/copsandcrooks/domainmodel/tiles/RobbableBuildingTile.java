@@ -53,9 +53,12 @@ public class RobbableBuildingTile extends AbstractTile implements IInteractiveTi
 	
 	/**
 	 * Set the value of this building.
-	 * @param value the new value
+	 * @param value the new value, all values < 0 are considered as equal to 0
 	 */
 	public void setValue(int value){
+		if (value < 0) {
+			value = 0;
+		}
 		this.value = value;
 	}
 }

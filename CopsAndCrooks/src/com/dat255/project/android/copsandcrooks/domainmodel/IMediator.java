@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public interface IMediator {
 	void registerDice(Dice dice);
 	
 
-	void changePawn(IMovable pawn);
+	
 	
 	/**
 	 * Register the pathfinder for communication.
@@ -81,16 +82,30 @@ public interface IMediator {
 	 * @param pawnType The type of the pawn.
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
-	 * @return A list with linkedlists representing paths that can be walked
+	 * @return A collection with tilepaths representing paths that can be walked
 	 */
-	List<TilePath> getPossiblePaths(PawnType pawnType, 
+	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
 			IMovable pawn, int stepsToMove);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
-	 * to react that the turn is done.
+	 * to react on that the turn is done.
 	 */
 	void playerTurnDone();
 
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * hinder a getaway.
+	 * 
+	 * Move whole method to gamemodel instead of callback?
+	 */
 	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile);
+	
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to select the officer pawn.
+	 * 
+	 * @param pawn the officer pawn that wants to be selected
+	 */
+	void changePawn(Officer pawn);
 }

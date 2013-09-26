@@ -823,6 +823,13 @@ game-screen/path/GreenDotPathEnd
   orig: 60, 60
   offset: 0, 0
   index: -1
+game-screen/path/GreenDotPathEndClick
+  rotate: false
+  xy: 126, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
 
 pages5.png
 format: RGBA8888

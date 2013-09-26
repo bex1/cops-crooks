@@ -57,10 +57,8 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 			storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 			crook.getWallet().setCash(0);
 		}
-		
-		if(crook.getWallet().getCash() == 0){
-			crook.setWanted(false);
-		}
+
+		crook.setWanted(!(crook.getWallet().getCash() == 0));
 	}
 	
 	/**
@@ -87,9 +85,7 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 			crook.getWallet().incrementCash(amount);
 		}
 		
-		if(crook.getWallet().getCash() > 0){
-			crook.setWanted(true);
-		}
+		crook.setWanted(crook.getWallet().getCash() > 0);
 	}
 	
 	/**
@@ -114,10 +110,7 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook
 	 */
 	public boolean hasStoredCash(Crook crook){
-		if(crook!=null && storedCash.containsKey(crook) && storedCash.get(crook) > 0){
-			return true;
-		}
-		return false;
+		return crook!=null && storedCash.containsKey(crook) && storedCash.get(crook) > 0;
 	}
 	
 	@Override
