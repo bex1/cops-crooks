@@ -3,8 +3,8 @@ package com.dat255.project.android.copsandcrooks.map;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -12,17 +12,24 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
-import com.dat255.project.android.copsandcrooks.actors.CrookActor;
-import com.dat255.project.android.copsandcrooks.actors.CrookActor.CrookAnimations;
+import com.dat255.project.android.copsandcrooks.actors.MovableActor;
+import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
+import com.dat255.project.android.copsandcrooks.actors.PathActor;
+import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
+import com.dat255.project.android.copsandcrooks.domainmodel.PathFinder;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.GetAwayTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
@@ -47,11 +54,11 @@ public class GameFactory {
 	 * 
 	 * @return
 	 */
-	public static Screen loadGame(int numberOfPlayers, CopsAndCrooks game){
+	public static Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
 		
 		// Creates a mediator
 		Mediator mediator = new Mediator();
-		
+	
 		//The point of the police car respawnpoint
 		Point policeCarStart = new Point();
 		
@@ -77,73 +84,87 @@ public class GameFactory {
 		List<IMovable> pawns = new ArrayList<IMovable>();
 		List<Actor> actors = new ArrayList<Actor>();
 		
-		// Testing of crookactor
-		Crook crook = new Crook(mediator);
+		String[] listOfPlayerName = new String[userInfo.size()];
+		userInfo.keySet().toArray(listOfPlayerName);
+		int numberOfPlayers;
 		
-		// Using an enumeration map makes sure that all keys passed are valid keys
-		EnumMap<CrookAnimations, Animation> crookAnimations = new EnumMap<CrookAnimations, Animation>(CrookAnimations.class);
-		
-		AtlasRegion[] stopAnimation = new AtlasRegion[8];
-		for(int i = 0; i < 8; i++)
-		{
-			stopAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/stopped"+String.format("%04d", i));
+		for(int i = 0; i < userInfo.size(); i ++){
+			numberOfPlayers = userInfo.size();
+			do{
+				// Using an enumeration map makes sure that all keys passed are valid keys
+				EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
+				
+				AtlasRegion[] stopAnimation = new AtlasRegion[8];
+				for(int k = 0; k < 8; k++)
+				{
+					stopAnimation[k] = Utilities.getAtlas().findRegion("game-screen/crook/stopped"+String.format("%04d", k));
+				}
+				Animation idle = new Animation(1f, stopAnimation);
+				
+				pawnAnimations.put(Animations.IDLE_ANIM, idle);
+				
+				AtlasRegion[] walkEastAnimation = new AtlasRegion[8];
+				for(int k = 0; k < 8; k++)
+				{
+					walkEastAnimation[k] = Utilities.getAtlas().findRegion("game-screen/crook/walking e"+String.format("%04d", k));
+				}
+				Animation walkEast = new Animation(0.2f, walkEastAnimation);
+				
+				pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
+				
+				AtlasRegion[] walkNorthAnimation = new AtlasRegion[8];
+				for(int k = 0; k < 8; k++)
+				{
+					walkNorthAnimation[k] = Utilities.getAtlas().findRegion("game-screen/crook/walking n"+String.format("%04d", k));
+				}
+				Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
+				
+				pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
+				
+				AtlasRegion[] walkSouthAnimation = new AtlasRegion[8];
+				for(int k = 0; k < 8; k++)
+				{
+					walkSouthAnimation[k] = Utilities.getAtlas().findRegion("game-screen/crook/walking s"+String.format("%04d", k));
+				}
+				Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
+				
+				pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
+				
+				AtlasRegion[] walkWestAnimation = new AtlasRegion[8];
+				for(int k = 0; k < 8; k++)
+				{
+					walkWestAnimation[k] = Utilities.getAtlas().findRegion("game-screen/crook/walking w"+String.format("%04d", k));
+				}
+				Animation walkWest = new Animation(0.2f, walkWestAnimation);
+				
+				pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
+				
+				// Specify the first drawable frame
+		        TextureRegionDrawable drawable = new TextureRegionDrawable(stopAnimation[0]);
+		        
+		        if(userInfo.get(listOfPlayerName[i]) == Role.Police){
+		        	pawns.add(0, new Officer(mediator));
+		        }else if(userInfo.get(listOfPlayerName[i]) == Role.Police && numberOfPlayers == 1){
+		        	pawns.add(0, new CopCar(mediator));
+				}else{
+					pawns.add(0, new Crook(mediator));
+		        }
+		        // Create our actor		        
+		        actors.add(new MovableActor(drawable, Scaling.none, pawns.get(0), pawnAnimations, mediator));
+			}while(userInfo.get(listOfPlayerName[i]) == Role.Police && numberOfPlayers > 0);
+			
+			numberOfPlayers = userInfo.size();
+			if(userInfo.get(listOfPlayerName[i]) == Role.Police){
+				players.add(new Player(listOfPlayerName[i], pawns, Role.Police, mediator));
+			}else{
+				players.add(new Player(listOfPlayerName[i], pawns, Role.Crook, mediator));
+			}
+			
 		}
-		Animation idle = new Animation(1f, stopAnimation);
-		
-		crookAnimations.put(CrookAnimations.IDLE_ANIM, idle);
-		
-		AtlasRegion[] walkEastAnimation = new AtlasRegion[8];
-		for(int i = 0; i < 8; i++)
-		{
-			walkEastAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking e"+String.format("%04d", i));
-		}
-		Animation walkEast = new Animation(0.2f, walkEastAnimation);
-		
-		crookAnimations.put(CrookAnimations.WALK_EAST_ANIM, walkEast);
-		
-		AtlasRegion[] walkNorthAnimation = new AtlasRegion[8];
-		for(int i = 0; i < 8; i++)
-		{
-			walkNorthAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking n"+String.format("%04d", i));
-		}
-		Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
-		
-		crookAnimations.put(CrookAnimations.WALK_NORTH_ANIM, walkNorth);
-		
-		AtlasRegion[] walkSouthAnimation = new AtlasRegion[8];
-		for(int i = 0; i < 8; i++)
-		{
-			walkSouthAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking s"+String.format("%04d", i));
-		}
-		Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
-		
-		crookAnimations.put(CrookAnimations.WALK_SOUTH_ANIM, walkSouth);
-		
-		AtlasRegion[] walkWestAnimation = new AtlasRegion[8];
-		for(int i = 0; i < 8; i++)
-		{
-			walkWestAnimation[i] = Utilities.getAtlas().findRegion("game-screen/crook/walking w"+String.format("%04d", i));
-		}
-		Animation walkWest = new Animation(0.2f, walkWestAnimation);
-		
-		crookAnimations.put(CrookAnimations.WALK_WEST_ANIM, walkWest);
-		
-		// Specify the first drawable frame
-        TextureRegionDrawable drawable = new TextureRegionDrawable(stopAnimation[0]);
-     	
-        // Create our crook actor
-        CrookActor crookActor = new CrookActor(drawable, Scaling.none, crook, crookAnimations);
-        
-        
-        actors.add(crookActor);
-		
-		pawns.add(crook);
-		
-		players.add(new Player("Gunnar", pawns, Role.Crook, mediator));
 		
 		//Creates a matrix that will contain all the diffrent tiles
 		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
-		
+		List<IWalkableTile> listOfHideOut = new ArrayList<IWalkableTile>();
 		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
 			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
 				
@@ -172,9 +193,11 @@ public class GameFactory {
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
 						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
+						listOfHideOut.add(walkable[i][j]);
 						break;
 					case 8: 	// Acording to the tileset case 8 is the Travelagency tiles
-						walkable[i][j] = new TravelAgencyTile(new Point(i, j), mediator);
+						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
+						walkable[i][j] = TravelAgencyTile.getInstance();
 						break;
 					case 9: 	// Acording to the tileset case 9 is the Bank tiles containing 2000
 						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
@@ -194,13 +217,78 @@ public class GameFactory {
 				}
 			}
 		}
-		
 		//create a game model
 		GameModel gameModel =new GameModel(mediator, players, walkable);
+		
+		// Test for path actors
+		/*TilePath path = new TilePath();
+		path.addTile(new RoadTile(new Point(0, 4), mediator));
+		path.addTile(new RoadTile(new Point(0, 5), mediator));
+		path.addTile(new RoadTile(new Point(1, 5), mediator));
+		path.addTile(new RoadTile(new Point(2, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 4), mediator));
+		path.addTile(new RoadTile(new Point(3, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 2), mediator));
+		path.addTile(new RoadTile(new Point(1, 2), mediator));
+		
+		List<TilePath> paths = new ArrayList<TilePath>();
+		paths.add(path);
+		List<PathActor> pathActors = getPathActorsFor(paths, player);
+		
+		actors.addAll(pathActors);
+		For the test to work, uncomment the check in Player.choosePath*/
+		// Test end
+		
+		for(Player player: players){
+			player.getCurrentPawn().setCurrentTile(listOfHideOut.get(0));
+		}
 	
 		// create the controller and view of the game
+		mediator.registerDice(new Dice(mediator));
+		mediator.registerPathFinder(new PathFinder(walkable, mediator));
 		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
 		
+	}
+	
+	/**
+	 * Creates path actors for the specified paths connected to the specified player.
+	 * 
+	 * @param paths The paths to create PathActors for.
+	 * @param player The player who can click the paths.
+	 * @return A list of PathActors.
+	 */
+	public static List<PathActor> getPathActorsFor(List<TilePath> paths, Player player) {
+		
+		List<PathActor> pathActors = new ArrayList<PathActor>();
+	
+		List<Image> pathImages = new ArrayList<Image>();
+		
+		for (TilePath path : paths) {
+			
+			for (int i = 1; i < path.getPathSize(); i++) {
+				AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPath");
+				
+				Image pathImage = new Image(region);
+				Point pathTilePos = path.getTile(i).getPosition();
+				System.out.println("X: " + pathTilePos.x 
+						+ "\nY: " + pathTilePos.y);
+				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
+									  pathTilePos.y * Values.TILE_HEIGTH);
+				pathImages.add(pathImage);
+				
+			}
+			
+			AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPathEnd");
+			Image pathEnd = new Image(region);
+			Point pathEndPos = path.getTile(0).getPosition();
+			pathEnd.setPosition(pathEndPos.x * Values.TILE_WIDTH, 
+								pathEndPos.y * Values.TILE_HEIGTH);
+			
+			pathActors.add(new PathActor(path, pathImages, pathEnd, player));
+		}
+		return pathActors;
 	}
 	
 }
