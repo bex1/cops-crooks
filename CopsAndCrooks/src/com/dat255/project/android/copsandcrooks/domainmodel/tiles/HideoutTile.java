@@ -44,19 +44,14 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook
 	 * @param amount the amount to store
 	 */
-	public void depositCash(Crook crook, int amount){
+	public void depositCash(Crook crook){
 		//Adds the crook to the list of crooks that have stored cash
 		if(storedCash.containsKey(crook)){
 			storedCash.put(crook, 0);
 		}
 		
-		if(amount <= crook.getWallet().getCash()){
-			storedCash.put(crook, amount + getStoredCashAmount(crook));
-			crook.getWallet().decrementCash(amount);
-		}else{
-			storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
-			crook.getWallet().setCash(0);
-		}
+		storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
+		crook.getWallet().setCash(0);
 		
 		if(crook.getWallet().getCash() == 0){
 			crook.setWanted(false);
@@ -68,7 +63,7 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 	 * @param crook the crook
 	 * @param amount amount to retrieve
 	 */
-	public void withdrawCash(Crook crook, int amount){
+	public void withdrawCash(Crook crook){
 		int cash;
 		
 		//Checks if the crook has any cash in the hideout.
@@ -78,14 +73,8 @@ public class HideoutTile extends AbstractTile implements IInteractiveTile {
 			throw new NullPointerException("The crook can't be null!");
 		}
 		
-		//Returns the stored cash if amount exceeds or equals the stored cash.
-		if(cash <= amount){
-			storedCash.put(crook, 0);
-			crook.getWallet().incrementCash(cash);
-		}else{
-			storedCash.put(crook, cash-amount);
-			crook.getWallet().incrementCash(amount);
-		}
+		storedCash.put(crook, 0);
+		crook.getWallet().incrementCash(cash);
 		
 		if(crook.getWallet().getCash() > 0){
 			crook.setWanted(true);

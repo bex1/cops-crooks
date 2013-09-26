@@ -52,9 +52,8 @@ public class HideoutTest {
 		crookList.add(testCrook);
 		
 		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
-		testCrook.getWallet().setCash(10);
-		int depositAmount = 7;
-		testHideout.depositCash(testCrook, depositAmount);
+		testCrook.getWallet().setCash(6);
+		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.hasStoredCash(testCrook));
 	}
 
@@ -65,9 +64,8 @@ public class HideoutTest {
 		crookList.add(testCrook);
 		
 		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
-		testCrook.getWallet().setCash(10);
-		int depositAmount = 7;
-		testHideout.depositCash(testCrook, depositAmount);
+		testCrook.getWallet().setCash(7);
+		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.getStoredCashAmount(testCrook) == 7);
 	}
 	
@@ -78,10 +76,9 @@ public class HideoutTest {
 		crookList.add(testCrook);
 		
 		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
-		testCrook.getWallet().setCash(10);
-		int depositAmount = 13;
-		testHideout.depositCash(testCrook, depositAmount);
-		assertTrue(testHideout.getStoredCashAmount(testCrook) == 10);
+		testCrook.getWallet().setCash(9);
+		testHideout.depositCash(testCrook);
+		assertTrue(testHideout.getStoredCashAmount(testCrook) == 9);
 	}
 	
 	@Test
@@ -91,13 +88,10 @@ public class HideoutTest {
 		crookList.add(testCrook);
 		
 		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
-		testCrook.getWallet().setCash(10);
-		int depositAmount = 7;
-		testHideout.depositCash(testCrook, depositAmount);
-		int withdrawAmount = 3;
-		testHideout.withdrawCash(testCrook, withdrawAmount);
+		testCrook.getWallet().setCash(7);
+		testHideout.depositCash(testCrook);
+		testHideout.withdrawCash(testCrook);
 		
-		assertTrue(testHideout.getStoredCashAmount(testCrook) == 
-				(depositAmount - withdrawAmount));
+		assertTrue(testCrook.getWallet().getCash() == 7);
 	}
 }
