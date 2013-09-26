@@ -83,7 +83,7 @@ public class Player implements IObservable {
 	 * @return an unmodifiable collection of the pawns which the player controls.
 	 */
     public Collection<IMovable> getPawns() {
-        return Collections.unmodifiableList(pawns);
+        return Collections.unmodifiableCollection(pawns);
     }
     
     /**
@@ -142,6 +142,13 @@ public class Player implements IObservable {
     	int steps = diceResult * currentPawn.tilesMovedEachStep();
     	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
+    }
+    
+    /**
+     * @return unmodifiable Collection<TilePath> of the possible paths.
+     */
+    public Collection<TilePath> getPossiblePaths() {
+    	return Collections.unmodifiableCollection(possiblePaths);
     }
 
     /**

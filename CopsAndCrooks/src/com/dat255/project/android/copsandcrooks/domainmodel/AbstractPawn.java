@@ -26,6 +26,7 @@ public abstract class AbstractPawn implements IMovable {
 	protected IWalkableTile currentTile;
 	protected IWalkableTile nextTile;
 	protected Direction direction;
+	private int tilesMovedEachStep;
 	
 	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
@@ -38,7 +39,7 @@ public abstract class AbstractPawn implements IMovable {
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	
-	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator) {
+	protected AbstractPawn(Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep) {
 		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
@@ -46,6 +47,7 @@ public abstract class AbstractPawn implements IMovable {
 		this.pawnType = pawnType;
 		this.mediator = mediator;
 		this.direction = Direction.SOUTH;
+		this.tilesMovedEachStep = tilesMovedEachStep;
 	}
 
 	@Override
@@ -171,6 +173,11 @@ public abstract class AbstractPawn implements IMovable {
 	@Override
 	public boolean isMoving() {
 		return isMoving;
+	}
+	
+	@Override
+	public int tilesMovedEachStep() {
+		return tilesMovedEachStep;
 	}
 
 	@Override

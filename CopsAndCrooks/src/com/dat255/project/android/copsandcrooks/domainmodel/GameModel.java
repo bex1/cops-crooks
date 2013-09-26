@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
@@ -32,7 +34,7 @@ public class GameModel implements IObservable  {
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		
 		this.players = players;
-		currentPlayer = players.get(0);
+		this.currentPlayer = players.get(0);
 		
 		mediator.registerGameModel(this);
 		
@@ -120,7 +122,7 @@ public class GameModel implements IObservable  {
 		pcs.addPropertyChangeListener(l);
 	}
 	
-	public List<Player> getPlayers(){
-		return this.players;
+	public Collection<Player> getPlayers(){
+		return Collections.unmodifiableCollection(this.players);
 	}
 }
