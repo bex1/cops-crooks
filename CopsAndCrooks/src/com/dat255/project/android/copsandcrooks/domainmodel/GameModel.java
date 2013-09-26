@@ -8,16 +8,17 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
-public class GameModel implements IObservable  {
+public final class GameModel implements IObservable  {
 	
-	private List<Player> players;
-	private List<PoliceStationTile> policeStationTiles;
+	private final List<Player> players;
+	private final List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
-	private PropertyChangeSupport pcs;
+	private final PropertyChangeSupport pcs;
 	
 	public static final String PROPERTY_NEW_TURN = "APlayersNewTurn";
 	public static final String PROPERTY_NEW_ROUND = "NewRound";
@@ -124,5 +125,9 @@ public class GameModel implements IObservable  {
 	
 	public Collection<Player> getPlayers(){
 		return Collections.unmodifiableCollection(this.players);
+	}
+
+	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
+		intelligenceAgencyTile.hinderGetAway(getPlayers());
 	}
 }

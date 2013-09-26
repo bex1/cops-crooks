@@ -11,11 +11,11 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class Wallet implements IObservable {
+public final class Wallet implements IObservable {
 	
 	private int cash;
 	
-	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public static final String PROPERTY_CASH = "Cash";
 	
 	/**

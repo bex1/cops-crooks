@@ -274,7 +274,7 @@ public class GameFactory {
 		
 		for (TilePath path : paths) {
 			
-			for (int i = 1; i < path.getPathSize(); i++) {
+			for (int i = 1; i < path.getPathLength(); i++) {
 				AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/path/GreenDotPath");
 				
 				Image pathImage = new Image(region);
