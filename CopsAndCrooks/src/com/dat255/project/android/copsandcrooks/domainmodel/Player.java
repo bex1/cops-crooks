@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
@@ -32,6 +33,7 @@ public class Player implements IObservable {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
+	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
 
 	/**
 	 * Initializes a new player.
@@ -107,14 +109,26 @@ public class Player implements IObservable {
     	return wallet;
     }
     
+    public boolean isAnyPawnOnTramstop(){
+    	for(IMovable pawn: pawns){
+    		if(pawn.isWaitingOnTram()){
+    			if(pawn.getPawnType() != PawnType.Car)
+    				return true;
+    		}
+    	}
+    	return false;
+    }
+    
     /**
      * Roll the dice.
      */
     public void rollDice() {
-    	int oldValue = diceResult;
+    	//int oldValue = diceResult;
     	diceResult = mediator.rollDice();
-    	pcs.firePropertyChange(PROPERTY_DICE_RESULT, oldValue, diceResult);
-    	updatePossiblePaths();
+    	pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+    	// To make it possible for a cop to choose with character he wants to move
+    	if(playerRole != Role.Police)
+    		updatePossiblePaths();
     }
     
     /**
@@ -125,7 +139,7 @@ public class Player implements IObservable {
     	possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
-    
+
     /**
      * The player choose a path and the current pawn then moves along it.
      * 
@@ -136,7 +150,20 @@ public class Player implements IObservable {
     		possiblePaths = null;
     		// The path passed the test -> move
     		currentPawn.move(path);
+    		mediator.turnDone();
     	}
+    }
+    
+    public boolean setCurrentPawn(IMovable pawn){
+    	IMovable oldPawn = currentPawn;
+    	for(IMovable p: pawns){
+    		if(p == pawn){
+    			currentPawn = p;
+    			pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldPawn, currentPawn);
+    			return true;
+    		}
+    	}
+    	return false;    	
     }
     
     @Override

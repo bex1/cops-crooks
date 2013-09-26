@@ -10,7 +10,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 public abstract class AbstractWalkingPawn extends AbstractPawn {
 	private boolean isInPoliceHouse;
 	
-	
+	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 
 	protected AbstractWalkingPawn(Role pawnRole, PawnType type, IMediator mediator) {
 		super(pawnRole, type, mediator);
