@@ -63,6 +63,7 @@ public class PathActor extends Group {
 				
 				// Remove ourself from stage.
 				thisActor.remove();
+			
 			}
 		});
 		
