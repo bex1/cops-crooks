@@ -13,6 +13,10 @@ public class TramLine {
 		this.tramLine = tramLine;
 	}
 	
+	/**
+	 * Calculates where you can travel to.
+	 * @return a list of TilePaths that one can travel to.
+	 */
 	public List<TilePath> getPossibleStops(){
 		List<TilePath> possibleStops = new ArrayList<TilePath>();
 		for(TramStopTile stopTile: tramLine){
