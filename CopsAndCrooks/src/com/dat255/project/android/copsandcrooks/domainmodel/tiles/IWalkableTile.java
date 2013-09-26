@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public interface IWalkableTile {
+public interface IWalkableTile extends IObservable{
 	
 	/**
 	 * Checks if the tile is occupied by an IMovable object
