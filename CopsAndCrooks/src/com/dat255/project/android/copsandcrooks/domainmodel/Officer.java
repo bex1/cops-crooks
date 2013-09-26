@@ -29,4 +29,8 @@ public class Officer extends AbstractWalkingPawn {
 			}
 		}
 	}
+
+	public void gotSelected(Officer pawn) {
+		mediator.changePawn(pawn);
+	}
 }
