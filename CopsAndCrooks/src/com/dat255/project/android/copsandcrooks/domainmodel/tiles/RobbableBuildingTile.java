@@ -16,6 +16,8 @@ public class RobbableBuildingTile extends AbstractTile implements IInteractiveTi
 	
 	private int value;
 
+	public static final String PROPERTY_BUILDING_ROBBERY = "Building_Robbery";
+
 	/**
 	 * Create a new RobbableBuilding with a position and a value.
 	 * @param position the building's position
@@ -41,6 +43,7 @@ public class RobbableBuildingTile extends AbstractTile implements IInteractiveTi
 	 */
 	protected void robBuilding(Crook robber){
 		robber.getWallet().incrementCash(value);
+		pcs.firePropertyChange(PROPERTY_BUILDING_ROBBERY, null, null);
 	}
 	
 	/**
