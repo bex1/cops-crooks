@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.map;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -259,7 +260,7 @@ public class GameFactory {
 	 * @param player The player who can click the paths.
 	 * @return A list of PathActors.
 	 */
-	public static List<PathActor> getPathActorsFor(List<TilePath> paths, Player player) {
+	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, Player player) {
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
 	

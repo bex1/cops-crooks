@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
@@ -24,7 +25,7 @@ public class IntelligenceAgencyTile extends AbstractTile implements IInteractive
                 hinderGetAway(mediator.getGameModel().getPlayers());
         }
         
-        public void hinderGetAway(List<Player> playerList){
+        public void hinderGetAway(Collection<Player> playerList){
                 //Access the players via the mediator
                 for(Player player:playerList){
                         //Check the role of the player, 

@@ -17,7 +17,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 /**
  * A visual actor for paths in the game Cops&Crooks.
  * 
- * @author Bex
+ * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class PathActor extends Group {
 	private final TilePath tilePath;
