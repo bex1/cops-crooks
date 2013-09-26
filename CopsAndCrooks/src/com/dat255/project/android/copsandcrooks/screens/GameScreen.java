@@ -60,11 +60,14 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	@Override
 	public void render(float delta){
-		camera.update();
+		
+		stage.setCamera(camera);
 		renderer.setView(camera);
 		renderer.getSpriteBatch().begin();
 		renderer.renderTileLayer(gameBackground);
 		renderer.getSpriteBatch().end();
+		getTable().setBounds(camera.position.x- camera.viewportWidth/2, camera.position.y- camera.viewportHeight/2, 
+				Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		super.render(delta);
 		
 		
@@ -76,8 +79,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		model.startGame();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
-		stage.setCamera(camera);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
+		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(gestureDetector, stage);
@@ -234,19 +237,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showPossiblePaths(Player player) {
-		Role playerRole = player.getPlayerRole();
-		
-		
-		if(playerRole == Role.Crook){
-			List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
-			for(PathActor pathActor: tmp){
-				stage.addActor(pathActor);
-			}
-		}else if(playerRole == Role.Police){
-			List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
-			for(PathActor pathActor: tmp){
-				stage.addActor(pathActor);
-			}
+		List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+		for(PathActor pathActor: tmp){
+			stage.addActor(pathActor);
 		}
 	}
 }

@@ -1,10 +1,11 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -122,15 +123,15 @@ public class GameModelTest {
 		tiles [2][2] = new PoliceStationTile(new Point(2, 2), mediator);
 		tiles [2][1] = new PoliceStationTile(new Point(2, 1), mediator);
 		GameModel gameModel = new GameModel(mediator, players, tiles);
-		gameModel.getPlayers().get(0).getCurrentPawn().setCurrentTile(tiles [1][1]);
-		((Crook)gameModel.getPlayers().get(1).getCurrentPawn()).setWanted(true);
-		gameModel.getPlayers().get(1).getCurrentPawn().setCurrentTile(tiles [1][1]);
+		players.get(0).getCurrentPawn().setCurrentTile(tiles [1][1]);
+		((Crook)players.get(1).getCurrentPawn()).setWanted(true);
+		players.get(1).getCurrentPawn().setCurrentTile(tiles [1][1]);
 		
 		
 		
-		gameModel.notifyWhatICollidedWith(gameModel.getPlayers().get(0).getCurrentPawn());
+		gameModel.notifyWhatICollidedWith(players.get(0).getCurrentPawn());
 		
-		assertTrue(gameModel.getPlayers().get(1).getCurrentPawn().getCurrentTile() == tiles [2][2] || gameModel.getPlayers().get(1).getCurrentPawn().getCurrentTile() == tiles [2][1]);
+		assertTrue(players.get(1).getCurrentPawn().getCurrentTile() == tiles [2][2] || players.get(1).getCurrentPawn().getCurrentTile() == tiles [2][1]);
 		
 		
 	}
