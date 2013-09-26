@@ -20,8 +20,6 @@ public class GameModel implements IObservable  {
 	
 	public static final String PROPERTY_NEW_TURN = "APlayersNewTurn";
 	public static final String PROPERTY_NEW_ROUND = "NewRound";
-	
-	private TravelAgencyTile travelAgency;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
