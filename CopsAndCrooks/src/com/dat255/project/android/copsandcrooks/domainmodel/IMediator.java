@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -86,10 +87,10 @@ public interface IMediator {
 			IMovable pawn, int stepsToMove);
 	
 	/**
-	 * Get the GameModel of this mediator.
-	 * @return the GameModel
+	 * Ask the mediator to communicate with the necessary objects
+	 * to react that the turn is done.
 	 */
-	GameModel getGameModel();
+	void playerTurnDone();
 
-	void turnDone();
+	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile);
 }

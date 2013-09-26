@@ -32,6 +32,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final GameModel model;
 	private final TiledMap mapToRender;
 	private final TiledMapTileLayer gameBackground; //kan heta layertorender
+	
+	private TextButton rollTheDiceButton;
+	private TextButton goByTramButton;
 
 	private final int mapWidth, mapHeight;
 
@@ -56,11 +59,39 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		for (Actor actor : actors) {
 			stage.addActor(actor);
 		}
+		
+		initGuiElements();
+	}
+
+	private void initGuiElements() {
+		// register the button "roll dice"
+		rollTheDiceButton = new TextButton("Roll the dice", getSkin());
+		rollTheDiceButton.addListener(new ClickListener() {
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				super.touchUp(event, x, y, pointer, button);
+				// TODO click sound
+				model.getCurrentPlayer().rollDice();
+				rollTheDiceButton.getParent().clear();
+			}
+		});
+
+		// register the button "go by tram"
+		goByTramButton = new TextButton("Go by tram", getSkin());
+		goByTramButton.addListener(new ClickListener() {
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				super.touchUp(event, x, y, pointer, button);
+				// TODO click sound
+				// TODO go by tram
+				goByTramButton.getParent().clear();
+			}
+		} );
 	}
 
 	@Override
 	public void render(float delta){
-		
+
 		stage.setCamera(camera);
 		renderer.setView(camera);
 		renderer.getSpriteBatch().begin();
@@ -69,7 +100,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		getTable().setBounds(camera.position.x- camera.viewportWidth/2, camera.position.y- camera.viewportHeight/2, 
 				Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		super.render(delta);
-		
 		
 	}
 
@@ -198,39 +228,18 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showActButtons() {
-		final Table table = super.getTable();
-
-		table.add(model.getCurrentPlayer().getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
-        table.row();
+		Table table = super.getTable();
 		
-		// register the button "roll dice"
-		final TextButton rollTheDiceButton = new TextButton("Roll the dice", getSkin());
-		rollTheDiceButton.addListener(new ClickListener() {
-		 @Override
-		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-			 super.touchUp(event, x, y, pointer, button);
-		     	// TODO click sound
-			 	model.getCurrentPlayer().rollDice();
-			 	table.clear();
-		     }
-		} );
+		Player currentPlayer = model.getCurrentPlayer();
+
+		table.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
+        table.row();
 		
 		table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
 		table.row();
 		
 		//TODO if the player is standing at a tramstop
-		if(model.getCurrentPlayer().isAnyPawnOnTramstop()){
-			// register the button "go by tram"
-			final TextButton goByTramButton = new TextButton("Go by tram", getSkin());
-			goByTramButton.addListener(new ClickListener() {
-			 @Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				 super.touchUp(event, x, y, pointer, button);
-			     	// TODO click sound
-				 // TODO go by tram
-				 table.clear();
-			 }
-			} );
+		if(currentPlayer.isAnyWalkingPawnOnTramstop()){
 			table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
 			table.row();
 		}

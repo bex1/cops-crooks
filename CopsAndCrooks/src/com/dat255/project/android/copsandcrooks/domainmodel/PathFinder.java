@@ -6,11 +6,13 @@ import java.util.List;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
+/**
+ * Path finder in the game Cops&Crooks.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public final class PathFinder {
 	private IWalkableTile[][] tiles;
-	private int numberOfSteps;
-	
-
 
 	public PathFinder(IWalkableTile[][] tiles, IMediator mediator) {
 		if (tiles == null)
@@ -23,22 +25,21 @@ public final class PathFinder {
 	}
 
 	public List<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
-		numberOfSteps = stepsToMove;
 		// Note that the current tile might be null
 		IWalkableTile currentTile = pawn.getCurrentTile();
 		if (currentTile != null) {
-			return calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, pawn.getCurrentTile(), null);
+			return calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), null);
 		} else {
 			return null;
 		}
 	}
 
 	private List<TilePath> calculateActualPossiblePaths(PawnType pawnType,
-			int stepsToMove, IWalkableTile currentTile, IWalkableTile previousTile) {
+			int stepsRemaining, int stepsToMove, IWalkableTile currentTile, IWalkableTile previousTile) {
 		
-		if(stepsToMove==0){
+		if(stepsRemaining==0){
 			TilePath path = new TilePath();
-			path.addTile(currentTile);
+			path.addTileLast(currentTile);
 			List<TilePath> subPaths = new LinkedList<TilePath>();
 			subPaths.add(path);
 			return subPaths;
@@ -78,10 +79,10 @@ public final class PathFinder {
 				break;
 			}
 			if(nextTile != null && nextTile != previousTile && canMoveTo(nextTile, pawnType)){
-				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsToMove-1, nextTile, currentTile);
-				if(numberOfSteps != stepsToMove){
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsRemaining-1, stepsToMove, nextTile, currentTile);
+				if(stepsToMove != stepsRemaining){
 					for(TilePath subPath : subPaths){
-						subPath.addTile(currentTile);
+						subPath.addTileLast(currentTile);
 					}
 				}
 				subPathsAllDirections.addAll(subPaths);

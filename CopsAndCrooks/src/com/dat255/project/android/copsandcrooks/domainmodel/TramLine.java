@@ -27,7 +27,7 @@ public class TramLine {
 		for(TramStopTile stopTile: tramLine){
 			if(!stopTile.isOccupied()){
 				TilePath path = new TilePath();
-				path.addTile(stopTile);
+				path.addTileLast(stopTile);
 				possibleStops.add(path);
 			}
 		}

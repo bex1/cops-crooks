@@ -148,8 +148,8 @@ public class CopCarTest {
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
 		final RoadTile end = new RoadTile(new Point(0, 2), new Mediator());
-		path.addTile(end);
-		path.addTile(new RoadTile(new Point(0, 1), new Mediator()));
+		path.addTileLast(end);
+		path.addTileLast(new RoadTile(new Point(0, 1), new Mediator()));
 		test.move(path);
 		for (int i = 0; i < 10; i++)
 			test.update(Values.PAWN_MOVE_DELAY);

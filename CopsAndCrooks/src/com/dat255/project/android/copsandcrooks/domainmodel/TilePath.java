@@ -10,12 +10,18 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
 /**
  * Represents a path along tiles in the game Cops&Crooks.
  * 
+ * Uses a LinkedList and acts as a stack. 
+ * Where the next tile is in the last position of the list.
+ * 
+ * Tiles are added to the path in the reverse order, ie the last tile
+ * is added first.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class TilePath implements IObservable {
+public final class TilePath implements IObservable {
 
-	private LinkedList<IWalkableTile> pathList;
+	private final LinkedList<IWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	public TilePath() {
@@ -31,8 +37,8 @@ public class TilePath implements IObservable {
 	}
 	
 	/**
-	 * Returns the next tile on the path.
-	 * @return the next tile on path.
+	 * Returns the tile with the specified index.
+	 * @return the specified tile.
 	 */
 	public IWalkableTile getTile(int i) {
 		return pathList.get(i);
@@ -49,14 +55,14 @@ public class TilePath implements IObservable {
 	 * Add a tile to the path.
 	 * @param tile - the tile to be added to the path.
 	 */
-	public void addTile(IWalkableTile tile){
+	public void addTileLast(IWalkableTile tile){
 		pathList.addLast(tile);
 	}
 	/**
 	 * Returns the size of the path.
 	 * @return the size of the path.
 	 */
-	public int getPathSize(){
+	public int getPathLength(){
 		return pathList.size();
 	}
 	

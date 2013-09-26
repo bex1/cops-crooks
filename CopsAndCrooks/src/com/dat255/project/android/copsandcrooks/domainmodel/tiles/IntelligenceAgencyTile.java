@@ -22,27 +22,27 @@ public class IntelligenceAgencyTile extends AbstractTile implements IInteractive
 
         @Override
         public void interact(IMovable target) {
-                hinderGetAway(mediator.getGameModel().getPlayers());
+        	mediator.hinderGetAway(this);
+        	// Call the mediator so the gameModel can provide us with the players.
         }
-        
+
         public void hinderGetAway(Collection<Player> playerList){
-                //Access the players via the mediator
-                for(Player player:playerList){
-                        //Check the role of the player, 
-                        //if it's a crook you stop the get away attempt.
-                        if(player.getPlayerRole().equals(Role.Crook)){
-                                IMovable movable = player.getPawns().iterator().next();
-                                if(movable instanceof Crook){
-                                        Crook crook = (Crook)movable;
-                                        if(crook.isAttemptingGetAway()){
-                                                crook.setAttemptingGetAway(false);
-                                                
-                                                //TODO should a cop accompany the crook the policestation?
-                                                mediator.moveToPoliceStation(crook);
-                                                crook.setIsInPoliceStation(true);
-                                        }
-                                }
-                        }
-                }
+        	for(Player player : playerList){
+        		//Check the role of the player, 
+        		//if it's a crook you stop the get away attempt.
+        		if(player.getPlayerRole().equals(Role.Crook)){
+        			IMovable movable = player.getPawns().iterator().next();
+        			if(movable instanceof Crook){
+        				Crook crook = (Crook)movable;
+        				if(crook.isAttemptingGetAway()){
+        					crook.setAttemptingGetAway(false);
+
+        					//TODO should a cop accompany the crook the policestation?
+        							mediator.moveToPoliceStation(crook);
+        					crook.setIsInPoliceStation(true);
+        				}
+        			}
+        		}
+        	}
         }
 }

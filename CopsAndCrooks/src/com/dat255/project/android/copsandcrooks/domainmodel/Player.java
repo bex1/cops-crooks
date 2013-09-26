@@ -4,11 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 /**
@@ -113,11 +110,19 @@ public class Player implements IObservable {
     	return wallet;
     }
     
-    public boolean isAnyPawnOnTramstop(){
+   
+    /**
+     * Returns true if one of the players walking pawns is on a tramstop,
+     * false otherwise.
+     * 
+     * @return true if one of the players walking pawns is on a tramstop,
+     * false otherwise.
+     */
+    public boolean isAnyWalkingPawnOnTramstop(){
     	for(IMovable pawn: pawns){
-    		if(pawn.isWaitingOnTram()){
-    			if(pawn.getPawnType() != PawnType.Car)
-    				return true;
+    		if (pawn instanceof AbstractWalkingPawn) {
+    			AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn) pawn;
+    			return walkingPawn.isWaitingOnTram();
     		}
     	}
     	return false;
@@ -127,12 +132,12 @@ public class Player implements IObservable {
      * Roll the dice.
      */
     public void rollDice() {
-    	//int oldValue = diceResult;
     	diceResult = mediator.rollDice();
     	pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
     	// To make it possible for a cop to choose with character he wants to move
-    	if(playerRole != Role.Police)
+    	if(playerRole != Role.Police) {
     		updatePossiblePaths();
+    	}
     }
     
     /**
@@ -145,6 +150,9 @@ public class Player implements IObservable {
     }
     
     /**
+     * Returns an unmodifiable Collection<TilePath> of the possible paths the
+     * current selected pawn get walk.
+     * 
      * @return unmodifiable Collection<TilePath> of the possible paths.
      */
     public Collection<TilePath> getPossiblePaths() {
@@ -154,6 +162,8 @@ public class Player implements IObservable {
     /**
      * The player choose a path and the current pawn then moves along it.
      * 
+     * The choosen path has to actually be one of the player's paths.
+     * 
      * @param path The selected path.
      */
     public void choosePath(TilePath path){
@@ -161,12 +171,12 @@ public class Player implements IObservable {
     		possiblePaths = null;
     		// The path passed the test -> move
     		currentPawn.move(path);
-    		mediator.turnDone();
+    		mediator.playerTurnDone();
     	}
     }
     
     /**
-     * Sets the currentpawn of the player to the specified
+     * Sets the current pawn of the player to the specified
      * if its really one of the players pawns.
      * 
      * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.

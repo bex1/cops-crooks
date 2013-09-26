@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 
 /**
@@ -76,12 +77,14 @@ public class Mediator implements IMediator {
 	}
 	
 	@Override
-	public void turnDone(){
-		gameModel.nextPlayer();
+	public void playerTurnDone(){
+		if (gameModel != null) 
+			gameModel.nextPlayer();
 	}
 
 	@Override
-	public GameModel getGameModel(){
-		return this.gameModel;
+	public void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
+		if (gameModel != null) 
+			gameModel.hinderGetAway(intelligenceAgencyTile);
 	}
 }
