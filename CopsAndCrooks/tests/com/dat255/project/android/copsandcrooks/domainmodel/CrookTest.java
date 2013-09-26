@@ -78,12 +78,12 @@ public class CrookTest {
 		Crook test = new Crook(new Mediator());
 		boolean testWanted = test.isWanted();
 		assertFalse("Crook should start unwanted", testWanted);
-		test.getWallet().incrementCash(1);
+		test.setWanted(true);
 		testWanted = test.isWanted();
-		assertTrue("Crook should now be wanted since it has cash", testWanted);
-		test.getWallet().setCash(0);
+		assertTrue("Crook should now be wanted", testWanted);
+		test.setWanted(false);
 		testWanted = test.isWanted();
-		assertFalse("Crook should now be unwanted since cash is 0", testWanted);
+		assertFalse("Crook should now be unwanted", testWanted);
 	}
 
 	/**

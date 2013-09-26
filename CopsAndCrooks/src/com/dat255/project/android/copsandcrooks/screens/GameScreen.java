@@ -201,7 +201,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				} );
 				table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
 				table.row();
-				
 				//TODO if the player is standing at a tramstop
 				if(model.getCurrentPlayer().isAnyPawnOnTramstop()){
 					// register the button "go by tram"
@@ -241,8 +240,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					model.getCurrentPlayer().updatePossiblePaths();
 				}
 			}
-	
-			
 		}
 	}
 

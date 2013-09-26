@@ -202,7 +202,8 @@ public class GameFactory {
 						listOfHideOut.add(walkable[i][j]);
 						break;
 					case 8: 	// Acording to the tileset case 8 is the Travelagency tiles
-						walkable[i][j] = new TravelAgencyTile(new Point(i, j), mediator);
+						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
+						walkable[i][j] = TravelAgencyTile.getInstance();
 						break;
 					case 9: 	// Acording to the tileset case 9 is the Bank tiles containing 2000
 						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
@@ -227,16 +228,16 @@ public class GameFactory {
 		
 		// Test for path actors
 		/*TilePath path = new TilePath();
-		path.addTile(new RoadTile(new Point(1, 2), mediator));
-		path.addTile(new RoadTile(new Point(2, 2), mediator));
-		path.addTile(new RoadTile(new Point(2, 3), mediator));
-		path.addTile(new RoadTile(new Point(3, 3), mediator));
-		path.addTile(new RoadTile(new Point(3, 4), mediator));
-		path.addTile(new RoadTile(new Point(3, 5), mediator));
-		path.addTile(new RoadTile(new Point(2, 5), mediator));
-		path.addTile(new RoadTile(new Point(1, 5), mediator));
-		path.addTile(new RoadTile(new Point(0, 5), mediator));
 		path.addTile(new RoadTile(new Point(0, 4), mediator));
+		path.addTile(new RoadTile(new Point(0, 5), mediator));
+		path.addTile(new RoadTile(new Point(1, 5), mediator));
+		path.addTile(new RoadTile(new Point(2, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 5), mediator));
+		path.addTile(new RoadTile(new Point(3, 4), mediator));
+		path.addTile(new RoadTile(new Point(3, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 3), mediator));
+		path.addTile(new RoadTile(new Point(2, 2), mediator));
+		path.addTile(new RoadTile(new Point(1, 2), mediator));
 		
 		List<TilePath> paths = new ArrayList<TilePath>();
 		paths.add(path);
