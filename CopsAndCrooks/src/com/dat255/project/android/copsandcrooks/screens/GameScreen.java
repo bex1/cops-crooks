@@ -224,16 +224,21 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				}
 			}else if (property.equals(Player.PROPERTY_POSSIBLE_PATHS)){
 				if(model.getCurrentPlayer().getPlayerRole() == Role.Crook){
-					System.out.println(evt.getNewValue());
-					List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
-					for(PathActor pathActor: tmp){
-						stage.addActor(pathActor);
+					try{
+						List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
+						for(PathActor pathActor: tmp){
+							stage.addActor(pathActor);
+						}
+					}catch(NullPointerException e){
+						model.nextPlayer();
 					}
 				}else if(model.getCurrentPlayer().getPlayerRole() == Role.Police){
-					List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
-					for(PathActor pathActor: tmp){
-						stage.addActor(pathActor);
-					}
+					try{
+						List<PathActor> tmp = GameFactory.getPathActorsFor((List<TilePath>)evt.getNewValue(), model.getCurrentPlayer());
+						for(PathActor pathActor: tmp){
+							stage.addActor(pathActor);
+						}
+					}catch(NullPointerException e){}
 				}
 			}else if(property.equals(Player.PROPERTY_CHOOSEN_PAWN)){
 				if(model.getCurrentPlayer().getPlayerRole() == Role.Police){
