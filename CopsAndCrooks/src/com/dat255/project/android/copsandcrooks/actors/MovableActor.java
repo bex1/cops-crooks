@@ -32,7 +32,6 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private final TextureRegionDrawable currentDrawable;
 	private float animTimer;
 	private Animations currentAnimation;
-	private IMediator mediator;
 	
 	public enum Animations{
 		IDLE_ANIM,
@@ -43,26 +42,13 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	}
 
 	public MovableActor(final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
-			final EnumMap<Animations, Animation> animations, final IMediator mediator){
+			final EnumMap<Animations, Animation> animations){
 		super(drawable, scaling);
-		this.mediator = mediator;
 		this.pawn = pawn;
 		this.animations = animations;
 		currentDrawable = drawable;
 		currentAnimation = Animations.IDLE_ANIM;
 		pawn.addObserver(this);
-		
-		this.addListener(new ClickListener(){
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				// TODO select ?
-				mediator.changePawn(pawn);
-				return super.touchDown(event, x, y, pointer, button);
-			}
-		});
-
-
 	}
 	@Override
 	public void act(float delta){
