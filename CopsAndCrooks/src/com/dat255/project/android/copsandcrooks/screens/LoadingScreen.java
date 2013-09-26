@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.screens;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
@@ -17,9 +18,9 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-		Map<String, Role> test = new HashMap<String, Role>();
-		test.put("Player1", Role.Crook);
+		Map<String, Role> test = new TreeMap<String, Role>();
 		test.put("Player2", Role.Crook);
+		test.put("Player1", Role.Crook);
 		game.setScreen(GameFactory.loadGame(game, test));
 	}
 }
