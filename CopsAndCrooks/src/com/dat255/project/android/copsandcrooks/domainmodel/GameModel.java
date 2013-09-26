@@ -1,17 +1,27 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
-public class GameModel  {
+public class GameModel implements IObservable  {
 	
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
+	
+	private PropertyChangeSupport pcs;
+	
+	public static final String PROPERTY_NEW_TURN = "APlayersNewTurn";
+	public static final String PROPERTY_NEW_ROUND = "NewRound";
+	
+	private TravelAgencyTile travelAgency;
 
 	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
 		if (mediator == null)
@@ -36,7 +46,31 @@ public class GameModel  {
 				}
 			}
 		}
+		pcs = new PropertyChangeSupport(this);
 	}
+	
+	public void startGame(){
+		pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
+	}
+	
+	public void nextPlayer(){
+		int i= 0;
+		while (players.get(i) != currentPlayer){
+			++i;
+		}
+		if(i < players.size()-1){
+			currentPlayer= players.get(i+1);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
+		}else{
+			currentPlayer= players.get(0);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
+		}
+	}
+	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
+	}
+	
 
 	void moveToEmptyPoliceStationTile(IMovable movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
@@ -74,6 +108,16 @@ public class GameModel  {
 			}
 		}
 		
+	}
+	
+	@Override
+	public void addObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
+	}
+
+	@Override
+	public void removeObserver(PropertyChangeListener l) {
+		pcs.addPropertyChangeListener(l);
 	}
 	
 	public List<Player> getPlayers(){

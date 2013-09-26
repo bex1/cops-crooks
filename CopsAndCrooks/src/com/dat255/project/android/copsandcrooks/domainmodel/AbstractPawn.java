@@ -33,6 +33,8 @@ public abstract class AbstractPawn implements IMovable {
 	private boolean isMoving;
 	private float moveTimer;
 	
+	private boolean isWaitingOnTram= false;
+	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	
@@ -54,6 +56,16 @@ public abstract class AbstractPawn implements IMovable {
 		 // The current tiled changed, someone moved us -> notify
         pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 		
+	}
+	
+	@Override
+	public boolean isWaitingOnTram(){
+		return isWaitingOnTram;
+	}
+	
+	@Override
+	public void standingOnTramstop(boolean standing){
+		isWaitingOnTram = standing;
 	}
 	
 	@Override

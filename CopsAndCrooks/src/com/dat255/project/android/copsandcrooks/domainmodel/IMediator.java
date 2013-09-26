@@ -30,6 +30,9 @@ public interface IMediator {
 	 */
 	void registerDice(Dice dice);
 	
+
+	void changePawn(IMovable pawn);
+	
 	/**
 	 * Register the pathfinder for communication.
 	 * 
@@ -87,4 +90,6 @@ public interface IMediator {
 	 * @return the GameModel
 	 */
 	GameModel getGameModel();
+
+	void turnDone();
 }
