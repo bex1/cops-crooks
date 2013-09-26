@@ -82,10 +82,10 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		model.startGame();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
-		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		stage.setCamera(camera);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
-
+		
+		
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
@@ -173,10 +173,10 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		if(evt.getSource() != null){
 			String property = evt.getPropertyName();
 			//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
-			if(property.equals(GameModel.PROPERTY_NEW_TURN_CROOK)){
+			if(property.equals(GameModel.PROPERTY_NEW_TURN)){
 				final Table table = super.getTable();
 
-				table.add(model.getCurrentPlayer().getName() + " it's your turn please roll the dice").spaceBottom(50);
+				table.add(model.getCurrentPlayer().getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
 		        table.row();
 				
 				// register the button "roll dice"
@@ -209,46 +209,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					} );
 					table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
 					table.row();
-				}
-			}else if(property.equals(GameModel.PROPERTY_NEW_TURN_POLICE)){	
-				//check if the player has made a move otherwise he rolls a dice or travels the tramstop.
-				if(property.equals(GameModel.PROPERTY_NEW_TURN_CROOK)){
-					final Table table = super.getTable();
-					
-					table.add(model.getCurrentPlayer().getName() + " it's your turn please roll the dice").spaceBottom(50);
-			        table.row();
-					
-					// register the button "roll dice"
-					final TextButton rollTheDiceButton = new TextButton("Roll the dice", getSkin());
-					rollTheDiceButton.addListener(new ClickListener() {
-					 @Override
-					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-						 super.touchUp(event, x, y, pointer, button);
-					     	// TODO click sound
-						 	// TODO roll the die
-						 	model.getCurrentPlayer().rollDice();
-						 	table.clear();
-					     }
-					} );
-					table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
-					table.row();
-					
-					//TODO if the player is standing at a tramstop
-					if(model.getCurrentPlayer().isAnyPawnOnTramstop()){
-						// register the button "go by tram"
-						final TextButton goByTramButton = new TextButton("Go by tram", getSkin());
-						goByTramButton.addListener(new ClickListener() {
-						 @Override
-						public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-							 super.touchUp(event, x, y, pointer, button);
-						     	// TODO click sound
-							 	// TODO go by tram
-							 	table.clear();
-						     }
-						} );
-						table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
-						table.row();
-					}
 				}
 			}else if(property.equals(Player.PROPERTY_DICE_RESULT)){ 
 				//TODO show the results

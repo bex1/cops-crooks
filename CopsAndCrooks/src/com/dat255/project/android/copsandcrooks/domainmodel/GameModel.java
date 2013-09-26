@@ -17,8 +17,7 @@ public class GameModel implements IObservable  {
 	private Player currentPlayer;
 	private PropertyChangeSupport pcs;
 	
-	public static final String PROPERTY_NEW_TURN_CROOK = "ACrooksTurn";
-	public static final String PROPERTY_NEW_TURN_POLICE = "APoliceTurn";
+	public static final String PROPERTY_NEW_TURN = "APlayersNewTurn";
 	public static final String PROPERTY_NEW_ROUND = "NewRound";
 	
 	private TravelAgencyTile travelAgency;
@@ -50,23 +49,20 @@ public class GameModel implements IObservable  {
 	}
 	
 	public void startGame(){
-		System.out.println("hej");
-		pcs.firePropertyChange(PROPERTY_NEW_TURN_CROOK, 0, currentPlayer);
+		pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
 	}
 	
 	public void nextPlayer(){
-		Player oldPlayer = currentPlayer;
 		int i= 0;
 		while (players.get(i) != currentPlayer){
 			++i;
 		}
 		if(i < players.size()-1){
 			currentPlayer= players.get(i+1);
-			pcs.firePropertyChange(PROPERTY_NEW_TURN_CROOK, oldPlayer, currentPlayer);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
 		}else{
 			currentPlayer= players.get(0);
-			pcs.firePropertyChange(PROPERTY_NEW_TURN_POLICE, oldPlayer, currentPlayer);
-			pcs.firePropertyChange(PROPERTY_NEW_ROUND, oldPlayer, currentPlayer);
+			pcs.firePropertyChange(PROPERTY_NEW_TURN, null, currentPlayer);
 		}
 	}
 	

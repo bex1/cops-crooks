@@ -47,7 +47,8 @@ public class PathActor extends Group {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				player.choosePath(tilePath);
-				thisActor.clear();
+				thisActor.remove();
+			
 			}
 		});
 		
