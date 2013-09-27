@@ -117,7 +117,7 @@ public final class GameModel implements IObservable  {
 		intelligenceAgencyTile.hinderGetAway(getPlayers());
 	}
 
-	void officerSelected(Officer pawn) {
+	void pawnSelected(IMovable pawn) {
 		if (currentPlayer.getPlayerRole() == Role.Police) {
 			currentPlayer.setCurrentPawn(pawn);
 		}

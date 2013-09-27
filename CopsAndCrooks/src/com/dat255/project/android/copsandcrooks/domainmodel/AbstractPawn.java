@@ -105,9 +105,11 @@ public abstract class AbstractPawn implements IMovable {
 		        	if (currentTile != null && currentTile.isOccupied()) {
 		        		// We collided, communicate with the module via the mediator	
 		        		mediator.didCollideAfterMove(this);
+		        		mediator.playerTurnDone();
 		        		return;
 		        	}
 		        	currentTile.setOccupiedBy(pawnType);
+		        	mediator.playerTurnDone();
 		        	
 		        	// Try to interact with the tile
 		        	this.interactWithTile();

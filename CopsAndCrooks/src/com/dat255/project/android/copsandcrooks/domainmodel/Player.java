@@ -177,7 +177,6 @@ public class Player implements IObservable {
     		// The path passed the test -> move
     		currentPawn.move(path);
     		diceResult = 0;
-    		mediator.playerTurnDone();
     	}
     }
     

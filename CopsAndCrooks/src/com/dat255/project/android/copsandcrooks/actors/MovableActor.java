@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
@@ -79,9 +80,12 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private void moveDirectly() {
 
 		// Just set the position according to model
-		Point currentPos = pawn.getCurrentTile().getPosition();
-		this.addAction(moveTo(currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
-							  currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2)));
+		IWalkableTile currTile = pawn.getCurrentTile();
+		if (currTile != null) {
+			Point currentPos = pawn.getCurrentTile().getPosition();
+			this.addAction(moveTo(currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
+					currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2)));
+		}
 	}
 	
 	private void animateWalk() {
