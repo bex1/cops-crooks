@@ -65,6 +65,14 @@ public final class TilePath implements IObservable {
 	public int getPathLength(){
 		return pathList.size();
 	}
+	/**
+	 * Checks to see if the list already contains a tile.
+	 * @param tile
+	 * @return true if the tile already is in the list
+	 */
+	public boolean contains(IWalkableTile tile){
+		return pathList.contains(tile);
+	}
 	
 	@Override
 	public void addObserver(PropertyChangeListener l) {
