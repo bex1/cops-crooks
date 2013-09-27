@@ -11,7 +11,7 @@ public class Values {
 	
 	public static final int GETAWAY_TICKET_COST = 5000;
 	
-	public static final float PAWN_MOVE_DELAY = 1f;
+	public static final float PAWN_MOVE_DELAY = 0.5f;
 	
 	 // the fixed viewport dimensions (ratio: 1.6)
     public static final int GAME_VIEWPORT_WIDTH = 800, GAME_VIEWPORT_HEIGHT = 480;

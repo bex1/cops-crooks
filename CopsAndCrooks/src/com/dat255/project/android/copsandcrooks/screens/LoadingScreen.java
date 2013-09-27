@@ -19,8 +19,8 @@ public class LoadingScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		Map<String, Role> test = new TreeMap<String, Role>();
-		test.put("Player2", Role.Crook);
-		test.put("Player1", Role.Crook);
+		test.put("Tjuv", Role.Crook);
+		test.put("Polis", Role.Police);
 		game.setScreen(GameFactory.loadGame(game, test));
 	}
 }

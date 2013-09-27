@@ -98,16 +98,17 @@ public abstract class AbstractPawn implements IMovable {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
-		        	this.setMoving(false);
 		        	this.setCurrentTile(nextTile);
-		        	nextTile.setOccupiedBy(pawnType);
+		        	this.setMoving(false);
 		        	nextTile = null;
-		        	
 		        	
 		        	if (currentTile != null && currentTile.isOccupied()) {
 		        		// We collided, communicate with the module via the mediator	
 		        		mediator.didCollideAfterMove(this);
+		        		return;
 		        	}
+		        	currentTile.setOccupiedBy(pawnType);
+		        	
 		        	// Try to interact with the tile
 		        	this.interactWithTile();
 		        	

@@ -134,10 +134,7 @@ public class Player implements IObservable {
     public void rollDice() {
     	diceResult = mediator.rollDice();
     	pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
-    	// To make it possible for a cop to choose with character he wants to move
-    	if(playerRole != Role.Police) {
-    		updatePossiblePaths();
-    	}
+    	updatePossiblePaths();
     }
     
     /**
@@ -149,6 +146,7 @@ public class Player implements IObservable {
     	// No possible paths and crook... -> Next player
     	if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
     		mediator.playerTurnDone();
+    		return;
     	}
     	pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
     }
@@ -160,7 +158,10 @@ public class Player implements IObservable {
      * @return unmodifiable Collection<TilePath> of the possible paths.
      */
     public Collection<TilePath> getPossiblePaths() {
-    	return Collections.unmodifiableCollection(possiblePaths);
+    	if (possiblePaths != null) {
+    		return Collections.unmodifiableCollection(possiblePaths);
+    	}
+    	return null;
     }
 
     /**
@@ -175,6 +176,7 @@ public class Player implements IObservable {
     		possiblePaths = null;
     		// The path passed the test -> move
     		currentPawn.move(path);
+    		diceResult = 0;
     		mediator.playerTurnDone();
     	}
     }

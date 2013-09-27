@@ -32,7 +32,7 @@ public final class TilePath implements IObservable {
 	 * Returns and consumes the next tile on the path.
 	 * @return the next tile on path.
 	 */
-	public IWalkableTile consumeNextTile() {
+	public synchronized IWalkableTile consumeNextTile() {
 		return pathList.pollLast();
 	}
 	
@@ -55,7 +55,7 @@ public final class TilePath implements IObservable {
 	 * Add a tile to the path.
 	 * @param tile - the tile to be added to the path.
 	 */
-	public void addTileLast(IWalkableTile tile){
+	public synchronized void addTileLast(IWalkableTile tile){
 		pathList.addLast(tile);
 	}
 	/**
@@ -70,7 +70,7 @@ public final class TilePath implements IObservable {
 	 * @param tile
 	 * @return true if the tile already is in the list
 	 */
-	public boolean contains(IWalkableTile tile){
+	public synchronized boolean contains(IWalkableTile tile){
 		return pathList.contains(tile);
 	}
 	

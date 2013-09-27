@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  */
 public final class PathFinder {
 	private IWalkableTile[][] tiles;
+	private IMediator mediator;
 
 	public PathFinder(IWalkableTile[][] tiles, IMediator mediator) {
 		if (tiles == null)
@@ -24,26 +26,27 @@ public final class PathFinder {
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 
 		this.tiles = tiles;
+		this.mediator = mediator;
 		mediator.registerPathFinder(this);
 	}
 
 	public Collection<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
 		// Note that the current tile might be null
 		IWalkableTile currentTile = pawn.getCurrentTile();
-		if (currentTile != null) {
-			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null));
+		if (currentTile != null && stepsToMove > 0) {
+			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn, pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null));
 		} else {
 			return null;
 		}
 	}
 
-	private List<TilePath> calculateActualPossiblePaths(PawnType pawnType,
+	private List<TilePath> calculateActualPossiblePaths(IMovable pawn, PawnType pawnType,
 			int stepsRemaining, int stepsToMove, IWalkableTile currentTile, IWalkableTile startTile, IWalkableTile previousTile) {
 		
 		if(stepsRemaining==0 || (previousTile != null && currentTile instanceof HideoutTile )){
 			TilePath path = new TilePath();
 			path.addTileLast(currentTile);
-			List<TilePath> subPaths = new LinkedList<TilePath>();
+			List<TilePath> subPaths = new ArrayList<TilePath>();
 			subPaths.add(path);
 			return subPaths;
 		}
@@ -51,7 +54,7 @@ public final class PathFinder {
 		int x = currentTile.getPosition().x;
 		int y = currentTile.getPosition().y;
 		
-		List<TilePath> subPathsAllDirections = new LinkedList<TilePath>();
+		List<TilePath> subPathsAllDirections = new ArrayList<TilePath>();
 		IWalkableTile nextTile = null;
 		
 		for(int i=0; i<4; i++){
@@ -81,28 +84,57 @@ public final class PathFinder {
 					nextTile = null;
 				break;
 			}
-			if(nextTile != null && nextTile != previousTile && canMoveTo(nextTile, pawnType, startTile, stepsRemaining) && 
-					!(stepsRemaining == 1 && (nextTile.isOccupied() /* TODO cross reference problem? && (nextTile.getOccupiedBy() == PawnType.Crook && (pawnType == PawnType.Car || pawnType == PawnType.Officer))*/))){
-				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile);
+			if(canMoveTo(nextTile, previousTile, pawn, pawnType, startTile, stepsRemaining)){
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawn, pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile);
+				subPathsAllDirections.addAll(subPaths);
 				if(stepsToMove != stepsRemaining){
 					for(TilePath subPath : subPaths){
 						if(subPath.contains(currentTile))
-							subPaths.remove(subPath);
+							// Concurrent modification fix
+							subPathsAllDirections.remove(subPath);
 						else
 							subPath.addTileLast(currentTile);
 					}
 				}
-				subPathsAllDirections.addAll(subPaths);
 			}
 		}		
-		
+
 		return subPathsAllDirections;
 	}
-	
-	private boolean canMoveTo(IWalkableTile tile, PawnType pawnType, IWalkableTile startTile, int stepsRemaining){
-		return (tile.getAllowedPawnTypes().contains(pawnType) && tile != startTile)
-				|| (tile.getOccupiedBy() == PawnType.Crook && pawnType==PawnType.Officer
-				&& tile.getAllowedPawnTypes().contains(pawnType) && tile != startTile);
+
+	private boolean canMoveTo(IWalkableTile target, IWalkableTile previous, IMovable pawn, PawnType pawnType, IWalkableTile startTile, int stepsRemaining){
+		// Check that the target is valid
+		if (target != null && target != previous && target != startTile 
+				&& target.getAllowedPawnTypes().contains(pawnType)) {
+			
+			// Is it occupied?
+			if (target.isOccupied()) {
+				// Just one step left? We will end on target
+				if (stepsRemaining == 1) {
+					if (pawnType == PawnType.Car || pawnType == PawnType.Officer) {
+						return mediator.isWantedCrookOn(target);
+					} else {
+						return false;
+					}
+				// More steps left, check so we dont pass through a police when a wanted crook
+				} else if (pawn instanceof Crook) {
+					PawnType targetType = target.getOccupiedBy();
+					Crook crook = (Crook)pawn;
+					if (crook.isWanted() && (targetType == PawnType.Car || targetType == PawnType.Officer)) {
+						return false;
+					} else {
+						return true;
+					}
+				// More steps left. We can pass.
+				} else {
+					return true;
+				}
+			// Was not occupied and we are accepted. We can move.
+			} else {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

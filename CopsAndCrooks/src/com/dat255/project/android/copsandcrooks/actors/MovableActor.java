@@ -65,6 +65,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 				}
 			} else if (property == IMovable.PROPERTY_IS_MOVING) {
 				if (!pawn.isMoving()) {
+					animTimer = 0;
 					currentAnimation = Animations.IDLE_ANIM;
 				}
 				// use fade out fade in 
@@ -76,13 +77,11 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	}
 	
 	private void moveDirectly() {
-		// Make sure we move into idle
-		animTimer = 0;
 
-		// Just set the position according to mocel
+		// Just set the position according to model
 		Point currentPos = pawn.getCurrentTile().getPosition();
-		this.setPosition(currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
-				  	     currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2));
+		this.addAction(moveTo(currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
+							  currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2)));
 	}
 	
 	private void animateWalk() {
@@ -110,7 +109,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 			// Add move action
 			this.addAction(moveTo(pawnNextPosition.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2), 
 								  pawnNextPosition.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2), 
-								  Values.PAWN_MOVE_DELAY/2, Interpolation.linear));
+								  Values.PAWN_MOVE_DELAY, Interpolation.linear));
 		}
 	}
 }

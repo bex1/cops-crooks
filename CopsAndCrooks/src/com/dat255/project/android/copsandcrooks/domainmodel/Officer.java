@@ -31,6 +31,7 @@ public class Officer extends AbstractWalkingPawn {
 				mediator.addCashToMyPlayer((int)(crook.getWallet().getCash() * 
 						Values.POLICE_CASH_REWARD_FACTOR), this);
 				crook.getWallet().setCash(0);
+				crook.setWanted(false);
 			}
 		}
 	}

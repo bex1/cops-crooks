@@ -4,6 +4,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -42,7 +43,9 @@ public class RobbableBuildingTile extends AbstractTile implements IInteractiveTi
 	 * @param robber the crook that's robbing the building
 	 */
 	protected void robBuilding(Crook robber){
-		robber.getWallet().incrementCash(value);
+		Wallet robberWallet = robber.getWallet();
+		robberWallet.incrementCash(value);
+		robber.setWanted(robberWallet.getCash() > 0);
 		pcs.firePropertyChange(PROPERTY_BUILDING_ROBBERY, null, null);
 	}
 	
