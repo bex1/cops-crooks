@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.Collection;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 
@@ -85,5 +86,12 @@ public final class Mediator implements IMediator {
 	public void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
 		if (gameModel != null) 
 			gameModel.hinderGetAway(intelligenceAgencyTile);
+	}
+
+	@Override
+	public boolean isWantedCrookOn(IWalkableTile tile) {
+		if (gameModel != null) 
+			return gameModel.checkIfWantedCrookAt(tile);
+		return false;
 	}
 }

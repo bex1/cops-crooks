@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
@@ -27,20 +28,7 @@ public class PathActor extends Group {
 	
 	private final Image pathEndImage, pathEndImageClicked;
 	
-	private final Task removeTask = new Task() {
-		@Override
-		public void run () {
-			Stage stage = getStage();
-			if (stage != null) {
-				for (Actor actor : stage.getActors()) {
-					if (actor instanceof PathActor) {
-						actor.remove();
-					}
-				}
-			}
-			removeTimer.stop();
-		}
-	};
+	private final PathActor thisActor;
 	
 	/**
 	 * Instantiates a visual PathActor along the specified path.
@@ -56,6 +44,7 @@ public class PathActor extends Group {
 		this.removeTimer = new Timer();
 		this.pathEndImage = pathEndImage;
 		this.pathEndImageClicked = pathEndImageClicked;
+		this.thisActor = this;
 		
 		this.addActor(pathEndImage);
 		for (Image img : pathImages) {
@@ -87,14 +76,31 @@ public class PathActor extends Group {
 					if (actor instanceof PathActor) {
 						PathActor pathActor = (PathActor)actor;
 						pathActor.clear();
+						thisActor.addAction((Actions.removeActor()));
 					}
 				}
 			}
-			
-			// Can't remove the PathActors in stage before the pathActors has cleared all children
-			// We solve this by scheduling a task that will do this in 0.5 seconds.
-			removeTimer.scheduleTask(removeTask, 0.5f);
-			removeTimer.start();
 		}
 	};
+	
+	@Override
+	public void clear() {
+		super.clear();
+		
+		// Can't remove the PathActors in stage before the pathActors has cleared all children
+		// We solve this by scheduling a task that will do this in 0.5 seconds.
+		removeTimer.scheduleTask(new RemoveTask(), 0.1f);
+		removeTimer.start();
+	}
+	
+	private class RemoveTask extends Task {
+		@Override
+		public void run () {
+			thisActor.remove();
+			removeTimer.stop();
+			cancel();
+		}
+	}
 }
+
+
