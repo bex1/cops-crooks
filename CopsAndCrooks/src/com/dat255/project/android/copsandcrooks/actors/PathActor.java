@@ -97,7 +97,4 @@ public class PathActor extends Group {
 			removeTimer.start();
 		}
 	};
-
-	
-	
 }

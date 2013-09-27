@@ -11,9 +11,11 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,7 +34,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final GameModel model;
 	private final TiledMap mapToRender;
 	private final TiledMapTileLayer gameBackground; //kan heta layertorender
+	private final Stage hudStage;
 	
+	private Table actionsTable;
 	private TextButton rollTheDiceButton;
 	private TextButton goByTramButton;
 
@@ -51,6 +55,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
 		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
 		
+		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
+		
 		model.addObserver(this);
 		for(Player player : model.getPlayers()){
 			player.addObserver(this);
@@ -64,6 +70,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
+		actionsTable = new Table(getSkin());
+		actionsTable.setFillParent(true);
 		// register the button "roll dice"
 		rollTheDiceButton = new TextButton("Roll the dice", getSkin());
 		rollTheDiceButton.addListener(new ClickListener() {
@@ -97,10 +105,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		renderer.getSpriteBatch().begin();
 		renderer.renderTileLayer(gameBackground);
 		renderer.getSpriteBatch().end();
-		getTable().setBounds(camera.position.x- camera.viewportWidth/2, camera.position.y- camera.viewportHeight/2, 
-				Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	
 		super.render(delta);
 		
+        hudStage.act(delta);
+        hudStage.draw();
 	}
 
 	@Override
@@ -113,7 +122,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		
 		// Allows input via stage and gestures
-		InputMultiplexer inputMulti = new InputMultiplexer(gestureDetector, stage);
+		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
 	}
 
@@ -177,7 +186,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float ratio = initialDistance / distance;
 			float zoom = initialScale * ratio;
 			if(zoom < 2.2f  && zoom > 0.6f) {
-
 				camera.zoom = zoom;
 				// Keep within map
 				if(camera.position.x > getCameraBoundryRight())
@@ -189,6 +197,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				if(camera.position.y < getCameraBoundryDown())
 					camera.position.y = getCameraBoundryDown();
 			}
+
 			return false;
 		}
 
@@ -228,20 +237,20 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showActButtons() {
-		Table table = super.getTable();
+		hudStage.addActor(actionsTable);
 		
 		Player currentPlayer = model.getCurrentPlayer();
 
-		table.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
-        table.row();
+		actionsTable.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
+		actionsTable.row();
 		
-		table.add(rollTheDiceButton).size(350, 60).uniform().spaceBottom(10);
-		table.row();
+		actionsTable.add(rollTheDiceButton).size(360, 60).uniform().padBottom(10);
+		actionsTable.row();
 		
 		//TODO if the player is standing at a tramstop
 		if(currentPlayer.isAnyWalkingPawnOnTramstop()){
-			table.add(goByTramButton).size(350, 60).uniform().spaceBottom(10);
-			table.row();
+			actionsTable.add(goByTramButton).size(360, 60).uniform().padBottom(10);
+			actionsTable.row();
 		}
 	}
 
