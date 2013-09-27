@@ -16,10 +16,19 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	
 	private static TravelAgencyTile travelAgencyInstance;
 	
+	/**
+	 * Get the travel agency instance.
+	 * @return the travelagency
+	 */
 	public static TravelAgencyTile getInstance(){
 		return travelAgencyInstance;
 	}
 	
+	/**
+	 * Create a new instance of travel agency.
+	 * @param position the position
+	 * @param mediator the mediator
+	 */
 	public static void createTravelAgency(Point position, IMediator mediator){
 		if(travelAgencyInstance == null){
 			travelAgencyInstance = new TravelAgencyTile(position, mediator);
