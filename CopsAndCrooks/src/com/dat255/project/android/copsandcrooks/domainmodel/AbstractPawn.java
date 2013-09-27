@@ -83,6 +83,7 @@ public abstract class AbstractPawn implements IMovable {
 		this.pathToMove = path;
 		IWalkableTile next = pathToMove.consumeNextTile();
 		updateDirection(currentTile, next);
+		currentTile.setNotOccupied();
 		this.setMoving(true);
 		setNextTile(next);
 	}
@@ -99,6 +100,7 @@ public abstract class AbstractPawn implements IMovable {
 		        if (pathToMove.isEmpty()) {
 		        	this.setMoving(false);
 		        	this.setCurrentTile(nextTile);
+		        	nextTile.setOccupiedBy(pawnType);
 		        	nextTile = null;
 		        	
 		        	

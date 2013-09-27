@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 /**
@@ -30,16 +31,16 @@ public final class PathFinder {
 		// Note that the current tile might be null
 		IWalkableTile currentTile = pawn.getCurrentTile();
 		if (currentTile != null) {
-			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), null));
+			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null));
 		} else {
 			return null;
 		}
 	}
 
 	private List<TilePath> calculateActualPossiblePaths(PawnType pawnType,
-			int stepsRemaining, int stepsToMove, IWalkableTile currentTile, IWalkableTile previousTile) {
+			int stepsRemaining, int stepsToMove, IWalkableTile currentTile, IWalkableTile startTile, IWalkableTile previousTile) {
 		
-		if(stepsRemaining==0){
+		if(stepsRemaining==0 || (previousTile != null && currentTile instanceof HideoutTile )){
 			TilePath path = new TilePath();
 			path.addTileLast(currentTile);
 			List<TilePath> subPaths = new LinkedList<TilePath>();
@@ -80,11 +81,15 @@ public final class PathFinder {
 					nextTile = null;
 				break;
 			}
-			if(nextTile != null && nextTile != previousTile && canMoveTo(nextTile, pawnType)){
-				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsRemaining-1, stepsToMove, nextTile, currentTile);
+			if(nextTile != null && nextTile != previousTile && canMoveTo(nextTile, pawnType, startTile, stepsRemaining) && 
+					!(stepsRemaining == 1 && (nextTile.isOccupied() /* TODO cross reference problem? && (nextTile.getOccupiedBy() == PawnType.Crook && (pawnType == PawnType.Car || pawnType == PawnType.Officer))*/))){
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile);
 				if(stepsToMove != stepsRemaining){
 					for(TilePath subPath : subPaths){
-						subPath.addTileLast(currentTile);
+						if(subPath.contains(currentTile))
+							subPaths.remove(subPath);
+						else
+							subPath.addTileLast(currentTile);
 					}
 				}
 				subPathsAllDirections.addAll(subPaths);
@@ -94,10 +99,10 @@ public final class PathFinder {
 		return subPathsAllDirections;
 	}
 	
-	private boolean canMoveTo(IWalkableTile tile, PawnType pawnType){
-		return (!tile.isOccupied() && tile.getAllowedPawnTypes().contains(pawnType))
+	private boolean canMoveTo(IWalkableTile tile, PawnType pawnType, IWalkableTile startTile, int stepsRemaining){
+		return (tile.getAllowedPawnTypes().contains(pawnType) && tile != startTile)
 				|| (tile.getOccupiedBy() == PawnType.Crook && pawnType==PawnType.Officer
-				&& tile.getAllowedPawnTypes().contains(pawnType));
+				&& tile.getAllowedPawnTypes().contains(pawnType) && tile != startTile);
 	}
 
 }
