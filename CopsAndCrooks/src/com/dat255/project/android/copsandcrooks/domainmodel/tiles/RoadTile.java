@@ -13,6 +13,11 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  */
 public class RoadTile extends AbstractTile {
 
+	/**
+	 * Create a new RoadTile.
+	 * @param position the position of this tile
+	 * @param mediator the mediator
+	 */
 	public RoadTile(Point position, IMediator mediator) {
 		super(position, mediator);
 
