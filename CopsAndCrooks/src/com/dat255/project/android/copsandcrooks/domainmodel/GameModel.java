@@ -15,6 +15,7 @@ public class GameModel implements IObservable  {
 	private List<Player> players;
 	private List<PoliceStationTile> policeStationTiles;
 	private Player currentPlayer;
+	private IWalkableTile[][] tiles;
 	
 	private PropertyChangeSupport pcs;
 	
@@ -35,6 +36,8 @@ public class GameModel implements IObservable  {
 		mediator.registerGameModel(this);
 		
 		policeStationTiles = new ArrayList<PoliceStationTile>();
+		
+		this.tiles = tiles;
 		
 		// Extract police station tiles
 		for (IWalkableTile[] tileArray : tiles) {
@@ -120,5 +123,9 @@ public class GameModel implements IObservable  {
 	
 	public List<Player> getPlayers(){
 		return this.players;
+	}
+	
+	public IWalkableTile[][] getTiles(){
+		return tiles;
 	}
 }
