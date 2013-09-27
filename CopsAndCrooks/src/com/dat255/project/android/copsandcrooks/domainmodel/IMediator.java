@@ -103,11 +103,11 @@ public interface IMediator {
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
-	 * to select the officer pawn.
+	 * to select the pawn.
 	 * 
-	 * @param pawn the officer pawn that wants to be selected
+	 * @param pawn the pawn that wants to be selected
 	 */
-	void changePawn(Officer pawn);
+	void changePawn(IMovable pawn);
 
 	boolean isWantedCrookOn(IWalkableTile tile);
 }

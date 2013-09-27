@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
 import com.dat255.project.android.copsandcrooks.actors.OfficerActor;
@@ -64,8 +64,8 @@ public class GameFactory {
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 	
-		//The point of the police car respawnpoint
-		Point policeCarStart = new Point();
+		//The tile of the police car respawnpoint
+		IWalkableTile policeCarStart = null;
 		
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v1.tmx");  
@@ -85,50 +85,10 @@ public class GameFactory {
 		Values.TILE_WIDTH = (int) mapLayerBack.getTileWidth();
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 		
-		List<Player> players = new ArrayList<Player>();
-		List<Actor> actors = new ArrayList<Actor>();
-		
-		int numberOfOfficers = userInfo.keySet().size();
-		int numberOfCopCars = 1;
-		for (String name : userInfo.keySet()) {
-			List<IMovable> pawns = new ArrayList<IMovable>();
-			if (userInfo.get(name) == Role.Police) {
-				for (int i = 0; i < numberOfOfficers; i++) {
-					Officer officer = new Officer(mediator);
-					pawns.add(officer);
-
-					// Get animations
-					EnumMap<Animations, Animation> pawnAnimations = getOfficerAnimations();
-
-					// Specify the first drawable frame
-					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-
-					actors.add(new OfficerActor(drawable, Scaling.none, officer, pawnAnimations));
-				}
-				players.add( new Player(name, pawns, Role.Police, mediator));
-				
-			} else if (userInfo.get(name) == Role.Crook) {
-				Crook crook = new Crook(mediator);
-				pawns.add(crook);
-				
-				// Test let the crook start wanted to test catching
-				crook.setWanted(true);
-				// Test end
-				
-				// Get animations
-				EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
-				
-				// Specify the first drawable frame
-		        TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-				
-				actors.add(new MovableActor(drawable, Scaling.none, crook, pawnAnimations));
-				players.add( new Player(name, pawns, Role.Crook, mediator));
-			}
-		}
-		
 		//Creates a matrix that will contain all the diffrent tiles
 		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
 		List<IWalkableTile> listOfHideOut = new ArrayList<IWalkableTile>();
+		List<PoliceStationTile> listOfPoliceStation = new ArrayList<PoliceStationTile>();
 		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
 			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
 				
@@ -143,7 +103,9 @@ public class GameFactory {
 						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
 						break;
 					case 3: 	// Acording to the tileset case 3 is the polisoffice tiles
-						walkable[i][j] = new PoliceStationTile(new Point(i, j), mediator);
+						PoliceStationTile station = new PoliceStationTile(new Point(i, j), mediator);
+						walkable[i][j] = station;
+						listOfPoliceStation.add(station);
 						break;
 					case 4: 	// Acording to the tileset case 4 is the tramstops tiles
 						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
@@ -152,8 +114,8 @@ public class GameFactory {
 						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
 						break;
 					case 6: 	// Acording to tileset case 6 will be the coordinate of the poliscar(this will be a road tile)
-						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
-						policeCarStart.set(i, j);
+						policeCarStart = new RoadTile(new Point(i, j), mediator);
+						walkable[i][j] = policeCarStart;
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
 						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
@@ -181,14 +143,72 @@ public class GameFactory {
 				}
 			}
 		}
-		//create a game model
-		GameModel gameModel =new GameModel(mediator, players, walkable);
 		
-		for(Player player: players){
-			for (IMovable pawn : player.getPawns()) {
-				pawn.setCurrentTile(listOfHideOut.get(0));
+		List<Player> players = new ArrayList<Player>();
+		List<Actor> actors = new ArrayList<Actor>();
+		
+		int numberOfOfficers = userInfo.keySet().size();
+		int numberOfCopCars = 1;
+		for (String name : userInfo.keySet()) {
+			List<IMovable> pawns = new ArrayList<IMovable>();
+			if (userInfo.get(name) == Role.Police) {
+				for (int i = 0; i < numberOfOfficers; i++) {
+					Officer officer = new Officer(mediator);
+					pawns.add(officer);
+
+					// Get animations
+					EnumMap<Animations, Animation> pawnAnimations = getOfficerAnimations();
+
+					// Specify the first drawable frame
+					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
+
+					actors.add(new OfficerActor(drawable, Scaling.none, officer, pawnAnimations));
+				
+					officer.setCurrentTile(listOfPoliceStation.get(i+1));
+				}
+				for (int i = 0; i < numberOfCopCars; i++) {
+					CopCar copCar = new CopCar(mediator);
+					pawns.add(copCar);
+
+					// Get animations
+					EnumMap<Animations, Animation> pawnAnimations = getCopCarAnimations();
+
+					// Specify the first drawable frame
+					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
+
+					actors.add(new CopCarActor(drawable, Scaling.none, copCar, pawnAnimations));
+					
+					// should really be the policecarstart..
+					copCar.setCurrentTile(listOfPoliceStation.get(i));
+				}
+				
+				players.add( new Player(name, pawns, Role.Police, mediator));
+				
+			} else if (userInfo.get(name) == Role.Crook) {
+				Crook crook = new Crook(mediator);
+				pawns.add(crook);
+				
+				// Test let the crook start wanted to test catching
+				crook.setWanted(true);
+				// Test end
+				
+				// Get animations
+				EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
+				
+				// Specify the first drawable frame
+		        TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
+				
+				actors.add(new MovableActor(drawable, Scaling.none, crook, pawnAnimations));
+				
+				crook.setCurrentTile(listOfHideOut.get(0));
+				
+				players.add( new Player(name, pawns, Role.Crook, mediator));
 			}
 		}
+		
+
+		//create a game model
+		GameModel gameModel =new GameModel(mediator, players, walkable);
 	
 		// create the controller and view of the game
 		new Dice(mediator);
@@ -197,10 +217,62 @@ public class GameFactory {
 		
 	}
 	
+	private static EnumMap<Animations, Animation> getCopCarAnimations() {
+		// Using an enumeration map makes sure that all keys passed are valid keys
+		EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
+
+		AtlasRegion[] stopAnimation = new AtlasRegion[1];
+		for(int k = 0; k < 1; k++)
+		{
+			stopAnimation[k] = atlas.findRegion("game-screen/copcar/copcar s");
+		}
+		Animation idle = new Animation(1f, stopAnimation);
+
+		pawnAnimations.put(Animations.IDLE_ANIM, idle);
+
+		AtlasRegion[] walkEastAnimation = new AtlasRegion[1];
+		for(int k = 0; k < 1; k++)
+		{
+			walkEastAnimation[k] = atlas.findRegion("game-screen/copcar/copcar e");
+		}
+		Animation walkEast = new Animation(0.2f, walkEastAnimation);
+
+		pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
+
+		AtlasRegion[] walkNorthAnimation = new AtlasRegion[1];
+		for(int k = 0; k < 1; k++)
+		{
+			walkNorthAnimation[k] = atlas.findRegion("game-screen/copcar/copcar n");
+		}
+		Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
+
+		pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
+
+		AtlasRegion[] walkSouthAnimation = new AtlasRegion[1];
+		for(int k = 0; k < 1; k++)
+		{
+			walkSouthAnimation[k] = atlas.findRegion("game-screen/copcar/copcar s");
+		}
+		Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
+
+		pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
+
+		AtlasRegion[] walkWestAnimation = new AtlasRegion[1];
+		for(int k = 0; k < 1; k++)
+		{
+			walkWestAnimation[k] = atlas.findRegion("game-screen/copcar/copcar w");
+		}
+		Animation walkWest = new Animation(0.2f, walkWestAnimation);
+
+		pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
+
+		return pawnAnimations;
+	}
+
 	private static EnumMap<Animations, Animation> getCrookAnimations() {
 		// Using an enumeration map makes sure that all keys passed are valid keys
 		EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
-		
+
 		AtlasRegion[] stopAnimation = new AtlasRegion[8];
 		for(int k = 0; k < 8; k++)
 		{

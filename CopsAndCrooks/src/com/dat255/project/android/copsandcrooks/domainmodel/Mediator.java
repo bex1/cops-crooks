@@ -40,9 +40,9 @@ public final class Mediator implements IMediator {
 	}
 	
 	@Override
-	public void changePawn(Officer pawn){
+	public void changePawn(IMovable pawn){
 		if (gameModel != null)
-			gameModel.officerSelected(pawn);
+			gameModel.pawnSelected(pawn);
 	}
 	
 	@Override
