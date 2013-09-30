@@ -172,16 +172,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float toY = camera.position.y + moveY;
 
 			setCameraPosition(toX, toY);
-			/*if(toX> getCameraBoundryRight())
-				toX =  getCameraBoundryRight();
-			if(toX < getCameraBoundryLeft())
-				toX = getCameraBoundryLeft();
-			if(toY > getCameraBoundryUp())
-				toY = getCameraBoundryUp();
-			if(toY < getCameraBoundryDown())
-				toY = getCameraBoundryDown();
-			camera.position.x = toX;
-			camera.position.y = toY;*/
 
 			return false;
 		}
@@ -194,14 +184,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				camera.zoom = zoom;
 				// Keep within map
 				setCameraPosition(camera.position.x, camera.position.y);
-				/*if(camera.position.x > getCameraBoundryRight())
-					camera.position.x = getCameraBoundryRight();
-				if(camera.position.x < getCameraBoundryLeft())
-					camera.position.x = getCameraBoundryLeft();
-				if(camera.position.y > getCameraBoundryUp())
-					camera.position.y = getCameraBoundryUp();
-				if(camera.position.y < getCameraBoundryDown())
-					camera.position.y = getCameraBoundryDown();*/
 			}
 
 			return false;
@@ -211,6 +193,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	
 	private void setCameraPosition(float x, float y){
 		float tmpX = x, tmpY = y;
+		// Keeps the camera within the map
 		if(x > getCameraBoundryRight())
 			tmpX = getCameraBoundryRight();
 		if(x < getCameraBoundryLeft())
