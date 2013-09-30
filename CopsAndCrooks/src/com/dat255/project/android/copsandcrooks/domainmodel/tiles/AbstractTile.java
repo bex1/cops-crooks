@@ -19,6 +19,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
+//TODO: CHANGE NAME TO AbstractWalkableTile
 public abstract class AbstractTile implements IWalkableTile{
 
 	private PawnType occupiedBy;

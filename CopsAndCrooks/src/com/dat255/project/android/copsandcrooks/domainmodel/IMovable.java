@@ -31,6 +31,7 @@ public interface IMovable extends IObservable {
 	 * @param currTile the current tile on which the movable is standing on.
 	 * Allowed to be null to move the pawn out of the game.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	void setCurrentTile(IWalkableTile currTile);
 	
 	/**
@@ -43,30 +44,35 @@ public interface IMovable extends IObservable {
 	 * Moves the movable object along the given path.
 	 * @param path the path of walkable tiles in the path. Not allowed to be null or empty.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	void move(TilePath path);
 	
 	/**
 	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	void collisionAfterMove(IMovable pawn);
 	
 	/**
 	 * Returns the role of this pawn.
 	 * @return the role of this pawn.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	Role getPawnRole();
 	
 	/**
 	 * Returns the type of this pawn.
 	 * @return the type of this pawn.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	PawnType getPawnType();
 	
 	/**
 	 * Returns the number of tiles the pawn can move over in one step.
 	 * @return the number of tiles the pawn can move over in one step.
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	int tilesMovedEachStep();
 	
 	/**
@@ -86,7 +92,7 @@ public interface IMovable extends IObservable {
 	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 	
-	
+	//TODO: MAKE OWN CLASS, PACKAGE PRIVATE
 	public enum PawnType {
 		Crook,
 		Officer,

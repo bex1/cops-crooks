@@ -21,21 +21,25 @@ public interface IWalkableTile extends IObservable{
 	 * Checks if the tile is occupied by an IMovable object
 	 * @return true if this tile is occupied
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public boolean isOccupied();
 	
 	/**
 	 * Set the occupied-status of this tile
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public void setOccupiedBy(PawnType pawnType);
 
 	/**
 	 * Set the occupied-status of this tile to none
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public void setNotOccupied();
 	
 	/**
 	 * Get the occupied-status of this tile
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public PawnType getOccupiedBy();
 	
 	/**
@@ -47,6 +51,7 @@ public interface IWalkableTile extends IObservable{
 	/**
 	 * Set the position of this tile
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public void setPosition(Point position);
 	
 
@@ -54,6 +59,7 @@ public interface IWalkableTile extends IObservable{
 	 * Get the allowed pawntypes for this tile
 	 * @return the allowed pawntypes
 	 */
+	//TODO: RELOCATE TO ABSTRACT
 	public Collection<PawnType> getAllowedPawnTypes();
 
 }
