@@ -1,9 +1,6 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 
-import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkingPawn;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -13,7 +10,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class TramStopTile extends AbstractTile implements IInteractiveTile{
+public class TramStopTile extends AbstractWalkableTile implements IInteractiveTile{
 	
 	/**
 	 * Create a TramStopTile with a position.

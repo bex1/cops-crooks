@@ -3,7 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStopTile;
 
 /**
  * A class representing a tramline.

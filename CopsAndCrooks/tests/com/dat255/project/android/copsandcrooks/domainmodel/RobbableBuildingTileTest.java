@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.RobbableBuildingTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class RobbableBuildingTileTest {
@@ -44,7 +45,7 @@ public class RobbableBuildingTileTest {
 	
 	@Test
 	public void testRobBuilding(){
-		Crook crook = new Crook(new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		int cash = crook.getWallet().getCash();
 		RobbableBuildingTile robbableBuilding = 
 				new RobbableBuildingTile(new Point(), new Mediator(), 750);

@@ -20,7 +20,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.utils.Point;
+
 
 /**
  * @author Bex
@@ -70,20 +71,20 @@ public class PlayerTest {
 			// expected
 		}
 		try {
-			Player player = new Player("Kalle", new ArrayList<IMovable>(), Role.Crook, new Mediator());
+			Player player = new Player("Kalle", new ArrayList<AbstractPawn>(), Role.Crook, new Mediator());
 			fail("Should throw IllegalArgumentException since pawns list is empty");
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		try {
-			Player player = new Player("Kalle", new ArrayList<IMovable>(), Role.Crook, null);
+			Player player = new Player("Kalle", new ArrayList<AbstractPawn>(), Role.Crook, null);
 			fail("Should throw IllegalArgumentException since mediator is null");
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		
 		try {
@@ -109,8 +110,8 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPlayerRole() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		Role l = Role.Crook;
 		Player player = new Player("Kalle", pawns, l, new Mediator());
@@ -122,8 +123,8 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPawns() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
 		assertArrayEquals("The player pawns should be the same as in the test", player.getPawns().toArray(), pawns.toArray());
@@ -134,14 +135,14 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetCurrentPawn() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
-		Crook d = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook d = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		pawns.add(d);
 		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
 		assertSame("The current pawn after init should be the first pawn added", player.getCurrentPawn(), c);
-		Crook b = new Crook(new Mediator());
+		Crook b = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		player.setCurrentPawn(b); 
 		assertSame("Pawn should not have changed, since b is not the players pawn", player.getCurrentPawn(), c);
 		player.setCurrentPawn(d); 
@@ -153,8 +154,8 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetName() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		String n = "Kalle";
 		Player player = new Player(n, pawns, Role.Crook, new Mediator());
@@ -168,8 +169,8 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetWallet() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
 		Wallet w = player.getWallet();
@@ -181,12 +182,12 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testRollDice() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
 		pawns.add(c);
 		Mediator mediator = new Mediator();
 		final Player player = new Player("Kalle", pawns, Role.Crook, mediator);
-		PathFinder pathFinder = new PathFinder(new IWalkableTile[1][1], mediator);
+		PathFinder pathFinder = new PathFinder(new AbstractWalkableTile[1][1], mediator);
 		Dice dice = new Dice(mediator);
 		player.addObserver(new PropertyChangeListener() {
 

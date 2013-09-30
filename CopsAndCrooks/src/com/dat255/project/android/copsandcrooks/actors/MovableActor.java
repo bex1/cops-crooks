@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
@@ -77,8 +77,11 @@ public class MovableActor extends Image implements PropertyChangeListener {
 
 	}
 	
+	public void refresh() {
+		moveDirectly();
+	}
+	
 	private void moveDirectly() {
-
 		// Just set the position according to model
 		IWalkableTile currTile = pawn.getCurrentTile();
 		if (currTile != null) {

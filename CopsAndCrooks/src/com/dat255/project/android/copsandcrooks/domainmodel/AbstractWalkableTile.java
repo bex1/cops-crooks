@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -19,8 +18,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-//TODO: CHANGE NAME TO AbstractWalkableTile
-public abstract class AbstractTile implements IWalkableTile{
+public abstract class AbstractWalkableTile implements IWalkableTile{
 
 	private PawnType occupiedBy;
 	private Point position;
@@ -33,7 +31,7 @@ public abstract class AbstractTile implements IWalkableTile{
 	 * Construct a new AbstractTile with a position.
 	 * @param position2 the tile's position
 	 */
-	public AbstractTile(Point pos, IMediator mediator) {
+	protected AbstractWalkableTile(Point pos, IMediator mediator) {
 		if (pos == null) 
 			throw new IllegalArgumentException("Position not allowed to be null");
 		if (mediator == null)
@@ -45,23 +43,32 @@ public abstract class AbstractTile implements IWalkableTile{
 		pawnTypes = new ArrayList<PawnType>();
 	}
 
-	@Override
-	public boolean isOccupied(){
+	/**
+	 * Checks if the tile is occupied by an IMovable object
+	 * @return true if this tile is occupied
+	 */
+	boolean isOccupied(){
 		return this.occupiedBy!=null;
 	}
 
-	@Override
-	public void setOccupiedBy(PawnType pawnType) {
+	/**
+	 * Set the occupied-status of this tile
+	 */
+	void setOccupiedBy(PawnType pawnType) {
 		this.occupiedBy = pawnType;
 	}
 
-	@Override
-	public void setNotOccupied(){
+	/**
+	 * Set the occupied-status of this tile to none
+	 */
+	void setNotOccupied(){
 		this.occupiedBy = null;
 	}
 
-	@Override
-	public PawnType getOccupiedBy(){
+	/**
+	 * Get the occupied-status of this tile
+	 */
+	PawnType getOccupiedBy(){
 		return occupiedBy;
 	}
 	
@@ -70,13 +77,11 @@ public abstract class AbstractTile implements IWalkableTile{
 		return this.position;
 	}
 	
-	@Override
-	public void setPosition(Point position){
-		this.position = position;
-	}
-
-	@Override
-	public Collection<PawnType> getAllowedPawnTypes() {
+	/**
+	 * Get the allowed pawntypes for this tile
+	 * @return the allowed pawntypes
+	 */
+	Collection<PawnType> getAllowedPawnTypes() {
 		return Collections.unmodifiableCollection(pawnTypes);
 	}
 	

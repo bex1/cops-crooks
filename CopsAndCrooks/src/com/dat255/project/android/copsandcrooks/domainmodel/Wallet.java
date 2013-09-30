@@ -22,7 +22,7 @@ public final class Wallet implements IObservable {
 	 * Sets the cash for the crook.
 	 * @param money the cash the crook will hold.
 	 */
-	public void setCash(int money) {
+	void setCash(int money) {
 		int oldValue = cash;
 		cash = money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
@@ -40,7 +40,7 @@ public final class Wallet implements IObservable {
 	 * Increments the cash amount on the crook.
 	 * @param money the money to increment with
 	 */
-	public void incrementCash(int money) {
+	void incrementCash(int money) {
 		int oldValue = cash;
 		cash += money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
@@ -52,7 +52,7 @@ public final class Wallet implements IObservable {
 	 * @param money the money to decrement with
 	 * @return true if there was enough cash
 	 */
-	public boolean decrementCash(int money) {
+	boolean decrementCash(int money) {
 		if (cash < money) {
 			return false;
 		}

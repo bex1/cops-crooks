@@ -1,20 +1,18 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
-
-import com.dat255.project.android.copsandcrooks.utils.Point;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.*;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
  * A class representing a hideout.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class HideoutTile extends AbstractTile implements IInteractiveTile {
+public class HideoutTile extends AbstractWalkableTile implements IInteractiveTile {
 	
 	private Map<Crook, Integer> storedCash;
 	

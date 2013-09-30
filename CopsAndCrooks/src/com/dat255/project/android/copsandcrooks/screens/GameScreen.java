@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
@@ -117,6 +118,14 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	public void show(){
 		super.show();
 		model.startGame();
+		
+		// Show actors at right start pos, ie sync with model
+		for (Actor actor : stage.getActors()) {
+			if (actor instanceof MovableActor) {
+				((MovableActor)actor).refresh();
+			}
+		}
+		
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);

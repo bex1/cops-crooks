@@ -3,8 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.Collection;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 
 /**
@@ -34,25 +32,25 @@ public final class Mediator implements IMediator {
 		this.pathFinder = pathFinder;
 	}
 	@Override
-	public void didCollideAfterMove(IMovable movable) {
+	public void didCollideAfterMove(AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.notifyWhatICollidedWith(movable);
 	}
 	
 	@Override
-	public void changePawn(IMovable pawn){
+	public void changePawn(AbstractPawn pawn){
 		if (gameModel != null)
 			gameModel.pawnSelected(pawn);
 	}
 	
 	@Override
-	public void moveToPoliceStation(IMovable movable) {
+	public void moveToPoliceStation(AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.moveToEmptyPoliceStationTile(movable);
 	}
 
 	@Override
-	public void addCashToMyPlayer(int cash, IMovable movable) {
+	public void addCashToMyPlayer(int cash, AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.findPlayerAndAddCash(cash, movable);
 	}
@@ -68,7 +66,7 @@ public final class Mediator implements IMediator {
 
 	@Override
 	public Collection<TilePath> getPossiblePaths(PawnType pawnType,
-			IMovable pawn, int stepsToMove) {
+			AbstractPawn pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);
 		} else {
