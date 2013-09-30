@@ -8,8 +8,9 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
+//TODO: MAKE ABSTRACT CLASS 
 public interface IInteractiveTile{
-	
+
 	/**
 	 * Allows an IMovable and an IInteractiveTile to interact.
 	 * 

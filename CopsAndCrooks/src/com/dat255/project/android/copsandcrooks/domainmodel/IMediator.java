@@ -17,6 +17,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAg
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
+//TODO: REMOVE, MOVE DOC TO MEDIATOR
 public interface IMediator {
 	/**
 	 * Register the game model for communication.
