@@ -7,28 +7,26 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public abstract class AbstractWalkingPawn extends AbstractPawn {
+abstract class AbstractWalkingPawn extends AbstractPawn {
 	private boolean isInPoliceHouse;
 	
 	private boolean isWaitingOnTram;
-	
-	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 
-	protected AbstractWalkingPawn(Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep) {
-		super(pawnRole, type, mediator, tilesMovedEachStep);
+	protected AbstractWalkingPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep) {
+		super(startTile, pawnRole, type, mediator, tilesMovedEachStep);
 	}
 
-	public void setIsInPoliceStation(boolean inHouse) {
+	void setIsInPoliceStation(boolean inHouse) {
 		boolean oldValue = isInPoliceHouse;
 		isInPoliceHouse = inHouse;
 		pcs.firePropertyChange(PROPERTY_IS_IN_POLICE_HOUSE, oldValue, isInPoliceHouse);
 	}
 	
-	public boolean isWaitingOnTram(){
+	boolean isWaitingOnTram(){
 		return isWaitingOnTram;
 	}
 	
-	public void standingOnTramstop(boolean standing){
+	void standingOnTramstop(boolean standing){
 		isWaitingOnTram = standing;
 	}
 }

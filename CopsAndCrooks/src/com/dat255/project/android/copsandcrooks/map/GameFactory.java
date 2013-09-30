@@ -23,26 +23,27 @@ import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
 import com.dat255.project.android.copsandcrooks.actors.OfficerActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
+import com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn;
+import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.GetAwayTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IntelligenceAgencyTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
 import com.dat255.project.android.copsandcrooks.domainmodel.PathFinder;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.RoadTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.RobbableBuildingTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.GetAwayTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RobbableBuildingTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStopTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
@@ -65,7 +66,7 @@ public class GameFactory {
 		Mediator mediator = new Mediator();
 	
 		//The tile of the police car respawnpoint
-		IWalkableTile policeCarStart = null;
+		RoadTile policeCarStart = null;
 		
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v1.tmx");  
@@ -86,8 +87,8 @@ public class GameFactory {
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 		
 		//Creates a matrix that will contain all the diffrent tiles
-		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
-		List<IWalkableTile> listOfHideOut = new ArrayList<IWalkableTile>();
+		AbstractWalkableTile[][] walkable = new AbstractWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
+		List<HideoutTile> listOfHideOut = new ArrayList<HideoutTile>();
 		List<PoliceStationTile> listOfPoliceStation = new ArrayList<PoliceStationTile>();
 		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
 			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
@@ -118,8 +119,9 @@ public class GameFactory {
 						walkable[i][j] = policeCarStart;
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
-						listOfHideOut.add(walkable[i][j]);
+						HideoutTile hideout = new HideoutTile(new Point(i, j), null, mediator);
+						walkable[i][j] = hideout;
+						listOfHideOut.add(hideout);
 						break;
 					case 8: 	// Acording to the tileset case 8 is the Travelagency tiles
 						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
@@ -150,10 +152,10 @@ public class GameFactory {
 		int numberOfOfficers = userInfo.keySet().size();
 		int numberOfCopCars = 1;
 		for (String name : userInfo.keySet()) {
-			List<IMovable> pawns = new ArrayList<IMovable>();
+			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
 			if (userInfo.get(name) == Role.Police) {
 				for (int i = 0; i < numberOfOfficers; i++) {
-					Officer officer = new Officer(mediator);
+					Officer officer = new Officer(listOfPoliceStation.get(i+1), mediator);
 					pawns.add(officer);
 
 					// Get animations
@@ -163,11 +165,9 @@ public class GameFactory {
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 
 					actors.add(new OfficerActor(drawable, Scaling.none, officer, pawnAnimations));
-				
-					officer.setCurrentTile(listOfPoliceStation.get(i+1));
 				}
 				for (int i = 0; i < numberOfCopCars; i++) {
-					CopCar copCar = new CopCar(mediator);
+					CopCar copCar = new CopCar(listOfPoliceStation.get(i), mediator);
 					pawns.add(copCar);
 
 					// Get animations
@@ -177,20 +177,13 @@ public class GameFactory {
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 
 					actors.add(new CopCarActor(drawable, Scaling.none, copCar, pawnAnimations));
-					
-					// should really be the policecarstart..
-					copCar.setCurrentTile(listOfPoliceStation.get(i));
 				}
 				
 				players.add( new Player(name, pawns, Role.Police, mediator));
 				
 			} else if (userInfo.get(name) == Role.Crook) {
-				Crook crook = new Crook(mediator);
+				Crook crook = new Crook(listOfHideOut.get(0), mediator);
 				pawns.add(crook);
-				
-				// Test let the crook start wanted to test catching
-				crook.setWanted(true);
-				// Test end
 				
 				// Get animations
 				EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
@@ -199,8 +192,6 @@ public class GameFactory {
 		        TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 				
 				actors.add(new MovableActor(drawable, Scaling.none, crook, pawnAnimations));
-				
-				crook.setCurrentTile(listOfHideOut.get(0));
 				
 				players.add( new Player(name, pawns, Role.Crook, mediator));
 			}

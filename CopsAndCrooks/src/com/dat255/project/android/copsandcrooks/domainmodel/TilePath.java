@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 /**
@@ -21,18 +20,18 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  */
 public final class TilePath implements IObservable {
 
-	private final LinkedList<IWalkableTile> pathList;
+	private final LinkedList<AbstractWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	public TilePath() {
-		pathList = new LinkedList<IWalkableTile>();
+		pathList = new LinkedList<AbstractWalkableTile>();
 	}
 	
 	/**
 	 * Returns and consumes the next tile on the path.
 	 * @return the next tile on path.
 	 */
-	public synchronized IWalkableTile consumeNextTile() {
+	synchronized AbstractWalkableTile consumeNextTile() {
 		return pathList.pollLast();
 	}
 	
@@ -40,7 +39,7 @@ public final class TilePath implements IObservable {
 	 * Returns the tile with the specified index.
 	 * @return the specified tile.
 	 */
-	public IWalkableTile getTile(int i) {
+	public AbstractWalkableTile getTile(int i) {
 		return pathList.get(i);
 	}
 	
@@ -48,14 +47,14 @@ public final class TilePath implements IObservable {
 	 * Checks to see if the path is empty.
 	 * @return true if the path list is empty.
 	 */
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		return pathList.isEmpty();
 	}
 	/**
 	 * Add a tile to the path.
 	 * @param tile - the tile to be added to the path.
 	 */
-	public synchronized void addTileLast(IWalkableTile tile){
+	synchronized void addTileLast(AbstractWalkableTile tile){
 		pathList.addLast(tile);
 	}
 	/**
@@ -70,7 +69,7 @@ public final class TilePath implements IObservable {
 	 * @param tile
 	 * @return true if the tile already is in the list
 	 */
-	public synchronized boolean contains(IWalkableTile tile){
+	synchronized boolean contains(AbstractWalkableTile tile){
 		return pathList.contains(tile);
 	}
 	

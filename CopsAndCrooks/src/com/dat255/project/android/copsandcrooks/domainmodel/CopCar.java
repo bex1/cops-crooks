@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 /**
  * A cop car in the game Cops&Crooks
@@ -9,8 +8,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  */
 public class CopCar extends AbstractPawn {
 
-	public CopCar(IMediator mediator) {
-		super(Role.Police, PawnType.Car, mediator, 2);
+	public CopCar(AbstractWalkableTile startTile, IMediator mediator) {
+		super(startTile, Role.Police, PawnType.Car, mediator, 2);
 	}
 
 	@Override
@@ -24,11 +23,6 @@ public class CopCar extends AbstractPawn {
 				crook.setIsInPoliceStation(true);
 			}
 		}
-	}
-
-	@Override
-	public int tilesMovedEachStep() {
-		return 2;
 	}
 
 	public void gotSelected() {

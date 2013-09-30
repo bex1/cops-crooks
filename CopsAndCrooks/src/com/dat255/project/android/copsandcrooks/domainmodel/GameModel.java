@@ -7,11 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
 
 public final class GameModel implements IObservable  {
 
@@ -58,7 +54,7 @@ public final class GameModel implements IObservable  {
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
 	}
 
-	public void nextPlayer(){
+	void nextPlayer(){
 		int i = players.indexOf(currentPlayer);
 		currentPlayer = players.get((i + 1) % players.size());
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
@@ -68,7 +64,7 @@ public final class GameModel implements IObservable  {
 		return currentPlayer;
 	}
 
-	void moveToEmptyPoliceStationTile(IMovable movable) {
+	void moveToEmptyPoliceStationTile(AbstractPawn movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
 		movable.setCurrentTile(policeStationTile);
 	}
@@ -84,12 +80,12 @@ public final class GameModel implements IObservable  {
 		return null;
 	}
 
-	void notifyWhatICollidedWith(IMovable movable) {
+	void notifyWhatICollidedWith(AbstractPawn movable) {
 		if (movable == null) {
 			throw new IllegalArgumentException("Movable not allowed to be null");
 		}
 		for (Player player : players) {
-			for (IMovable pawn : player.getPawns()) {
+			for (AbstractPawn pawn : player.getPawns()) {
 				if (pawn.getCurrentTile() == movable.getCurrentTile() && pawn != movable) {
 					movable.collisionAfterMove(pawn);
 				}
@@ -97,7 +93,7 @@ public final class GameModel implements IObservable  {
 		}
 	}
 
-	void findPlayerAndAddCash(int cash, IMovable movable) {
+	void findPlayerAndAddCash(int cash, AbstractPawn movable) {
 		for (Player player : players) {
 			if (player.getPawns().contains(movable)) {
 				player.getWallet().incrementCash(cash);
@@ -117,7 +113,7 @@ public final class GameModel implements IObservable  {
 		intelligenceAgencyTile.hinderGetAway(getPlayers());
 	}
 
-	void pawnSelected(IMovable pawn) {
+	void pawnSelected(AbstractPawn pawn) {
 		if (currentPlayer.getPlayerRole() == Role.Police) {
 			currentPlayer.setCurrentPawn(pawn);
 		}
@@ -134,7 +130,7 @@ public final class GameModel implements IObservable  {
 
 	boolean checkIfWantedCrookAt(IWalkableTile tile) {
 		for (Player player : players) {
-			for (IMovable pawn : player.getPawns()) {
+			for (AbstractPawn pawn : player.getPawns()) {
 				if (pawn instanceof Crook && pawn.getCurrentTile() == tile) {
 					Crook crook = (Crook)pawn;
 					return crook.isWanted();

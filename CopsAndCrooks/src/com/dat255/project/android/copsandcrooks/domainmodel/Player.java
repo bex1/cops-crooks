@@ -16,8 +16,8 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
 public class Player implements IObservable {
 	private IMediator mediator;
 	
-	private List<IMovable> pawns;
-	private IMovable currentPawn;
+	private List<AbstractPawn> pawns;
+	private AbstractPawn currentPawn;
 	private int diceResult;
 	private Collection<TilePath> possiblePaths;
 	
@@ -41,7 +41,7 @@ public class Player implements IObservable {
 	 * @param role the role of the player.
 	 * @param mediator module communication unit. Not allowed to be null.
 	 */
-	public Player(String name, List<IMovable> pawns, Role role, IMediator mediator) {
+	public Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator) {
 		if (pawns == null || pawns.isEmpty()) {
 			throw new IllegalArgumentException("pawns not allowed to be null or empty");
 		}
@@ -52,7 +52,7 @@ public class Player implements IObservable {
 			name = "";
 		}
 		// Check so the pawn roles match the player role.
-		for (IMovable pawn : pawns) {
+		for (AbstractPawn pawn : pawns) {
 			if (role != pawn.getPawnRole()) {
 				throw new IllegalArgumentException("A " + role.name() + 
 						" player may only control pawns of role " + role.name());
@@ -79,7 +79,7 @@ public class Player implements IObservable {
 	 * 
 	 * @return an unmodifiable collection of the pawns which the player controls.
 	 */
-    public Collection<IMovable> getPawns() {
+    public Collection<AbstractPawn> getPawns() {
         return Collections.unmodifiableCollection(pawns);
     }
     
@@ -88,7 +88,7 @@ public class Player implements IObservable {
      * 
      * @return the current pawn of the player.
      */
-    public IMovable getCurrentPawn() {
+    public AbstractPawn getCurrentPawn() {
     	return currentPawn;
     }
         
@@ -119,7 +119,7 @@ public class Player implements IObservable {
      * false otherwise.
      */
     public boolean isAnyWalkingPawnOnTramstop(){
-    	for(IMovable pawn: pawns){
+    	for(AbstractPawn pawn: pawns){
     		if (pawn instanceof AbstractWalkingPawn) {
     			AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn) pawn;
     			return walkingPawn.isWaitingOnTram();
@@ -186,9 +186,9 @@ public class Player implements IObservable {
      * 
      * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.
      */
-    public void setCurrentPawn(IMovable pawn){
+    void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
-    		IMovable oldValue = currentPawn;
+    		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
     		pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldValue, currentPawn);
     	}

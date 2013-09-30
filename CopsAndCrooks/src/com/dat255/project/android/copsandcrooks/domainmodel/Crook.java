@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 
 /**
  * A crook pawn in the game Cops&Crooks.
@@ -13,8 +12,8 @@ public class Crook extends AbstractWalkingPawn {
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
 	
-	public Crook(IMediator mediator) {
-		super(Role.Crook, PawnType.Crook, mediator, 1);
+	public Crook(AbstractWalkableTile startTile, IMediator mediator) {
+		super(startTile, Role.Crook, PawnType.Crook, mediator, 1);
 		wallet = new Wallet();
 		attemptingGetAway = false;
 	}
@@ -31,7 +30,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Sets if the crook is wanted or not.
 	 * @param wanted true if the crook is wanted, false otherwise.
 	 */
-	public void setWanted(boolean wanted) {
+	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
 	}
 	
@@ -55,7 +54,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Return true if the crook is attempting to escape.
 	 * @return true if the crook is attempting to escape
 	 */
-	public boolean isAttemptingGetAway() {
+	boolean isAttemptingGetAway() {
 		return attemptingGetAway;
 	}
 
@@ -63,7 +62,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Set attempting get away status for this crook.
 	 * @param attemptingGetAway the new get away status
 	 */
-	public void setAttemptingGetAway(boolean attemptingGetAway) {
+	void setAttemptingGetAway(boolean attemptingGetAway) {
 		this.attemptingGetAway = attemptingGetAway;
 	}
 }

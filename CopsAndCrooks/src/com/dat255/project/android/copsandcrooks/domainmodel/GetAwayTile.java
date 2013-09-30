@@ -1,12 +1,9 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 
 /**
  * This class represents a get away tile.
@@ -14,7 +11,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class GetAwayTile extends AbstractTile implements IInteractiveTile {
+public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTile {
 	
 	/**
 	 * Create a new GetAway with a position.
