@@ -22,9 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
@@ -116,7 +119,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void show(){
 		super.show();
-		model.startGame();
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
@@ -125,6 +127,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
+		model.startGame();
 	}
 
 	@Override
@@ -168,7 +171,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float moveY = deltaY * camera.zoom;
 			float toY = camera.position.y + moveY;
 
-			if(toX> getCameraBoundryRight())
+			setCameraPosition(toX, toY);
+			/*if(toX> getCameraBoundryRight())
 				toX =  getCameraBoundryRight();
 			if(toX < getCameraBoundryLeft())
 				toX = getCameraBoundryLeft();
@@ -177,7 +181,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(toY < getCameraBoundryDown())
 				toY = getCameraBoundryDown();
 			camera.position.x = toX;
-			camera.position.y = toY;
+			camera.position.y = toY;*/
 
 			return false;
 		}
@@ -189,20 +193,34 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(zoom < 2.2f  && zoom > 0.6f) {
 				camera.zoom = zoom;
 				// Keep within map
-				if(camera.position.x > getCameraBoundryRight())
+				setCameraPosition(camera.position.x, camera.position.y);
+				/*if(camera.position.x > getCameraBoundryRight())
 					camera.position.x = getCameraBoundryRight();
 				if(camera.position.x < getCameraBoundryLeft())
 					camera.position.x = getCameraBoundryLeft();
 				if(camera.position.y > getCameraBoundryUp())
 					camera.position.y = getCameraBoundryUp();
 				if(camera.position.y < getCameraBoundryDown())
-					camera.position.y = getCameraBoundryDown();
+					camera.position.y = getCameraBoundryDown();*/
 			}
 
 			return false;
 		}
 
 	};
+	
+	private void setCameraPosition(float x, float y){
+		float tmpX = x, tmpY = y;
+		if(x > getCameraBoundryRight())
+			tmpX = getCameraBoundryRight();
+		if(x < getCameraBoundryLeft())
+			tmpX = getCameraBoundryLeft();
+		if(y > getCameraBoundryUp())
+			tmpY = getCameraBoundryUp();
+		if(y < getCameraBoundryDown())
+			tmpY = getCameraBoundryDown();
+		camera.position.set(tmpX, tmpY, 0);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -234,6 +252,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				if(playerRole == Role.Police){
 					clearVisiblePaths();
 					currPlayer.updatePossiblePaths();
+					Point currentPoint = currPlayer.getCurrentPawn().getCurrentTile().getPosition();
+					setCameraPosition(currentPoint.x*Values.TILE_WIDTH, currentPoint.y*Values.TILE_HEIGTH);
 				}
 			}
 		}
@@ -256,6 +276,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 		Player currentPlayer = model.getCurrentPlayer();
 
+		Point focuspoint= currentPlayer.getCurrentPawn().getCurrentTile().getPosition();
+		setCameraPosition(focuspoint.x*Values.TILE_WIDTH, focuspoint.y*Values.TILE_HEIGTH);
+		
 		actionsTable.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
 		actionsTable.row();
 
