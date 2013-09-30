@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -92,50 +93,56 @@ public class GameFactory {
 		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
 			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
 				
-				//try catch made because of null pointer exception when we dont have a walkable tile when we read inte frpm the .tmx file
+				//try catch made because of null pointer exception when we dont have a walkable tile when we read it from the .tmx file
 				try{
 					
 					switch(mapLayerInteract.getCell(i, j).getTile().getId()){
-					case 1: 	// Acording to the tileset case 1 is the road tiles
+					case 1: 	// According to the tileset case 1 is the road tiles
 						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
 						break;						
-					case 2: 	// Acording to the tileset case 2 is the get away tiles
+					case 2: 	// According to the tileset case 2 is the get away tiles
 						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
 						break;
-					case 3: 	// Acording to the tileset case 3 is the polisoffice tiles
-						PoliceStationTile station = new PoliceStationTile(new Point(i, j), mediator);
-						walkable[i][j] = station;
-						listOfPoliceStation.add(station);
+					case 3: 	// According to the tileset case 3 is the Bank tiles containing 2000
+						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
 						break;
-					case 4: 	// Acording to the tileset case 4 is the tramstops tiles
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
+					case 4: 	// According to the tileset case 4 is the Bank tiles containing 5000
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
 						break;
-					case 5: 	// Acording to the tileset case 5 is the IntelligenceAgency tiles
-						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
+					case 5: 	// According to the tileset case 5 is the Bank tiles containing 10000
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
 						break;
-					case 6: 	// Acording to tileset case 6 will be the coordinate of the poliscar(this will be a road tile)
-						policeCarStart = new RoadTile(new Point(i, j), mediator);
-						walkable[i][j] = policeCarStart;
+					case 6: 	// According to the tileset case 6 is the Bank tiles containing 20000
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
 						break;
-					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
-						listOfHideOut.add(walkable[i][j]);
-						break;
-					case 8: 	// Acording to the tileset case 8 is the Travelagency tiles
+					case 7: 	// According to the tileset case 8 is the Travelagency tiles
 						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
 						walkable[i][j] = TravelAgencyTile.getInstance();
 						break;
-					case 9: 	// Acording to the tileset case 9 is the Bank tiles containing 2000
-						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
+					case 8: 	// According to the tileset case 8 is the blue metro line tile
+						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
 						break;
-					case 10: 	// Acording to the tileset case 10 is the Bank tiles containing 5000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
+					case 9: 	// According to the tileset case 9 is the green metro line tile
+						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
 						break;
-					case 11: 	// Acording to the tileset case 11 is the Bank tiles containing 10000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
+					case 10: 	// According to the tileset case 10 is the red metro line tile
+						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
 						break;
-					case 12: 	// Acording to the tileset case 12 is the Bank tiles containing 20000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
+					case 11: 	// According to the tileset case 11 is the IntelligenceAgency tiles
+						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
+						break;
+					case 12: 	// According to the tileset case 12 is the Hiding tiles
+						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
+						listOfHideOut.add(walkable[i][j]);
+						break;
+					case 13: 	// According to tileset case 13 will be the coordinate of the poliscar(this will be a road tile)
+						policeCarStart = new RoadTile(new Point(i, j), mediator);
+						walkable[i][j] = policeCarStart;
+						break;
+					case 14: 	// According to the tileset case 3 is the polisoffice tiles
+						PoliceStationTile station = new PoliceStationTile(new Point(i, j), mediator);
+						walkable[i][j] = station;
+						listOfPoliceStation.add(station);
 						break;
 					}
 				} catch (NullPointerException e){
@@ -178,8 +185,7 @@ public class GameFactory {
 
 					actors.add(new CopCarActor(drawable, Scaling.none, copCar, pawnAnimations));
 					
-					// should really be the policecarstart..
-					copCar.setCurrentTile(listOfPoliceStation.get(i));
+					copCar.setCurrentTile(policeCarStart);
 				}
 				
 				players.add( new Player(name, pawns, Role.Police, mediator));
@@ -199,8 +205,8 @@ public class GameFactory {
 		        TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 				
 				actors.add(new MovableActor(drawable, Scaling.none, crook, pawnAnimations));
-				
-				crook.setCurrentTile(listOfHideOut.get(0));
+				Random rand = new Random();
+				crook.setCurrentTile(listOfHideOut.get(rand.nextInt(4)));
 				
 				players.add( new Player(name, pawns, Role.Crook, mediator));
 			}
@@ -397,8 +403,6 @@ public class GameFactory {
 				
 				Image pathImage = new Image(region);
 				Point pathTilePos = path.getTile(i).getPosition();
-				System.out.println("X: " + pathTilePos.x 
-						+ "\nY: " + pathTilePos.y);
 				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
 									  pathTilePos.y * Values.TILE_HEIGTH);
 				pathImages.add(pathImage);
