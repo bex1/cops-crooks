@@ -49,7 +49,7 @@ public class SplashScreen extends AbstractScreen {
                 @Override
                 public boolean act(float delta) {
                         // the last action will move to the next screen
-                        game.setScreen(new MenuScreen(game));
+                        game.setScreen(new LoadingScreen(game));
                         return true;
                 }
         }));
