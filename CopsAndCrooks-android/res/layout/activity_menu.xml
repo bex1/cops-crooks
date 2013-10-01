@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/menu_button_margin"
         android:text="@string/menu_instructions"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:onClick="openInstructions" />
 
     <Button
         android:id="@+id/options_button"
