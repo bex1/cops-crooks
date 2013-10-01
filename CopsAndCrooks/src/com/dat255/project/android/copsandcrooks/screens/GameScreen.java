@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -40,6 +41,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private Table actionsTable;
 	private TextButton rollTheDiceButton;
 	private TextButton goByTramButton;
+	private Label diceResultLabel;
 
 	private final int mapWidth, mapHeight;
 
@@ -97,6 +99,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				goByTramButton.getParent().clear();
 			}
 		} );
+		diceResultLabel = new Label(null, getSkin());
 	}
 
 	@Override
@@ -230,7 +233,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			Role playerRole = currPlayer.getPlayerRole();
 
 			if(property == Player.PROPERTY_DICE_RESULT){ 
-				//TODO show the results
+				try{
+				showDiceResult(Integer.parseInt(evt.getNewValue().toString()));
+				}catch(NumberFormatException e){
+					System.out.println("Invalid dice result");
+				}
 				if(playerRole == Role.Police){
 
 				}
@@ -277,6 +284,14 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			actionsTable.row();
 		}
 	}
+	private void showDiceResult(int diceResult){
+		
+		diceResultLabel.setText(Integer.toString(diceResult));
+		diceResultLabel.setY(hudStage.getHeight() / 2);
+		diceResultLabel.setX(hudStage.getWidth() / 2);
+		hudStage.addActor(diceResultLabel);
+		
+	}
 
 	private void showPossiblePaths(IPlayer player) {
 		List<? extends Actor> tmp = null;
@@ -288,6 +303,13 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		if (tmp != null) {
 			for(Actor pathActor: tmp){
 				stage.addActor(pathActor);
+				pathActor.addListener(new ClickListener() {
+					@Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						super.touchUp(event, x, y, pointer, button);
+						diceResultLabel.getParent().clear();
+					}
+				} );
 			}
 		}
 	}
