@@ -685,6 +685,128 @@ pages3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+game-screen/dice/Dice0
+  rotate: false
+  xy: 247, 172
+  size: 76, 81
+  orig: 76, 81
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice1
+  rotate: false
+  xy: 2, 77
+  size: 78, 87
+  orig: 78, 87
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice10
+  rotate: false
+  xy: 403, 177
+  size: 70, 76
+  orig: 70, 76
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice11
+  rotate: false
+  xy: 83, 174
+  size: 80, 79
+  orig: 80, 79
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice12
+  rotate: false
+  xy: 225, 94
+  size: 69, 76
+  orig: 69, 76
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice13
+  rotate: false
+  xy: 422, 111
+  size: 59, 64
+  orig: 59, 64
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice14
+  rotate: false
+  xy: 2, 2
+  size: 69, 73
+  orig: 69, 73
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice2
+  rotate: false
+  xy: 73, 2
+  size: 69, 73
+  orig: 69, 73
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice3
+  rotate: false
+  xy: 361, 105
+  size: 59, 65
+  orig: 59, 65
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice4
+  rotate: false
+  xy: 82, 87
+  size: 69, 77
+  orig: 69, 77
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice5
+  rotate: false
+  xy: 165, 174
+  size: 80, 79
+  orig: 80, 79
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice6
+  rotate: false
+  xy: 153, 96
+  size: 70, 76
+  orig: 70, 76
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice7
+  rotate: false
+  xy: 296, 101
+  size: 63, 69
+  orig: 63, 69
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice8
+  rotate: false
+  xy: 325, 172
+  size: 76, 81
+  orig: 76, 81
+  offset: 0, 0
+  index: -1
+game-screen/dice/Dice9
+  rotate: false
+  xy: 2, 166
+  size: 79, 87
+  orig: 79, 87
+  offset: 0, 0
+  index: -1
+
+pages4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+game-screen/hud/coins-icon
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+
+pages5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 game-screen/officer/stopped s1
   rotate: false
   xy: 2, 94
@@ -805,7 +927,7 @@ game-screen/officer/walking w4
   offset: 0, 0
   index: -1
 
-pages4.png
+pages6.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -831,7 +953,7 @@ game-screen/path/GreenDotPathEndClick
   offset: 0, 0
   index: -1
 
-pages5.png
+pages7.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

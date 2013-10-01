@@ -25,7 +25,7 @@ public class GameModelTest {
 	public void GameModelTest() {
 		
 		try{
-			GameModel gameModel = new GameModel(null, null, null);
+			GameModel gameModel = new GameModel(null, null, null, null);
 			fail();
 		}catch (IllegalArgumentException e){
 			//expected
@@ -55,7 +55,7 @@ public class GameModelTest {
 				tiles [i][j] = new RoadTile(new Point(i, j), mediator);
 			}
 		}
-		GameModel gameModel = new GameModel(mediator, players, tiles);
+		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles);
 		
 		gameModel.startGame();
 		
@@ -88,7 +88,7 @@ public class GameModelTest {
 			}
 		}
 		tiles [2][2] = new PoliceStationTile(new Point(2, 2), mediator);
-		GameModel gameModel = new GameModel(mediator, players, tiles);
+		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles);
 		
 		gameModel.startGame();
 		//Sets the position of the pawn to ensure that it doesn't start in the police station.
@@ -122,7 +122,7 @@ public class GameModelTest {
 		}
 		tiles [2][2] = new PoliceStationTile(new Point(2, 2), mediator);
 		tiles [2][1] = new PoliceStationTile(new Point(2, 1), mediator);
-		GameModel gameModel = new GameModel(mediator, players, tiles);
+		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles);
 		players.get(0).getCurrentPawn().setCurrentTile(tiles [1][1]);
 		((Crook)players.get(1).getCurrentPawn()).setWanted(true);
 		players.get(1).getCurrentPawn().setCurrentTile(tiles [1][1]);

@@ -13,12 +13,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
@@ -37,15 +34,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final TiledMapTileLayer gameBackground; //kan heta layertorender
 	private final Stage hudStage;
 
-	private Table actionsTable;
-	private TextButton rollTheDiceButton;
-	private TextButton goByTramButton;
+	private MoveByDiceOrMetroTable moveByDiceOrMetro;
+	private MoveByDiceTable moveByDice;
+	private HUDTable hudTable;
 
 	private final int mapWidth, mapHeight;
 
 	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
 			final TiledMap tiledmap, final TiledMapTileLayer backgroundLayer,
-			final List<Actor> actors) {
+			final List<Actor> actors, final DiceActor dice) {
 		super(game, backgroundLayer.getWidth() * backgroundLayer.getTileWidth(), 
 				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
 
@@ -57,7 +54,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
 
 		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
-
+		hudStage.addActor(dice);
+		
+		
 		model.addObserver(this);
 		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
@@ -71,32 +70,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
-		actionsTable = new Table(getSkin());
-		actionsTable.setFillParent(true);
-		// register the button "roll dice"
-		rollTheDiceButton = new TextButton("Roll the dice", getSkin());
-		rollTheDiceButton.addListener(new ClickListener() {
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				super.touchUp(event, x, y, pointer, button);
-				// TODO click sound
-				rollTheDiceButton.getParent().clear();
-				model.getCurrentPlayer().rollDice();
-				
-			}
-		});
-
-		// register the button "go by tram"
-		goByTramButton = new TextButton("Go by tram", getSkin());
-		goByTramButton.addListener(new ClickListener() {
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				super.touchUp(event, x, y, pointer, button);
-				// TODO click sound
-				// TODO go by tram
-				goByTramButton.getParent().clear();
-			}
-		} );
+		moveByDice = new MoveByDiceTable(model);
+		moveByDiceOrMetro = new MoveByDiceOrMetroTable(model);
+		hudTable = new HUDTable(model.getPlayerClient());
 	}
 
 	@Override
@@ -130,6 +106,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
 		camera.position.set(mapWidth/2, mapHeight/2, 0);
+		
+		hudStage.addActor(hudTable);
 
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
@@ -261,20 +239,10 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void showActButtons() {
-		hudStage.addActor(actionsTable);
-
-		IPlayer currentPlayer = model.getCurrentPlayer();
-
-		actionsTable.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
-		actionsTable.row();
-
-		actionsTable.add(rollTheDiceButton).size(360, 60).uniform().padBottom(10);
-		actionsTable.row();
-
-		//TODO if the player is standing at a tramstop
-		if(currentPlayer.isAnyWalkingPawnOnMetro()){
-			actionsTable.add(goByTramButton).size(360, 60).uniform().padBottom(10);
-			actionsTable.row();
+		if(model.getCurrentPlayer().isAnyWalkingPawnOnMetro()){
+			hudStage.addActor(moveByDiceOrMetro);
+		}else {
+			hudStage.addActor(moveByDice);
 		}
 	}
 

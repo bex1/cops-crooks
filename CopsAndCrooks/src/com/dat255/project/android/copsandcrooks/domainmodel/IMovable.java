@@ -39,10 +39,13 @@ public interface IMovable extends IObservable {
 	 */
 	boolean isMoving();
 	
+	boolean isPlaying();
+	
 	public static final String PROPERTY_NEXT_TILE = "NextTile";
 	public static final String PROPERTY_IS_MOVING = "IsMoving";
 	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
+	public static final String PROPERTY_IS_PLAYING = "IsPlaying";
 	
 	//TODO: MAKE OWN CLASS, PACKAGE PRIVATE
 	public enum PawnType {
@@ -50,4 +53,6 @@ public interface IMovable extends IObservable {
 		Officer,
 		Car,
 	}
+
+	
 }

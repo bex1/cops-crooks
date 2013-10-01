@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import com.dat255.project.android.copsandcrooks.utils.Values;
+
 
 /**
  * A cop car in the game Cops&Crooks
@@ -21,6 +23,13 @@ public class CopCar extends AbstractPawn implements ISelectablePawn {
 				// Car stays and crook gets moved to the police station
 				mediator.moveToPoliceStation(crook);
 				crook.setIsInPoliceStation(true);
+				
+				Wallet crookWallet = crook.getWallet();
+				//Take bounty
+				mediator.addCashToMyPlayer((int)(crookWallet.getCash() * 
+						Values.POLICE_CASH_REWARD_FACTOR), this);
+				crookWallet.setCash(0);
+				crook.setWanted(false);
 			}
 		}
 	}

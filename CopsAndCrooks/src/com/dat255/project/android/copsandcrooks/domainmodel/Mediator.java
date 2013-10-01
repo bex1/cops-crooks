@@ -56,12 +56,9 @@ public final class Mediator implements IMediator {
 	}
 
 	@Override
-	public int rollDice() {
-		if (dice != null) {
-			return dice.roll();
-		} else {
-			throw new NullPointerException("No dice is registered");
-		}
+	public void rollDice(Player player) {
+		if (dice != null) 
+			dice.roll(player);
 	}
 
 	@Override

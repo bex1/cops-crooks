@@ -93,7 +93,24 @@ public class Player implements IPlayer {
     	return wallet;
     }
     
-    private boolean isOnMetro(AbstractPawn pawn) {
+    void updateState() {
+    	checkIfCrookIsEscaping();
+    }
+    
+    private void checkIfCrookIsEscaping() {
+		if (currentPawn instanceof Crook) {
+			Crook crook = (Crook)currentPawn;
+			if (crook.isAttemptingGetAway()) {
+				// Take cash and add to player
+				Wallet crookWallet = crook.getWallet();
+				wallet.incrementCash(crookWallet.getCash());
+				crook.setIsPlaying(false);
+				crook.setCurrentTile(null);
+			}
+		}
+	}
+
+	private boolean isOnMetro(AbstractPawn pawn) {
     	if (pawn instanceof AbstractWalkingPawn) {
     		AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn)pawn;
     		return walkingPawn.isWaitingOnTram();
@@ -127,10 +144,7 @@ public class Player implements IPlayer {
     
     @Override
     public void rollDice() {
-    	diceResult = mediator.rollDice();
-    	pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
-    	goByDice = true;
-    	updatePossiblePaths();
+    	mediator.rollDice(this);
     }
     
     @Override
@@ -205,5 +219,12 @@ public class Player implements IPlayer {
 	@Override
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
+	}
+
+	void diceResult(int result) {
+		diceResult = result;
+		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+    	goByDice = true;
+    	updatePossiblePaths();
 	}
 }
