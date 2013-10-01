@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.CopActor;
 import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
+import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
@@ -201,13 +202,13 @@ public class GameFactory {
 		
 
 		//create a game model
-		GameModel gameModel =new GameModel(mediator, players, walkable);
+		GameModel gameModel =new GameModel(mediator, players.get(0), players, walkable);
 	
 		// create the controller and view of the game
-		new Dice(mediator);
+		Dice dice = new Dice(mediator);
+		DiceActor diceActor = getDiceActorFor(dice);
 		new PathFinder(walkable, mediator, new ArrayList<TramLine>());
-		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
-		
+		return new GameScreen(game, gameModel, map, mapLayerBack, actors, diceActor);
 	}
 	
 	private static EnumMap<Animations, Animation> getCopCarAnimations() {
@@ -451,4 +452,19 @@ public class GameFactory {
 		return pathActors;
 	}
 	
+	private static DiceActor getDiceActorFor(Dice dice) {
+		if (dice == null) {
+			return null;
+		}
+		
+		AtlasRegion[] diceAnim = new AtlasRegion[14];
+		for(int k = 0; k < 14; k++)
+		{
+			diceAnim[k] = atlas.findRegion("game-screen/dice/Dice"+k);
+		}
+		Animation animation = new Animation(0.05f, diceAnim);
+
+		
+		return new DiceActor(dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
+	}
 }

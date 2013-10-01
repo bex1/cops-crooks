@@ -69,7 +69,7 @@ interface IMediator {
 	 * 
 	 * @return the result.
 	 */
-	int rollDice();
+	void rollDice(Player player);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
