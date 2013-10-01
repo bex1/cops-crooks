@@ -16,7 +16,6 @@ public class GameActivity extends AndroidApplication {
         cfg.useGL20 = true;
         
 		initialize(new CopsAndCrooks(), cfg);
-		;
 	}
 
 }

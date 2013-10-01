@@ -37,6 +37,10 @@
             android:name="com.dat255.project.android.copsandcrooks.LobbyActivity"
             android:label="@string/title_activity_lobby" >
         </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.InstructionsActivity"
+            android:label="@string/title_activity_instructions" >
+        </activity>
     </application>
 
 </manifest>

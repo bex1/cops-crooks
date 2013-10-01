@@ -25,5 +25,10 @@ public class MenuActivity extends Activity {
 		Intent intent = new Intent(this, GameActivity.class);
 		startActivity(intent);
 	}
+	
+	public void openInstructions(View v){
+		Intent intent = new Intent(this, InstructionsActivity.class);
+		startActivity(intent);
+	}
 
 }
