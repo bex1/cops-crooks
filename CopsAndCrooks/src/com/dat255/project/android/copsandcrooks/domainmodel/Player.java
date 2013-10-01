@@ -6,14 +6,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.utils.IObservable;
-
 /**
  * A player in the game Cops&Crooks.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class Player implements IObservable {
+public class Player implements IPlayer {
 	private IMediator mediator;
 
 	private List<AbstractPawn> pawns;
@@ -28,6 +26,10 @@ public class Player implements IObservable {
 	private Wallet wallet;
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+	private boolean goByMetro;
+
+	private boolean goByDice;
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
@@ -65,6 +67,7 @@ public class Player implements IObservable {
 		this.currentPawn = pawns.get(0);
 		wallet = new Wallet();
 	}
+
 
 	/**
 	 * Returns the type of player this is.
@@ -133,6 +136,8 @@ public class Player implements IObservable {
 	 */
 	public void rollDice() {
 		diceResult = mediator.rollDice();
+		// checks to see if the player's pawn is in prison
+		// if so then the player isn't ablt to move unless rolling a six.
 		if(this.currentPawn instanceof Crook){
 			Crook crook = ((Crook)this.currentPawn);
 			if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
@@ -141,21 +146,65 @@ public class Player implements IObservable {
 			}
 		}
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+		goByDice = true;
 		updatePossiblePaths();
 	}
 
 	/**
 	 * Updates the possible paths that the pawn can move in.
 	 */
-	public void updatePossiblePaths() {
-		int steps = diceResult * currentPawn.tilesMovedEachStep();
-		possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
-		// No possible paths and crook... -> Next player
+	
+	
+    private boolean isOnMetro(AbstractPawn pawn) {
+    	if (pawn instanceof AbstractWalkingPawn) {
+    		AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn)pawn;
+    		return walkingPawn.isWaitingOnTram();
+    	}
+    	return false;
+    }
+    	
+    @Override
+    public boolean isAnyWalkingPawnOnMetro(){
+    	for(AbstractPawn pawn: pawns){
+    		return isOnMetro(pawn);
+    	}
+    	return false;
+    }
+    
+    @Override
+    public boolean isGoingByMetro() {
+    	return goByMetro;
+    }
+    
+    @Override
+    public boolean isGoingByDice() {
+    	return goByDice;
+    }
+    
+    @Override
+    public void goByMetro() {
+    	goByMetro = true;
+    	updatePossiblePaths();
+    }
+    
+ 
+    
+    @Override
+    public void updatePossiblePaths() {
+    	if (goByDice) {
+    		int steps = diceResult * currentPawn.tilesMovedEachStep();
+    		possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
+    	} else if (goByMetro && isOnMetro(currentPawn)) {
+    		possiblePaths = mediator.getPossibleMetroPaths(currentPawn);
+    	}
+    	// No possible paths and crook... -> Next player
+
 		if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
 			mediator.playerTurnDone();
 			return;
 		}
 		pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
+
 	}
 
 	/**
@@ -171,37 +220,56 @@ public class Player implements IObservable {
 		return null;
 	}
 
-	/**
-	 * The player choose a path and the current pawn then moves along it.
-	 * 
-	 * The choosen path has to actually be one of the player's paths.
-	 * 
-	 * @param path The selected path.
-	 */
-	public void choosePath(TilePath path){
-		if (possiblePaths != null && possiblePaths.contains(path)) {
-			possiblePaths = null;
-			// The path passed the test -> move
-			currentPawn.move(path);
-			diceResult = 0;
-		}
-	}
+	
 
-	/**
-	 * Sets the current pawn of the player to the specified
-	 * if its really one of the players pawns.
-	 * 
-	 * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.
-	 */
-	void setCurrentPawn(AbstractPawn pawn){
-		if (pawns.contains(pawn)) {
-			AbstractPawn oldValue = currentPawn;
-			currentPawn = pawn;
-			pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldValue, currentPawn);
-		}
-	}
+	
 
-	@Override
+    
+    
+  
+
+    @Override
+    public void choosePath(TilePath path){
+    	if (possiblePaths != null && possiblePaths.contains(path) && goByDice) {
+    		possiblePaths = null;
+    		// The path passed the test -> move
+    		currentPawn.move(path);
+    		diceResult = 0;
+    		goByDice = false;
+    	}
+    }
+    
+    @Override
+    public void chooseMetroStop(TramStopTile metroStop){
+    	if (possiblePaths != null && goByMetro) {
+    		for (TilePath path : possiblePaths) {
+    			if (path.contains(metroStop)) {
+    				possiblePaths = null;
+    				// The path passed the test -> move directly
+    				currentPawn.setCurrentTile(metroStop);
+    				goByMetro = false;
+    				return;
+    			}
+    		}
+    	}
+    }
+    
+    /**
+     * Sets the current pawn of the player to the specified
+     * if its really one of the players pawns.
+     * 
+     * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.
+     */
+    void setCurrentPawn(AbstractPawn pawn){
+    	if (pawns.contains(pawn)) {
+    		AbstractPawn oldValue = currentPawn;
+    		currentPawn = pawn;
+    		pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldValue, currentPawn);
+    	}
+    }
+    
+    @Override
+
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
 	}

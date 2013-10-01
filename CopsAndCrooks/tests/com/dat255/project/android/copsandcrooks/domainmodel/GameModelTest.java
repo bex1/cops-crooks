@@ -92,9 +92,9 @@ public class GameModelTest {
 		
 		gameModel.startGame();
 		//Sets the position of the pawn to ensure that it doesn't start in the police station.
-		gameModel.getCurrentPlayer().getCurrentPawn().setCurrentTile(tiles[0][0]);
+		((Player)gameModel.getCurrentPlayer()).getCurrentPawn().setCurrentTile(tiles[0][0]);
 		
-		gameModel.moveToEmptyPoliceStationTile(gameModel.getCurrentPlayer().getCurrentPawn());
+		gameModel.moveToEmptyPoliceStationTile(((Player)gameModel.getCurrentPlayer()).getCurrentPawn());
 		
 		assertTrue(gameModel.getCurrentPlayer().getCurrentPawn().getCurrentTile()== tiles [2][2]);
 	}
