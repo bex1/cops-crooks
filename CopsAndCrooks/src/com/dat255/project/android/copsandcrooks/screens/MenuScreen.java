@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class MenuScreen extends AbstractScreen {
@@ -25,7 +26,7 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "start game"
-        TextButton startGameButton = new TextButton("Start game", getSkin());
+        TextButton startGameButton = new TextButton("Start game", Utilities.getSkin());
         startGameButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -39,7 +40,7 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "options"
-        TextButton optionsButton = new TextButton( "Options", getSkin() );
+        TextButton optionsButton = new TextButton( "Options", Utilities.getSkin() );
         optionsButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -52,7 +53,7 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "exit"
-        TextButton quitButton = new TextButton("Quit", getSkin());
+        TextButton quitButton = new TextButton("Quit", Utilities.getSkin());
         quitButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
