@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
+import com.dat255.project.android.copsandcrooks.domainmodel.ISelectablePawn;
 
-public class OfficerActor extends MovableActor{
+public class CopActor extends MovableActor{
 	
-	public OfficerActor(final TextureRegionDrawable drawable, final Scaling scaling, final Officer pawn, 
+	public CopActor(final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(drawable, scaling, pawn, animations);
 		this.addListener(new ClickListener(){

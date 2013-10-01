@@ -11,7 +11,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -23,6 +22,7 @@ import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
@@ -59,7 +59,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		model.addObserver(this);
-		for(Player player : model.getPlayers()){
+		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
 		}
 
@@ -226,7 +226,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		} else if (model.getCurrentPlayer() == evt.getSource()) {
 
 			// Extract relevant data
-			Player currPlayer = model.getCurrentPlayer();
+			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
 
 			if(property == Player.PROPERTY_DICE_RESULT){ 
@@ -263,7 +263,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private void showActButtons() {
 		hudStage.addActor(actionsTable);
 
-		Player currentPlayer = model.getCurrentPlayer();
+		IPlayer currentPlayer = model.getCurrentPlayer();
 
 		actionsTable.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
 		actionsTable.row();
@@ -272,16 +272,21 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		actionsTable.row();
 
 		//TODO if the player is standing at a tramstop
-		if(currentPlayer.isAnyWalkingPawnOnTramstop()){
+		if(currentPlayer.isAnyWalkingPawnOnMetro()){
 			actionsTable.add(goByTramButton).size(360, 60).uniform().padBottom(10);
 			actionsTable.row();
 		}
 	}
 
-	private void showPossiblePaths(Player player) {
-		List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+	private void showPossiblePaths(IPlayer player) {
+		List<? extends Actor> tmp = null;
+		if (player.isGoingByDice()) {
+			tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+		} else if (player.isGoingByMetro()) {
+			tmp = GameFactory.getMetroActorsFor(player.getPossiblePaths(), player);
+		}
 		if (tmp != null) {
-			for(PathActor pathActor: tmp){
+			for(Actor pathActor: tmp){
 				stage.addActor(pathActor);
 			}
 		}

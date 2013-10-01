@@ -21,7 +21,7 @@ public final class GameModel implements IObservable  {
 	
 
 
-	public GameModel(IMediator mediator, List<Player> players, IWalkableTile[][] tiles) {
+	public GameModel(final IMediator mediator, final List<Player> players, final IWalkableTile[][] tiles) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -30,17 +30,18 @@ public final class GameModel implements IObservable  {
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 
 		this.players = players;
-
+		
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
+		
 
 		// Extract police station tiles
 		for (IWalkableTile[] tileArray : tiles) {
 			for (IWalkableTile tile : tileArray) {
 				if (tile instanceof PoliceStationTile) {
 					policeStationTiles.add((PoliceStationTile)tile);
-				}
+				} 
 			}
 		}
 		pcs = new PropertyChangeSupport(this);
@@ -57,7 +58,7 @@ public final class GameModel implements IObservable  {
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
 	}
 
-	public Player getCurrentPlayer(){
+	public IPlayer getCurrentPlayer(){
 		return currentPlayer;
 	}
 
@@ -109,7 +110,7 @@ public final class GameModel implements IObservable  {
 		if (intelligenceAgencyTile == null) {
 			throw new IllegalArgumentException("Intelligence Agency not allowed to be null");
 		}
-		intelligenceAgencyTile.hinderGetAway(getPlayers());
+		intelligenceAgencyTile.hinderGetAway(players);
 	}
 
 	void pawnSelected(AbstractPawn pawn) {
@@ -123,7 +124,7 @@ public final class GameModel implements IObservable  {
 		pcs.addPropertyChangeListener(l);
 	}
 
-	public Collection<Player> getPlayers(){
+	public Collection<? extends IPlayer> getPlayers(){
 		return Collections.unmodifiableCollection(this.players);
 	}
 

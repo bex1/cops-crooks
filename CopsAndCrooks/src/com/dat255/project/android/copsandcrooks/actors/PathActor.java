@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 
 /**
@@ -23,7 +23,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 public class PathActor extends Group {
 	private final TilePath tilePath;
 
-	private final Player player;
+	private final IPlayer player;
 	private final Timer removeTimer;
 	
 	private final Image pathEndImage, pathEndImageClicked;
@@ -36,9 +36,10 @@ public class PathActor extends Group {
 	 * @param path The model of the path.
 	 * @param pathImages The images for the path, excluding the end image.
 	 * @param pathEndImage The end image of the path.
+	 * @param pathEndImageClicked The clicked end image of the path.
 	 * @param player The player who can interact with the paths.
 	 */
-	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Image pathEndImageClicked, final Player player) {
+	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Image pathEndImageClicked, final IPlayer player) {
 		this.tilePath = path;
 		this.player = player;
 		this.removeTimer = new Timer();
