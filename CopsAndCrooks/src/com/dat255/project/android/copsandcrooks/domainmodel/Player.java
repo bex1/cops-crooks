@@ -13,18 +13,18 @@ import java.util.List;
  */
 public class Player implements IPlayer {
 	private IMediator mediator;
-	
+
 	private List<AbstractPawn> pawns;
 	private AbstractPawn currentPawn;
 	private int diceResult;
 	private Collection<TilePath> possiblePaths;
-	
+
 	private Role playerRole;
-	
+
 	private String name;
-	
+
 	private Wallet wallet;
-	
+
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private boolean goByMetro;
@@ -67,12 +67,14 @@ public class Player implements IPlayer {
 		this.currentPawn = pawns.get(0);
 		wallet = new Wallet();
 	}
-	
+
+
 	@Override
 	public Role getPlayerRole() {
 		return playerRole;
 	}
-	
+
+
 	@Override
     public Collection<AbstractPawn> getPawns() {
         return Collections.unmodifiableCollection(pawns);
@@ -121,7 +123,9 @@ public class Player implements IPlayer {
     @Override
     public boolean isAnyWalkingPawnOnMetro(){
     	for(AbstractPawn pawn: pawns){
-    		return isOnMetro(pawn);
+    		if (isOnMetro(pawn)) {
+    			return true;
+    		}
     	}
     	return false;
     }
@@ -144,6 +148,16 @@ public class Player implements IPlayer {
     
     @Override
     public void rollDice() {
+    	// checks to see if the player's pawn is in prison
+    	// if so then the player isn't ablt to move unless rolling a six.
+    	if(this.currentPawn instanceof Crook){
+    		Crook crook = ((Crook)this.currentPawn);
+    		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
+    			crook.decrementTurnsInPrison();
+    			mediator.playerTurnDone();
+    			return;
+    		}
+    	}
     	mediator.rollDice(this);
     }
     
@@ -156,20 +170,22 @@ public class Player implements IPlayer {
     		possiblePaths = mediator.getPossibleMetroPaths(currentPawn);
     	}
     	// No possible paths and crook... -> Next player
+
 		if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
 			mediator.playerTurnDone();
 			return;
 		}
 		pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
-    }
-    
+
+	}
+
     @Override
-    public Collection<TilePath> getPossiblePaths() {
-    	if (possiblePaths != null) {
-    		return Collections.unmodifiableCollection(possiblePaths);
-    	}
-    	return null;
-    }
+	public Collection<TilePath> getPossiblePaths() {
+		if (possiblePaths != null) {
+			return Collections.unmodifiableCollection(possiblePaths);
+		}
+		return null;
+	}
 
     @Override
     public void choosePath(TilePath path){
@@ -212,6 +228,7 @@ public class Player implements IPlayer {
     }
     
     @Override
+
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
 	}

@@ -207,12 +207,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
 
-			if(property == Player.PROPERTY_DICE_RESULT){ 
-				//TODO show the results
-				if(playerRole == Role.Police){
-
-				}
-			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
+			if (property == Player.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);

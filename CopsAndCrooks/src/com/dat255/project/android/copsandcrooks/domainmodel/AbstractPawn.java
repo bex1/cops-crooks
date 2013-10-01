@@ -37,6 +37,7 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
 		this.currentTile = startTile;
+		startTile.setOccupiedBy(pawnType);
 		this.pawnRole = pawnRole;
 		this.pawnType = pawnType;
 		this.mediator = mediator;
