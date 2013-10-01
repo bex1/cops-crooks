@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.actors;
 
 import java.util.EnumMap;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;

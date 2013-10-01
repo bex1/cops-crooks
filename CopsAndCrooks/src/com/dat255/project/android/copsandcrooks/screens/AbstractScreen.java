@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 /**
@@ -28,20 +29,11 @@ public abstract class AbstractScreen implements Screen {
     protected String getName() {
         return getClass().getSimpleName();
     }
-    
-    protected Skin getSkin()
-    {
-        if( skin == null ) {
-            FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");
-            skin = new Skin(skinFile);
-        }
-        return skin;
-    }
 
     protected Table getTable()
     {
         if( table == null ) {
-            table = new Table(getSkin());
+            table = new Table(Utilities.getSkin());
             table.setFillParent( true );
             if(CopsAndCrooks.DEV_MODE ) {
                 table.debug();
