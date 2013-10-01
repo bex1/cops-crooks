@@ -11,6 +11,7 @@ public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
+	private int turnsInPrison;
 	
 	public Crook(AbstractWalkableTile startTile, IMediator mediator) {
 		super(startTile, Role.Crook, PawnType.Crook, mediator, 1);
@@ -63,5 +64,33 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setAttemptingGetAway(boolean attemptingGetAway) {
 		this.attemptingGetAway = attemptingGetAway;
+	}
+	/**
+	 * Returns whether the crook is in prison or not.
+	 * @param pawn - check to see if the pawn is a Crook, Cops can't be in prison.
+	 * @return whether the crook is in prison or not.
+	 */
+	boolean isInPrison(){
+		return currentTile instanceof PoliceStationTile;
+	}
+	/**
+	 * Sets the number of turns in prison to the default value 3 if the crook is in prison
+	 */
+	void setTurnsInPrison(){
+			turnsInPrison = 3;
+	}
+	/**
+	 * The number of turns left in prison
+	 * @return turnsInPrison - number of turns left in prison
+	 */
+	int getTurnsInPrison(){
+		return turnsInPrison;
+	}
+	/**
+	 * Decrements the number of turns left in prison.
+	 */
+	public void decrementTurnsInPrison(){
+		if(turnsInPrison > 0)
+		--turnsInPrison;
 	}
 }

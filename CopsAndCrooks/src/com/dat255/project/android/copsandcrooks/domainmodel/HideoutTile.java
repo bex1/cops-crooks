@@ -105,4 +105,8 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	public boolean isOccupied(){
 		return false;
 	}
+	
+	@Override
+	public void setOccupiedBy(PawnType pawnType){
+	}
 }

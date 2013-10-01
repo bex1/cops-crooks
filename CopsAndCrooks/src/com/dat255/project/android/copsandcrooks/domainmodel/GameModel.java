@@ -17,10 +17,9 @@ public final class GameModel implements IObservable  {
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 
-	private int round;
 
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
-	public static final String PROPERTY_ROUND = "NewRound";
+	
 
 
 	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles) {
@@ -53,8 +52,6 @@ public final class GameModel implements IObservable  {
 	}
 
 	public void startGame(){
-		round = 1;
-		pcs.firePropertyChange(PROPERTY_ROUND, -1, round);
 		this.currentPlayer = players.get(0);
 		currentPlayer.updateState();
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
@@ -78,6 +75,8 @@ public final class GameModel implements IObservable  {
 	void moveToEmptyPoliceStationTile(AbstractPawn movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
 		movable.setCurrentTile(policeStationTile);
+		if(movable instanceof Crook)
+			policeStationTile.interact(movable);
 	}
 
 	private PoliceStationTile findEmptyPoliceStationTile() {
