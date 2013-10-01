@@ -7,7 +7,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class Officer extends AbstractWalkingPawn {
+public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 	
 	public Officer(AbstractWalkableTile startTile, IMediator mediator) {
 		super(startTile, Role.Police, PawnType.Officer, mediator, 1);
@@ -36,6 +36,7 @@ public class Officer extends AbstractWalkingPawn {
 		}
 	}
 
+	@Override
 	public void gotSelected() {
 		mediator.changePawn(this);
 	}

@@ -18,10 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.CopActor;
 import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
+import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
-import com.dat255.project.android.copsandcrooks.actors.OfficerActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkableTile;
@@ -31,7 +32,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.GetAwayTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.IntelligenceAgencyTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
@@ -42,6 +43,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.RoadTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.RobbableBuildingTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.domainmodel.TramLine;
 import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
@@ -164,7 +166,7 @@ public class GameFactory {
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 
-					actors.add(new OfficerActor(drawable, Scaling.none, officer, pawnAnimations));
+					actors.add(new CopActor(drawable, Scaling.none, officer, pawnAnimations));
 				}
 				for (int i = 0; i < numberOfCopCars; i++) {
 					CopCar copCar = new CopCar(listOfPoliceStation.get(i), mediator);
@@ -203,7 +205,7 @@ public class GameFactory {
 	
 		// create the controller and view of the game
 		new Dice(mediator);
-		new PathFinder(walkable, mediator);
+		new PathFinder(walkable, mediator, new ArrayList<TramLine>());
 		return new GameScreen(game, gameModel, map, mapLayerBack, actors);
 		
 	}
@@ -371,7 +373,7 @@ public class GameFactory {
 	 * @param player The player who can click the paths.
 	 * @return A list of PathActors.
 	 */
-	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, Player player) {
+	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, IPlayer player) {
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
 		
@@ -388,8 +390,6 @@ public class GameFactory {
 				
 				Image pathImage = new Image(region);
 				Point pathTilePos = path.getTile(i).getPosition();
-				System.out.println("X: " + pathTilePos.x 
-						+ "\nY: " + pathTilePos.y);
 				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
 									  pathTilePos.y * Values.TILE_HEIGTH);
 				pathImages.add(pathImage);
@@ -408,6 +408,45 @@ public class GameFactory {
 								pathEndPos.y * Values.TILE_HEIGTH);
 			
 			pathActors.add(new PathActor(path, pathImages, pathEnd, pathEndClick, player));
+		}
+		return pathActors;
+	}
+	
+	/**
+	 * Creates path actors for the specified paths connected to the specified player.
+	 * 
+	 * @param paths The paths to create PathActors for.
+	 * @param player The player who can click the paths.
+	 * @return A list of PathActors.
+	 */
+	public static List<MetroLineActor> getMetroActorsFor(Collection<TilePath> paths, IPlayer player) {
+		
+		List<MetroLineActor> pathActors = new ArrayList<MetroLineActor>();
+		
+		if (paths == null || paths.isEmpty()) {
+			return null;
+		}
+	
+		List<Image> pathImages = new ArrayList<Image>();
+		
+		for (TilePath path : paths) {
+			
+			for (int i = 0; i < path.getPathLength(); i++) {
+				AtlasRegion region = atlas.findRegion("game-screen/path/GreenDotPathEnd");
+				
+				Image pathImage = new Image(region);
+				Point pathTilePos = path.getTile(i).getPosition();
+				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
+									  pathTilePos.y * Values.TILE_HEIGTH);
+				pathImages.add(pathImage);
+				
+			}
+			
+			
+			AtlasRegion clickRegion = atlas.findRegion("game-screen/path/GreenDotPathEndClick");
+			Image pathClick = new Image(clickRegion);
+			
+			pathActors.add(new MetroLineActor(path, pathImages, pathClick, player));
 		}
 		return pathActors;
 	}

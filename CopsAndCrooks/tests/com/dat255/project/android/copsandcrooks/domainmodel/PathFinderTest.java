@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class PathFinderTest {
 		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 6);
 		
@@ -51,7 +52,7 @@ public class PathFinderTest {
 		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 3);
 		
@@ -82,7 +83,7 @@ public class PathFinderTest {
 		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 14);
 		
@@ -106,7 +107,7 @@ public class PathFinderTest {
 		crook = new Crook(null, mediator);
 		// crook.setCurrentTile(tiles[0][0]); this should force the calculate method to return null
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 3);
 		

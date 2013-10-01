@@ -6,7 +6,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class CopCar extends AbstractPawn {
+public class CopCar extends AbstractPawn implements ISelectablePawn {
 
 	public CopCar(AbstractWalkableTile startTile, IMediator mediator) {
 		super(startTile, Role.Police, PawnType.Car, mediator, 2);
@@ -25,6 +25,7 @@ public class CopCar extends AbstractPawn {
 		}
 	}
 
+	@Override
 	public void gotSelected() {
 		mediator.changePawn(this);
 	}

@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
