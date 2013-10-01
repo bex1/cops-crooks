@@ -122,13 +122,16 @@ public class Player implements IPlayer {
 	 * false otherwise.
 	 */
 	public boolean isAnyWalkingPawnOnTramstop(){
+		boolean tmpIsOnTramStop = false;
 		for(AbstractPawn pawn: pawns){
 			if (pawn instanceof AbstractWalkingPawn) {
 				AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn) pawn;
-				return walkingPawn.isWaitingOnTram();
+				if(walkingPawn.isWaitingOnTram()){
+					tmpIsOnTramStop = true;
+				} 
 			}
 		}
-		return false;
+		return tmpIsOnTramStop;
 	}
 
 	/**
