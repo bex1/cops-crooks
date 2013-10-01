@@ -106,4 +106,6 @@ interface IMediator {
 	void changePawn(AbstractPawn pawn);
 
 	boolean isWantedCrookOn(IWalkableTile tile);
+
+	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 }

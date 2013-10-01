@@ -70,7 +70,7 @@ public final class Mediator implements IMediator {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);
 		} else {
-				throw new NullPointerException("No pathfinder is registered");
+			throw new NullPointerException("No pathfinder is registered");
 		}
 	}
 	
@@ -91,5 +91,14 @@ public final class Mediator implements IMediator {
 		if (gameModel != null) 
 			return gameModel.checkIfWantedCrookAt(tile);
 		return false;
+	}
+
+	@Override
+	public Collection<TilePath> getPossibleMetroPaths(AbstractPawn pawn) {
+		if (pathFinder != null) {
+			return pathFinder.calculatePossibleMetroPaths(pawn);
+		} else {
+			throw new NullPointerException("No pathfinder is registered");
+		}
 	}
 }

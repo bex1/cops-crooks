@@ -23,9 +23,9 @@ public class TramLineTest {
 		tramStops.add(new TramStopTile(new Point(2,2), mediator));
 		TramLine tramLine = new TramLine(tramStops);
 		
-		assertTrue(tramLine.getPossibleStops().size() == 4);
+		assertTrue(tramLine.getPossibleStops().getPathLength() == 4);
 		occupiedStop.setOccupiedBy(PawnType.Crook);
-		assertTrue(tramLine.getPossibleStops().size() == 3);
+		assertTrue(tramLine.getPossibleStops().getPathLength() == 3);
 		
 	}
 
