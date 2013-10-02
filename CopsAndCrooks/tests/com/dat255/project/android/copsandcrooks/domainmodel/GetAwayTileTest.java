@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.GetAwayTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class GetAwayTileTest {
@@ -44,7 +46,7 @@ public class GetAwayTileTest {
 	
 	@Test
 	public void testInteract(){
-		Crook crook = new Crook(new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		GetAwayTile getAway = new GetAwayTile(new Point(), new Mediator());
 		
 		crook.getWallet().setCash(1000);
@@ -54,7 +56,7 @@ public class GetAwayTileTest {
 			fail();
 		}
 		
-		TravelAgencyTile.createTravelAgency(null, null);
+		TravelAgencyTile.createTravelAgency(new Point(0,0 ), new Mediator());
 		crook.getWallet().setCash(6000);
 		getAway.interact(crook);
 		if(crook.isAttemptingGetAway() == false){

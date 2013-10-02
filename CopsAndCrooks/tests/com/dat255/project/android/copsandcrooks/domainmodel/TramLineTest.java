@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStopTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class TramLineTest {
@@ -24,9 +23,9 @@ public class TramLineTest {
 		tramStops.add(new TramStopTile(new Point(2,2), mediator));
 		TramLine tramLine = new TramLine(tramStops);
 		
-		assertTrue(tramLine.getPossibleStops().size() == 4);
+		assertTrue(tramLine.getPossibleStops().getPathLength() == 4);
 		occupiedStop.setOccupiedBy(PawnType.Crook);
-		assertTrue(tramLine.getPossibleStops().size() == 3);
+		assertTrue(tramLine.getPossibleStops().getPathLength() == 3);
 		
 	}
 

@@ -7,10 +7,10 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class Officer extends AbstractWalkingPawn {
+public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 	
-	public Officer(IMediator mediator, int id) {
-		super(Role.Cop, PawnType.Officer, mediator, 1, id);
+	public Officer(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Cop, PawnType.Officer, mediator, 1, id);
 		// All officers start in the police house
 		this.setIsInPoliceStation(true);
 	}
@@ -27,15 +27,17 @@ public class Officer extends AbstractWalkingPawn {
 				crook.setIsInPoliceStation(true);
 				this.setIsInPoliceStation(true);
 				
+				Wallet crookWallet = crook.getWallet();
 				//Take bounty
-				mediator.addCashToMyPlayer((int)(crook.getWallet().getCash() * 
+				mediator.addCashToMyPlayer((int)(crookWallet.getCash() * 
 						Values.POLICE_CASH_REWARD_FACTOR), this);
-				crook.getWallet().setCash(0);
+				crookWallet.setCash(0);
 				crook.setWanted(false);
 			}
 		}
 	}
 
+	@Override
 	public void gotSelected() {
 		mediator.changePawn(this);
 	}

@@ -19,34 +19,39 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.CopActor;
 import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
+import com.dat255.project.android.copsandcrooks.actors.DiceActor;
+import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
-import com.dat255.project.android.copsandcrooks.actors.OfficerActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
-import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkingPawn;
+import com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn;
+import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.GhostPlayer;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMediator;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.GetAwayTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
+import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IntelligenceAgencyTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
 import com.dat255.project.android.copsandcrooks.domainmodel.PathFinder;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.PoliceStationTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.RoadTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.RobbableBuildingTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.GetAwayTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.PoliceStationTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RoadTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.RobbableBuildingTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStopTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TravelAgencyTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.TramLine;
+import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
@@ -60,42 +65,7 @@ public class GameFactory {
 	
 	private static TextureAtlas atlas = Utilities.getAtlas();
 	
-	private static Player loadPlayer(GhostPlayer ghostPlayer, IWalkableTile[][] walkable, IMediator mediator){
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Point[] position = null;
-		position = ghostPlayer.pawn.keySet().toArray(position);
-		if (ghostPlayer.role == Role.Cop) {
-			for (int i = 0; i < ghostPlayer.pawn.size(); i++) {
-				if(ghostPlayer.pawn.get(position)!= 10){
-					CopCar copCar = new CopCar(mediator, ghostPlayer.pawn.get(position));
-					copCar.setCurrentTile(walkable[position[i].x][position[i].y]);
-					pawns.add(0, copCar);		
-				}else{
-					Officer cop = new Officer(mediator, ghostPlayer.pawn.get(position));
-					cop.setCurrentTile(walkable[position[i].x][position[i].y]);
-					pawns.add(cop);				
-				}
-			}	
-			return new Player(ghostPlayer.name, pawns, Role.Cop, mediator);
-			
-		} else if (ghostPlayer.role == Role.Crook) {
-			Crook crook = new Crook(mediator, ghostPlayer.pawn.get(position));
-			crook.setCurrentTile(walkable[position[0].x][position[0].y]);
-			pawns.add(crook);
-			
-			// Test let the crook start wanted to test catching
-			((Crook) pawns.get(0)).setWanted(true);
-			// Test end		
-			return new Player(ghostPlayer.name, pawns, Role.Crook, mediator);
-		}else{
-			return null;
-		}
-	}
-	
-	public static Screen loadHostedGame(CopsAndCrooks game, List <GhostPlayer> ghostPlayers){
-		// Creates a mediator
-		Mediator mediator = new Mediator();
-		
+	public static Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
 		
@@ -113,229 +83,53 @@ public class GameFactory {
 		Values.TILE_WIDTH = (int) mapLayerBack.getTileWidth();
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 		
-		//Creates a matrix that will contain all the different tiles
-		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
-		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
-			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
-				//try catch made because of null pointer exception when we dont have a walkable tile when we read it from the .tmx file
-				try{
-					
-					switch(mapLayerInteract.getCell(i, j).getTile().getId()){
-					case 1: 	// According to the tileset case 1 is the road tiles
-						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
-						break;						
-					case 2: 	// According to the tileset case 2 is the get away tiles
-						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
-						break;
-					case 3: 	// According to the tileset case 3 is the Bank tiles containing 2000
-						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
-						break;
-					case 4: 	// According to the tileset case 4 is the Bank tiles containing 5000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
-						break;
-					case 5: 	// According to the tileset case 5 is the Bank tiles containing 10000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
-						break;
-					case 6: 	// According to the tileset case 6 is the Bank tiles containing 20000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
-						break;
-					case 7: 	// According to the tileset case 8 is the Travelagency tiles
-						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
-						walkable[i][j] = TravelAgencyTile.getInstance();
-						break;
-					case 8: 	// According to the tileset case 8 is the blue metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 9: 	// According to the tileset case 9 is the green metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 10: 	// According to the tileset case 10 is the red metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 11: 	// According to the tileset case 11 is the IntelligenceAgency tiles
-						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
-						break;
-					case 12: 	// According to the tileset case 12 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
-						break;
-					case 13: 	// According to tileset case 13 will be the coordinate of the poliscar(this will be a road tile)
-						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
-						break;
-					case 14: 	// According to the tileset case 3 is the polisoffice tiles						
-						walkable[i][j] = new PoliceStationTile(new Point(i, j), mediator);
-						break;
-					}
-				} catch (NullPointerException e){
-					walkable[i][j] = null;
-				}
-			}
-		}
-		List<Player> players = new ArrayList<Player>();
-		List<Actor> actors;
-		for(GhostPlayer player: ghostPlayers){
-			players.add(loadPlayer(player, walkable, mediator));
-		}
-		actors = addActor(players);
-				
-		//create a game model
-		GameModel gameModel =new GameModel(mediator, players, walkable);
-	
-		// create the controller and view of the game
-		new Dice(mediator);
-		new PathFinder(walkable, mediator);
-		return new GameScreen(game, gameModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors);
+		//Loads a GameModel
+		GameModel model = ModelFactory.loadGameModel(map, mapLayerInteract, userInfo);
+		List<Actor> actors = addActor((Collection<IPlayer>) model.getPlayers());
+		return new GameScreen(game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, getDiceActorFor(model.getDice()));
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
-		// Creates a mediator
-		Mediator mediator = new Mediator();
-		
-		//The tile of the police car respawnpoint
-		IWalkableTile policeCarStart = null;
+	public static Screen loadHostedGame(CopsAndCrooks game, GameModel model){
 		
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
 		
 		// Takes out the layer that will contain the background graphics
 		TiledMapTileLayer mapLayerBack;
-		// Takes out the layer that will contain the interactive tiles
-		TiledMapTileLayer mapLayerInteract;
 		try {
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
-
-			mapLayerInteract = (TiledMapTileLayer)map.getLayers().get("interact");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		Values.TILE_WIDTH = (int) mapLayerBack.getTileWidth();
-		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
+		GameModel newModel = ModelFactory.loadHostedGameModel(model);
+		List<Actor> actors = addActor((Collection<IPlayer>) newModel.getPlayers());
 		
-		//Creates a matrix that will contain all the different tiles
-		IWalkableTile[][] walkable = new IWalkableTile[mapLayerInteract.getWidth()][ mapLayerInteract.getHeight()];				
-		List<IWalkableTile> listOfHideOut = new ArrayList<IWalkableTile>();
-		List<PoliceStationTile> listOfPoliceStation = new ArrayList<PoliceStationTile>();
-		for(int i = 0; i < mapLayerInteract.getWidth(); i++){
-			for(int j = 0; j < mapLayerInteract.getHeight(); j++){
-				//try catch made because of null pointer exception when we dont have a walkable tile when we read it from the .tmx file
-				try{
-					
-					switch(mapLayerInteract.getCell(i, j).getTile().getId()){
-					case 1: 	// According to the tileset case 1 is the road tiles
-						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
-						break;						
-					case 2: 	// According to the tileset case 2 is the get away tiles
-						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
-						break;
-					case 3: 	// According to the tileset case 3 is the Bank tiles containing 2000
-						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
-						break;
-					case 4: 	// According to the tileset case 4 is the Bank tiles containing 5000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
-						break;
-					case 5: 	// According to the tileset case 5 is the Bank tiles containing 10000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
-						break;
-					case 6: 	// According to the tileset case 6 is the Bank tiles containing 20000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
-						break;
-					case 7: 	// According to the tileset case 8 is the Travelagency tiles
-						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
-						walkable[i][j] = TravelAgencyTile.getInstance();
-						break;
-					case 8: 	// According to the tileset case 8 is the blue metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 9: 	// According to the tileset case 9 is the green metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 10: 	// According to the tileset case 10 is the red metro line tile
-						walkable[i][j] = new TramStopTile(new Point(i, j), mediator);
-						break;
-					case 11: 	// According to the tileset case 11 is the IntelligenceAgency tiles
-						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
-						break;
-					case 12: 	// According to the tileset case 12 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
-						listOfHideOut.add(walkable[i][j]);
-						break;
-					case 13: 	// According to tileset case 13 will be the coordinate of the poliscar(this will be a road tile)
-						policeCarStart = new RoadTile(new Point(i, j), mediator);
-						walkable[i][j] = policeCarStart;
-						break;
-					case 14: 	// According to the tileset case 3 is the polisoffice tiles
-						PoliceStationTile station = new PoliceStationTile(new Point(i, j), mediator);
-						walkable[i][j] = station;
-						listOfPoliceStation.add(station);
-						break;
-					}
-				} catch (NullPointerException e){
-					walkable[i][j] = null;
-				}
-			}
-		}
-		List<Player> players = new ArrayList<Player>();	
-		int numberOfOfficers = userInfo.keySet().size();
-		int crookID = 1;
-		for (String name : userInfo.keySet()) {
-			List<IMovable> pawns = new ArrayList<IMovable>();
-			if (userInfo.get(name) == Role.Cop) {
-				for (int i = 0; i < numberOfOfficers; i++) {
-					Officer officer = new Officer(mediator, 10 + i);
-					pawns.add(officer);				
-					officer.setCurrentTile(listOfPoliceStation.get(i+1));
-				}
-				CopCar copCar = new CopCar(mediator, 20);
-				pawns.add(copCar);
-				
-				copCar.setCurrentTile(policeCarStart);
-				
-				players.add( new Player(name, pawns, Role.Cop, mediator));
-				
-			} else if (userInfo.get(name) == Role.Crook) {
-				Crook crook = new Crook(mediator, crookID);
-				pawns.add(crook);
-				
-				// Test let the crook start wanted to test catching
-				crook.setWanted(true);
-				// Test end
-
-				Random rand = new Random();
-				crook.setCurrentTile(listOfHideOut.get(rand.nextInt(4)));
-				
-				players.add( new Player(name, pawns, Role.Crook, mediator));
-				++crookID;
-			}
-		}
-		List<Actor> actors = addActor(players);
-				
-		//create a game model
-		GameModel gameModel =new GameModel(mediator, players, walkable);
-	
-		// create the controller and view of the game
-		new Dice(mediator);
-		new PathFinder(walkable, mediator);
-		return new GameScreen(game, gameModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors);
-		
+		return new GameScreen(game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, getDiceActorFor(model.getDice()));
 	}
 	
-	private static List<Actor> addActor(List<Player> players){
+	/**
+	 * Method to be able to add actors to a collection of players.
+	 * @param players - the collection you want to ad actors on.
+	 * @return - List of actors tht draws your animation of your players pawn
+	 */
+	private static List<Actor> addActor(Collection<IPlayer> players){
 		List<Actor> actors = new ArrayList<Actor>();
-		for(Player player: players){	
-			Collection<IMovable> pawns = player.getPawns();
-			for(IMovable pawn : pawns){
+		for(IPlayer player: players){	
+			Collection<AbstractPawn> pawns = (Collection<AbstractPawn>) player.getPawns();
+			for(AbstractPawn pawn : pawns){
 				if(pawn instanceof Officer){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getOfficerAnimations();
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-					actors.add(new OfficerActor(drawable, Scaling.none, (Officer) pawn, pawnAnimations));
+					actors.add(new CopActor(drawable, Scaling.none, (Officer) pawn, pawnAnimations));
 				}else if(pawn instanceof Crook){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
@@ -520,7 +314,7 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 	 * @param player The player who can click the paths.
 	 * @return A list of PathActors.
 	 */
-	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, Player player) {
+	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, IPlayer player) {
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
 		
@@ -559,4 +353,58 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 		return pathActors;
 	}
 	
+	/**
+	 * Creates path actors for the specified paths connected to the specified player.
+	 * 
+	 * @param paths The paths to create PathActors for.
+	 * @param player The player who can click the paths.
+	 * @return A list of PathActors.
+	 */
+	public static List<MetroLineActor> getMetroActorsFor(Collection<TilePath> paths, IPlayer player) {
+		
+		List<MetroLineActor> pathActors = new ArrayList<MetroLineActor>();
+		
+		if (paths == null || paths.isEmpty()) {
+			return null;
+		}
+	
+		List<Image> pathImages = new ArrayList<Image>();
+		
+		for (TilePath path : paths) {
+			
+			for (int i = 0; i < path.getPathLength(); i++) {
+				AtlasRegion region = atlas.findRegion("game-screen/path/GreenDotPathEnd");
+				
+				Image pathImage = new Image(region);
+				Point pathTilePos = path.getTile(i).getPosition();
+				pathImage.setPosition(pathTilePos.x * Values.TILE_WIDTH, 
+									  pathTilePos.y * Values.TILE_HEIGTH);
+				pathImages.add(pathImage);
+				
+			}
+			
+			
+			AtlasRegion clickRegion = atlas.findRegion("game-screen/path/GreenDotPathEndClick");
+			Image pathClick = new Image(clickRegion);
+			
+			pathActors.add(new MetroLineActor(path, pathImages, pathClick, player));
+		}
+		return pathActors;
+	}
+	
+	private static DiceActor getDiceActorFor(Dice dice) {
+		if (dice == null) {
+			return null;
+		}
+		
+		AtlasRegion[] diceAnim = new AtlasRegion[14];
+		for(int k = 0; k < 14; k++)
+		{
+			diceAnim[k] = atlas.findRegion("game-screen/dice/Dice"+k);
+		}
+		Animation animation = new Animation(0.05f, diceAnim);
+
+		
+		return new DiceActor(dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
+	}
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.dat255.project.android.copsandcrooks.screens.SplashScreen;
+import com.dat255.project.android.copsandcrooks.screens.*;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 /**
@@ -27,7 +27,8 @@ public class CopsAndCrooks extends Game {
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         fpsLogger = new FPSLogger();
-        setScreen(new SplashScreen(this));
+        // setScreen(new SplashScreen(this));
+        setScreen(new MenuScreen(this));
     }
 
     @Override
