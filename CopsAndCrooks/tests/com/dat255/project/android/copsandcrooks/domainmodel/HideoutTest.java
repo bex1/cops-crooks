@@ -52,7 +52,8 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(6);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.hasStoredCash(testCrook));
@@ -64,7 +65,8 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(7);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.getStoredCashAmount(testCrook) == 7);
@@ -76,7 +78,8 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(9);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.getStoredCashAmount(testCrook) == 9);
@@ -88,7 +91,8 @@ public class HideoutTest {
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(7);
 		testHideout.depositCash(testCrook);
 		testHideout.withdrawCash(testCrook);

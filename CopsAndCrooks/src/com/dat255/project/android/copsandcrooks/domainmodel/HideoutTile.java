@@ -1,7 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
@@ -17,24 +17,31 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	private Map<Crook, Integer> storedCash;
 	
 	public static final String PROPERTY_HIDEOUT_INTERACT = "Hideout_Interact";
+	public static final String PROPERTY_HIDEOUT_MONEY = "Hideout_Money";
 
 	/**
 	 * Create a new hideout.
 	 * @param position the hideout's position
 	 * @param players a list of all players
 	 */
-	public HideoutTile(Point position, List<Crook> crook, IMediator mediator) {
+	public HideoutTile(Point position, IMediator mediator) {
 		super(position, mediator);
 		
 		storedCash = new HashMap<Crook, Integer>();
 
 		pawnTypes.add(PawnType.Crook);
 	}
+	
+	public void addCrooks(Collection<Crook> crooks) {
+		for (Crook crook : crooks) {
+			storedCash.put(crook, crook.getWallet().getCash());
+		}
+	}
 
 	@Override
 	public void interact(IMovable target) {
 		//this needs to be listened to by something
-		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, ((Crook)target), this);
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, ((Crook)target));
 	}
 	
 	/**
@@ -49,6 +56,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		}
 		storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 		crook.getWallet().setCash(0);
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, storedCash);
 		
 		if(crook.getWallet().getCash() == 0){
 			crook.setWanted(false);
@@ -72,6 +80,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		
 		storedCash.put(crook, 0);
 		crook.getWallet().incrementCash(cash);
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, storedCash);
 		
 		crook.setWanted(crook.getWallet().getCash() > 0);
 	}

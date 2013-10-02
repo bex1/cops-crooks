@@ -1,10 +1,8 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
@@ -13,11 +11,6 @@ public class MoveByDiceOrMetroTable extends Table {
 
 	public MoveByDiceOrMetroTable(final GameModel model) {
 		this.setFillParent(true);
-
-		Label text = new Label("It's your turn\nplease roll the dice", Utilities.getSkin());
-		text.setAlignment(Align.center);
-		add(text).spaceBottom(50);
-		row();
 		
 		// register the button "roll dice"
 		final TextButton rollTheDiceButton = new TextButton("Roll the dice", Utilities.getSkin());
@@ -44,7 +37,7 @@ public class MoveByDiceOrMetroTable extends Table {
 			}
 		} );
 
-		add(rollTheDiceButton).size(360, 60).uniform().padBottom(10);
+		add(rollTheDiceButton).size(360, 60).expand().bottom().padBottom(10);
 		row();
 
 		add(goByTramButton).size(360, 60).uniform().padBottom(10);
