@@ -11,7 +11,7 @@ public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
-	private int turnsInPrison;
+	private int turnsInPrison, timesArrested;
 	
 	public Crook(AbstractWalkableTile startTile, IMediator mediator) {
 		super(startTile, Role.Crook, PawnType.Crook, mediator, 1);
@@ -92,5 +92,18 @@ public class Crook extends AbstractWalkingPawn {
 	public void decrementTurnsInPrison(){
 		if(turnsInPrison > 0)
 		--turnsInPrison;
+	}
+	/**
+	 * Increments the number of times arrested
+	 */
+	void incrementTimesArrested(){
+		++timesArrested;
+	}
+	/**
+	 * Returns the number of times arrested
+	 * @return the number of times arrested
+	 */
+	public int getTimesArrested(){
+		return timesArrested;
 	}
 }
