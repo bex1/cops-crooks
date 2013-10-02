@@ -36,7 +36,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private OrthographicCamera camera;
 	private final GameModel model;
 	private final TiledMap mapToRender;
-	private final TiledMapTileLayer gameBackground; //kan heta layertorender
 	private final Stage hudStage;
 
 	private Table actionsTable;
@@ -46,17 +45,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final int mapWidth, mapHeight;
 
 	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
-			final TiledMap tiledmap, final TiledMapTileLayer backgroundLayer,
+			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
 			final List<Actor> actors) {
-		super(game, backgroundLayer.getWidth() * backgroundLayer.getTileWidth(), 
-				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
+		super(game, mapWidth, mapHeight);
 
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
-		this.gameBackground = backgroundLayer;
-
-		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
-		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
+		
+		this.mapWidth = (int) mapWidth;
+		this.mapHeight = (int) mapHeight;
 
 		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
@@ -106,10 +103,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 		stage.setCamera(camera);
 		renderer.setView(camera);
-		renderer.getSpriteBatch().begin();
-		renderer.renderTileLayer(gameBackground);
-		renderer.getSpriteBatch().end();
-
+		renderer.render();
+		
 		super.render(delta);
 
 		hudStage.act(delta);
@@ -119,6 +114,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void show(){
 		super.show();
+		
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
@@ -223,7 +219,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 			if(property == Player.PROPERTY_DICE_RESULT){ 
 				//TODO show the results
-				if(playerRole == Role.Police){
+				if(playerRole == Role.Officer){
 
 				}
 			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
@@ -232,7 +228,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				showPossiblePaths(currPlayer);
 
 			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
-				if(playerRole == Role.Police){
+				if(playerRole == Role.Officer){
 					clearVisiblePaths();
 					currPlayer.updatePossiblePaths();
 					Point currentPoint = currPlayer.getCurrentPawn().getCurrentTile().getPosition();
