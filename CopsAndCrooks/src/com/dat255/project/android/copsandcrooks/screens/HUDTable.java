@@ -29,7 +29,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 				Crook crook = (Crook)pawn;
 				wallet = crook.getWallet();
 			}
-		} else if (role == Role.Police) {
+		} else if (role == Role.Cop) {
 			wallet = player.getWallet();
 		}
 		

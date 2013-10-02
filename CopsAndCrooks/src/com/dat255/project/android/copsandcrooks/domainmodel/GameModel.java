@@ -16,13 +16,17 @@ public final class GameModel implements IObservable  {
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
+	private final Dice dice;
 
-
+	// Added only because of you need to be able to get them when you load a hosted game
+	private final IWalkableTile[][] walkable;
+	private final List<TramLine> tramLines;
+	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	
 
 
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles) {
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles, List<TramLine> tramLines) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -34,7 +38,9 @@ public final class GameModel implements IObservable  {
 
 		this.playerClient = playerClient;
 		this.players = players;
-		
+		this.dice = new Dice(mediator);
+		this.walkable = tiles;
+		this.tramLines = tramLines;
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
@@ -124,7 +130,7 @@ public final class GameModel implements IObservable  {
 	}
 
 	void pawnSelected(AbstractPawn pawn) {
-		if (currentPlayer.getPlayerRole() == Role.Police) {
+		if (currentPlayer.getPlayerRole() == Role.Cop) {
 			currentPlayer.setCurrentPawn(pawn);
 		}
 	}
@@ -148,5 +154,17 @@ public final class GameModel implements IObservable  {
 			}
 		}
 		return false;
+	}
+	
+	public Dice getDice(){
+		return dice;
+	}
+	
+	public IWalkableTile[][] getWalkabletiles(){
+		return walkable.clone();
+	}
+
+	public List<TramLine> getTramLines() {
+		return tramLines;
 	}
 }

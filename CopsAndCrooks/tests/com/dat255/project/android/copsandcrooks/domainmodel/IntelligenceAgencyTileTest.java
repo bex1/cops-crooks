@@ -54,19 +54,19 @@ public class IntelligenceAgencyTileTest {
 	public void testHinderGetAway(){
 		IntelligenceAgencyTile intAgency = 
 				new IntelligenceAgencyTile(new Point(), new Mediator());
-		
+	
 		List<AbstractPawn> pawns1 = new ArrayList<AbstractPawn>();
-		pawns1.add(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
-		Player player1 = new Player(null, pawns1, Role.Police, new Mediator());
+		pawns1.add(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10));
+		Player player1 = new Player(null, pawns1, Role.Cop, new Mediator());
 
 		List<AbstractPawn> pawns2 = new ArrayList<AbstractPawn>();
-		Crook crook1 = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook1 = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		crook1.setAttemptingGetAway(true);
 		pawns2.add(crook1);
 		Player player2 = new Player(null, pawns2, Role.Crook, new Mediator());
 
 		List<AbstractPawn> pawns3 = new ArrayList<AbstractPawn>();
-		Crook crook2 = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook2 = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 1);
 		crook2.setAttemptingGetAway(false);
 		pawns3.add(crook2);
 		Player player3 = new Player(null, pawns3, Role.Crook, new Mediator());
