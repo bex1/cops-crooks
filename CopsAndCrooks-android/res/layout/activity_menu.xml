@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/menu_button_margin"
         android:text="@string/menu_search_game"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:onClick="openSearchGame" />
     
     <Button
         android:id="@+id/instructions_button"
@@ -48,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/menu_button_margin"
         android:text="@string/menu_options"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:onClick="openOptions" />
 
 </TableLayout>

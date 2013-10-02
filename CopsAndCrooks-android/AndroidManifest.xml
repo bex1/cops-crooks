@@ -24,14 +24,12 @@
         <activity
             android:name="com.dat255.project.android.copsandcrooks.MenuActivity"
             android:label="@string/title_activity_menu"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.dat255.project.android.copsandcrooks.GameActivity"
             android:label="@string/title_activity_game"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.dat255.project.android.copsandcrooks.LobbyActivity"
@@ -40,6 +38,14 @@
         <activity
             android:name="com.dat255.project.android.copsandcrooks.InstructionsActivity"
             android:label="@string/title_activity_instructions" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.OptionsActivity"
+            android:label="@string/title_activity_options" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.GameBrowseActivity"
+            android:label="@string/title_activity_game_browse" >
         </activity>
     </application>
 
