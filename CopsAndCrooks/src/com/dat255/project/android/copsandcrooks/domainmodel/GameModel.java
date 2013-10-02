@@ -149,4 +149,13 @@ public final class GameModel implements IObservable  {
 		}
 		return false;
 	}
+	
+	public IPlayer getPlayerOfPawn(IMovable pawn) {
+		for (Player player : players) {
+			if (player.getPawns().contains(pawn)) {
+				return player;
+			}
+		}
+		return null;
+	}
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
@@ -38,11 +39,12 @@ public class HUDTable extends Table implements PropertyChangeListener {
 			
 			AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/hud/coins-icon");
 			Image coin = new Image(region);
-			scoreLabel = new Label(String.format("%06d%n", wallet.getCash()), Utilities.getSkin());
+			scoreLabel = new Label(String.format("%6d%n", wallet.getCash()), Utilities.getSkin());
 			scoreLabel.setFontScale(0.5f);
-			add(scoreLabel).top().left().pad(10);
-			add(coin).top().left().padTop(10);
+			scoreLabel.setAlignment(Align.right);
 			add().expand();
+			add(scoreLabel).prefWidth(100).top().right().pad(10);
+			add(coin).top().right().pad(10);
 		}
 	}
 
@@ -50,7 +52,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == wallet) {
 			if (evt.getPropertyName() == Wallet.PROPERTY_CASH && scoreLabel != null) {
-				scoreLabel.setText(String.format("%06d%n", wallet.getCash()));
+				scoreLabel.setText(String.format("%6d%n", wallet.getCash()));
 			}
 		}
 	}

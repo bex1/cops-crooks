@@ -795,11 +795,53 @@ pages4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-game-screen/hud/coins-icon
+game-screen/hud/bag
   rotate: false
   xy: 2, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+game-screen/hud/bagClicked
+  rotate: false
+  xy: 104, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+game-screen/hud/cancel
+  rotate: false
+  xy: 206, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+game-screen/hud/cancelClicked
+  rotate: false
+  xy: 308, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+game-screen/hud/coins-icon
+  rotate: false
+  xy: 614, 70
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+game-screen/hud/deposit
+  rotate: false
+  xy: 410, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+game-screen/hud/depositClick
+  rotate: false
+  xy: 512, 2
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: -1
 

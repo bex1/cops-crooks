@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
@@ -42,18 +43,18 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
 			final TiledMap tiledmap, final TiledMapTileLayer backgroundLayer,
-			final List<Actor> actors, final DiceActor dice) {
+			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
 		super(game, backgroundLayer.getWidth() * backgroundLayer.getTileWidth(), 
 				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
 
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
 		this.gameBackground = backgroundLayer;
+		this.hudStage = hudStage;
 
 		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
 		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
 
-		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 		hudStage.addActor(dice);
 		
 		
@@ -88,6 +89,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 		hudStage.act(delta);
 		hudStage.draw();
+		Table.drawDebug(hudStage);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
@@ -21,6 +22,7 @@ import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.CopActor;
 import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
+import com.dat255.project.android.copsandcrooks.actors.HideoutActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
@@ -48,6 +50,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TramLine;
 import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
+import com.dat255.project.android.copsandcrooks.screens.HideoutOptionsTable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -122,7 +125,7 @@ public class GameFactory {
 						walkable[i][j] = policeCarStart;
 						break;
 					case 7: 	// Acording to the tileset case 7 is the Hiding tiles
-						HideoutTile hideout = new HideoutTile(new Point(i, j), null, mediator);
+						HideoutTile hideout = new HideoutTile(new Point(i, j), mediator);
 						walkable[i][j] = hideout;
 						listOfHideOut.add(hideout);
 						break;
@@ -151,6 +154,7 @@ public class GameFactory {
 		
 		List<Player> players = new ArrayList<Player>();
 		List<Actor> actors = new ArrayList<Actor>();
+		List<Crook> crooks = new ArrayList<Crook>();
 		
 		int numberOfOfficers = userInfo.keySet().size();
 		int numberOfCopCars = 1;
@@ -187,6 +191,7 @@ public class GameFactory {
 			} else if (userInfo.get(name) == Role.Crook) {
 				Crook crook = new Crook(listOfHideOut.get(0), mediator);
 				pawns.add(crook);
+				crooks.add(crook);
 				
 				// Get animations
 				EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
@@ -200,7 +205,14 @@ public class GameFactory {
 			}
 		}
 		
-
+		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
+		
+		for (HideoutTile hideout : listOfHideOut) {
+			hideout.addCrooks(crooks);
+			actors.add(new HideoutActor(hideout, players, hudStage));
+			new HideoutOptionsTable(hideout, hudStage);
+		}
+		
 		//create a game model
 		GameModel gameModel =new GameModel(mediator, players.get(0), players, walkable);
 	
@@ -208,7 +220,7 @@ public class GameFactory {
 		Dice dice = new Dice(mediator);
 		DiceActor diceActor = getDiceActorFor(dice);
 		new PathFinder(walkable, mediator, new ArrayList<TramLine>());
-		return new GameScreen(game, gameModel, map, mapLayerBack, actors, diceActor);
+		return new GameScreen(game, gameModel, map, mapLayerBack, actors, hudStage, diceActor);
 	}
 	
 	private static EnumMap<Animations, Animation> getCopCarAnimations() {
