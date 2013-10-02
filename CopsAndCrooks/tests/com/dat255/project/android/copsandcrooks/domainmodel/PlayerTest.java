@@ -87,7 +87,7 @@ public class PlayerTest {
 		pawns.add(c);
 		
 		try {
-			Player player = new Player("Kalle", pawns, Role.Police, new Mediator());
+			Player player = new Player("Kalle", pawns, Role.Officer, new Mediator());
 			fail("Should throw IllegalArgumentException since the role of a pawn does" +
 					" not match the role of the player");
 		} catch (IllegalArgumentException e) {

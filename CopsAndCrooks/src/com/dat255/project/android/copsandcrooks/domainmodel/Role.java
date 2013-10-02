@@ -8,5 +8,5 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  */
 public enum Role {
 	Crook,
-	Police,
+	Officer,
 }

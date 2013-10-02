@@ -152,7 +152,7 @@ public class OfficerTest {
 	@Test
 	public final void testGetPawnRole() {
 		final Officer test = new Officer(new Mediator());
-		assertSame("The role of the Officer should be Officer", test.getPawnRole(), Role.Police);
+		assertSame("The role of the Officer should be Officer", test.getPawnRole(), Role.Officer);
 	}
 
 	/**
