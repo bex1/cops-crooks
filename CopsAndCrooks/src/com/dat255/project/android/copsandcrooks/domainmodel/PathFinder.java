@@ -37,7 +37,7 @@ public final class PathFinder {
 		if (currentTile instanceof TramStopTile) {
 			for (TramLine metroLine : metroLines) {
 				TilePath path = metroLine.getPossibleStops();
-				if (path != null && path.contains(currentTile)) {
+				if (path != null && metroLine.contains(currentTile)) {
 					paths.add(path);
 				}
 			}

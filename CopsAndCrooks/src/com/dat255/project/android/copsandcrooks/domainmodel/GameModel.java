@@ -173,7 +173,7 @@ public final class GameModel implements IObservable  {
 	}
 	
 	public IWalkableTile[][] getWalkabletiles(){
-		return walkable.clone();
+		return walkable;
 	}
 
 	public Collection<TramLine> getTramLines() {

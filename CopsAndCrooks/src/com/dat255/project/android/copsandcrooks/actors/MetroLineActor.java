@@ -68,7 +68,7 @@ public class MetroLineActor extends Group {
 					}
 				});
 			}
+			i++;
 		}
-		i++;
 	}
 }
