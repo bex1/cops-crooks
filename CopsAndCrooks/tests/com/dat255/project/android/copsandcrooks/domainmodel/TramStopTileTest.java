@@ -13,7 +13,7 @@ public class TramStopTileTest {
 
 	@Test
 	public void test() {
-		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		TramStopTile tramStopTile = new TramStopTile(new Point(2,2), new Mediator());
 		
 		crook.standingOnTramstop(false);

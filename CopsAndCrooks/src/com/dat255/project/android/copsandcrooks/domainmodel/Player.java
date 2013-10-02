@@ -97,8 +97,23 @@ public class Player implements IPlayer {
     
     void updateState() {
     	checkIfCrookIsEscaping();
+    	checkIfLifeTimeInPrison();
+    	
     }
     
+    private void checkIfLifeTimeInPrison(){
+    	if(this.currentPawn instanceof Crook){
+    		Crook crook = ((Crook)this.currentPawn);
+    		if(crook.getTimesArrested() == 4){
+    			crook.setIsPlaying(false);
+    			//TODO: inactivate player
+    		}
+    		
+    	}
+    		
+    	
+    	
+    }
     private void checkIfCrookIsEscaping() {
 		if (currentPawn instanceof Crook) {
 			Crook crook = (Crook)currentPawn;

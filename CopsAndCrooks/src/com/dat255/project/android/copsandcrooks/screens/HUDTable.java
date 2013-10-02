@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.screens;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,7 +31,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 				Crook crook = (Crook)pawn;
 				wallet = crook.getWallet();
 			}
-		} else if (role == Role.Police) {
+		} else if (role == Role.Cop) {
 			wallet = player.getWallet();
 		}
 		
@@ -42,6 +43,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 			scoreLabel = new Label(String.format("%6d%n", wallet.getCash()), Utilities.getSkin());
 			scoreLabel.setFontScale(0.5f);
 			scoreLabel.setAlignment(Align.right);
+			scoreLabel.setColor(Color.BLACK);
 			add().expand();
 			add(scoreLabel).prefWidth(100).top().right().pad(10);
 			add(coin).top().right().pad(10);

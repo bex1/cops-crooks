@@ -13,16 +13,21 @@ public final class GameModel implements IObservable  {
 
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
+	private final List<HideoutTile> hideoutTiles;
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
+	private final Dice dice;
 
-
+	// Added only because of you need to be able to get them when you load a hosted game
+	private final IWalkableTile[][] walkable;
+	private final Collection<TramLine> tramLines;
+	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	
 
 
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles) {
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles, Collection<TramLine> tramLines) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -34,18 +39,22 @@ public final class GameModel implements IObservable  {
 
 		this.playerClient = playerClient;
 		this.players = players;
-		
+		this.dice = new Dice(mediator);
+		this.walkable = tiles;
+		this.tramLines = tramLines;
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
-		
+		hideoutTiles = new ArrayList<HideoutTile>();
 
 		// Extract police station tiles
 		for (IWalkableTile[] tileArray : tiles) {
 			for (IWalkableTile tile : tileArray) {
 				if (tile instanceof PoliceStationTile) {
 					policeStationTiles.add((PoliceStationTile)tile);
-				} 
+				} else if (tile instanceof HideoutTile){
+					hideoutTiles.add((HideoutTile)tile);
+				}
 			}
 		}
 		pcs = new PropertyChangeSupport(this);
@@ -124,7 +133,7 @@ public final class GameModel implements IObservable  {
 	}
 
 	void pawnSelected(AbstractPawn pawn) {
-		if (currentPlayer.getPlayerRole() == Role.Police) {
+		if (currentPlayer.getPlayerRole() == Role.Cop) {
 			currentPlayer.setCurrentPawn(pawn);
 		}
 	}
@@ -157,5 +166,21 @@ public final class GameModel implements IObservable  {
 			}
 		}
 		return null;
+	}
+	
+	public Dice getDice(){
+		return dice;
+	}
+	
+	public IWalkableTile[][] getWalkabletiles(){
+		return walkable.clone();
+	}
+
+	public Collection<TramLine> getTramLines() {
+		return Collections.unmodifiableCollection(tramLines);
+	}
+
+	public Collection<HideoutTile> getHideouts() {
+		return Collections.unmodifiableCollection(hideoutTiles);
 	}
 }

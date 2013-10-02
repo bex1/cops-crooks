@@ -47,7 +47,7 @@ public class TravelAgencyTileTest {
 	public void testRobBuilding(){
 		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
 		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
-		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		
 		travelAgency.robBuilding(crook);
 		

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -30,6 +31,7 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 		Label label = new Label("Hideout status", Utilities.getSkin());
 		label.setFontScale(0.8f);
 		label.setAlignment(Align.center);
+		label.setColor(Color.BLACK);
 		add(label).padTop(30).colspan(2);
 		
 		row();
@@ -43,11 +45,13 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 					Label nameLabel = new Label(player.getName() + ":", Utilities.getSkin());
 					nameLabel.setAlignment(Align.right);
 					nameLabel.setFontScale(0.6f);
+					nameLabel.setColor(Color.BLACK);
 					add(nameLabel).expandX().fillX().uniform().padRight(15);
 				
 					Label moneyLabel = new Label(String.format("%-6d%n", 0), Utilities.getSkin());
 					moneyLabel.setFontScale(0.6f);
 					moneyLabel.setAlignment(Align.left);
+					moneyLabel.setColor(Color.BLACK);
 					add(moneyLabel).expandX().fillX().uniform().padLeft(50);
 					
 					moneyLabels.put(crook, moneyLabel);
