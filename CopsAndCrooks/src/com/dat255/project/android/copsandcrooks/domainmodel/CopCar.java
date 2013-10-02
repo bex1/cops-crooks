@@ -21,6 +21,8 @@ public class CopCar extends AbstractPawn implements ISelectablePawn {
 			if (crook.isWanted()) {
 				// We collided with a wanted crook -> Arrest
 				// Car stays and crook gets moved to the police station
+				if(crook.getTimesArrested() != 4)
+					crook.incrementTimesArrested();
 				mediator.moveToPoliceStation(crook);
 				crook.setIsInPoliceStation(true);
 				

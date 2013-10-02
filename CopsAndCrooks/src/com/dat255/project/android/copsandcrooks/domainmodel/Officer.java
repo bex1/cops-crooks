@@ -22,6 +22,9 @@ public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 			if (crook.isWanted()) {
 				// We collided with a wanted crook -> Arrest
 				// Officer takes the crook to the police station
+				if(crook.getTimesArrested() != 4)
+					crook.incrementTimesArrested();
+					
 				mediator.moveToPoliceStation(crook);
 				mediator.moveToPoliceStation(this);
 				crook.setIsInPoliceStation(true);
