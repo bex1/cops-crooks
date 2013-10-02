@@ -173,6 +173,7 @@ public class Player implements IPlayer {
     			return;
     		}
     	}
+    	
     	mediator.rollDice(this);
     }
     
@@ -211,6 +212,7 @@ public class Player implements IPlayer {
     		diceResult = 0;
     		goByDice = false;
     	}
+    	goByDice = false;
     }
     
     @Override
@@ -222,6 +224,7 @@ public class Player implements IPlayer {
     				// The path passed the test -> move directly
     				currentPawn.setCurrentTile(metroStop);
     				goByMetro = false;
+    				mediator.playerTurnDone();
     				return;
     			}
     		}

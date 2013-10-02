@@ -16,11 +16,15 @@ public class TramLine {
 		this.tramLine = tramLine;
 	}
 	
+	boolean contains(AbstractWalkableTile tile) {
+		return tramLine.contains(tile);
+	}
+	
 	/**
 	 * Calculates where you can travel to.
 	 * @return a list of TilePaths that one can travel to.
 	 */
-	public TilePath getPossibleStops(){
+	TilePath getPossibleStops(){
 		TilePath path = new TilePath();
 		for(TramStopTile stopTile: tramLine){
 			if(!stopTile.isOccupied()){
