@@ -14,8 +14,8 @@ public abstract class AbstractWalkingPawn extends AbstractPawn {
 	
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 
-	protected AbstractWalkingPawn(Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep) {
-		super(pawnRole, type, mediator, tilesMovedEachStep);
+	protected AbstractWalkingPawn(Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep, int id) {
+		super(pawnRole, type, mediator, tilesMovedEachStep, id);
 	}
 
 	public void setIsInPoliceStation(boolean inHouse) {

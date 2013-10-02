@@ -81,6 +81,8 @@ public interface IMovable extends IObservable {
 	 */
 	Direction getDirection();
 	
+	public int getID();
+	
 	/**
 	 * Returns true if the pawn is moving, false otherwise.
 	 * @return true if the pawn is moving, false otherwise.
