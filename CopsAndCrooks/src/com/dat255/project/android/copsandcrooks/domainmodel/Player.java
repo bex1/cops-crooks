@@ -123,7 +123,7 @@ public class Player implements IPlayer {
 				Wallet crookWallet = crook.getWallet();
 				wallet.incrementCash(crookWallet.getCash());
 				crook.setIsPlaying(false);
-				crook.setCurrentTile(null, 0);
+				crook.setCurrentTile(null);
 			}
 		}
 	}
@@ -213,7 +213,6 @@ public class Player implements IPlayer {
     		currentPawn.move(path);
     		diceResult = 0;
     		goByDice = false;
-    		currentPawn.setIsActivePawn(false);
     	}
     	goByDice = false;
     }
@@ -225,7 +224,7 @@ public class Player implements IPlayer {
     			if (path.contains(metroStop)) {
     				possiblePaths = null;
     				// The path passed the test -> move directly
-    				currentPawn.setCurrentTile(metroStop, 0f);
+    				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone(3f);
     				return;

@@ -63,7 +63,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		if(crook.getWallet().getCash() == 0){
 			crook.setWanted(false);
 		}
-		crook.setIsActivePawn(false);
 		mediator.playerTurnDone(2f);
 	}
 	
@@ -88,7 +87,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		
 		crook.setWanted(crook.getWallet().getCash() > 0);
 		
-		crook.setIsActivePawn(false);
 		mediator.playerTurnDone(2f);
 	}
 	
@@ -122,7 +120,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 * @param crook the crook
 	 */
 	public void cancelInteraction(Crook crook){
-		crook.setIsActivePawn(false);
 		mediator.playerTurnDone(2f);
 	}
 	
