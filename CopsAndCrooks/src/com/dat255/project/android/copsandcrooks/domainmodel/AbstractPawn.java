@@ -226,4 +226,12 @@ public abstract class AbstractPawn implements IMovable {
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
 	protected abstract void collisionAfterMove(IMovable pawn);
+
+	public void moveByTram(TramStopTile metroStop) {
+		currentTile.setNotOccupied();
+		this.setCurrentTile(metroStop);
+		this.interactWithTile();
+		currentTile.setOccupiedBy(getPawnType());
+		
+	}
 }
