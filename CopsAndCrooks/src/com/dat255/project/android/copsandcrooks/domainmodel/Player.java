@@ -6,33 +6,37 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
 /**
  * A player in the game Cops&Crooks.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class Player implements IPlayer {
-	private IMediator mediator;
+	private final IMediator mediator;
 
-	private List<AbstractPawn> pawns;
+	private final List<AbstractPawn> pawns;
 	private AbstractPawn currentPawn;
 	private int diceResult;
 	private Collection<TilePath> possiblePaths;
 
-	private Role playerRole;
+	private final Role playerRole;
 
-	private String name;
+	private final String name;
 
-	private Wallet wallet;
+	private final Wallet wallet;
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private boolean goByMetro;
-
 	private boolean goByDice;
+	
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
+
 
 	/**
 	 * Initializes a new player.
@@ -98,7 +102,7 @@ public class Player implements IPlayer {
     void updateState() {
     	checkIfCrookIsEscaping();
     	checkIfLifeTimeInPrison();
-    	
+    	currentPawn.setIsActivePawn(true);
     }
     
     private void checkIfLifeTimeInPrison(){
@@ -108,12 +112,9 @@ public class Player implements IPlayer {
     			crook.setIsPlaying(false);
     			//TODO: inactivate player
     		}
-    		
     	}
-    		
-    	
-    	
     }
+    
     private void checkIfCrookIsEscaping() {
 		if (currentPawn instanceof Crook) {
 			Crook crook = (Crook)currentPawn;
@@ -122,7 +123,7 @@ public class Player implements IPlayer {
 				Wallet crookWallet = crook.getWallet();
 				wallet.incrementCash(crookWallet.getCash());
 				crook.setIsPlaying(false);
-				crook.setCurrentTile(null);
+				crook.setCurrentTile(null, 0);
 			}
 		}
 	}
@@ -169,7 +170,7 @@ public class Player implements IPlayer {
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
     			crook.decrementTurnsInPrison();
-    			mediator.playerTurnDone();
+    			mediator.playerTurnDone(0);
     			return;
     		}
     	}
@@ -177,18 +178,19 @@ public class Player implements IPlayer {
     	mediator.rollDice(this);
     }
     
-    @Override
-    public void updatePossiblePaths() {
+    void updatePossiblePaths() {
     	if (goByDice) {
     		int steps = diceResult * currentPawn.tilesMovedEachStep();
     		possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
     	} else if (goByMetro && isOnMetro(currentPawn)) {
     		possiblePaths = mediator.getPossibleMetroPaths(currentPawn);
+    	} else {
+    		possiblePaths = null;
     	}
     	// No possible paths and crook... -> Next player
 
 		if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
-			mediator.playerTurnDone();
+			mediator.playerTurnDone(0);
 			return;
 		}
 		pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
@@ -211,6 +213,7 @@ public class Player implements IPlayer {
     		currentPawn.move(path);
     		diceResult = 0;
     		goByDice = false;
+    		currentPawn.setIsActivePawn(false);
     	}
     	goByDice = false;
     }
@@ -222,9 +225,9 @@ public class Player implements IPlayer {
     			if (path.contains(metroStop)) {
     				possiblePaths = null;
     				// The path passed the test -> move directly
-    				currentPawn.setCurrentTile(metroStop);
+    				currentPawn.setCurrentTile(metroStop, 0f);
     				goByMetro = false;
-    				mediator.playerTurnDone();
+    				mediator.playerTurnDone(3f);
     				return;
     			}
     		}
@@ -239,9 +242,12 @@ public class Player implements IPlayer {
      */
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
+    		currentPawn.setIsActivePawn(false);
     		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
+    		currentPawn.setIsActivePawn(true);
     		pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldValue, currentPawn);
+    		updatePossiblePaths();
     	}
     }
     

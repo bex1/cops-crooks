@@ -39,5 +39,8 @@ public class CopCar extends AbstractPawn implements ISelectablePawn {
 	@Override
 	public void gotSelected() {
 		mediator.changePawn(this);
+		if (mediator.isItMyPlayerTurn(this)) {
+			this.setIsActivePawn(true);
+		}
 	}
 }

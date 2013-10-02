@@ -72,9 +72,9 @@ public final class Mediator implements IMediator {
 	}
 	
 	@Override
-	public void playerTurnDone(){
+	public void playerTurnDone(float delay){
 		if (gameModel != null) 
-			gameModel.nextPlayer();
+			gameModel.nextPlayer(delay);
 	}
 
 	@Override
@@ -97,5 +97,12 @@ public final class Mediator implements IMediator {
 		} else {
 			throw new NullPointerException("No pathfinder is registered");
 		}
+	}
+
+	@Override
+	public boolean isItMyPlayerTurn(AbstractPawn movable) {
+		if (gameModel != null) 
+			return gameModel.isCurrPlayerOwnerOf(movable);
+		return false;
 	}
 }

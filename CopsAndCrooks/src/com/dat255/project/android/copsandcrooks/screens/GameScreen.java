@@ -6,16 +6,17 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
+import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
@@ -23,13 +24,11 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
-import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
 	private OrthogonalTiledMapRenderer renderer;
-	private OrthographicCamera camera;
+	private GameCamera camera;
 	private final GameModel model;
 	private final TiledMap mapToRender;
 	private final Stage hudStage;
@@ -89,17 +88,19 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void show(){
 		super.show();
+		
+		renderer = new OrthogonalTiledMapRenderer(mapToRender);
+		camera = new GameCamera(mapWidth, mapHeight);
 		// Show actors at right start pos, ie sync with model
 		for (Actor actor : stage.getActors()) {
 			if (actor instanceof MovableActor) {
-				((MovableActor)actor).refresh();
+				MovableActor pawn = (MovableActor)actor;
+				pawn.refresh();
+				pawn.setCamera(camera);
 			}
 		}
 		
-		renderer = new OrthogonalTiledMapRenderer(mapToRender);
-		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
-		camera.position.set(mapWidth/2, mapHeight/2, 0);
 		
 		hudStage.addActor(hudTable);
 
@@ -116,21 +117,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		super.dispose();
 	}
 
-	private float getCameraBoundryRight() {
-		return  mapWidth - camera.viewportWidth*camera.zoom/2;
-	}
-
-	private float getCameraBoundryLeft() {
-		return camera.viewportWidth*camera.zoom/2;
-	}
-
-	private float getCameraBoundryDown() {
-		return camera.viewportHeight*camera.zoom/2;
-	}
-
-	private float getCameraBoundryUp() {
-		return mapHeight - camera.viewportHeight*camera.zoom/2;
-	}
 
 	private GestureListener gestureListener = new GestureDetector.GestureAdapter() {
 
@@ -150,7 +136,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float moveY = deltaY * camera.zoom;
 			float toY = camera.position.y + moveY;
 
-			setCameraPosition(toX, toY);
+			camera.setCameraPosition(toX, toY);
 
 			return false;
 		}
@@ -162,27 +148,13 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(zoom < 2.2f  && zoom > 0.6f) {
 				camera.zoom = zoom;
 				// Keep within map
-				setCameraPosition(camera.position.x, camera.position.y);
+				camera.setCameraPosition(camera.position.x, camera.position.y);
 			}
 
 			return false;
 		}
 
 	};
-	
-	private void setCameraPosition(float x, float y){
-		float tmpX = x, tmpY = y;
-		// Keeps the camera within the map
-		if(x > getCameraBoundryRight())
-			tmpX = getCameraBoundryRight();
-		if(x < getCameraBoundryLeft())
-			tmpX = getCameraBoundryLeft();
-		if(y > getCameraBoundryUp())
-			tmpY = getCameraBoundryUp();
-		if(y < getCameraBoundryDown())
-			tmpY = getCameraBoundryDown();
-		camera.position.set(tmpX, tmpY, 0);
-	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -191,8 +163,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		// Check source, i.e. Who sent the event?
 		if(evt.getSource() == model) {
 			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
-				Point playersPoint = model.getCurrentPlayer().getCurrentPawn().getCurrentTile().getPosition();
-				setCameraPosition(playersPoint.x* Values.TILE_WIDTH, playersPoint.y*Values.TILE_HEIGTH);
 				// New turn -> show buttons where the player can select its next move
 				showActButtons();
 			}
@@ -214,9 +184,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
 				if(playerRole == Role.Cop){
 					clearVisiblePaths();
-					currPlayer.updatePossiblePaths();
-					Point currentPoint = currPlayer.getCurrentPawn().getCurrentTile().getPosition();
-					setCameraPosition(currentPoint.x*Values.TILE_WIDTH, currentPoint.y*Values.TILE_HEIGTH);
 				}
 			}
 		}
@@ -226,10 +193,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		// Finds all other PathActors in stage and remove them.
 		if (stage != null) {
 			for (Actor actor : stage.getActors()) {
-				if (actor instanceof PathActor) {
-					PathActor pathActor = (PathActor)actor;
-					pathActor.clear();
-				}
+				if (actor instanceof PathActor || actor instanceof MetroLineActor) {
+					actor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+				} 
 			}
 		}
 	}
