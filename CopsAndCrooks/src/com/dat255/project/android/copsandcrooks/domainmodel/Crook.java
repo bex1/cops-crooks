@@ -13,8 +13,8 @@ public class Crook extends AbstractWalkingPawn {
 	private boolean attemptingGetAway, isWanted;
 	private int turnsInPrison, timesArrested;
 	
-	public Crook(AbstractWalkableTile startTile, IMediator mediator) {
-		super(startTile, Role.Crook, PawnType.Crook, mediator, 1);
+	public Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
 		wallet = new Wallet();
 	}
 	

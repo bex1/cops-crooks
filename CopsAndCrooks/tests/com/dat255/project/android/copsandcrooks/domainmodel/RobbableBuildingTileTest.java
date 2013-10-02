@@ -45,7 +45,7 @@ public class RobbableBuildingTileTest {
 	
 	@Test
 	public void testRobBuilding(){
-		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		int cash = crook.getWallet().getCash();
 		RobbableBuildingTile robbableBuilding = 
 				new RobbableBuildingTile(new Point(), new Mediator(), 750);

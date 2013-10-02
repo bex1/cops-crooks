@@ -48,7 +48,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testHasStoredCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -60,7 +60,7 @@ public class HideoutTest {
 
 	@Test
 	public void testGetStoredCashAmount(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -72,7 +72,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testDepositCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -84,7 +84,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testWithdrawCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		

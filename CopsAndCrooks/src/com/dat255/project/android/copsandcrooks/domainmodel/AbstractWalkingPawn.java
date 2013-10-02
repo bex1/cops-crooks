@@ -12,8 +12,8 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 	
 	private boolean isWaitingOnTram;
 
-	protected AbstractWalkingPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep) {
-		super(startTile, pawnRole, type, mediator, tilesMovedEachStep);
+	protected AbstractWalkingPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep, int id) {
+		super(startTile, pawnRole, type, mediator, tilesMovedEachStep, id);
 	}
 
 	void setIsInPoliceStation(boolean inHouse) {

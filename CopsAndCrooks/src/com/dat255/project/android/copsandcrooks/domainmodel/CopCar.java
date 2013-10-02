@@ -10,8 +10,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public class CopCar extends AbstractPawn implements ISelectablePawn {
 
-	public CopCar(AbstractWalkableTile startTile, IMediator mediator) {
-		super(startTile, Role.Police, PawnType.Car, mediator, 2);
+	public CopCar(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Cop, PawnType.Car, mediator, 2, id);
 	}
 
 	@Override

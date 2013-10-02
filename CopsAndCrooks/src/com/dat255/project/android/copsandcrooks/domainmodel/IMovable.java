@@ -34,6 +34,14 @@ public interface IMovable extends IObservable {
 	Direction getDirection();
 	
 	/**
+	 * Crook 0 =< id < 10
+	 * Cop 10 =< id <20
+	 * CopCar = 20 (There will always only be 1 Copcar)
+	 * @return
+	 */
+	public int getID();
+	
+	/**
 	 * Returns true if the pawn is moving, false otherwise.
 	 * @return true if the pawn is moving, false otherwise.
 	 */
