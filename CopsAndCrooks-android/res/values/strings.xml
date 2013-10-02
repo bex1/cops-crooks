@@ -12,9 +12,7 @@
     <string name="menu_exit_game">Exit Game</string>
     <string name="menu_instructions">Instructions</string>
     <string name="title_activity_instructions">InstructionsActivity</string>
-    
-    <string name="instructions">
-		<b>Intro</b>\n
+    <string name="instructions"><b>Intro</b>\n
 		Cops and Crooks is about getting the most money.
 		One of the players controls the law enforcement (Cops) and the rest of the players are thieves (Crooks).
 		The Crooks get money by robbing banks, post offices etc., while the Cops get money by catching and arresting Crooks. 
@@ -50,7 +48,13 @@
 		A Crook that is Wanted can be arrested by the Cops. 
 		A Crook is arrested if a policeman or the paddy wagon stops on the same tile as the Wanted Crook. 
 		The paddy wagon can arrest on both of its tiles, even two Crooks at the same time.
-		The Cops can also arrest Crooks by stopping on tiles that are right by Banks and Post offices\n
-	</string>
+		The Cops can also arrest Crooks by stopping on tiles that are right by Banks and Post offices\n</string>
+    <string name="title_activity_options">OptionsActivity</string>
+    <string name="options_name">Name:</string>
+    <string name="options_volume">Volume:</string>
+    <string name="options_sound">Sound:</string>
+    <string name="options_on_off">on/off</string>
+    <string name="title_activity_game_browse">GameBrowseActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

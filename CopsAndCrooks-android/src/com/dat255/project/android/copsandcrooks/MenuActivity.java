@@ -12,6 +12,7 @@ public class MenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
+		
 	}
 
 	@Override
@@ -28,6 +29,16 @@ public class MenuActivity extends Activity {
 	
 	public void openInstructions(View v){
 		Intent intent = new Intent(this, InstructionsActivity.class);
+		startActivity(intent);
+	}
+	
+	public void openOptions(View v){
+		Intent intent = new Intent(this, OptionsActivity.class);
+		startActivity(intent);
+	}
+	
+	public void openSearchGame(View v){
+		Intent intent = new Intent(this, GameBrowseActivity.class);
 		startActivity(intent);
 	}
 
