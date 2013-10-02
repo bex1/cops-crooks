@@ -222,7 +222,7 @@ public class Player implements IPlayer {
     			if (path.contains(metroStop)) {
     				possiblePaths = null;
     				// The path passed the test -> move directly
-    				currentPawn.setCurrentTile(metroStop);
+    				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone();
     				return;
