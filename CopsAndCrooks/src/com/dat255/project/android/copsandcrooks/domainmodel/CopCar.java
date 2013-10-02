@@ -9,8 +9,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  */
 public class CopCar extends AbstractPawn {
 
-	public CopCar(IMediator mediator) {
-		super(Role.Police, PawnType.Car, mediator, 2);
+	public CopCar(IMediator mediator, int id) {
+		super(Role.Officer, PawnType.Car, mediator, 2, id);
 	}
 
 	@Override

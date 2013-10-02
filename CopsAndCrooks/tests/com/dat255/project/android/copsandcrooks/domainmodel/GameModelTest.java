@@ -48,7 +48,7 @@ public class GameModelTest {
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
 		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Police, mediator);
+		Player player2 = new Player("polis", officerPlayer, Role.Officer, mediator);
 		ArrayList <Player>players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -78,7 +78,7 @@ public class GameModelTest {
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
 		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Police, mediator);
+		Player player2 = new Player("polis", officerPlayer, Role.Officer, mediator);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -109,7 +109,7 @@ public class GameModelTest {
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
 		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Police, mediator);
+		Player player2 = new Player("polis", officerPlayer, Role.Officer, mediator);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		//to specify where officer is in the list

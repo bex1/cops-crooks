@@ -56,7 +56,7 @@ public class IntelligenceAgencyTileTest {
 		
 		List<IMovable> pawns1 = new ArrayList<IMovable>();
 		pawns1.add(new Officer(new Mediator()));
-		Player player1 = new Player(null, pawns1, Role.Police, new Mediator());
+		Player player1 = new Player(null, pawns1, Role.Officer, new Mediator());
 
 		List<IMovable> pawns2 = new ArrayList<IMovable>();
 		Crook crook1 = new Crook(new Mediator());
