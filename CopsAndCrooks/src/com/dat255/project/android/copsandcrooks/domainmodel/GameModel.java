@@ -106,7 +106,7 @@ public final class GameModel implements IObservable  {
 
 	void moveToEmptyPoliceStationTile(AbstractPawn movable) {
 		PoliceStationTile policeStationTile = findEmptyPoliceStationTile();
-		movable.setCurrentTile(policeStationTile, 0.5f);
+		movable.setCurrentTile(policeStationTile);
 		if(movable instanceof Crook)
 			policeStationTile.interact(movable);
 	}

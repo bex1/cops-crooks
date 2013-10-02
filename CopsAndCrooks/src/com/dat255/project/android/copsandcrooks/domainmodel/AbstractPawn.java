@@ -33,31 +33,8 @@ public abstract class AbstractPawn implements IMovable {
 	
 	private boolean isMoving, isPlaying, isActivePawn;
 	private float moveTimer;
-	private final Timer moveDirectlyTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	
-	private class MoveTask extends Task {
-		private AbstractWalkableTile tile;
-		
-		MoveTask(AbstractWalkableTile tile) {
-			this.tile = tile;
-		}
-
-		@Override
-		public void run () {
-			currentTile.setNotOccupied();
-			currentTile = tile;
-			currentTile.setOccupiedBy(pawnType);
-			
-			pcs.firePropertyChange(PROPERTY_CURRENT_TILE, null, currentTile);
-			if (isActivePawn) {
-				interactWithTile();
-			}
-			moveDirectlyTimer.stop();
-			this.cancel();
-		}
-	}
 	
 	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep, int id) {		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
@@ -69,7 +46,6 @@ public abstract class AbstractPawn implements IMovable {
 		this.mediator = mediator;
 		this.direction = Direction.SOUTH;
 		this.tilesMovedEachStep = tilesMovedEachStep;
-		moveDirectlyTimer = new Timer();
 
 		this.id = id;
 		isPlaying = true;
@@ -81,20 +57,16 @@ public abstract class AbstractPawn implements IMovable {
 	 * @param currTile the current tile on which the movable is standing on.
 	 * Allowed to be null to move the pawn out of the game.
 	 */
-	protected void setCurrentTile(AbstractWalkableTile currTile, float delay) {
-		if (delay > 0) {
-			moveDirectlyTimer.scheduleTask(new MoveTask(currTile), delay);
-		} else {
-			currentTile.setNotOccupied();
-			AbstractWalkableTile oldTile = currentTile;
-			this.currentTile = currTile;
-			currentTile.setOccupiedBy(pawnType);
+	protected void setCurrentTile(AbstractWalkableTile currTile) {
+		currentTile.setNotOccupied();
+		AbstractWalkableTile oldTile = currentTile;
+		this.currentTile = currTile;
+		currentTile.setOccupiedBy(pawnType);
 
-			// The current tiled changed, someone moved us -> notify
-			pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
-		}
+		// The current tiled changed, someone moved us -> notify
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 	}
-	
+
 	@Override
 	public AbstractWalkableTile getCurrentTile() {
 		return currentTile;
@@ -270,4 +242,13 @@ public abstract class AbstractPawn implements IMovable {
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
 	protected abstract void collisionAfterMove(IMovable pawn);
+
+	protected void moveByTram(TramStopTile metroStop) {
+		currentTile.setNotOccupied();
+		currentTile = metroStop;
+		this.interactWithTile();
+		currentTile.setOccupiedBy(getPawnType());
+		
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, null, currentTile);
+	}
 }
