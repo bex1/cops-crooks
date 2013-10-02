@@ -118,7 +118,7 @@ public final class GameModel implements IObservable  {
 	}
 
 	void pawnSelected(IMovable pawn) {
-		if (currentPlayer.getPlayerRole() == Role.Officer) {
+		if (currentPlayer.getPlayerRole() == Role.Cop) {
 			currentPlayer.setCurrentPawn(pawn);
 		}
 	}

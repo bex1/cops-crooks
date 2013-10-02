@@ -162,7 +162,7 @@ public class CopCarTest {
 	@Test
 	public final void testGetPawnRole() {
 		final CopCar test = new CopCar(new Mediator());
-		assertSame("The role of the CopCar should be CopCar", test.getPawnRole(), Role.Officer);
+		assertSame("The role of the CopCar should be CopCar", test.getPawnRole(), Role.Cop);
 	}
 
 	/**

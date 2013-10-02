@@ -219,7 +219,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 			if(property == Player.PROPERTY_DICE_RESULT){ 
 				//TODO show the results
-				if(playerRole == Role.Officer){
+				if(playerRole == Role.Cop){
 
 				}
 			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
@@ -228,7 +228,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				showPossiblePaths(currPlayer);
 
 			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
-				if(playerRole == Role.Officer){
+				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 					currPlayer.updatePossiblePaths();
 					Point currentPoint = currPlayer.getCurrentPawn().getCurrentTile().getPosition();
