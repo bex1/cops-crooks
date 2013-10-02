@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
 
 /**
  * A crook pawn in the game Cops&Crooks.
@@ -12,11 +11,11 @@ public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
+	private int turnsInPrison;
 	
-	public Crook(IMediator mediator, int id) {
-		super(Role.Crook, PawnType.Crook, mediator, 1, id);
+	public Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
 		wallet = new Wallet();
-		attemptingGetAway = false;
 	}
 	
 	/**
@@ -31,7 +30,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Sets if the crook is wanted or not.
 	 * @param wanted true if the crook is wanted, false otherwise.
 	 */
-	public void setWanted(boolean wanted) {
+	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
 	}
 	
@@ -55,7 +54,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Return true if the crook is attempting to escape.
 	 * @return true if the crook is attempting to escape
 	 */
-	public boolean isAttemptingGetAway() {
+	boolean isAttemptingGetAway() {
 		return attemptingGetAway;
 	}
 
@@ -63,7 +62,35 @@ public class Crook extends AbstractWalkingPawn {
 	 * Set attempting get away status for this crook.
 	 * @param attemptingGetAway the new get away status
 	 */
-	public void setAttemptingGetAway(boolean attemptingGetAway) {
+	void setAttemptingGetAway(boolean attemptingGetAway) {
 		this.attemptingGetAway = attemptingGetAway;
+	}
+	/**
+	 * Returns whether the crook is in prison or not.
+	 * @param pawn - check to see if the pawn is a Crook, Cops can't be in prison.
+	 * @return whether the crook is in prison or not.
+	 */
+	boolean isInPrison(){
+		return currentTile instanceof PoliceStationTile;
+	}
+	/**
+	 * Sets the number of turns in prison to the default value 3 if the crook is in prison
+	 */
+	void setTurnsInPrison(){
+			turnsInPrison = 3;
+	}
+	/**
+	 * The number of turns left in prison
+	 * @return turnsInPrison - number of turns left in prison
+	 */
+	int getTurnsInPrison(){
+		return turnsInPrison;
+	}
+	/**
+	 * Decrements the number of turns left in prison.
+	 */
+	public void decrementTurnsInPrison(){
+		if(turnsInPrison > 0)
+		--turnsInPrison;
 	}
 }

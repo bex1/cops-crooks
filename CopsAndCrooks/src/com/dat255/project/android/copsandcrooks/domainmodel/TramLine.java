@@ -1,9 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.TramStopTile;
 
 /**
  * A class representing a tramline.
@@ -22,16 +20,14 @@ public class TramLine {
 	 * Calculates where you can travel to.
 	 * @return a list of TilePaths that one can travel to.
 	 */
-	public List<TilePath> getPossibleStops(){
-		List<TilePath> possibleStops = new ArrayList<TilePath>();
+	public TilePath getPossibleStops(){
+		TilePath path = new TilePath();
 		for(TramStopTile stopTile: tramLine){
 			if(!stopTile.isOccupied()){
-				TilePath path = new TilePath();
 				path.addTileLast(stopTile);
-				possibleStops.add(path);
 			}
 		}
-		return possibleStops;
+		return path;
 	}
 	
 }

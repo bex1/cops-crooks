@@ -1,6 +1,9 @@
 package com.dat255.project.android.copsandcrooks.actors;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
@@ -25,7 +28,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class MovableActor extends Image implements PropertyChangeListener {
 	private final IMovable pawn;
 	private final EnumMap<Animations, Animation> animations;
-	private final TextureRegionDrawable currentDrawable;
+	protected final TextureRegionDrawable currentDrawable;
 	private float animTimer;
 	private Animations currentAnimation;
 	
@@ -68,17 +71,21 @@ public class MovableActor extends Image implements PropertyChangeListener {
 				if (!pawn.isMoving()) {
 					animTimer = 0;
 					currentAnimation = Animations.IDLE_ANIM;
+				} 
+			} else if (property == IMovable.PROPERTY_IS_PLAYING) {
+				if (!pawn.isPlaying()) {
+					this.addAction(sequence(fadeOut(1f), removeActor()));
 				}
-				// use fade out fade in 
-			} else if (property == IMovable.PROPERTY_IS_IN_POLICE_HOUSE) {
-				// use fade out fade in 
-			} 
+			}
 		}
 
 	}
 	
+	public void refresh() {
+		moveDirectly();
+	}
+	
 	private void moveDirectly() {
-
 		// Just set the position according to model
 		IWalkableTile currTile = pawn.getCurrentTile();
 		if (currTile != null) {

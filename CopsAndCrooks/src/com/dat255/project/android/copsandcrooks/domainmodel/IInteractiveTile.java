@@ -1,6 +1,5 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 
 /**
  * This class represents all tiles that an IMovable object can interact with.
@@ -8,8 +7,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-//TODO: MAKE ABSTRACT CLASS 
-public interface IInteractiveTile{
+interface IInteractiveTile{
 
 	/**
 	 * Allows an IMovable and an IInteractiveTile to interact.

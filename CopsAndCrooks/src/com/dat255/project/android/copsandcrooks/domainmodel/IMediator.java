@@ -1,12 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -17,8 +13,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAg
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-//TODO: REMOVE, MOVE DOC TO MEDIATOR
-public interface IMediator {
+interface IMediator {
 	/**
 	 * Register the game model for communication.
 	 * 
@@ -49,7 +44,7 @@ public interface IMediator {
 	 * 
 	 * @param movable the movable to be moved.
 	 */
-	void moveToPoliceStation(IMovable movable);
+	void moveToPoliceStation(AbstractPawn movable);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -57,7 +52,7 @@ public interface IMediator {
 	 * 
 	 * @param movable the movable that requests information about what it collided with.
 	 */
-	void didCollideAfterMove(IMovable movable);
+	void didCollideAfterMove(AbstractPawn movable);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -66,7 +61,7 @@ public interface IMediator {
 	 * @param cash the cash to add.
 	 * @param movable the movable which the player should control.
 	 */
-	void addCashToMyPlayer(int cash, IMovable movable);
+	void addCashToMyPlayer(int cash, AbstractPawn movable);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -74,7 +69,7 @@ public interface IMediator {
 	 * 
 	 * @return the result.
 	 */
-	int rollDice();
+	void rollDice(Player player);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -86,7 +81,7 @@ public interface IMediator {
 	 * @return A collection with tilepaths representing paths that can be walked
 	 */
 	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
-			IMovable pawn, int stepsToMove);
+			AbstractPawn pawn, int stepsToMove);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -108,7 +103,9 @@ public interface IMediator {
 	 * 
 	 * @param pawn the pawn that wants to be selected
 	 */
-	void changePawn(IMovable pawn);
+	void changePawn(AbstractPawn pawn);
 
 	boolean isWantedCrookOn(IWalkableTile tile);
+
+	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 }

@@ -3,12 +3,9 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 
 /**
  * Path finder in the game Cops&Crooks.
@@ -16,23 +13,41 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public final class PathFinder {
-	private IWalkableTile[][] tiles;
-	private IMediator mediator;
+	private final AbstractWalkableTile[][] tiles;
+	private final List<TramLine> metroLines;
+	private final IMediator mediator;
 
-	public PathFinder(IWalkableTile[][] tiles, IMediator mediator) {
+	public PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<TramLine> metroLines) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
+		if (metroLines == null)
+			throw new IllegalArgumentException("Metro not allowed to be null");
 
 		this.tiles = tiles;
 		this.mediator = mediator;
+		this.metroLines = metroLines;
 		mediator.registerPathFinder(this);
 	}
+	
+	Collection<TilePath> calculatePossibleMetroPaths(AbstractPawn pawn) {
+		Collection<TilePath> paths = new ArrayList<TilePath>();
+		AbstractWalkableTile currentTile = pawn.getCurrentTile();
+		if (currentTile instanceof TramStopTile) {
+			for (TramLine metroLine : metroLines) {
+				TilePath path = metroLine.getPossibleStops();
+				if (path != null && path.contains(currentTile)) {
+					paths.add(path);
+				}
+			}
+		}
+		return paths;
+	}
 
-	public Collection<TilePath> calculatePossiblePaths(IMovable pawn, int stepsToMove) {
+	Collection<TilePath> calculatePossiblePaths(AbstractPawn pawn, int stepsToMove) {
 		// Note that the current tile might be null
-		IWalkableTile currentTile = pawn.getCurrentTile();
+		AbstractWalkableTile currentTile = pawn.getCurrentTile();
 		if (currentTile != null && stepsToMove > 0) {
 			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn, pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null));
 		} else {
@@ -40,8 +55,8 @@ public final class PathFinder {
 		}
 	}
 
-	private List<TilePath> calculateActualPossiblePaths(IMovable pawn, PawnType pawnType,
-			int stepsRemaining, int stepsToMove, IWalkableTile currentTile, IWalkableTile startTile, IWalkableTile previousTile) {
+	private List<TilePath> calculateActualPossiblePaths(AbstractPawn pawn, PawnType pawnType,
+			int stepsRemaining, int stepsToMove, AbstractWalkableTile currentTile, AbstractWalkableTile startTile, AbstractWalkableTile previousTile) {
 		
 		if(stepsRemaining==0 || (previousTile != null && currentTile instanceof HideoutTile )){
 			TilePath path = new TilePath();
@@ -55,7 +70,7 @@ public final class PathFinder {
 		int y = currentTile.getPosition().y;
 		
 		List<TilePath> subPathsAllDirections = new ArrayList<TilePath>();
-		IWalkableTile nextTile = null;
+		AbstractWalkableTile nextTile = null;
 		
 		for(int i=0; i<4; i++){
 			switch(i){
@@ -102,7 +117,7 @@ public final class PathFinder {
 		return subPathsAllDirections;
 	}
 
-	private boolean canMoveTo(IWalkableTile target, IWalkableTile previous, IMovable pawn, PawnType pawnType, IWalkableTile startTile, int stepsRemaining){
+	private boolean canMoveTo(AbstractWalkableTile target, AbstractWalkableTile previous, AbstractPawn pawn, PawnType pawnType, AbstractWalkableTile startTile, int stepsRemaining){
 		// Check that the target is valid
 		if (target != null && target != previous && target != startTile 
 				&& target.getAllowedPawnTypes().contains(pawnType)) {

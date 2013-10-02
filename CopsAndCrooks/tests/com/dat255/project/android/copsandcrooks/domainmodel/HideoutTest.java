@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks.domainmodel.tiles;
+package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
+import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -47,7 +48,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testHasStoredCash(){
-		Crook testCrook = new Crook(new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -59,7 +60,7 @@ public class HideoutTest {
 
 	@Test
 	public void testGetStoredCashAmount(){
-		Crook testCrook = new Crook(new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -71,7 +72,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testDepositCash(){
-		Crook testCrook = new Crook(new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
@@ -83,7 +84,7 @@ public class HideoutTest {
 	
 	@Test
 	public void testWithdrawCash(){
-		Crook testCrook = new Crook(new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
