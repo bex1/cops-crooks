@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="33" height="22" tilewidth="60" tileheight="60">
+ <tileset firstgid="1" name="Interact" tilewidth="60" tileheight="60">
+  <image source="Tileset v1.png" width="120" height="420"/>
+ </tileset>
+ <tileset firstgid="15" name="background-tileset-v1" tilewidth="60" tileheight="60">
+  <image source="background-tileset-v1.png" width="60" height="60"/>
+ </tileset>
+ <layer name="background" width="33" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAMA6FzUP9uJ2JfSFg1VVX19QC1QyqL
+  </data>
+ </layer>
+ <layer name="interact" width="33" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzNVtEOgyAQwzk3RNz/f+7Cg8mlaY+buuglTYBruYK3aUr3isdFdQaDDPN/osC8xQi+2Pgp1qM8Ox7NGu7FdAqo6fGKqMWQhR/m8x3kRX0OhHtGj9hnr3xV4oGdQ+X28mvHO9N5uSR4e3qrxQy6yfBYryhfk8glWIv8LvAMPQ/ePRzxwGo0rGTNRgGt8qAwm3E2ax8HBXRRtLD/W+pOtrnnIaLHelGNnau7OmM/hkw0Xng1vGfE9qlkD8Z/wRzfhxu/Jl2rYXHq9O5O1WR65C1Cw3Qqx6LngfFVD6gcO/cv6PXwVd9yd4gvNv8DPQ==
+  </data>
+ </layer>
+</map>

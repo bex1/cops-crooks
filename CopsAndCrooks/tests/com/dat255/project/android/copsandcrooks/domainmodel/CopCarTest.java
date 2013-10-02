@@ -60,7 +60,7 @@ public class CopCarTest {
 	@Test
 	public final void testCopCar() {
 		try {
-			CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null);
+			CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null, 20);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
@@ -73,9 +73,9 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
-		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -87,9 +87,9 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testSetIsInPoliceStation() {
-		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()),new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()),new Mediator(), 10));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -101,7 +101,7 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testTilesMovedEachStep() {
-		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		int testMoves = test.tilesMovedEachStep();
 		assertTrue("CopCar should move 2 steps", testMoves == 2);
 	}
@@ -111,7 +111,7 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testSetCurrentTile() {
-		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
@@ -128,7 +128,7 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testGetCurrentTile() {
-		final CopCar test = new CopCar(null, new Mediator());
+		final CopCar test = new CopCar(null, new Mediator(), 20);
 		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
 		AbstractWalkableTile walkable = new RoadTile(new Point(), new Mediator());
 		test.setCurrentTile(walkable);
@@ -141,7 +141,7 @@ public class CopCarTest {
 	 */ 
 	@Test
 	public final void testMoveAndUpdate() {
-		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		AbstractWalkableTile walkable = new RoadTile(new Point(0, 0), new Mediator());
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
@@ -159,8 +159,8 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testGetPawnRole() {
-		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
-		assertSame("The role of the CopCar should be CopCar", test.getPawnRole(), Role.Police);
+		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
+		assertSame("The role of the CopCar should be CopCar", test.getPawnRole(), Role.Cop);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testGetPawnType() {
-		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		assertSame("The type of the CopCar should be CopCar", test.getPawnType(), PawnType.Car);
 	}
 
@@ -177,7 +177,7 @@ public class CopCarTest {
 	 */
 	@Test
 	public final void testAddObserver() {
-		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {

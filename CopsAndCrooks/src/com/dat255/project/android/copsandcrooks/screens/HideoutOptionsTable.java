@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.screens;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -50,6 +51,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		withdrawButton.addListener(withdrawListener);
 		withLabel = new Label("", Utilities.getSkin());
 		withLabel.setFontScale(0.7f);
+		withLabel.setColor(Color.BLACK);
 		
 		AtlasRegion depReg = atlas.findRegion("game-screen/hud/deposit");
 		AtlasRegion depClickReg = atlas.findRegion("game-screen/hud/depositClick");
@@ -59,6 +61,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		depositButton.addListener(depositListener);
 		depLabel = new Label("", Utilities.getSkin());
 		depLabel.setFontScale(0.7f);
+		depLabel.setColor(Color.BLACK);
 		
 		AtlasRegion canReg = atlas.findRegion("game-screen/hud/cancel");
 		AtlasRegion canClickReg = atlas.findRegion("game-screen/hud/cancelClicked");
@@ -68,6 +71,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		cancelButton.addListener(cancelListener);
 		Label cancelLabel = new Label("Cancel", Utilities.getSkin());
 		cancelLabel.setFontScale(0.7f);
+		cancelLabel.setColor(Color.BLACK);
 		
 		add(withdrawButton).space(0, 0, 10, 20);
 		add(withLabel).spaceBottom(10).uniform().left().prefWidth(Values.GAME_VIEWPORT_WIDTH/2);

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +23,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
@@ -32,7 +32,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private OrthographicCamera camera;
 	private final GameModel model;
 	private final TiledMap mapToRender;
-	private final TiledMapTileLayer gameBackground; //kan heta layertorender
 	private final Stage hudStage;
 
 	private MoveByDiceOrMetroTable moveByDiceOrMetro;
@@ -42,18 +41,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final int mapWidth, mapHeight;
 
 	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
-			final TiledMap tiledmap, final TiledMapTileLayer backgroundLayer,
+			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
 			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
-		super(game, backgroundLayer.getWidth() * backgroundLayer.getTileWidth(), 
-				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
+		super(game, mapWidth, mapHeight);
 
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
-		this.gameBackground = backgroundLayer;
 		this.hudStage = hudStage;
-
-		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
-		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
+		this.mapWidth = (int) mapWidth;
+		this.mapHeight = (int) mapHeight;
 
 		hudStage.addActor(dice);
 		
@@ -81,10 +77,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 		stage.setCamera(camera);
 		renderer.setView(camera);
-		renderer.getSpriteBatch().begin();
-		renderer.renderTileLayer(gameBackground);
-		renderer.getSpriteBatch().end();
-
+		renderer.render();
+		
 		super.render(delta);
 
 		hudStage.act(delta);
@@ -95,8 +89,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void show(){
 		super.show();
-		model.startGame();
-		
 		// Show actors at right start pos, ie sync with model
 		for (Actor actor : stage.getActors()) {
 			if (actor instanceof MovableActor) {
@@ -114,6 +106,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
+		model.startGame();
 	}
 
 	@Override
@@ -157,16 +150,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float moveY = deltaY * camera.zoom;
 			float toY = camera.position.y + moveY;
 
-			if(toX> getCameraBoundryRight())
-				toX =  getCameraBoundryRight();
-			if(toX < getCameraBoundryLeft())
-				toX = getCameraBoundryLeft();
-			if(toY > getCameraBoundryUp())
-				toY = getCameraBoundryUp();
-			if(toY < getCameraBoundryDown())
-				toY = getCameraBoundryDown();
-			camera.position.x = toX;
-			camera.position.y = toY;
+			setCameraPosition(toX, toY);
 
 			return false;
 		}
@@ -178,20 +162,27 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(zoom < 2.2f  && zoom > 0.6f) {
 				camera.zoom = zoom;
 				// Keep within map
-				if(camera.position.x > getCameraBoundryRight())
-					camera.position.x = getCameraBoundryRight();
-				if(camera.position.x < getCameraBoundryLeft())
-					camera.position.x = getCameraBoundryLeft();
-				if(camera.position.y > getCameraBoundryUp())
-					camera.position.y = getCameraBoundryUp();
-				if(camera.position.y < getCameraBoundryDown())
-					camera.position.y = getCameraBoundryDown();
+				setCameraPosition(camera.position.x, camera.position.y);
 			}
 
 			return false;
 		}
 
 	};
+	
+	private void setCameraPosition(float x, float y){
+		float tmpX = x, tmpY = y;
+		// Keeps the camera within the map
+		if(x > getCameraBoundryRight())
+			tmpX = getCameraBoundryRight();
+		if(x < getCameraBoundryLeft())
+			tmpX = getCameraBoundryLeft();
+		if(y > getCameraBoundryUp())
+			tmpY = getCameraBoundryUp();
+		if(y < getCameraBoundryDown())
+			tmpY = getCameraBoundryDown();
+		camera.position.set(tmpX, tmpY, 0);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -200,6 +191,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		// Check source, i.e. Who sent the event?
 		if(evt.getSource() == model) {
 			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
+				Point playersPoint = model.getCurrentPlayer().getCurrentPawn().getCurrentTile().getPosition();
+				setCameraPosition(playersPoint.x* Values.TILE_WIDTH, playersPoint.y*Values.TILE_HEIGTH);
 				// New turn -> show buttons where the player can select its next move
 				showActButtons();
 			}
@@ -208,16 +201,22 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			// Extract relevant data
 			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
+			if(property == Player.PROPERTY_DICE_RESULT){ 
+				//TODO show the results
+				if(playerRole == Role.Cop){
 
-			if (property == Player.PROPERTY_POSSIBLE_PATHS){
+				}
+			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
 
 			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
-				if(playerRole == Role.Police){
+				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 					currPlayer.updatePossiblePaths();
+					Point currentPoint = currPlayer.getCurrentPawn().getCurrentTile().getPosition();
+					setCameraPosition(currentPoint.x*Values.TILE_WIDTH, currentPoint.y*Values.TILE_HEIGTH);
 				}
 			}
 		}

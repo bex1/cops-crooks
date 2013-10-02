@@ -10,6 +10,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -46,6 +47,7 @@ public class DiceActor extends Image implements PropertyChangeListener{
 		label = new Label("0", Utilities.getSkin());
 		label.setFontScale(3f);
 		label.setPosition((Values.GAME_VIEWPORT_WIDTH - label.getWidth())/2, (Values.GAME_VIEWPORT_HEIGHT - label.getHeight())/2);
+		label.setColor(Color.BLACK);
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class DiceActor extends Image implements PropertyChangeListener{
 				animTimer = 0;
 				Stage stage = this.getStage();
 				label.setText("" + dice.getResult());
-				label.setColor(1, 1, 1, 0);
+				label.getColor().a = 0;
 				stage.addActor(label);
 				label.addAction(sequence(repeat(3, sequence(fadeIn(0.3f), delay(0.8f), fadeOut(0.3f))), removeActor()));
 			}

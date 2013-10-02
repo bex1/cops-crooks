@@ -24,7 +24,9 @@ public abstract class AbstractPawn implements IMovable {
 	protected AbstractWalkableTile nextTile;
 	protected Direction direction;
 	private int tilesMovedEachStep;
-
+	private final int id;
+	
+	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
 	
 	private boolean isMoving, isPlaying;
@@ -32,8 +34,7 @@ public abstract class AbstractPawn implements IMovable {
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep) {
-		if (mediator == null) {
+	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep, int id) {		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
 		this.currentTile = startTile;
@@ -43,6 +44,8 @@ public abstract class AbstractPawn implements IMovable {
 		this.mediator = mediator;
 		this.direction = Direction.SOUTH;
 		this.tilesMovedEachStep = tilesMovedEachStep;
+
+		this.id = id;
 		isPlaying = true;
 	}
 
@@ -212,7 +215,12 @@ public abstract class AbstractPawn implements IMovable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-	
+
+	@Override
+	public int getID(){
+		return id;
+	}
+
 	/**
 	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
 	 * @param pawn the IMovable pawn that collided with this one.
