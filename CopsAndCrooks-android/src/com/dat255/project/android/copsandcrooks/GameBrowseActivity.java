@@ -39,9 +39,16 @@ public class GameBrowseActivity extends Activity {
 	
 	public void refreshGameList(){
 		//TODO retrieve the games from the server and update the list
-		gameListView.setAdapter(null);
+		//gameListView.setAdapter(null);
 		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-		arrayAdapter.notifyDataSetChanged();
+		gameListView.setAdapter(arrayAdapter);
+		//arrayAdapter.notifyDataSetChanged();
+		
+		//testing
+		for(int i = 0; i < 1+Math.random()*4;i++){
+			arrayAdapter.add("New game string");
+			arrayAdapter.notifyDataSetChanged();
+		}
 	}
 
 }
