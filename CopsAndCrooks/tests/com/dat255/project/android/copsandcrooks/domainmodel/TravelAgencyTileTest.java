@@ -49,14 +49,14 @@ public class TravelAgencyTileTest {
 		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		
-		travelAgency.robBuilding(crook);
+		travelAgency.getRobbedBy(crook);
 		
 		if(crook.getWallet().getCash() != 0){
 			fail();
 		}
 		
 		travelAgency.setValue(2000);
-		travelAgency.robBuilding(crook);
+		travelAgency.getRobbedBy(crook);
 		assertTrue(crook.getWallet().getCash() == 2000);
 	}
 	

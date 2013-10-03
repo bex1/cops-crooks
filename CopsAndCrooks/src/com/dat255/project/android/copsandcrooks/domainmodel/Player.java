@@ -32,7 +32,8 @@ public class Player implements IPlayer {
 
 	private boolean goByMetro;
 	private boolean goByDice;
-	
+	private boolean isActive;
+
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
@@ -110,7 +111,7 @@ public class Player implements IPlayer {
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.getTimesArrested() == 4){
     			crook.setIsPlaying(false);
-    			//TODO: inactivate player
+    			this.setActive(false);
     		}
     	}
     }
@@ -123,6 +124,7 @@ public class Player implements IPlayer {
 				Wallet crookWallet = crook.getWallet();
 				wallet.incrementCash(crookWallet.getCash());
 				crook.setIsPlaying(false);
+				this.setActive(false);
 				crook.setCurrentTile(null);
 			}
 		}
@@ -266,5 +268,15 @@ public class Player implements IPlayer {
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
     	goByDice = true;
     	updatePossiblePaths();
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@Override
+	public void setActive(boolean active) {
+		isActive = active;
 	}
 }
