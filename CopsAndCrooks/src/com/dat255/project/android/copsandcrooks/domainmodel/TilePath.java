@@ -66,7 +66,7 @@ public final class TilePath implements IObservable {
 	}
 	/**
 	 * Checks to see if the list already contains a tile.
-	 * @param tile
+	 * @param tile the tile to check
 	 * @return true if the tile already is in the list
 	 */
 	synchronized boolean contains(AbstractWalkableTile tile){

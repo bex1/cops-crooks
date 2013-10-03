@@ -39,7 +39,7 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 		return isWaitingOnTram;
 	}
 	
-	void standingOnTramstop(boolean standing){
+	void standingOnTramStop(boolean standing){
 		isWaitingOnTram = standing;
 	}
 }

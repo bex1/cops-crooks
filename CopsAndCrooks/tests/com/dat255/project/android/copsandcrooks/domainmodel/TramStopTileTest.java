@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.domainmodel.Mediator;
-import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class TramStopTileTest {
@@ -16,7 +13,7 @@ public class TramStopTileTest {
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		TramStopTile tramStopTile = new TramStopTile(new Point(2,2), new Mediator());
 		
-		crook.standingOnTramstop(false);
+		crook.standingOnTramStop(false);
 		tramStopTile.interact(crook);
 		assertTrue(crook.isWaitingOnTram());
 	}

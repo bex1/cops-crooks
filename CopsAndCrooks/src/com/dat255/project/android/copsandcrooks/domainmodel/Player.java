@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
-
 /**
  * A player in the game Cops&Crooks.
  * 
@@ -36,7 +33,7 @@ public class Player implements IPlayer {
 
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
-	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
+	public static final String PROPERTY_SELECTED_PAWN = "TheSelectedPawn";
 
 
 	/**
@@ -167,7 +164,7 @@ public class Player implements IPlayer {
     @Override
     public void rollDice() {
     	// checks to see if the player's pawn is in prison
-    	// if so then the player isn't ablt to move unless rolling a six.
+    	// if so then the player isn't able to move unless rolling a six.
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
@@ -239,7 +236,7 @@ public class Player implements IPlayer {
      * Sets the current pawn of the player to the specified
      * if its really one of the players pawns.
      * 
-     * @param pawn The pawn to set as the currentpawn. Has to be one of the player's pawns.
+     * @param pawn The pawn to set as the currentPawn. Has to be one of the player's pawns.
      */
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
@@ -247,7 +244,7 @@ public class Player implements IPlayer {
     		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
     		currentPawn.setIsActivePawn(true);
-    		pcs.firePropertyChange(PROPERTY_CHOOSEN_PAWN, oldValue, currentPawn);
+    		pcs.firePropertyChange(PROPERTY_SELECTED_PAWN, oldValue, currentPawn);
     		updatePossiblePaths();
     	}
     }
