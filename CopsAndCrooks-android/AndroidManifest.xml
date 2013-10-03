@@ -29,7 +29,8 @@
         <activity
             android:name="com.dat255.project.android.copsandcrooks.GameActivity"
             android:label="@string/title_activity_game"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="com.dat255.project.android.copsandcrooks.LobbyActivity"
@@ -46,6 +47,10 @@
         <activity
             android:name="com.dat255.project.android.copsandcrooks.GameBrowseActivity"
             android:label="@string/title_activity_game_browse" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.HostActivity"
+            android:label="@string/title_activity_host" >
         </activity>
     </application>
 

@@ -55,6 +55,15 @@
     <string name="options_sound">Sound:</string>
     <string name="options_on_off">on/off</string>
     <string name="title_activity_game_browse">GameBrowseActivity</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="title_activity_host">HostActivity</string>
+    
+    
+    <string name="host_game">Host Game</string>
+    <string name="game_name">Gamename:</string>
+    <string name="player_cap">Playercap:</string>
+    <string name="player_cap_seekbar_default">[ 2 ]</string>
+    
+    
+    <string name="game_browser">Game Browser</string>
+    <string name="search_game_refresh">Refresh</string>
 </resources>
