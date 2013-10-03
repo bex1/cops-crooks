@@ -181,7 +181,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
 
-			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
+			}else if(property == Player.PROPERTY_SELECTED_PAWN){
 				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 				}

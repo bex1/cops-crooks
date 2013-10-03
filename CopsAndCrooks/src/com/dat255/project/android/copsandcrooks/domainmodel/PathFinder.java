@@ -126,20 +126,12 @@ public final class PathFinder {
 			if (target.isOccupied()) {
 				// Just one step left? We will end on target
 				if (stepsRemaining == 1) {
-					if (pawnType == PawnType.Car || pawnType == PawnType.Officer) {
-						return mediator.isWantedCrookOn(target);
-					} else {
-						return false;
-					}
-				// More steps left, check so we dont pass through a police when a wanted crook
+					return (pawnType == PawnType.Car || pawnType == PawnType.Officer) && mediator.isWantedCrookOn(target);
+				// More steps left, check so we don't pass through a police when a wanted crook
 				} else if (pawn instanceof Crook) {
 					PawnType targetType = target.getOccupiedBy();
 					Crook crook = (Crook)pawn;
-					if (crook.isWanted() && (targetType == PawnType.Car || targetType == PawnType.Officer)) {
-						return false;
-					} else {
-						return true;
-					}
+					return !(crook.isWanted() && (targetType == PawnType.Car || targetType == PawnType.Officer));
 				// More steps left. We can pass.
 				} else {
 					return true;

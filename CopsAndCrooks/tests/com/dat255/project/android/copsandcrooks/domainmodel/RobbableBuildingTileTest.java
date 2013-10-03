@@ -50,7 +50,7 @@ public class RobbableBuildingTileTest {
 		RobbableBuildingTile robbableBuilding = 
 				new RobbableBuildingTile(new Point(), new Mediator(), 750);
 		
-		robbableBuilding.robBuilding(crook);
+		robbableBuilding.getRobbedBy(crook);
 		
 		//The crooks cash should now be 750
 		assertTrue(crook.getWallet().getCash() == cash+750);
