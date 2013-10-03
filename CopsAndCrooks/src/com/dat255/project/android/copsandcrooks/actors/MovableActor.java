@@ -85,9 +85,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 					currentAnimation = Animations.IDLE_ANIM;
 				} 
 			} else if (property == IMovable.PROPERTY_IS_PLAYING) {
-				if (!pawn.isPlaying()) {
-					this.addAction(sequence(fadeOut(1f), removeActor()));
-				}
+				this.addAction(sequence(fadeOut(1f), removeActor()));
 			} else if (property == IMovable.PROPERTY_IS_ACTIVE_PAWN) {
 				if (pawn.isActivePawn()) {
 					Point currentPos = pawn.getCurrentTile().getPosition();
