@@ -16,7 +16,7 @@ public class TramStopTileTest {
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		TramStopTile tramStopTile = new TramStopTile(new Point(2,2), new Mediator());
 		
-		crook.standingOnTramstop(false);
+//		crook.standingOnTramstop(false);
 		tramStopTile.interact(crook);
 		assertTrue(crook.isWaitingOnTram());
 	}

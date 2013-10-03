@@ -10,7 +10,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class TramStopTile extends AbstractWalkableTile implements IInteractiveTile{
+public class TramStopTile extends AbstractWalkableTile{
 	
 	/**
 	 * Create a TramStopTile with a position.
@@ -23,13 +23,6 @@ public class TramStopTile extends AbstractWalkableTile implements IInteractiveTi
 		pawnTypes.add(PawnType.Crook);
 		pawnTypes.add(PawnType.Car);
 		pawnTypes.add(PawnType.Officer);
-	}
-
-	@Override
-	public void interact(IMovable target) {
-		if(target instanceof AbstractWalkingPawn){
-			AbstractWalkingPawn pawn = (AbstractWalkingPawn) target;
-		}
 	}
 
 }
