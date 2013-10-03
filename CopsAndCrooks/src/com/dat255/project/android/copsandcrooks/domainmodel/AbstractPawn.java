@@ -194,8 +194,8 @@ public abstract class AbstractPawn implements IMovable {
 		return isMoving;
 	}
 	
-	void setIsPlaying(boolean isPlaying) {
-		this.isPlaying = isPlaying;
+	void setIsntPlaying() {
+		this.isPlaying = false;
 		pcs.firePropertyChange(PROPERTY_IS_PLAYING, null, isPlaying);
 	}
 	

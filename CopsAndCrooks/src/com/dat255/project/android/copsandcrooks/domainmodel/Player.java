@@ -109,7 +109,7 @@ public class Player implements IPlayer {
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.getTimesArrested() == 4){
-    			crook.setIsPlaying(false);
+    			crook.setIsntPlaying();
     			//TODO: inactivate player
     		}
     	}
@@ -122,7 +122,7 @@ public class Player implements IPlayer {
 				// Take cash and add to player
 				Wallet crookWallet = crook.getWallet();
 				wallet.incrementCash(crookWallet.getCash());
-				crook.setIsPlaying(false);
+				crook.setIsntPlaying();;
 				crook.setCurrentTile(null);
 			}
 		}
