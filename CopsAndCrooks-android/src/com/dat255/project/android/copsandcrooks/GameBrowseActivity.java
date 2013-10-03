@@ -1,16 +1,20 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class GameBrowseActivity extends Activity {
 	
 	ListView gameListView;
-	ArrayAdapter<String> arrayAdapter;
+	GameItemAdapter gameItemAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +22,8 @@ public class GameBrowseActivity extends Activity {
 		setContentView(R.layout.activity_game_browse);
 		
 		gameListView = (ListView) findViewById(R.id.gameListView);
-		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-		gameListView.setAdapter(arrayAdapter);
+		gameItemAdapter = new GameItemAdapter(this, new ArrayList<GameItem>());
+		gameListView.setAdapter(gameItemAdapter);
 		gameListView.setTextFilterEnabled(true);
 	}
 
@@ -33,22 +37,20 @@ public class GameBrowseActivity extends Activity {
 	public void newItem(View v){
 		//TODO load a game-object with a string that specifies the game for now
 		//A more complex browser might be added if time is available
-		arrayAdapter.add("New game string");
-		arrayAdapter.notifyDataSetChanged();
+		gameItemAdapter.add(new GameItem("new item"));
 	}
 	
-	public void refreshGameList(){
+	public void refreshGameList(View v){
 		//TODO retrieve the games from the server and update the list
-		//gameListView.setAdapter(null);
-		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-		gameListView.setAdapter(arrayAdapter);
-		//arrayAdapter.notifyDataSetChanged();
+		gameItemAdapter = new GameItemAdapter(this, new ArrayList<GameItem>());
+		gameListView.setAdapter(gameItemAdapter);
 		
 		//testing
-		for(int i = 0; i < 1+Math.random()*4;i++){
-			arrayAdapter.add("New game string");
-			arrayAdapter.notifyDataSetChanged();
+		for(int i = 0; i < 1+(Math.random()*6);i++){
+			gameItemAdapter.add(new GameItem("new item- "+i));
 		}
 	}
+	
+	
 
 }
