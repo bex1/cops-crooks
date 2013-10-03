@@ -21,14 +21,28 @@ public class CopsAndCrooks extends Game {
 
     // a libgdx helper class that logs the current FPS each second
     private FPSLogger fpsLogger;
+    
+    private final Platform platform;
+    
+    public enum Platform{
+    	Android,
+    	Desktop;
+    }
 	
+    public CopsAndCrooks(Platform platform){
+    	super();
+    	this.platform = platform;
+    }
+    
     @Override
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         fpsLogger = new FPSLogger();
-        // setScreen(new SplashScreen(this));
-        setScreen(new MenuScreen(this));
+        if(platform == Platform.Desktop)
+        	setScreen(new MenuScreen(this));
+        else if(platform == Platform.Android)
+        	setScreen(new LoadingScreen(this));
     }
 
     @Override
