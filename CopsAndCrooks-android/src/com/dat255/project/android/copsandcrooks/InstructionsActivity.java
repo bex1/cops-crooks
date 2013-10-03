@@ -20,10 +20,4 @@ public class InstructionsActivity extends Activity {
 		getMenuInflater().inflate(R.menu.instructions, menu);
 		return true;
 	}
-	
-	public void backToMain(View v){
-		Intent intent = new Intent(this, MenuActivity.class);
-		startActivity(intent);
-	}
-
 }

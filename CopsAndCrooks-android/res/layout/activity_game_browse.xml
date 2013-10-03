@@ -17,7 +17,7 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GameBrowser" />
+            android:text="@string/game_browser" />
 
         <!-- Only used for testing! -->
         <Button
@@ -31,7 +31,7 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refresh"
+            android:text="@string/search_game_refresh"
             android:onClick="refreshGameList" />
 
     </TableRow>
