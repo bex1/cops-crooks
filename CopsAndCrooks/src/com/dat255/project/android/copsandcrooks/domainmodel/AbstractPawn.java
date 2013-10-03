@@ -40,7 +40,8 @@ public abstract class AbstractPawn implements IMovable {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
 		this.currentTile = startTile;
-		startTile.setOccupiedBy(pawnType);
+		if(startTile!=null)
+			startTile.setOccupiedBy(pawnType);
 		this.pawnRole = pawnRole;
 		this.pawnType = pawnType;
 		this.mediator = mediator;
@@ -58,10 +59,12 @@ public abstract class AbstractPawn implements IMovable {
 	 * Allowed to be null to move the pawn out of the game.
 	 */
 	protected void setCurrentTile(AbstractWalkableTile currTile) {
-		currentTile.setNotOccupied();
+		if(currentTile!=null)
+			currentTile.setNotOccupied();
 		AbstractWalkableTile oldTile = currentTile;
 		this.currentTile = currTile;
-		currentTile.setOccupiedBy(pawnType);
+		if(currentTile!=null)
+			currentTile.setOccupiedBy(pawnType);
 
 		// The current tiled changed, someone moved us -> notify
 		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
