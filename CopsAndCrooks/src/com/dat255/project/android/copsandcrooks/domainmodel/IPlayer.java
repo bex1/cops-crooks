@@ -83,4 +83,19 @@ public interface IPlayer extends IObservable {
 	boolean isGoingByMetro();
 
 	void chooseMetroStop(TramStopTile metroStop);
+
+	/**
+	 *
+	 * Sets whether the player is active or not,
+	 * i.e. if it is possible to be this player's turn.
+	 * @param active if the player is active
+	 */
+	void setActive(boolean active);
+
+	/**
+	 * Returns whether the player is active or not,
+	 * i.e. if it is possible to be this player's turn.
+	 * @return true if the player is active
+	 */
+	boolean isActive();
 }

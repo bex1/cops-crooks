@@ -22,7 +22,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	/**
 	 * Create a new hideout.
 	 * @param position the hideout's position
-	 * @param players a list of all players
 	 */
 	public HideoutTile(Point position, IMediator mediator) {
 		super(position, mediator);
@@ -47,7 +46,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	/**
 	 * Deposit an amount of a crook's cash in the hideout.
 	 * @param crook the crook
-	 * @param amount the amount to store
 	 */
 	public void depositCash(Crook crook){
 		//Adds the crook to the list of crooks that have stored cash
@@ -63,7 +61,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	/**
 	 * Withdraw an amount of the crook's stored cash.
 	 * @param crook the crook
-	 * @param amount amount to retrieve
 	 */
 	public void withdrawCash(Crook crook){
 		int cash;
@@ -111,7 +108,6 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	
 	/**
 	 * Cancels the crooks interaction with the hideout.
-	 * @param crook the crook
 	 */
 	public void cancelInteraction(){
 		mediator.playerTurnDone(2f);

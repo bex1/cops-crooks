@@ -78,7 +78,7 @@ interface IMediator {
 	 * @param pawnType The type of the pawn.
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
-	 * @return A collection with tilepaths representing paths that can be walked
+	 * @return A collection of TilePaths representing paths that can be walked
 	 */
 	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
 			AbstractPawn pawn, int stepsToMove);
@@ -93,7 +93,7 @@ interface IMediator {
 	 * Ask the mediator to communicate with the necessary objects
 	 * hinder a getaway.
 	 * 
-	 * Move whole method to gamemodel instead of callback?
+	 * Move whole method to GameModel instead of callback?
 	 */
 	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile);
 	

@@ -112,6 +112,8 @@ public class MovableActor extends Image implements PropertyChangeListener {
 					currentAnimation = Animations.IDLE_ANIM;
 				} 
 			} else if (property == IMovable.PROPERTY_IS_PLAYING) {
+				// Ofc u still have to check that the property was changed to what u wanted....
+				// As a visual element u dont know how the model was implemented.. Please dont remove these types of safety checks
 				if (!pawn.isPlaying()) {
 					this.addAction(sequence(fadeOut(1f), removeActor()));
 				}

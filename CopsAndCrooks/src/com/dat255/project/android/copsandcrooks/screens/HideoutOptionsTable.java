@@ -113,7 +113,6 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 				int pointer, int button) {
 			hideout.cancelInteraction();
 			thisTable.remove();
-
 			super.touchDown(event, x, y, pointer, button);
 		}
 	};
