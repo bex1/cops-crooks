@@ -67,7 +67,6 @@ public class Crook extends AbstractWalkingPawn {
 	}
 	/**
 	 * Returns whether the crook is in prison or not.
-	 * @param pawn - check to see if the pawn is a Crook, Cops can't be in prison.
 	 * @return whether the crook is in prison or not.
 	 */
 	boolean isInPrison(){
@@ -91,7 +90,7 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	public void decrementTurnsInPrison(){
 		if(turnsInPrison > 0)
-		--turnsInPrison;
+			--turnsInPrison;
 	}
 	/**
 	 * Increments the number of times arrested

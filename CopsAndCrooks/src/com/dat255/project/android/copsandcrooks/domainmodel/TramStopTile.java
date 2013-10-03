@@ -24,5 +24,4 @@ public class TramStopTile extends AbstractWalkableTile{
 		pawnTypes.add(PawnType.Car);
 		pawnTypes.add(PawnType.Officer);
 	}
-
 }

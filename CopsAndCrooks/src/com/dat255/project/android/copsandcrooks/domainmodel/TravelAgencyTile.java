@@ -15,7 +15,7 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	
 	/**
 	 * Get the travel agency instance.
-	 * @return the travelagency
+	 * @return the travel agency instance
 	 */
 	public static TravelAgencyTile getInstance(){
 		return travelAgencyInstance;

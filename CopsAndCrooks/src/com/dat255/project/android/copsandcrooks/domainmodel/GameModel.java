@@ -196,15 +196,6 @@ public final class GameModel implements IObservable  {
 		return false;
 	}
 	
-	public IPlayer getPlayerOfPawn(IMovable pawn) {
-		for (Player player : players) {
-			if (player.getPawns().contains(pawn)) {
-				return player;
-			}
-		}
-		return null;
-	}
-	
 	public Dice getDice(){
 		return dice;
 	}
@@ -221,10 +212,7 @@ public final class GameModel implements IObservable  {
 		return Collections.unmodifiableCollection(hideoutTiles);
 	}
 
-	public boolean isCurrPlayerOwnerOf(AbstractPawn movable) {
-		if (currentPlayer != null) {
-			return currentPlayer.getPawns().contains(movable);
-		}
-		return false;
+	public boolean isCurrentPlayerOwnerOfPawn(AbstractPawn movable) {
+		return currentPlayer != null && currentPlayer.getPawns().contains(movable);
 	}
 }
