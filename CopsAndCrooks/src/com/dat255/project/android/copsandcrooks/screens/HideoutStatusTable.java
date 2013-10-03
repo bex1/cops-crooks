@@ -48,7 +48,7 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 					nameLabel.setColor(Color.BLACK);
 					add(nameLabel).expandX().fillX().uniform().padRight(15);
 				
-					Label moneyLabel = new Label(String.format("%-6d%n", 0), Utilities.getSkin());
+					Label moneyLabel = new Label(String.format("%-6d%n", hideout.getStoredCashAmount(crook)), Utilities.getSkin());
 					moneyLabel.setFontScale(0.6f);
 					moneyLabel.setAlignment(Align.left);
 					moneyLabel.setColor(Color.BLACK);

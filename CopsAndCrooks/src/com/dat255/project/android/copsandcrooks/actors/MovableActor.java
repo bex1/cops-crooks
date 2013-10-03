@@ -12,6 +12,8 @@ import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -22,6 +24,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.screens.GameCamera;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
@@ -37,7 +40,10 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private Animations currentAnimation;
 	private GameCamera camera;
 	private final MovableActor thisActor;
+	private Image selectedBackground;
 	
+	
+
 	public enum Animations{
 		IDLE_ANIM,
 		MOVE_NORTH_ANIM,
@@ -55,8 +61,17 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		currentDrawable = drawable;
 		currentAnimation = Animations.IDLE_ANIM;
 		pawn.addObserver(this);
+		initBackgrounds();
 	}
 	
+	protected void initBackgrounds() {
+		TextureAtlas atlas = Utilities.getAtlas();
+		TextureRegionDrawable selected = new TextureRegionDrawable(atlas.findRegion("game-screen/status/Selected"));
+		selectedBackground = new Image(selected, Scaling.none);
+		selectedBackground.setSize(getWidth(), getHeight());
+		selectedBackground.getColor().a = 0.6f;
+	}
+
 	public void setCamera(GameCamera camera) {
 		this.camera = camera;
 	}
@@ -68,6 +83,18 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		currentDrawable.setRegion(animations.get(currentAnimation).getKeyFrame(animTimer, true));
 		super.act(delta);
 	}
+	
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		if (pawn.isActivePawn()) {
+			selectedBackground.setPosition(getX(), getY());
+			selectedBackground.draw(batch, parentAlpha);
+		} 
+
+			
+		super.draw(batch, parentAlpha);
+	}
+
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
@@ -85,14 +112,18 @@ public class MovableActor extends Image implements PropertyChangeListener {
 					currentAnimation = Animations.IDLE_ANIM;
 				} 
 			} else if (property == IMovable.PROPERTY_IS_PLAYING) {
-				this.addAction(sequence(fadeOut(1f), removeActor()));
+				// Ofc u still have to check that the property was changed to what u wanted....
+				// As a visual element u dont know how the model was implemented.. Please dont remove these types of safety checks
+				if (!pawn.isPlaying()) {
+					this.addAction(sequence(fadeOut(1f), removeActor()));
+				}
 			} else if (property == IMovable.PROPERTY_IS_ACTIVE_PAWN) {
 				if (pawn.isActivePawn()) {
 					Point currentPos = pawn.getCurrentTile().getPosition();
 					float x = currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2);
 					float y = currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2);
 					this.addAction(new CameraMove(0, x, y));
-				}
+				} 
 			}
 		}
 
