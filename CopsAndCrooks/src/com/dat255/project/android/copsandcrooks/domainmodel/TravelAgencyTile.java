@@ -42,13 +42,13 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 
 	@Override
 	public void interact(IMovable target){
-		robBuilding((Crook)target);
+		getRobbedBy((Crook) target);
 	}
 	
 	@Override
-	public void robBuilding(Crook robber){
+	public void getRobbedBy(Crook robber){
 		if(getValue() > 0){
-			super.robBuilding(robber);
+			super.getRobbedBy(robber);
 			this.setValue(0);
 		}
 	}
