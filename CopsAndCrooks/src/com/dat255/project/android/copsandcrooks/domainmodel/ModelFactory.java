@@ -9,7 +9,6 @@ import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Values;
 
 // WILL be used to furter encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
@@ -101,7 +100,7 @@ public class ModelFactory {
 		tramLines.add(new TramLine(red));
 		
 		List<Player> players = new ArrayList<Player>();
-		int numberOfOfficers = userInfo.keySet().size();
+		int numberOfOfficers = userInfo.keySet().size()-1;
 		int crookID = 1;
 		Random rand = new Random();
 		for (String name : userInfo.keySet()) {
@@ -120,10 +119,6 @@ public class ModelFactory {
 				int k = rand.nextInt(listOfHideouts.size()-1);
 				pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
 				listOfHideouts.remove(k);
-				
-				// Test let the crook start wanted to test catching
-				((Crook) pawns.get(pawns.size()-1)).setWanted(true);
-				// Test end
 				
 				players.add( new Player(name, pawns, Role.Crook, mediator));
 				++crookID;
