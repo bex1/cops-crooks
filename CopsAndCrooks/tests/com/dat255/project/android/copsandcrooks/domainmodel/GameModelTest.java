@@ -61,7 +61,7 @@ public class GameModelTest {
 		
 		assertTrue(gameModel.getCurrentPlayer() == player1);
 		
-		gameModel.nextPlayer();
+		gameModel.nextPlayer(0f);
 		
 		
 		assertTrue(gameModel.getCurrentPlayer() == player2);
