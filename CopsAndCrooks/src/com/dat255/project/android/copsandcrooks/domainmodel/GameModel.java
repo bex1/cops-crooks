@@ -27,6 +27,7 @@ public final class GameModel implements IObservable  {
 	private final Collection<TramLine> tramLines;
 	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
+	public static final String PROPERTY_GAME_ENDED = "GameEnded";
 	
 	private class ChangePlayerTask extends Task {
 
@@ -90,10 +91,23 @@ public final class GameModel implements IObservable  {
 	}
 
 	private void changePlayer() {
+		Player _currentPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
-		currentPlayer = players.get((i + 1) % players.size());
+		do{
+			currentPlayer = players.get((i + 1) % players.size());
+			// When all the list of players have been looped,
+			// and all players are inactive (all crooks have escaped),
+			// currentPlayer is the same as before (police player).
+			// The game should end then.
+			if(currentPlayer==_currentPlayer)
+				endGame();
+		}while (currentPlayer.isActive());
 		currentPlayer.updateState();
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+	}
+
+	private void endGame(){
+		pcs.firePropertyChange(PROPERTY_GAME_ENDED, null, currentPlayer);
 	}
 
 	public IPlayer getCurrentPlayer(){
