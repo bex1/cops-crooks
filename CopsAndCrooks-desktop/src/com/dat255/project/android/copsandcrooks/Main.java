@@ -12,6 +12,6 @@ public class Main {
 		cfg.width = Values.GAME_VIEWPORT_WIDTH;
 		cfg.height = Values.GAME_VIEWPORT_HEIGHT;
 		
-		new LwjglApplication(new CopsAndCrooks(CopsAndCrooks.Platform.Desktop), cfg);
+		new LwjglApplication(new CopsAndCrooks(), cfg);
 	}
 }

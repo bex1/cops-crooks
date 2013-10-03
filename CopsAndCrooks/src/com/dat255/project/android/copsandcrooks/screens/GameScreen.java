@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -155,6 +156,28 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		}
 
 	};
+
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		if (camera != null && Gdx.app.getType() == ApplicationType.Android) {
+			// needed on android to relocate camera after pause
+			camera.setCameraPosition(camPauseX, camPauseY);
+		}
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		if (camera != null) {
+			camPauseX = camera.position.x;
+			camPauseY = camera.position.y;
+		}
+	}
+	
+	private float camPauseX;
+	private float camPauseY;
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
