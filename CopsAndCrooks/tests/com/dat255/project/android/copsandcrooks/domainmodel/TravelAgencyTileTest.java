@@ -47,6 +47,9 @@ public class TravelAgencyTileTest {
 	public void testRobBuilding(){
 		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
 		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
+		// Reset to avoid failure if other tests have been run before,
+		// since TravelAgencyTile is singleton
+		travelAgency.setValue(0);
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		
 		travelAgency.getRobbedBy(crook);
