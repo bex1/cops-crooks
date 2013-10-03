@@ -34,4 +34,8 @@ public class TramLine {
 		return path;
 	}
 	
+	List<TramStopTile> getTramStops(){
+		return tramLine;
+	}
+	
 }
