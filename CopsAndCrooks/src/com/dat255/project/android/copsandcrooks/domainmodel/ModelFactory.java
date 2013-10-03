@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 // WILL be used to furter encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
@@ -132,12 +134,87 @@ public class ModelFactory {
 		return new GameModel(mediator, players.get(0), players, walkable, tramLines);
 	}
 	
-	public static GameModel loadHostedGameModel(GameModel model){
+	public static GameModel loadHostedGameModel(GameModel model) throws Exception{
 		// Creates a mediator
 		Mediator mediator = new Mediator();
-				
-		new PathFinder((AbstractWalkableTile[][]) model.getWalkabletiles(), mediator, new ArrayList<TramLine>());
-		return new GameModel(mediator, (Player)model.getPlayerClient(), (List<Player>) model.getPlayers()
-				, model.getWalkabletiles(), model.getTramLines());
+		int mapWidth = model.getWalkabletiles().length;
+		int mapHeight = model.getWalkabletiles()[1].length;
+		Collection<? extends IPlayer> oldPlayers = model.getPlayers();
+		List<Player> newPlayers = new ArrayList<Player>();
+		
+		//Loads all the tiles again to give them the new mediator
+		IWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
+		IWalkableTile[][] newWalkableTile = new IWalkableTile[mapWidth][mapHeight];
+		// Get All the metro lines
+		TramLine[] oldMetroLines = null;
+		oldMetroLines = model.getTramLines().toArray(oldMetroLines);
+		//Lists to get all the tramstops
+		List<TramStopTile> oldStop1 = oldMetroLines[0].getTramStops();
+		List<TramStopTile> oldStop2 = oldMetroLines[1].getTramStops();
+		List<TramStopTile> oldStop3 = oldMetroLines[2].getTramStops();
+		List<TramStopTile> stop1 = new ArrayList<TramStopTile>();
+		List<TramStopTile> stop2 = new ArrayList<TramStopTile>();
+		List<TramStopTile> stop3 = new ArrayList<TramStopTile>();
+		for(int i = 0 ; i <mapWidth; i ++){
+			for(int j = 0; j < mapHeight; i ++){
+				if(oldWalkableTile[i][j] instanceof RoadTile){
+					newWalkableTile[i][j] = new RoadTile(new Point(i, j), mediator);
+				}else if(oldWalkableTile[i][j] instanceof GetAwayTile){
+					newWalkableTile[i][j] = new GetAwayTile(new Point(i, j), mediator);
+				}else if(oldWalkableTile[i][j] instanceof RobbableBuildingTile){
+					newWalkableTile[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 
+							((RobbableBuildingTile)oldWalkableTile[i][j]).getValue());
+				}else if(oldWalkableTile[i][j] instanceof TravelAgencyTile){
+					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
+					newWalkableTile[i][j] = TravelAgencyTile.getInstance();
+				}else if(oldWalkableTile[i][j] instanceof TramStopTile){
+					//TODO Fixa så att man hämtar de olika setten av tramstops och gör en tramline och sedan flera tramlines
+					newWalkableTile[i][j] = new TramStopTile(new Point(i, j), mediator);
+					if(oldStop1.contains(oldWalkableTile[i][j])){
+						stop1.add((TramStopTile) newWalkableTile[i][j]);
+					}else if(oldStop2.contains(oldWalkableTile[i][j])){
+						stop2.add((TramStopTile) newWalkableTile[i][j]);
+					}else if(oldStop3.contains(oldWalkableTile[i][j])){
+						stop3.add((TramStopTile) newWalkableTile[i][j]);
+					}else{
+						throw new Exception("Couldn't find " + oldWalkableTile[i][j] + " in the old models tram lines ");
+					}
+				}else if(oldWalkableTile[i][j] instanceof IntelligenceAgencyTile){
+					newWalkableTile[i][j] = new IntelligenceAgencyTile(new Point(i,j), mediator);
+				}else if(oldWalkableTile[i][j] instanceof HideoutTile){
+					newWalkableTile[i][j] = new HideoutTile(new Point(i,j), mediator);
+				}else if(oldWalkableTile[i][j] instanceof PoliceStationTile){
+					newWalkableTile[i][j] = new PoliceStationTile(new Point(i,j), mediator);
+				}else{
+					newWalkableTile[i][j] = null;
+				}
+			}
+		}
+		// the new Tramlines that is based on the model you get
+		List<TramLine> newTramLines = new ArrayList<TramLine>();
+		newTramLines.add(new TramLine(stop1));
+		newTramLines.add(new TramLine(stop2));
+		newTramLines.add(new TramLine(stop3));
+		
+		//Loads the players and give them the new mediator
+		for(IPlayer player: oldPlayers){
+			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+			for(IMovable pawn: player.getPawns()){
+				Point tilesPos = pawn.getCurrentTile().getPosition();
+				AbstractWalkableTile tile = (AbstractWalkableTile) newWalkableTile[tilesPos.x][tilesPos.y];
+				if(pawn instanceof Officer)
+					pawns.add(new Officer(tile, mediator, pawn.getID()));
+				else if(pawn instanceof CopCar)
+					pawns.add(new CopCar(tile, mediator, pawn.getID()));
+				else if(pawn instanceof Crook)
+					pawns.add(new Crook(tile, mediator, pawn.getID()));
+			}
+			newPlayers.add(new Player(player.getName(), pawns, player.getPlayerRole(), mediator));
+		}
+		
+		
+		
+		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
+		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines);
 	}
 }

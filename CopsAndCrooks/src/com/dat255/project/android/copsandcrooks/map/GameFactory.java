@@ -103,20 +103,26 @@ public class GameFactory {
 			e.printStackTrace();
 			return null;
 		}
-		GameModel newModel = ModelFactory.loadHostedGameModel(model);
-		List<Actor> actors = addActor(newModel.getPlayers());
+		GameModel newModel;
+		try {
+			newModel = ModelFactory.loadHostedGameModel(model);
+			List<Actor> actors = addActor(newModel.getPlayers());
 		
-		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
-		
-		for (HideoutTile hideout : model.getHideouts()) {
-			actors.add(new HideoutActor(hideout, newModel.getPlayers(), hudStage));
-			new HideoutOptionsTable(hideout, hudStage);
-		}
-		
-		return new GameScreen(game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
-	}
+			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
+			
+			for (HideoutTile hideout : model.getHideouts()) {
+				actors.add(new HideoutActor(hideout, newModel.getPlayers(), hudStage));
+				new HideoutOptionsTable(hideout, hudStage);
+			}
+			
+			return new GameScreen(game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 	/**
 	 * Method to be able to add actors to a collection of players.
 	 * @param players - the collection you want to ad actors on.
