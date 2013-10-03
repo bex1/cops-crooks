@@ -21,10 +21,10 @@ import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.CopActor;
 import com.dat255.project.android.copsandcrooks.actors.CopCarActor;
+import com.dat255.project.android.copsandcrooks.actors.CrookActor;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.HideoutActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
-import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
@@ -138,7 +138,7 @@ public class GameFactory {
 					EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-					actors.add(new MovableActor(drawable, Scaling.none, pawn, pawnAnimations));
+					actors.add(new CrookActor(drawable, Scaling.none, (Crook) pawn, pawnAnimations));
 				}else if(pawn instanceof CopCar){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getCopCarAnimations();

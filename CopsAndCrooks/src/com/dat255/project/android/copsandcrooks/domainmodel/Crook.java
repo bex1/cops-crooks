@@ -13,9 +13,12 @@ public class Crook extends AbstractWalkingPawn {
 	private boolean attemptingGetAway, isWanted;
 	private int turnsInPrison, timesArrested;
 	
+	public static final String PROPERTY_IS_WANTED = "IsWanted";
+	
 	public Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
 		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
 		wallet = new Wallet();
+		wallet.setCash(5000);
 	}
 	
 	/**
@@ -32,6 +35,7 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
+		pcs.firePropertyChange(PROPERTY_IS_WANTED, null, isWanted);
 	}
 	
 	/**
