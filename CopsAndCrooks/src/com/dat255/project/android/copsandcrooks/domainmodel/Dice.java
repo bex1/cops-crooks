@@ -12,7 +12,6 @@ public final class Dice implements IObservable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
-	private final Timer rollTimer;
 	private int diceResult;
 	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
@@ -30,7 +29,6 @@ public final class Dice implements IObservable {
 			diceResult = 1 + rand.nextInt(6);
 			pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
 			player.diceResult(diceResult);
-			rollTimer.stop();
 			this.cancel();
 		}
 	}
@@ -39,13 +37,11 @@ public final class Dice implements IObservable {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		mediator.registerDice(this);
-		rollTimer = new Timer();
 	}
 	
 	void roll(Player player) {
 		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, true);
-		rollTimer.scheduleTask(new RollTask(player), 1.4f);
-		rollTimer.start();
+		Timer.schedule(new RollTask(player), 1.4f);
 	}
 
 	@Override

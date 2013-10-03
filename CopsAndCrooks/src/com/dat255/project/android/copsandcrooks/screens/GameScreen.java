@@ -165,6 +165,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
 				// New turn -> show buttons where the player can select its next move
 				showActButtons();
+			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
+				Gdx.app.exit();
 			}
 		} else if (model.getCurrentPlayer() == evt.getSource()) {
 
