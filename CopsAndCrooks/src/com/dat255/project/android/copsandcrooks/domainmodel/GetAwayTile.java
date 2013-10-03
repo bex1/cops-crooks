@@ -27,9 +27,7 @@ public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTil
 	public void interact(IMovable target) {
 		if(target instanceof Crook){
 			Crook crook = (Crook)target;
-			if(crook.isAttemptingGetAway()){
-				//TODO victory/out of game
-			}else if(crook.getWallet().getCash() >= Values.GETAWAY_TICKET_COST){
+			if(crook.getWallet().getCash() >= Values.GETAWAY_TICKET_COST){
 				//Attempt getaway if the crook can afford a ticket
 				purchaseTicket(crook);
 				crook.setAttemptingGetAway(true);
