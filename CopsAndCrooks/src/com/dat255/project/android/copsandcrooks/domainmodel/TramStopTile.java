@@ -29,7 +29,7 @@ public class TramStopTile extends AbstractWalkableTile implements IInteractiveTi
 	public void interact(IMovable target) {
 		if(target instanceof AbstractWalkingPawn){
 			AbstractWalkingPawn pawn = (AbstractWalkingPawn) target;
-			pawn.standingOnTramstop(true);
+			pawn.standingOnTramStop(true);
 		}
 	}
 
