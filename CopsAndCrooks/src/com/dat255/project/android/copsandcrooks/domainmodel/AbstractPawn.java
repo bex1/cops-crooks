@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -29,7 +31,7 @@ public abstract class AbstractPawn implements IMovable {
 	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
 	
-	private boolean isMoving, isPlaying;
+	private boolean isMoving, isPlaying, isActivePawn;
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -55,15 +57,16 @@ public abstract class AbstractPawn implements IMovable {
 	 * @param currTile the current tile on which the movable is standing on.
 	 * Allowed to be null to move the pawn out of the game.
 	 */
-	void setCurrentTile(AbstractWalkableTile currTile) {
+	protected void setCurrentTile(AbstractWalkableTile currTile) {
+		currentTile.setNotOccupied();
 		AbstractWalkableTile oldTile = currentTile;
 		this.currentTile = currTile;
-		
-		 // The current tiled changed, someone moved us -> notify
-        pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
-		
+		currentTile.setOccupiedBy(pawnType);
+
+		// The current tiled changed, someone moved us -> notify
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 	}
-	
+
 	@Override
 	public AbstractWalkableTile getCurrentTile() {
 		return currentTile;
@@ -85,7 +88,7 @@ public abstract class AbstractPawn implements IMovable {
 	 * Moves the movable object along the given path.
 	 * @param path the path of walkable tiles in the path. Not allowed to be null or empty.
 	 */
-	void move(TilePath path) {
+	protected void move(TilePath path) {
 		if (path == null || path.isEmpty()) {
 			throw new IllegalArgumentException("path is null or empty");
 		}
@@ -107,24 +110,26 @@ public abstract class AbstractPawn implements IMovable {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
-		        	this.setCurrentTile(nextTile);
+		        	currentTile = nextTile;
 		        	this.setMoving(false);
 		        	nextTile = null;
 		        	
 		        	if (currentTile != null && currentTile.isOccupied()) {
 		        		// We collided, communicate with the module via the mediator	
 		        		mediator.didCollideAfterMove(this);
-		        		mediator.playerTurnDone();
+		        		mediator.playerTurnDone(3f);
 		        		return;
 		        	}
-		        	currentTile.setOccupiedBy(pawnType);
-		        	mediator.playerTurnDone();
+		        	if (!(currentTile instanceof HideoutTile)) {
+		        		currentTile.setOccupiedBy(pawnType);
+		        		mediator.playerTurnDone(2f);
+		        	}
 		        	
 		        	// Try to interact with the tile
 		        	this.interactWithTile();
 		        	
 		        } else {
-		        	this.setCurrentTile(nextTile);
+		        	currentTile = nextTile;
 		        	AbstractWalkableTile next = pathToMove.consumeNextTile();
 		        	updateDirection(currentTile, next);
 		        	this.setNextTile(next);
@@ -194,8 +199,19 @@ public abstract class AbstractPawn implements IMovable {
 		pcs.firePropertyChange(PROPERTY_IS_PLAYING, null, isPlaying);
 	}
 	
+	@Override
 	public boolean isPlaying() {
 		return isPlaying;
+	}
+	
+	void setIsActivePawn(boolean isActive) {
+		this.isActivePawn = isActive;
+		pcs.firePropertyChange(PROPERTY_IS_ACTIVE_PAWN, null, isActive);
+	}
+	
+	@Override
+	public boolean isActivePawn() {
+		return isActivePawn;
 	}
 	
 	/**
@@ -227,11 +243,12 @@ public abstract class AbstractPawn implements IMovable {
 	 */
 	protected abstract void collisionAfterMove(IMovable pawn);
 
-	public void moveByTram(TramStopTile metroStop) {
+	protected void moveByTram(TramStopTile metroStop) {
 		currentTile.setNotOccupied();
-		this.setCurrentTile(metroStop);
+		currentTile = metroStop;
 		this.interactWithTile();
 		currentTile.setOccupiedBy(getPawnType());
 		
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, null, currentTile);
 	}
 }

@@ -87,7 +87,7 @@ interface IMediator {
 	 * Ask the mediator to communicate with the necessary objects
 	 * to react on that the turn is done.
 	 */
-	void playerTurnDone();
+	void playerTurnDone(float delay);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -108,4 +108,6 @@ interface IMediator {
 	boolean isWantedCrookOn(IWalkableTile tile);
 
 	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
+
+	boolean isItMyPlayerTurn(AbstractPawn movable);
 }

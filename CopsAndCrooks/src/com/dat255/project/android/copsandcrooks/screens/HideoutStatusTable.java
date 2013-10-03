@@ -64,12 +64,14 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		Object obj = evt.getSource();
-		if (moneyLabels.containsKey(obj)) {
+		if (evt.getSource() == hideout) {
 			if (evt.getPropertyName() == HideoutTile.PROPERTY_HIDEOUT_MONEY) {
-				Crook crook = (Crook)obj;
-				Label money = moneyLabels.get(crook);
-				money.setText(String.format("%-6d%n", hideout.getStoredCashAmount(crook)));
+				Object obj = evt.getNewValue();
+				if (moneyLabels.containsKey(obj)) {
+					Crook crook = (Crook)obj;
+					Label money = moneyLabels.get(crook);
+					money.setText(String.format("%-6d%n", hideout.getStoredCashAmount(crook)));
+				}
 			}
 		}
 	}

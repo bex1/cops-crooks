@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 public final class GameModel implements IObservable  {
@@ -18,6 +20,7 @@ public final class GameModel implements IObservable  {
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 	private final Dice dice;
+	private final Timer changePlayerTimer;
 
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final IWalkableTile[][] walkable;
@@ -25,7 +28,16 @@ public final class GameModel implements IObservable  {
 	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	
+	private class ChangePlayerTask extends Task {
 
+		@Override
+		public void run () {
+			currentPlayer.getCurrentPawn().setIsActivePawn(false);
+			changePlayer();
+			changePlayerTimer.stop();
+			this.cancel();
+		}
+	}
 
 	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles, Collection<TramLine> tramLines) {
 		if (mediator == null)
@@ -42,6 +54,7 @@ public final class GameModel implements IObservable  {
 		this.dice = new Dice(mediator);
 		this.walkable = tiles;
 		this.tramLines = tramLines;
+		changePlayerTimer = new Timer();
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
@@ -66,7 +79,17 @@ public final class GameModel implements IObservable  {
 		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
 	}
 
-	void nextPlayer(){
+	void nextPlayer(float delay){
+		if (delay > 0) {
+			changePlayerTimer.scheduleTask(new ChangePlayerTask(), delay);
+			changePlayerTimer.start();
+		} else {
+			changePlayer();
+			
+		}
+	}
+
+	private void changePlayer() {
 		int i = players.indexOf(currentPlayer);
 		currentPlayer = players.get((i + 1) % players.size());
 		currentPlayer.updateState();
@@ -182,5 +205,12 @@ public final class GameModel implements IObservable  {
 
 	public Collection<HideoutTile> getHideouts() {
 		return Collections.unmodifiableCollection(hideoutTiles);
+	}
+
+	public boolean isCurrPlayerOwnerOf(AbstractPawn movable) {
+		if (currentPlayer != null) {
+			return currentPlayer.getPawns().contains(movable);
+		}
+		return false;
 	}
 }
