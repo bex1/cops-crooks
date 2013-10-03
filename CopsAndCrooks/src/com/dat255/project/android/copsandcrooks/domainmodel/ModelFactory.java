@@ -99,7 +99,6 @@ public class ModelFactory {
 		tramLines.add(new TramLine(red));
 		
 		List<Player> players = new ArrayList<Player>();
-		List<Crook> crooks = new ArrayList<Crook>();
 		int numberOfOfficers = userInfo.keySet().size();
 		int crookID = 1;
 		Random rand = new Random();
@@ -127,10 +126,6 @@ public class ModelFactory {
 				players.add( new Player(name, pawns, Role.Crook, mediator));
 				++crookID;
 			}
-		}
-		
-		for (HideoutTile hideout : listOfHideouts) {
-			hideout.addCrooks(crooks);
 		}
 		
 		new PathFinder(walkable, mediator, tramLines);

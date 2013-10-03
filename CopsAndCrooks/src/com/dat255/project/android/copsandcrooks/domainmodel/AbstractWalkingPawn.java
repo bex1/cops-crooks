@@ -19,6 +19,7 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 	void setIsInPoliceStation(boolean inHouse) {
 		boolean oldValue = isInPoliceHouse;
 		isInPoliceHouse = inHouse;
+		isWaitingOnTram = false;
 		pcs.firePropertyChange(PROPERTY_IS_IN_POLICE_HOUSE, oldValue, isInPoliceHouse);
 	}
 	
