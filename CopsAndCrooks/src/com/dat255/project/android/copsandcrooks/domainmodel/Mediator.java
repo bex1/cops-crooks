@@ -102,7 +102,7 @@ public final class Mediator implements IMediator {
 	@Override
 	public boolean isItMyPlayerTurn(AbstractPawn movable) {
 		if (gameModel != null) 
-			return gameModel.isCurrPlayerOwnerOf(movable);
+			return gameModel.isCurrentPlayerOwnerOfPawn(movable);
 		return false;
 	}
 }

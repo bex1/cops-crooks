@@ -36,8 +36,8 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 		
 	}
 	/**
-	 * return true if the pawn is standing on a tramstop, false otherwise 
-	 * @return true if the pawn is standing on a tramstop, false otherwise 
+	 * return true if the pawn is standing on a TramStop, false otherwise
+	 * @return true if the pawn is standing on a TramStop, false otherwise
 	 */
 
 	boolean isWaitingOnTram(){
