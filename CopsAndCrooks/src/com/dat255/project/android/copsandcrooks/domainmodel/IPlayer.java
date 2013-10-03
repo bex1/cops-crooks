@@ -62,11 +62,6 @@ public interface IPlayer extends IObservable {
      void rollDice();
     
     /**
-     * Updates the possible paths that the pawn can move in.
-     */
-     void updatePossiblePaths();
-    
-    /**
      * Returns an unmodifiable Collection<TilePath> of the possible paths the
      * current selected pawn get walk.
      * 

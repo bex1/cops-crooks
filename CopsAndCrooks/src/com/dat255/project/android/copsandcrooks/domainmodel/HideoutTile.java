@@ -41,7 +41,9 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	@Override
 	public void interact(IMovable target) {
 		//this needs to be listened to by something
-		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, ((Crook)target));
+		if (target instanceof Crook) {
+			pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, target);
+		}
 	}
 	
 	/**
@@ -56,11 +58,12 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		}
 		storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 		crook.getWallet().setCash(0);
-		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, storedCash);
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, crook);
 		
 		if(crook.getWallet().getCash() == 0){
 			crook.setWanted(false);
 		}
+		mediator.playerTurnDone(2f);
 	}
 	
 	/**
@@ -80,9 +83,11 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		
 		storedCash.put(crook, 0);
 		crook.getWallet().incrementCash(cash);
-		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, storedCash);
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, crook);
 		
 		crook.setWanted(crook.getWallet().getCash() > 0);
+		
+		mediator.playerTurnDone(2f);
 	}
 	
 	/**
@@ -108,6 +113,14 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 */
 	public boolean hasStoredCash(Crook crook){
 		return crook!=null && storedCash.containsKey(crook) && storedCash.get(crook) > 0;
+	}
+	
+	/**
+	 * Cancels the crooks interaction with the hideout.
+	 * @param crook the crook
+	 */
+	public void cancelInteraction(Crook crook){
+		mediator.playerTurnDone(2f);
 	}
 	
 	@Override
