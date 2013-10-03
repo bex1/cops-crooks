@@ -13,6 +13,8 @@ public class Crook extends AbstractWalkingPawn {
 	private boolean attemptingGetAway, isWanted;
 	private int turnsInPrison, timesArrested;
 	
+	public static final String PROPERTY_IS_WANTED = "IsWanted";
+	
 	public Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
 		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
 		wallet = new Wallet();
@@ -32,6 +34,7 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
+		pcs.firePropertyChange(PROPERTY_IS_WANTED, null, isWanted);
 	}
 	
 	/**
@@ -67,6 +70,7 @@ public class Crook extends AbstractWalkingPawn {
 	}
 	/**
 	 * Returns whether the crook is in prison or not.
+	 * @param pawn - check to see if the pawn is a Crook, Cops can't be in prison.
 	 * @return whether the crook is in prison or not.
 	 */
 	boolean isInPrison(){
@@ -90,7 +94,7 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	public void decrementTurnsInPrison(){
 		if(turnsInPrison > 0)
-			--turnsInPrison;
+		--turnsInPrison;
 	}
 	/**
 	 * Increments the number of times arrested

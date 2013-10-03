@@ -164,17 +164,6 @@ public class Player implements IPlayer {
     
     @Override
     public void rollDice() {
-    	// checks to see if the player's pawn is in prison
-    	// if so then the player isn't able to move unless rolling a six.
-    	if(this.currentPawn instanceof Crook){
-    		Crook crook = ((Crook)this.currentPawn);
-    		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
-    			crook.decrementTurnsInPrison();
-    			mediator.playerTurnDone(0);
-    			return;
-    		}
-    	}
-    	
     	mediator.rollDice(this);
     }
     
@@ -264,6 +253,16 @@ public class Player implements IPlayer {
 	void diceResult(int result) {
 		diceResult = result;
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+		// checks to see if the player's pawn is in prison
+    	// if so then the player isn't able to move unless rolling a six.
+    	if(this.currentPawn instanceof Crook){
+    		Crook crook = ((Crook)this.currentPawn);
+    		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
+    			crook.decrementTurnsInPrison();
+    			mediator.playerTurnDone(2f);
+    			return;
+    		}
+    	}
     	goByDice = true;
     	updatePossiblePaths();
 	}

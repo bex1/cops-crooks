@@ -40,27 +40,21 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	@Override
 	public void interact(IMovable target) {
 		//this needs to be listened to by something
-		if (target instanceof Crook) {
-			pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, target);
-		}
+		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, target);
 	}
-	
+
 	/**
 	 * Deposit an amount of a crook's cash in the hideout.
 	 * @param crook the crook
 	 */
 	public void depositCash(Crook crook){
 		//Adds the crook to the list of crooks that have stored cash
-		if(storedCash.containsKey(crook)){
-			storedCash.put(crook, 0);
-		}
+		
 		storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 		crook.getWallet().setCash(0);
+		crook.setWanted(false);
 		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, crook);
 		
-		if(crook.getWallet().getCash() == 0){
-			crook.setWanted(false);
-		}
 		mediator.playerTurnDone(2f);
 	}
 	
