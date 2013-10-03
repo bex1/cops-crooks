@@ -30,7 +30,7 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	@Override
 	public void interact(IMovable target) {
 		if(value > 0 && target instanceof Crook){
-			robBuilding((Crook)target); //TODO fix this... interaction(?)
+			getRobbedBy((Crook) target); //TODO fix this... interaction(?)
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	 * Determines what happens when the building is robbed.
 	 * @param robber the crook that's robbing the building
 	 */
-	protected void robBuilding(Crook robber){
+	protected void getRobbedBy(Crook robber){
 		Wallet robberWallet = robber.getWallet();
 		robberWallet.incrementCash(value);
 		robber.setWanted(robberWallet.getCash() > 0);

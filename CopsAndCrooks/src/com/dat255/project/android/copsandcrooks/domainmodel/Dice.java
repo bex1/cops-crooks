@@ -12,7 +12,6 @@ public final class Dice implements IObservable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
-	private boolean isRolling;
 	private final Timer rollTimer;
 	private int diceResult;
 	
@@ -44,8 +43,7 @@ public final class Dice implements IObservable {
 	}
 	
 	void roll(Player player) {
-		isRolling = true;
-		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, isRolling);
+		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, true);
 		rollTimer.scheduleTask(new RollTask(player), 1.4f);
 		rollTimer.start();
 	}

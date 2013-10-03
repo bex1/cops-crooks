@@ -29,15 +29,15 @@ public abstract class AbstractWalkableTile implements IWalkableTile{
 	
 	/**
 	 * Construct a new AbstractTile with a position.
-	 * @param position2 the tile's position
+	 * @param position the tile's position
 	 */
-	protected AbstractWalkableTile(Point pos, IMediator mediator) {
-		if (pos == null) 
+	protected AbstractWalkableTile(Point position, IMediator mediator) {
+		if (position == null)
 			throw new IllegalArgumentException("Position not allowed to be null");
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		
-		this.position = pos;
+		this.position = position;
 		this.mediator = mediator;
 		
 		pawnTypes = new ArrayList<PawnType>();
