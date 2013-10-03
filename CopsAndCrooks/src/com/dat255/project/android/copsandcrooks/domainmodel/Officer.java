@@ -28,7 +28,6 @@ public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 				mediator.moveToPoliceStation(crook);
 				mediator.moveToPoliceStation(this);
 				crook.setIsInPoliceStation(true);
-				crook.standingOnTramstop(false);
 				this.setIsInPoliceStation(true);
 				
 				Wallet crookWallet = crook.getWallet();

@@ -9,24 +9,25 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  */
 abstract class AbstractWalkingPawn extends AbstractPawn {
 	private boolean isInPoliceHouse;
-	
-	private boolean isWaitingOnTram;
 
 	protected AbstractWalkingPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep, int id) {
 		super(startTile, pawnRole, type, mediator, tilesMovedEachStep, id);
 	}
+	
+	/**
+	 * Sets whether or not the pawn is in the police station.
+	 * @param inHouse True to set that pawn is in the police station, false otherwise
+	 */
 
 	void setIsInPoliceStation(boolean inHouse) {
 		boolean oldValue = isInPoliceHouse;
 		isInPoliceHouse = inHouse;
-		isWaitingOnTram = false;
 		pcs.firePropertyChange(PROPERTY_IS_IN_POLICE_HOUSE, oldValue, isInPoliceHouse);
 	}
 	
 	@Override
 	protected void move(TilePath path) {
 		super.move(path);
-		isWaitingOnTram = false;
 	}
 
 	@Override
@@ -34,12 +35,12 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 		// TODO Auto-generated method stub
 		
 	}
+	/**
+	 * return true if the pawn is standing on a tramstop, false otherwise 
+	 * @return true if the pawn is standing on a tramstop, false otherwise 
+	 */
 
 	boolean isWaitingOnTram(){
-		return isWaitingOnTram;
-	}
-	
-	void standingOnTramstop(boolean standing){
-		isWaitingOnTram = standing;
+		return currentTile instanceof TramStopTile;
 	}
 }
