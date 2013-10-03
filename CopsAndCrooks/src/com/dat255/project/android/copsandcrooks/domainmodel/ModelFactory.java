@@ -9,7 +9,6 @@ import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Values;
 
 // WILL be used to furter encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.

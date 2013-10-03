@@ -20,7 +20,6 @@ public final class GameModel implements IObservable  {
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 	private final Dice dice;
-	private final Timer changePlayerTimer;
 
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final IWalkableTile[][] walkable;
@@ -35,7 +34,7 @@ public final class GameModel implements IObservable  {
 		public void run () {
 			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
-			changePlayerTimer.stop();
+			//changePlayerTimer.stop();
 			this.cancel();
 		}
 	}
@@ -55,7 +54,6 @@ public final class GameModel implements IObservable  {
 		this.dice = new Dice(mediator);
 		this.walkable = tiles;
 		this.tramLines = tramLines;
-		changePlayerTimer = new Timer();
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
@@ -82,11 +80,9 @@ public final class GameModel implements IObservable  {
 
 	void nextPlayer(float delay){
 		if (delay > 0) {
-			changePlayerTimer.scheduleTask(new ChangePlayerTask(), delay);
-			changePlayerTimer.start();
+			Timer.schedule(new ChangePlayerTask(), delay);
 		} else {
 			changePlayer();
-			
 		}
 	}
 
@@ -99,11 +95,17 @@ public final class GameModel implements IObservable  {
 			// and all players are inactive (all crooks have escaped),
 			// currentPlayer is the same as before (police player).
 			// The game should end then.
-			if(currentPlayer==_currentPlayer)
+			if(currentPlayer==_currentPlayer) {
 				endGame();
-		}while (currentPlayer.isActive());
+				return;
+			}
+		}while (!currentPlayer.isActive());
 		currentPlayer.updateState();
-		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+		if (currentPlayer.isActive()) {
+			pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+		} else {
+			nextPlayer(3f);
+		}
 	}
 
 	private void endGame(){

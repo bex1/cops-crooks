@@ -67,6 +67,7 @@ public class Player implements IPlayer {
 		this.playerRole = role;
 		this.mediator = mediator;
 		this.currentPawn = pawns.get(0);
+		this.isActive = true;
 		wallet = new Wallet();
 	}
 
@@ -98,9 +99,9 @@ public class Player implements IPlayer {
     }
     
     void updateState() {
-    	checkIfCrookIsEscaping();
-    	checkIfLifeTimeInPrison();
     	currentPawn.setIsActivePawn(true);
+    	checkIfCrookIsEscaping();
+    	checkIfLifeTimeInPrison(); 
     }
     
     private void checkIfLifeTimeInPrison(){
@@ -108,7 +109,6 @@ public class Player implements IPlayer {
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.getTimesArrested() == 4){
     			crook.setIsntPlaying();
-    			//TODO: inactivate player
     			this.setActive(false);
     		}
     	}
@@ -121,9 +121,8 @@ public class Player implements IPlayer {
 				// Take cash and add to player
 				Wallet crookWallet = crook.getWallet();
 				wallet.incrementCash(crookWallet.getCash());
-				crook.setIsntPlaying();;
+				crook.setIsntPlaying();
 				this.setActive(false);
-				crook.setCurrentTile(null);
 			}
 		}
 	}
@@ -259,7 +258,7 @@ public class Player implements IPlayer {
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
     			crook.decrementTurnsInPrison();
-    			mediator.playerTurnDone(2f);
+    			mediator.playerTurnDone(3f);
     			return;
     		}
     	}

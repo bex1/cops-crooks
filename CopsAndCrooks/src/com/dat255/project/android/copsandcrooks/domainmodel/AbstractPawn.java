@@ -3,8 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -199,7 +197,9 @@ public abstract class AbstractPawn implements IMovable {
 	
 	void setIsntPlaying() {
 		this.isPlaying = false;
+		this.isActivePawn = false;
 		pcs.firePropertyChange(PROPERTY_IS_PLAYING, null, isPlaying);
+		currentTile = null;
 	}
 	
 	@Override
