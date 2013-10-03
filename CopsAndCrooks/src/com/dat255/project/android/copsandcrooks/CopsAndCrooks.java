@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.dat255.project.android.copsandcrooks.screens.*;
 import com.dat255.project.android.copsandcrooks.utils.Utilities;
@@ -21,17 +22,9 @@ public class CopsAndCrooks extends Game {
 
     // a libgdx helper class that logs the current FPS each second
     private FPSLogger fpsLogger;
-    
-    private final Platform platform;
-    
-    public enum Platform{
-    	Android,
-    	Desktop;
-    }
 	
-    public CopsAndCrooks(Platform platform){
+    public CopsAndCrooks(){
     	super();
-    	this.platform = platform;
     }
     
     @Override
@@ -39,9 +32,9 @@ public class CopsAndCrooks extends Game {
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         fpsLogger = new FPSLogger();
-        if(platform == Platform.Desktop)
+        if(Gdx.app.getType() == ApplicationType.Desktop)
         	setScreen(new MenuScreen(this));
-        else if(platform == Platform.Android)
+        else if(Gdx.app.getType() == ApplicationType.Android)
         	setScreen(new LoadingScreen(this));
     }
 
