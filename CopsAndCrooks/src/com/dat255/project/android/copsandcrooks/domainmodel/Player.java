@@ -32,7 +32,8 @@ public class Player implements IPlayer {
 
 	private boolean goByMetro;
 	private boolean goByDice;
-	
+	private boolean isActive;
+
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_CHOOSEN_PAWN = "TheSelectedPawn";
@@ -266,5 +267,15 @@ public class Player implements IPlayer {
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
     	goByDice = true;
     	updatePossiblePaths();
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@Override
+	public void setActive(boolean active) {
+		isActive = active;
 	}
 }
