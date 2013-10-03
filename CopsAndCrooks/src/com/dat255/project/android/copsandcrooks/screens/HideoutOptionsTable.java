@@ -89,7 +89,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 				int pointer, int button) {
 			if (visitor != null && hideout.hasStoredCash(visitor)) {
 				hideout.withdrawCash(visitor);
-				thisTable.remove();
+				hudStage.getRoot().removeActor(thisTable);
 			}
 			super.touchDown(event, x, y, pointer, button);
 		}
@@ -101,7 +101,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 				int pointer, int button) {
 			if (visitor != null && visitor.getWallet().getCash() > 0) {
 				hideout.depositCash(visitor);
-				thisTable.remove();
+				hudStage.getRoot().removeActor(thisTable);
 			}
 			super.touchDown(event, x, y, pointer, button);
 		}
@@ -112,7 +112,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		public void touchUp(InputEvent event, float x, float y,
 				int pointer, int button) {
 			hideout.cancelInteraction();
-			thisTable.remove();
+			hudStage.getRoot().removeActor(thisTable);
 			super.touchDown(event, x, y, pointer, button);
 		}
 	};
