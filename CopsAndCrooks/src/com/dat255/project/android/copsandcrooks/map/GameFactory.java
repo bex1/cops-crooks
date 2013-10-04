@@ -86,10 +86,6 @@ public class GameFactory {
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public static Screen loadHostedGame(CopsAndCrooks game, GameModel model){
 		
 		// This loads a TMX file

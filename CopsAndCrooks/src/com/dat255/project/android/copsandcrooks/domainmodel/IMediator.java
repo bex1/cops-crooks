@@ -66,8 +66,6 @@ interface IMediator {
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to roll the dice.
-	 * 
-	 * @return the result.
 	 */
 	void rollDice(Player player);
 
