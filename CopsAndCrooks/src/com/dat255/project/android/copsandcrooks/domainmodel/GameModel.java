@@ -87,15 +87,15 @@ public final class GameModel implements IObservable  {
 	}
 
 	private void changePlayer() {
-		Player _currentPlayer = currentPlayer;
+		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
-			currentPlayer = players.get((i + 1) % players.size());
+			currentPlayer = players.get((++i) % players.size());
 			// When all the list of players have been looped,
 			// and all players are inactive (all crooks have escaped),
 			// currentPlayer is the same as before (police player).
 			// The game should end then.
-			if(currentPlayer==_currentPlayer) {
+			if(currentPlayer==previousPlayer) {
 				endGame();
 				return;
 			}
