@@ -105,7 +105,7 @@ public class OfficerTest {
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});
