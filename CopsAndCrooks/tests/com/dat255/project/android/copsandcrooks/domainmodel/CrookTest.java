@@ -61,7 +61,7 @@ public class CrookTest {
 	@Test
 	public final void testCrook() {
 		try {
-			Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), null, 0);
+			new Crook(new RoadTile(new Point(0, 0), new Mediator()), null, 0);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected

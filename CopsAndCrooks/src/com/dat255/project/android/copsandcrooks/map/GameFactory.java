@@ -73,7 +73,7 @@ public class GameFactory {
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		//Loads a GameModel
-		GameModel model = ModelFactory.loadGameModel(map, mapLayerInteract, userInfo);
+		GameModel model = ModelFactory.loadGameModel(mapLayerInteract, userInfo);
 		Collection<? extends IPlayer> players = model.getPlayers();
 		
 		List<Actor> actors = addActor(players);

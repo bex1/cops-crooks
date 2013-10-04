@@ -15,7 +15,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 // It should instead be connected to this factory to get its model instances.
 public class ModelFactory {
 
-	public static GameModel loadGameModel(TiledMap map, TiledMapTileLayer interact, Map<String, Role> userInfo){
+	public static GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
@@ -163,7 +163,7 @@ public class ModelFactory {
 					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
 					newWalkableTile[i][j] = TravelAgencyTile.getInstance();
 				}else if(oldWalkableTile[i][j] instanceof TramStopTile){
-					//TODO Fixa så att man hämtar de olika setten av tramstops och gör en tramline och sedan flera tramlines
+					//TODO Fixa sÃ¥ att man hÃ¤mtar de olika setten av tramstops och gÃ¶r en tramline och sedan flera tramlines
 					newWalkableTile[i][j] = new TramStopTile(new Point(i, j), mediator);
 					if(oldStop1.contains(oldWalkableTile[i][j])){
 						stop1.add((TramStopTile) newWalkableTile[i][j]);

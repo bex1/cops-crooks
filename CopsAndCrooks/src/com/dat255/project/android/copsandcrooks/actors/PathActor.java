@@ -48,37 +48,37 @@ public class PathActor extends Group {
 			this.addActor(img);
 			img.setTouchable(Touchable.disabled);
 		}
-		
-		pathEndImage.addListener(click);
-	}
-	
-	private ClickListener click = new ClickListener() {
-		
-		@Override
-		public boolean touchDown(InputEvent event, float x, float y,
-				int pointer, int button) {
-			pathEndImage.setDrawable(pathEndImageClicked.getDrawable());
-			return super.touchDown(event, x, y, pointer, button);
-		}
 
-		@Override
-		public void touchUp(InputEvent event, float x, float y,
-				int pointer, int button) {
-			player.choosePath(tilePath);
-			
-			final Stage stage = getStage();
-			// Finds all other PathActors in stage and remove them.
-			if (stage != null) {
-				for (Actor actor : stage.getActors()) {
-					if (actor instanceof PathActor) {
-						PathActor pathActor = (PathActor)actor;
-						pathActor.clear();
-						thisActor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+		ClickListener click = new ClickListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+									 int pointer, int button) {
+				pathEndImage.setDrawable(pathEndImageClicked.getDrawable());
+				return super.touchDown(event, x, y, pointer, button);
+			}
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y,
+								int pointer, int button) {
+				player.choosePath(tilePath);
+
+				final Stage stage = getStage();
+				// Finds all other PathActors in stage and remove them.
+				if (stage != null) {
+					for (Actor actor : stage.getActors()) {
+						if (actor instanceof PathActor) {
+							PathActor pathActor = (PathActor) actor;
+							pathActor.clear();
+							thisActor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+						}
 					}
 				}
 			}
-		}
-	};
+		};
+		pathEndImage.addListener(click);
+	}
+
 }
 
 
