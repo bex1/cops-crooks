@@ -66,8 +66,6 @@ interface IMediator {
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to roll the dice.
-	 * 
-	 * @return the result.
 	 */
 	void rollDice(Player player);
 
@@ -75,13 +73,12 @@ interface IMediator {
 	 * Ask the mediator to communicate with the necessary objects
 	 * to calculate the possible paths a pawn can move.
 	 * 
-	 * @param pawnType The type of the pawn.
+	 *
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
 	 * @return A collection of TilePaths representing paths that can be walked
 	 */
-	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
-			AbstractPawn pawn, int stepsToMove);
+	Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
