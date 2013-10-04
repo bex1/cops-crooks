@@ -3,18 +3,19 @@ package com.dat255.project.android.copsandcrooks;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class GameBrowseActivity extends Activity {
 	
 	ListView gameListView;
 	GameItemAdapter gameItemAdapter;
+	
+	public static final String FROM_LOBBY = "FROM_LOBBY";
+	public static final String GAME_ITEM = "GAME_ITEM";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,6 @@ public class GameBrowseActivity extends Activity {
 		gameListView = (ListView) findViewById(R.id.gameListView);
 		gameItemAdapter = new GameItemAdapter(this, new ArrayList<GameItem>());
 		gameListView.setAdapter(gameItemAdapter);
-		gameListView.setTextFilterEnabled(true);
 	}
 
 	@Override
@@ -34,21 +34,28 @@ public class GameBrowseActivity extends Activity {
 		return true;
 	}
 	
+	//for testing
 	public void newItem(View v){
-		//TODO load a game-object with a string that specifies the game for now
-		//A more complex browser might be added if time is available
-		gameItemAdapter.add(new GameItem("new item"));
+		GameItem gi = new GameItem("new item", 5);
+		gameItemAdapter.add(gi);
 	}
 	
 	public void refreshGameList(View v){
 		//TODO retrieve the games from the server and update the list
-		gameItemAdapter = new GameItemAdapter(this, new ArrayList<GameItem>());
-		gameListView.setAdapter(gameItemAdapter);
-		
-		//testing
-		for(int i = 0; i < 1+(Math.random()*6);i++){
-			gameItemAdapter.add(new GameItem("new item- "+i));
+	}
+	
+	public void itemAnswer(GameItem gameItem){
+		if(gameItem.hasGameStarted()){
+			enterLobby(gameItem);
 		}
+	}
+	
+	public void enterLobby(GameItem gameItem){
+		Intent intent = new Intent(this, LobbyActivity.class);
+		intent.putExtra(FROM_LOBBY, true);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(GAME_ITEM, gameItem);
+		startActivity(intent);
 	}
 	
 	

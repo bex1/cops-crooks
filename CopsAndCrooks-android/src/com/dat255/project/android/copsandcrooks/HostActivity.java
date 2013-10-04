@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.KeyEvent;
@@ -24,6 +25,8 @@ public class HostActivity extends Activity {
 	
 	private int playerCap;
 	private String gameName;
+	
+	public static final String GAME_ITEM = "GAME_ITEM";
 	
 	@SuppressLint("NewApi") //TODO use a lower requirement
 	@Override
@@ -83,6 +86,9 @@ public class HostActivity extends Activity {
 	
 	public void hostGame(View v){
 		//TODO host a game & start a lobby
+		Intent intent = new Intent(this, LobbyActivity.class);
+		intent.putExtra(GAME_ITEM, new GameItem(gameName, playerCap));
+		startActivity(intent);
 	}
 
 }
