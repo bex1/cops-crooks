@@ -21,10 +21,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 public class PathActor extends Group {
 	private final TilePath tilePath;
 
-	private final IPlayer player;
-	
-	private final Image pathEndImage, pathEndImageClicked;
-	
 	private final PathActor thisActor;
 	
 	/**
@@ -38,9 +34,6 @@ public class PathActor extends Group {
 	 */
 	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Image pathEndImageClicked, final IPlayer player) {
 		this.tilePath = path;
-		this.player = player;
-		this.pathEndImage = pathEndImage;
-		this.pathEndImageClicked = pathEndImageClicked;
 		this.thisActor = this;
 		
 		this.addActor(pathEndImage);
