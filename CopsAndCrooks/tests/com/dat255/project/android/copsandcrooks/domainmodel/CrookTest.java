@@ -61,7 +61,7 @@ public class CrookTest {
 	@Test
 	public final void testCrook() {
 		try {
-			Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), null, 0);
+			new Crook(new RoadTile(new Point(0, 0), new Mediator()), null, 0);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
@@ -141,7 +141,7 @@ public class CrookTest {
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});

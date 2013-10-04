@@ -60,7 +60,7 @@ public class CopCarTest {
 	@Test
 	public final void testCopCar() {
 		try {
-			CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null, 20);
+			new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null, 20);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
@@ -115,7 +115,7 @@ public class CopCarTest {
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});

@@ -47,20 +47,18 @@ public final class Wallet implements IObservable {
 	}
 	
 	/**
-	 * Decrements the cash amount on the crook.
-	 * 
+	 * Decrements the amount of cash in the wallet by a value,
+	 * if the current amount of cash is enough.
 	 * @param money the money to decrement with
-	 * @return true if there was enough cash
 	 */
-	boolean decrementCash(int money) {
-		if (cash < money) {
-			return false;
-		}
+	void decrementCash(int money) {
+		if (cash < money)
+			return;
+
 		int oldValue = cash;
 		cash -= money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
-		return true;
-		
+
 	}
 
 	@Override

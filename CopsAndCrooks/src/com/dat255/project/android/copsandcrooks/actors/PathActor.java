@@ -21,10 +21,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 public class PathActor extends Group {
 	private final TilePath tilePath;
 
-	private final IPlayer player;
-	
-	private final Image pathEndImage, pathEndImageClicked;
-	
 	private final PathActor thisActor;
 	
 	/**
@@ -38,9 +34,6 @@ public class PathActor extends Group {
 	 */
 	public PathActor(final TilePath path, final List<Image> pathImages, final Image pathEndImage, final Image pathEndImageClicked, final IPlayer player) {
 		this.tilePath = path;
-		this.player = player;
-		this.pathEndImage = pathEndImage;
-		this.pathEndImageClicked = pathEndImageClicked;
 		this.thisActor = this;
 		
 		this.addActor(pathEndImage);
@@ -48,37 +41,37 @@ public class PathActor extends Group {
 			this.addActor(img);
 			img.setTouchable(Touchable.disabled);
 		}
-		
-		pathEndImage.addListener(click);
-	}
-	
-	private ClickListener click = new ClickListener() {
-		
-		@Override
-		public boolean touchDown(InputEvent event, float x, float y,
-				int pointer, int button) {
-			pathEndImage.setDrawable(pathEndImageClicked.getDrawable());
-			return super.touchDown(event, x, y, pointer, button);
-		}
 
-		@Override
-		public void touchUp(InputEvent event, float x, float y,
-				int pointer, int button) {
-			player.choosePath(tilePath);
-			
-			final Stage stage = getStage();
-			// Finds all other PathActors in stage and remove them.
-			if (stage != null) {
-				for (Actor actor : stage.getActors()) {
-					if (actor instanceof PathActor) {
-						PathActor pathActor = (PathActor)actor;
-						pathActor.clear();
-						thisActor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+		ClickListener click = new ClickListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+									 int pointer, int button) {
+				pathEndImage.setDrawable(pathEndImageClicked.getDrawable());
+				return super.touchDown(event, x, y, pointer, button);
+			}
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y,
+								int pointer, int button) {
+				player.choosePath(tilePath);
+
+				final Stage stage = getStage();
+				// Finds all other PathActors in stage and remove them.
+				if (stage != null) {
+					for (Actor actor : stage.getActors()) {
+						if (actor instanceof PathActor) {
+							PathActor pathActor = (PathActor) actor;
+							pathActor.clear();
+							thisActor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+						}
 					}
 				}
 			}
-		}
-	};
+		};
+		pathEndImage.addListener(click);
+	}
+
 }
 
 

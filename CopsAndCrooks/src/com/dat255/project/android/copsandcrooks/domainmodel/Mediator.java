@@ -2,8 +2,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-
 
 /**
  * The mediator is responsible for communicating within the module to avoid
@@ -62,8 +60,7 @@ public final class Mediator implements IMediator {
 	}
 
 	@Override
-	public Collection<TilePath> getPossiblePaths(PawnType pawnType,
-			AbstractPawn pawn, int stepsToMove) {
+	public Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);
 		} else {
