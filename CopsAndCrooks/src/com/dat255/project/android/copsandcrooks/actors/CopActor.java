@@ -8,12 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.ISelectablePawn;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class CopActor extends MovableActor{
 	
-	public CopActor(final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
+	public CopActor(Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
 			final EnumMap<Animations, Animation> animations){
-		super(drawable, scaling, pawn, animations);
+		super(assets, drawable, scaling, pawn, animations);
 		this.addListener(new ClickListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,

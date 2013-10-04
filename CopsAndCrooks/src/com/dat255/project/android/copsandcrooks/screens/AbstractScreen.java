@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 /**
@@ -16,12 +15,13 @@ public abstract class AbstractScreen implements Screen {
 
     protected final CopsAndCrooks game;
     protected Stage stage;
+    protected Assets assets;
 
-    private Skin skin;
     private Table table;
 
-    public AbstractScreen(CopsAndCrooks game, float stageWidth, float stageHeight) {
+    public AbstractScreen(Assets assets, CopsAndCrooks game, float stageWidth, float stageHeight) {
         this.game = game;
+        this.assets = assets;
         this.stage = new Stage(stageWidth, stageHeight, true);
     }
 
@@ -32,7 +32,7 @@ public abstract class AbstractScreen implements Screen {
     protected Table getTable()
     {
         if( table == null ) {
-            table = new Table(Utilities.getSkin());
+            table = new Table(assets.getSkin());
             table.setFillParent( true );
             if(CopsAndCrooks.DEV_MODE ) {
                 table.debug();
@@ -89,8 +89,5 @@ public abstract class AbstractScreen implements Screen {
         Gdx.app.log(CopsAndCrooks.LOG, "Disposing screen: " + getName());
 
         stage.dispose();
-
-        // lazily loaded, may be null
-        if(skin != null) skin.dispose();
     }
 }

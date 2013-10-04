@@ -5,6 +5,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
+import javax.swing.text.Utilities;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -15,15 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.utils.Values;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 /**
  * Shows a splash image and moves on to the next screen.
  */
 public class SplashScreen extends AbstractScreen {
 
-	public SplashScreen(CopsAndCrooks game) {
-        super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	public SplashScreen(Assets assets, CopsAndCrooks game) {
+        super(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class SplashScreen extends AbstractScreen {
         super.show();
 
         // retrieve the splash image's region from the atlas
-        AtlasRegion splashRegion = Utilities.getAtlas().findRegion( "splash-screen/splash" );
+        AtlasRegion splashRegion = assets.getAtlas().findRegion( "splash-screen/splash" );
         Drawable splashDrawable = new TextureRegionDrawable( splashRegion );
 
         // here we create the splash image actor; its size is set when the
@@ -48,7 +49,7 @@ public class SplashScreen extends AbstractScreen {
 			@Override
 			public boolean act(float delta) {
 				// the last action will move to the next screen
-				game.setScreen(new MenuScreen(game));
+				game.setScreen(new MenuScreen(assets, game));
 				return true;
 			}
 		}));

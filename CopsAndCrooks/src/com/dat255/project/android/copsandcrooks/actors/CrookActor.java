@@ -9,16 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class CrookActor extends MovableActor {
 	private final Crook crook;
 	private Image wanted;
 
-	public CrookActor(TextureRegionDrawable drawable, Scaling scaling,
+	public CrookActor(Assets assets, TextureRegionDrawable drawable, Scaling scaling,
 			Crook pawn, EnumMap<Animations, Animation> animations) {
-		super(drawable, scaling, pawn, animations);
+		super(assets, drawable, scaling, pawn, animations);
 		crook = pawn;
 	}
 
@@ -35,7 +35,7 @@ public class CrookActor extends MovableActor {
 	@Override
 	protected void initBackgrounds() {
 		super.initBackgrounds();
-		TextureAtlas atlas = Utilities.getAtlas();
+		TextureAtlas atlas = assets.getAtlas();
 		TextureRegionDrawable selected = new TextureRegionDrawable(atlas.findRegion("game-screen/crook/bounty"));
 		wanted = new Image(selected, Scaling.none);
 	}	
