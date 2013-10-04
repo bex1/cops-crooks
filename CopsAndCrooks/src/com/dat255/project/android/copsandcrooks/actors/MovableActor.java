@@ -174,7 +174,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		protected void update(float percent) {
 			camera.setCameraPosition(startX + (endX - startX) * percent, startY + (endY - startY) * percent);
 		}
-	};
+	}
 	
 	
 	private void animateWalk() {
