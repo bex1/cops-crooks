@@ -169,7 +169,7 @@ public class Player implements IPlayer {
     void updatePossiblePaths() {
     	if (goByDice) {
     		int steps = diceResult * currentPawn.tilesMovedEachStep();
-    		possiblePaths = mediator.getPossiblePaths(currentPawn.getPawnType(), currentPawn, steps);
+    		possiblePaths = mediator.getPossiblePaths(currentPawn, steps);
     	} else if (goByMetro && isOnMetro(currentPawn)) {
     		possiblePaths = mediator.getPossibleMetroPaths(currentPawn);
     	} else {

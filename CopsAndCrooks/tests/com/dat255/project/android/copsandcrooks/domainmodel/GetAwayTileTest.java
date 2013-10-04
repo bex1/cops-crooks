@@ -59,7 +59,7 @@ public class GetAwayTileTest {
 		TravelAgencyTile.createTravelAgency(new Point(0,0 ), new Mediator());
 		crook.getWallet().setCash(6000);
 		getAway.interact(crook);
-		if(crook.isAttemptingGetAway() == false){
+		if(!crook.isAttemptingGetAway()){
 			fail();
 		}
 	}

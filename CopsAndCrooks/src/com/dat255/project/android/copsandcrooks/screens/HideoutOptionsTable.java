@@ -22,7 +22,6 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class HideoutOptionsTable extends Table implements PropertyChangeListener {
 	
 	private final HideoutTile hideout;
-	private final Button withdrawButton, depositButton, cancelButton;
 	private final Label withLabel, depLabel;
 	private Crook visitor;
 	private final Table thisTable;
@@ -47,7 +46,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		AtlasRegion withClickReg = atlas.findRegion("game-screen/hud/bagClicked");
 		Drawable withDraw = new TextureRegionDrawable(withReg);
 		Drawable withClickDraw = new TextureRegionDrawable(withClickReg);
-		withdrawButton = new Button(withDraw, withClickDraw);
+		Button withdrawButton = new Button(withDraw, withClickDraw);
 		withdrawButton.addListener(withdrawListener);
 		withLabel = new Label("", Utilities.getSkin());
 		withLabel.setFontScale(0.7f);
@@ -57,7 +56,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		AtlasRegion depClickReg = atlas.findRegion("game-screen/hud/depositClick");
 		Drawable depDraw = new TextureRegionDrawable(depReg);
 		Drawable depClickDraw = new TextureRegionDrawable(depClickReg);
-		depositButton = new Button(depDraw, depClickDraw);
+		Button depositButton = new Button(depDraw, depClickDraw);
 		depositButton.addListener(depositListener);
 		depLabel = new Label("", Utilities.getSkin());
 		depLabel.setFontScale(0.7f);
@@ -67,7 +66,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		AtlasRegion canClickReg = atlas.findRegion("game-screen/hud/cancelClicked");
 		Drawable canDraw = new TextureRegionDrawable(canReg);
 		Drawable canClickDraw = new TextureRegionDrawable(canClickReg);
-		cancelButton = new Button(canDraw, canClickDraw);
+		Button cancelButton = new Button(canDraw, canClickDraw);
 		cancelButton.addListener(cancelListener);
 		Label cancelLabel = new Label("Cancel", Utilities.getSkin());
 		cancelLabel.setFontScale(0.7f);
