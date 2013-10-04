@@ -858,121 +858,121 @@ filter: Nearest,Nearest
 repeat: none
 game-screen/officer/stopped s1
   rotate: false
-  xy: 2, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 2, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking e1
   rotate: false
-  xy: 2, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 2, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking e2
   rotate: false
-  xy: 84, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 64, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking e3
   rotate: false
-  xy: 84, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 2, 2
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking e4
   rotate: false
-  xy: 166, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 64, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking n1
   rotate: false
-  xy: 166, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 126, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking n2
   rotate: false
-  xy: 248, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 64, 2
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking n3
   rotate: false
-  xy: 248, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 126, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking n4
   rotate: false
-  xy: 330, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 188, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking s1
   rotate: false
-  xy: 330, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 126, 2
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking s2
   rotate: false
-  xy: 412, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 188, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking s3
   rotate: false
-  xy: 412, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 250, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking s4
   rotate: false
-  xy: 494, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 188, 2
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking w1
   rotate: false
-  xy: 494, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 250, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking w2
   rotate: false
-  xy: 576, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 312, 142
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking w3
   rotate: false
-  xy: 576, 2
-  size: 80, 90
-  orig: 80, 90
+  xy: 250, 2
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 game-screen/officer/walking w4
   rotate: false
-  xy: 658, 94
-  size: 80, 90
-  orig: 80, 90
+  xy: 312, 72
+  size: 60, 68
+  orig: 60, 68
   offset: 0, 0
   index: -1
 
