@@ -1,12 +1,13 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.dat255.project.android.copsandcrooks.screens.*;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
+import com.dat255.project.android.copsandcrooks.screens.LoadingScreen;
+import com.dat255.project.android.copsandcrooks.screens.MenuScreen;
 
 /**
  * TODO docs here
@@ -22,6 +23,7 @@ public class CopsAndCrooks extends Game {
 
     // a libgdx helper class that logs the current FPS each second
     private FPSLogger fpsLogger;
+    private Assets assets;
 	
     public CopsAndCrooks(){
     	super();
@@ -32,10 +34,11 @@ public class CopsAndCrooks extends Game {
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         fpsLogger = new FPSLogger();
+        assets = new Assets();
         if(Gdx.app.getType() == ApplicationType.Desktop)
-        	setScreen(new MenuScreen(this));
+        	setScreen(new MenuScreen(assets, this));
         else if(Gdx.app.getType() == ApplicationType.Android)
-        	setScreen(new LoadingScreen(this));
+        	setScreen(new LoadingScreen(assets, this));
     }
 
     @Override
@@ -50,8 +53,8 @@ public class CopsAndCrooks extends Game {
     {
         super.render();
         // output the current FPS if in dev mode
-        if( DEV_MODE ) 
-        	fpsLogger.log();
+        //if( DEV_MODE ) 
+        //	fpsLogger.log();
     }
 
     @Override
@@ -80,6 +83,5 @@ public class CopsAndCrooks extends Game {
     {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
-        Utilities.disposeUtils();
     }
 }

@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.screens;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.text.Utilities;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -16,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class HideoutOptionsTable extends Table implements PropertyChangeListener {
@@ -33,7 +34,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 	private static final String withEmpty = "Nothing to withdraw";
 	private static final String depEmpty = "Nothing to deposit";
 
-	public HideoutOptionsTable(HideoutTile hideout, Stage hudStage) {
+	public HideoutOptionsTable(Assets assets, HideoutTile hideout, Stage hudStage) {
 		this.hideout = hideout;
 		this.hudStage = hudStage;
 		thisTable = this;
@@ -41,14 +42,14 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		//debug();
 		this.setFillParent(true);
 		
-		TextureAtlas atlas = Utilities.getAtlas();
+		TextureAtlas atlas = assets.getAtlas();
 		AtlasRegion withReg = atlas.findRegion("game-screen/hud/bag");
 		AtlasRegion withClickReg = atlas.findRegion("game-screen/hud/bagClicked");
 		Drawable withDraw = new TextureRegionDrawable(withReg);
 		Drawable withClickDraw = new TextureRegionDrawable(withClickReg);
 		Button withdrawButton = new Button(withDraw, withClickDraw);
 		withdrawButton.addListener(withdrawListener);
-		withLabel = new Label("", Utilities.getSkin());
+		withLabel = new Label("", assets.getSkin());
 		withLabel.setFontScale(0.7f);
 		withLabel.setColor(Color.BLACK);
 		
@@ -58,7 +59,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		Drawable depClickDraw = new TextureRegionDrawable(depClickReg);
 		Button depositButton = new Button(depDraw, depClickDraw);
 		depositButton.addListener(depositListener);
-		depLabel = new Label("", Utilities.getSkin());
+		depLabel = new Label("", assets.getSkin());
 		depLabel.setFontScale(0.7f);
 		depLabel.setColor(Color.BLACK);
 		
@@ -68,7 +69,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		Drawable canClickDraw = new TextureRegionDrawable(canClickReg);
 		Button cancelButton = new Button(canDraw, canClickDraw);
 		cancelButton.addListener(cancelListener);
-		Label cancelLabel = new Label("Cancel", Utilities.getSkin());
+		Label cancelLabel = new Label("Cancel", assets.getSkin());
 		cancelLabel.setFontScale(0.7f);
 		cancelLabel.setColor(Color.BLACK);
 		

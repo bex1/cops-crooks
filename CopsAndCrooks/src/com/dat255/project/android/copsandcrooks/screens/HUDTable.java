@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.screens;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.text.Utilities;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -14,13 +16,12 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 public class HUDTable extends Table implements PropertyChangeListener {
 	private Wallet wallet;
 	private Label scoreLabel;
 	
-	public HUDTable(IPlayer player) {
+	public HUDTable(Assets assets, IPlayer player) {
 		this.setFillParent(true);
 		
 		// Extract the right wallet
@@ -38,9 +39,9 @@ public class HUDTable extends Table implements PropertyChangeListener {
 		if(wallet != null) {
 			wallet.addObserver(this);
 			
-			AtlasRegion region = Utilities.getAtlas().findRegion("game-screen/hud/coins-icon");
+			AtlasRegion region = assets.getAtlas().findRegion("game-screen/hud/coins-icon");
 			Image coin = new Image(region);
-			scoreLabel = new Label(String.format("%6d%n", wallet.getCash()), Utilities.getSkin());
+			scoreLabel = new Label(String.format("%6d%n", wallet.getCash()), assets.getSkin());
 			scoreLabel.setFontScale(0.5f);
 			scoreLabel.setAlignment(Align.right);
 			scoreLabel.setColor(Color.BLACK);

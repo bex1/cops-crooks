@@ -10,8 +10,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class LoadingScreen extends AbstractScreen {
 
-	public LoadingScreen(CopsAndCrooks game) {
-		super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	public LoadingScreen(Assets assets, CopsAndCrooks game) {
+		super(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 	}
 
 	@Override
@@ -21,6 +21,7 @@ public class LoadingScreen extends AbstractScreen {
 		test.put("Tjuv", Role.Crook);
 		test.put("Tjuv2", Role.Crook);
 		test.put("Polis", Role.Cop);
-		game.setScreen(GameFactory.loadGame(game, test));
+		GameFactory factory = new GameFactory(assets);
+		game.setScreen(factory.loadGame(game, test));
 	}
 }

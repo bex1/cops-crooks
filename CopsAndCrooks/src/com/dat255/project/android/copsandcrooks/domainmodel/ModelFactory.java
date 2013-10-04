@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 // WILL be used to furter encapsulate model.
@@ -15,7 +15,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 // It should instead be connected to this factory to get its model instances.
 public class ModelFactory {
 
-	public static GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
+	public GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
@@ -125,11 +125,13 @@ public class ModelFactory {
 			}
 		}
 		
+		mediator.registerTimer(new Timer());
+		
 		new PathFinder(walkable, mediator, tramLines);
 		return new GameModel(mediator, players.get(0), players, walkable, tramLines);
 	}
 	
-	public static GameModel loadHostedGameModel(GameModel model) throws Exception{
+	public GameModel loadHostedGameModel(GameModel model) throws Exception{
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		int mapWidth = model.getWalkabletiles().length;
@@ -207,7 +209,7 @@ public class ModelFactory {
 			newPlayers.add(new Player(player.getName(), pawns, player.getPlayerRole(), mediator));
 		}
 		
-		
+		mediator.registerTimer(new Timer());
 		
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
 		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines);

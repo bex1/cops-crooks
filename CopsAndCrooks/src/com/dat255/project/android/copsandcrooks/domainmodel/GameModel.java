@@ -20,6 +20,7 @@ public final class GameModel implements IObservable  {
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 	private final Dice dice;
+	private final IMediator mediator;
 
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final IWalkableTile[][] walkable;
@@ -49,6 +50,7 @@ public final class GameModel implements IObservable  {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 
+		this.mediator = mediator;
 		this.playerClient = playerClient;
 		this.players = players;
 		this.dice = new Dice(mediator);
@@ -80,7 +82,7 @@ public final class GameModel implements IObservable  {
 
 	void nextPlayer(float delay){
 		if (delay > 0) {
-			Timer.schedule(new ChangePlayerTask(), delay);
+			mediator.schedule(new ChangePlayerTask(), delay);
 		} else {
 			changePlayer();
 		}

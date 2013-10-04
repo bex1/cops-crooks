@@ -2,7 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -28,8 +29,12 @@ interface IMediator {
 	 */
 	void registerDice(Dice dice);
 	
-
-	
+	/**
+	 * Register timer for communication.
+	 * 
+	 * @param timer to register for communication.
+	 */
+	void registerTimer(Timer timer);
 	
 	/**
 	 * Register the pathfinder for communication.
@@ -107,4 +112,6 @@ interface IMediator {
 	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 
 	boolean isItMyPlayerTurn(AbstractPawn movable);
+
+	void schedule(Task task, float delay);
 }

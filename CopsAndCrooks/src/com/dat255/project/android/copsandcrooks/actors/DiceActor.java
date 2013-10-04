@@ -1,9 +1,9 @@
 package com.dat255.project.android.copsandcrooks.actors;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.repeat;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class DiceActor extends Image implements PropertyChangeListener{
@@ -28,12 +28,14 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	private float animTimer;
 	private TextureRegionDrawable drawable;
 	private Label label;
+	private Assets assets;
 	
 	
-	public DiceActor(final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling) {
+	public DiceActor(Assets assets, final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling) {
 		super(firstDrawable, scaling);
 		this.dice = dice;
 		this.animation = animation;
+		this.assets = assets;
 		this.setVisible(false);
 		dice.addObserver(this);
 		drawable = firstDrawable;
@@ -44,7 +46,7 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	}
 	
 	private void initResultLabel() {
-		label = new Label("0", Utilities.getSkin());
+		label = new Label("0", assets.getSkin());
 		label.setFontScale(3f);
 		label.setPosition((Values.GAME_VIEWPORT_WIDTH - label.getWidth())/2, (Values.GAME_VIEWPORT_HEIGHT - label.getHeight())/2);
 		label.setColor(Color.BLACK);
