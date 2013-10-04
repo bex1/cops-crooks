@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,17 +55,15 @@ public class GameItemAdapter extends BaseAdapter{
         TextView text = (TextView) vi.findViewById(R.id.nameTextView);
         text.setText(data.get(position).getName());
         
-        
         vi.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				//should move to the lobby
-				//testing
-				add(new GameItem(data.get(position).getName() + " - #2"));
+				((GameBrowseActivity)arg0.getParent()).itemAnswer(getItem(position));
 			}
         	
         });
+        
         return vi;
     }
 }

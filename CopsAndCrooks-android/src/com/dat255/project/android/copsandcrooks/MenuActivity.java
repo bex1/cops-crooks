@@ -23,6 +23,7 @@ public class MenuActivity extends Activity {
 	}
 	
 	public void enterGame(View v){
+		//TODO should start the lobbyactivity instead
 		Intent intent = new Intent(this, GameActivity.class);
 		startActivity(intent);
 	}
