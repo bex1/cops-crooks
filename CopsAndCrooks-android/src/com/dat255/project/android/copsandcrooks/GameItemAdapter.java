@@ -3,12 +3,12 @@ package com.dat255.project.android.copsandcrooks;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class GameItemAdapter extends BaseAdapter{
@@ -59,7 +59,7 @@ public class GameItemAdapter extends BaseAdapter{
 
 			@Override
 			public void onClick(View arg0) {
-				((GameBrowseActivity)arg0.getParent()).itemAnswer(getItem(position));
+				((GameBrowseActivity)arg0.getContext()).itemAnswer(getItem(position));
 			}
         	
         });

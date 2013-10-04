@@ -4,15 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnDragListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class HostActivity extends Activity {
@@ -39,7 +38,7 @@ public class HostActivity extends Activity {
 		seekBarTextView = (TextView) findViewById(R.id.seekBarTextView);
 		hostGameButton = (Button) findViewById(R.id.hostGameButton);
 		
-		playerCapSeekBar.setOnDragListener(playerCapListener);
+		playerCapSeekBar.setOnSeekBarChangeListener(playerCapListener);
 		gameNameEditText.setOnKeyListener(gameNameListener);
 	}
 
@@ -50,15 +49,27 @@ public class HostActivity extends Activity {
 		return true;
 	}
 	
-	@SuppressLint("NewApi")
-	public OnDragListener playerCapListener = new OnDragListener(){
+	public OnSeekBarChangeListener playerCapListener = new OnSeekBarChangeListener(){
 
 		@Override
-		public boolean onDrag(View arg0, DragEvent arg1) {
-			playerCap = playerCapSeekBar.getProgress() + 2;
+		public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+			playerCap = arg0.getProgress() + 2;
 			seekBarTextView.setText("[ "+playerCap+" ]");
-			return false;
 		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		
 	};
 	
 	public OnKeyListener gameNameListener = new OnKeyListener(){
@@ -77,7 +88,7 @@ public class HostActivity extends Activity {
 	public void hostButtonEnabled(boolean status){
 		if(status){
 			hostGameButton.setClickable(false);
-			hostGameButton.setAlpha(0.25f);
+			hostGameButton.setAlpha(0.5f);
 		}else{
 			hostGameButton.setClickable(true);
 			hostGameButton.setAlpha(1);
@@ -89,6 +100,7 @@ public class HostActivity extends Activity {
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(GAME_ITEM, new GameItem(gameName, playerCap));
 		startActivity(intent);
+		finish();
 	}
 
 }

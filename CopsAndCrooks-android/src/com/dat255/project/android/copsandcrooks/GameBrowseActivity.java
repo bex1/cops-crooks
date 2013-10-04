@@ -45,7 +45,7 @@ public class GameBrowseActivity extends Activity {
 	}
 	
 	public void itemAnswer(GameItem gameItem){
-		if(gameItem.hasGameStarted()){
+		if(!gameItem.hasGameStarted()){
 			enterLobby(gameItem);
 		}
 	}
@@ -53,8 +53,7 @@ public class GameBrowseActivity extends Activity {
 	public void enterLobby(GameItem gameItem){
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(FROM_LOBBY, true);
-		Bundle bundle = new Bundle();
-		bundle.putSerializable(GAME_ITEM, gameItem);
+		intent.putExtra(GAME_ITEM, gameItem);
 		startActivity(intent);
 	}
 	
