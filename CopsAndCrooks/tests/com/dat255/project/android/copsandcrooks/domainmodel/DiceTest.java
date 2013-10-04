@@ -29,7 +29,7 @@ public class DiceTest {
 	@Test
 	public final void testDice() {
 		try{
-			Dice dice = new Dice(null);
+			new Dice(null);
 			fail();
 		} catch (IllegalArgumentException e) {
 			// expected

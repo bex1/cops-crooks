@@ -60,7 +60,7 @@ public class CopCarTest {
 	@Test
 	public final void testCopCar() {
 		try {
-			CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null, 20);
+			new CopCar(new RoadTile(new Point(0, 0), new Mediator()), null, 20);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected

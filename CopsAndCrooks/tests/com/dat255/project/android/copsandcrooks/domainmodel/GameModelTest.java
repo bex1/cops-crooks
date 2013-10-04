@@ -22,7 +22,7 @@ public class GameModelTest {
 	}
 
 	@Test
-	public void GameModelTest() {
+	public void testConstructor() {
 		
 		try{
 			GameModel gameModel = new GameModel(null, null, null, null, null);
@@ -35,7 +35,7 @@ public class GameModelTest {
 	}
 	
 	@Test
-	public void NextPlayerTest(){
+	public void testNextPlayer(){
 		
 		IMediator mediator = new Mediator();
 		AbstractPawn crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator, 0);

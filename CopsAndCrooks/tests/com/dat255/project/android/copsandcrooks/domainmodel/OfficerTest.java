@@ -50,7 +50,7 @@ public class OfficerTest {
 	@Test
 	public final void testOfficer() {
 		try {
-			Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), null, 10);
+			new Officer(new RoadTile(new Point(0, 0), new Mediator()), null, 10);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
