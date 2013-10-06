@@ -2,7 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 
 /**
@@ -16,6 +17,7 @@ public final class Mediator implements IMediator {
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;
+	private Timer timer;
 
 	@Override
 	public void registerGameModel(GameModel gameModel) {
@@ -25,6 +27,11 @@ public final class Mediator implements IMediator {
 	@Override
 	public void registerDice(Dice dice) {
 		this.dice = dice;
+	}
+	
+	@Override
+	public void registerTimer(Timer timer) {
+		this.timer = timer;
 	}
 
 	@Override
@@ -56,28 +63,24 @@ public final class Mediator implements IMediator {
 	}
 
 	@Override
-	public int rollDice() {
-		if (dice != null) {
-			return dice.roll();
-		} else {
-			throw new NullPointerException("No dice is registered");
-		}
+	public void rollDice(Player player) {
+		if (dice != null) 
+			dice.roll(player);
 	}
 
 	@Override
-	public Collection<TilePath> getPossiblePaths(PawnType pawnType,
-			AbstractPawn pawn, int stepsToMove) {
+	public Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);
 		} else {
-				throw new NullPointerException("No pathfinder is registered");
+			throw new NullPointerException("No pathfinder is registered");
 		}
 	}
 	
 	@Override
-	public void playerTurnDone(){
+	public void playerTurnDone(float delay){
 		if (gameModel != null) 
-			gameModel.nextPlayer();
+			gameModel.nextPlayer(delay);
 	}
 
 	@Override
@@ -91,5 +94,27 @@ public final class Mediator implements IMediator {
 		if (gameModel != null) 
 			return gameModel.checkIfWantedCrookAt(tile);
 		return false;
+	}
+
+	@Override
+	public Collection<TilePath> getPossibleMetroPaths(AbstractPawn pawn) {
+		if (pathFinder != null) {
+			return pathFinder.calculatePossibleMetroPaths(pawn);
+		} else {
+			throw new NullPointerException("No pathfinder is registered");
+		}
+	}
+
+	@Override
+	public boolean isItMyPlayerTurn(AbstractPawn movable) {
+		if (gameModel != null) 
+			return gameModel.isCurrentPlayerOwnerOfPawn(movable);
+		return false;
+	}
+
+	@Override
+	public void schedule(Task task, float delay) {
+		if (timer != null)
+			new Timer().scheduleTask(task, delay);
 	}
 }

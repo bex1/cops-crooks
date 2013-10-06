@@ -24,25 +24,30 @@ public abstract class AbstractPawn implements IMovable {
 	protected AbstractWalkableTile nextTile;
 	protected Direction direction;
 	private int tilesMovedEachStep;
+	private final int id;
 	
 	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
 	
-	private boolean isMoving;
+	private boolean isMoving, isPlaying, isActivePawn;
 	private float moveTimer;
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep) {
-		if (mediator == null) {
+	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep, int id) {		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
 		this.currentTile = startTile;
+		if(startTile!=null)
+			startTile.setOccupiedBy(pawnType);
 		this.pawnRole = pawnRole;
 		this.pawnType = pawnType;
 		this.mediator = mediator;
 		this.direction = Direction.SOUTH;
 		this.tilesMovedEachStep = tilesMovedEachStep;
+
+		this.id = id;
+		isPlaying = true;
 	}
 
 	/**
@@ -51,15 +56,18 @@ public abstract class AbstractPawn implements IMovable {
 	 * @param currTile the current tile on which the movable is standing on.
 	 * Allowed to be null to move the pawn out of the game.
 	 */
-	void setCurrentTile(AbstractWalkableTile currTile) {
+	protected void setCurrentTile(AbstractWalkableTile currTile) {
+		if(currentTile!=null)
+			currentTile.setNotOccupied();
 		AbstractWalkableTile oldTile = currentTile;
 		this.currentTile = currTile;
-		
-		 // The current tiled changed, someone moved us -> notify
-        pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
-		
+		if(currentTile!=null)
+			currentTile.setOccupiedBy(pawnType);
+
+		// The current tiled changed, someone moved us -> notify
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
 	}
-	
+
 	@Override
 	public AbstractWalkableTile getCurrentTile() {
 		return currentTile;
@@ -81,7 +89,7 @@ public abstract class AbstractPawn implements IMovable {
 	 * Moves the movable object along the given path.
 	 * @param path the path of walkable tiles in the path. Not allowed to be null or empty.
 	 */
-	void move(TilePath path) {
+	protected void move(TilePath path) {
 		if (path == null || path.isEmpty()) {
 			throw new IllegalArgumentException("path is null or empty");
 		}
@@ -103,24 +111,26 @@ public abstract class AbstractPawn implements IMovable {
 		    	
 		        // Check if we stepped on the endtile of the path
 		        if (pathToMove.isEmpty()) {
-		        	this.setCurrentTile(nextTile);
+		        	currentTile = nextTile;
 		        	this.setMoving(false);
 		        	nextTile = null;
 		        	
 		        	if (currentTile != null && currentTile.isOccupied()) {
 		        		// We collided, communicate with the module via the mediator	
 		        		mediator.didCollideAfterMove(this);
-		        		mediator.playerTurnDone();
+		        		mediator.playerTurnDone(3f);
 		        		return;
 		        	}
-		        	currentTile.setOccupiedBy(pawnType);
-		        	mediator.playerTurnDone();
+		        	if (!(currentTile instanceof HideoutTile)) {
+		        		currentTile.setOccupiedBy(pawnType);
+		        		mediator.playerTurnDone(2f);
+		        	}
 		        	
 		        	// Try to interact with the tile
 		        	this.interactWithTile();
 		        	
 		        } else {
-		        	this.setCurrentTile(nextTile);
+		        	currentTile = nextTile;
 		        	AbstractWalkableTile next = pathToMove.consumeNextTile();
 		        	updateDirection(currentTile, next);
 		        	this.setNextTile(next);
@@ -185,6 +195,28 @@ public abstract class AbstractPawn implements IMovable {
 		return isMoving;
 	}
 	
+	void setIsntPlaying() {
+		this.isPlaying = false;
+		this.isActivePawn = false;
+		pcs.firePropertyChange(PROPERTY_IS_PLAYING, null, isPlaying);
+		currentTile = null;
+	}
+	
+	@Override
+	public boolean isPlaying() {
+		return isPlaying;
+	}
+	
+	void setIsActivePawn(boolean isActive) {
+		this.isActivePawn = isActive;
+		pcs.firePropertyChange(PROPERTY_IS_ACTIVE_PAWN, null, isActive);
+	}
+	
+	@Override
+	public boolean isActivePawn() {
+		return isActivePawn;
+	}
+	
 	/**
 	 * Returns the number of tiles the pawn can move over in one step.
 	 * @return the number of tiles the pawn can move over in one step.
@@ -202,10 +234,24 @@ public abstract class AbstractPawn implements IMovable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-	
+
+	@Override
+	public int getID(){
+		return id;
+	}
+
 	/**
 	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
 	 * @param pawn the IMovable pawn that collided with this one.
 	 */
 	protected abstract void collisionAfterMove(IMovable pawn);
+
+	protected void moveByTram(TramStopTile metroStop) {
+		currentTile.setNotOccupied();
+		currentTile = metroStop;
+		this.interactWithTile();
+		currentTile.setOccupiedBy(getPawnType());
+		
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, null, currentTile);
+	}
 }

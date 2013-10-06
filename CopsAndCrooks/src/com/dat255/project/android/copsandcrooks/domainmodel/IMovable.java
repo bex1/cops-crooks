@@ -34,15 +34,29 @@ public interface IMovable extends IObservable {
 	Direction getDirection();
 	
 	/**
+	 * Crook 0 =< id < 10
+	 * Cop 10 =< id <20
+	 * CopCar = 20 (There will always only be 1 Copcar)
+	 * @return
+	 */
+	public int getID();
+	
+	/**
 	 * Returns true if the pawn is moving, false otherwise.
 	 * @return true if the pawn is moving, false otherwise.
 	 */
 	boolean isMoving();
 	
+	boolean isPlaying();
+	
+	boolean isActivePawn();
+	
 	public static final String PROPERTY_NEXT_TILE = "NextTile";
 	public static final String PROPERTY_IS_MOVING = "IsMoving";
 	public static final String PROPERTY_CURRENT_TILE = "CurrentTile";
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
+	public static final String PROPERTY_IS_PLAYING = "IsPlaying";
+	public static final String PROPERTY_IS_ACTIVE_PAWN = "IsActivePawn";
 	
 	//TODO: MAKE OWN CLASS, PACKAGE PRIVATE
 	public enum PawnType {
@@ -50,4 +64,6 @@ public interface IMovable extends IObservable {
 		Officer,
 		Car,
 	}
+
+	
 }

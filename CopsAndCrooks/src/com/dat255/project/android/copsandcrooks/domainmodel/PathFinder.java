@@ -13,18 +13,36 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public final class PathFinder {
-	private AbstractWalkableTile[][] tiles;
-	private IMediator mediator;
+	private final AbstractWalkableTile[][] tiles;
+	private final List<TramLine> metroLines;
+	private final IMediator mediator;
 
-	public PathFinder(AbstractWalkableTile[][] tiles, IMediator mediator) {
+	public PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<TramLine> metroLines) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
+		if (metroLines == null)
+			throw new IllegalArgumentException("Metro not allowed to be null");
 
 		this.tiles = tiles;
 		this.mediator = mediator;
+		this.metroLines = metroLines;
 		mediator.registerPathFinder(this);
+	}
+	
+	Collection<TilePath> calculatePossibleMetroPaths(AbstractPawn pawn) {
+		Collection<TilePath> paths = new ArrayList<TilePath>();
+		AbstractWalkableTile currentTile = pawn.getCurrentTile();
+		if (currentTile instanceof TramStopTile) {
+			for (TramLine metroLine : metroLines) {
+				TilePath path = metroLine.getPossibleStops();
+				if (path != null && metroLine.contains(currentTile)) {
+					paths.add(path);
+				}
+			}
+		}
+		return paths;
 	}
 
 	Collection<TilePath> calculatePossiblePaths(AbstractPawn pawn, int stepsToMove) {
@@ -108,20 +126,12 @@ public final class PathFinder {
 			if (target.isOccupied()) {
 				// Just one step left? We will end on target
 				if (stepsRemaining == 1) {
-					if (pawnType == PawnType.Car || pawnType == PawnType.Officer) {
-						return mediator.isWantedCrookOn(target);
-					} else {
-						return false;
-					}
-				// More steps left, check so we dont pass through a police when a wanted crook
+					return (pawnType == PawnType.Car || pawnType == PawnType.Officer) && mediator.isWantedCrookOn(target);
+				// More steps left, check so we don't pass through a police when a wanted crook
 				} else if (pawn instanceof Crook) {
 					PawnType targetType = target.getOccupiedBy();
 					Crook crook = (Crook)pawn;
-					if (crook.isWanted() && (targetType == PawnType.Car || targetType == PawnType.Officer)) {
-						return false;
-					} else {
-						return true;
-					}
+					return !(crook.isWanted() && (targetType == PawnType.Car || targetType == PawnType.Officer));
 				// More steps left. We can pass.
 				} else {
 					return true;

@@ -11,8 +11,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class MenuScreen extends AbstractScreen {
 
-	public MenuScreen(CopsAndCrooks game) {
-		super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	public MenuScreen(Assets assets, CopsAndCrooks game) {
+		super(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 	}
 	
 	@Override
@@ -25,21 +25,21 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "start game"
-        TextButton startGameButton = new TextButton("Start game", getSkin());
+        TextButton startGameButton = new TextButton("Start game", assets.getSkin());
         startGameButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 // TODO click sound
                 // TODO switch to game screen or (in online -> start new or join existing game) 
-                game.setScreen(new LoadingScreen(game));
+                game.setScreen(new LoadingScreen(assets, game));
             }
         } );
         table.add(startGameButton).size(350, 60).uniform().spaceBottom(10);
         table.row();
 
         // register the button "options"
-        TextButton optionsButton = new TextButton( "Options", getSkin() );
+        TextButton optionsButton = new TextButton( "Options", assets.getSkin() );
         optionsButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -52,7 +52,7 @@ public class MenuScreen extends AbstractScreen {
         table.row();
 
         // register the button "exit"
-        TextButton quitButton = new TextButton("Quit", getSkin());
+        TextButton quitButton = new TextButton("Quit", assets.getSkin());
         quitButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
