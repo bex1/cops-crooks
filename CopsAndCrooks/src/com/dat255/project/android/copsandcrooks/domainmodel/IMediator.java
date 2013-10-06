@@ -2,7 +2,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -28,8 +29,12 @@ interface IMediator {
 	 */
 	void registerDice(Dice dice);
 	
-
-	
+	/**
+	 * Register timer for communication.
+	 * 
+	 * @param timer to register for communication.
+	 */
+	void registerTimer(Timer timer);
 	
 	/**
 	 * Register the pathfinder for communication.
@@ -66,34 +71,31 @@ interface IMediator {
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to roll the dice.
-	 * 
-	 * @return the result.
 	 */
-	int rollDice();
+	void rollDice(Player player);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to calculate the possible paths a pawn can move.
 	 * 
-	 * @param pawnType The type of the pawn.
+	 *
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
-	 * @return A collection with tilepaths representing paths that can be walked
+	 * @return A collection of TilePaths representing paths that can be walked
 	 */
-	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
-			AbstractPawn pawn, int stepsToMove);
+	Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to react on that the turn is done.
 	 */
-	void playerTurnDone();
+	void playerTurnDone(float delay);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * hinder a getaway.
 	 * 
-	 * Move whole method to gamemodel instead of callback?
+	 * Move whole method to GameModel instead of callback?
 	 */
 	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile);
 	
@@ -106,4 +108,10 @@ interface IMediator {
 	void changePawn(AbstractPawn pawn);
 
 	boolean isWantedCrookOn(IWalkableTile tile);
+
+	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
+
+	boolean isItMyPlayerTurn(AbstractPawn movable);
+
+	void schedule(Task task, float delay);
 }

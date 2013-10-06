@@ -46,7 +46,7 @@ public class GetAwayTileTest {
 	
 	@Test
 	public void testInteract(){
-		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		GetAwayTile getAway = new GetAwayTile(new Point(), new Mediator());
 		
 		crook.getWallet().setCash(1000);
@@ -59,7 +59,7 @@ public class GetAwayTileTest {
 		TravelAgencyTile.createTravelAgency(new Point(0,0 ), new Mediator());
 		crook.getWallet().setCash(6000);
 		getAway.interact(crook);
-		if(crook.isAttemptingGetAway() == false){
+		if(!crook.isAttemptingGetAway()){
 			fail();
 		}
 	}

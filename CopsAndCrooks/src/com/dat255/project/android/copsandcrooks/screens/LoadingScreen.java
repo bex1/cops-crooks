@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,8 +10,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class LoadingScreen extends AbstractScreen {
 
-	public LoadingScreen(CopsAndCrooks game) {
-		super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	public LoadingScreen(Assets assets, CopsAndCrooks game) {
+		super(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 	}
 
 	@Override
@@ -20,7 +19,9 @@ public class LoadingScreen extends AbstractScreen {
 		super.show();
 		Map<String, Role> test = new TreeMap<String, Role>();
 		test.put("Tjuv", Role.Crook);
-		test.put("Polis", Role.Police);
-		game.setScreen(GameFactory.loadGame(game, test));
+		test.put("Tjuv2", Role.Crook);
+		test.put("Polis", Role.Cop);
+		GameFactory factory = new GameFactory(assets);
+		game.setScreen(factory.loadGame(game, test));
 	}
 }

@@ -50,7 +50,7 @@ public class OfficerTest {
 	@Test
 	public final void testOfficer() {
 		try {
-			Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), null);
+			new Officer(new RoadTile(new Point(0, 0), new Mediator()), null, 10);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
@@ -63,9 +63,9 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
-		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -77,9 +77,9 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testSetIsInPoliceStation() {
-		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -91,7 +91,7 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testTilesMovedEachStep() {
-		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		int testMoves = test.tilesMovedEachStep();
 		assertTrue("Officer should move 1 steps", testMoves == 1);
 	}
@@ -101,11 +101,11 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testSetCurrentTile() {
-		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});
@@ -118,7 +118,7 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testGetCurrentTile() {
-		final Officer test = new Officer(null, new Mediator());
+		final Officer test = new Officer(null, new Mediator(), 10);
 		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
 		AbstractWalkableTile walkable = new RoadTile(new Point(), new Mediator());
 		test.setCurrentTile(walkable);
@@ -131,7 +131,7 @@ public class OfficerTest {
 	 */ 
 	@Test
 	public final void testMoveAndUpdate() {
-		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		AbstractWalkableTile walkable = new RoadTile(new Point(0, 0), new Mediator());
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
@@ -149,8 +149,8 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testGetPawnRole() {
-		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
-		assertSame("The role of the Officer should be Officer", test.getPawnRole(), Role.Police);
+		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
+		assertSame("The role of the Officer should be Officer", test.getPawnRole(), Role.Cop);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testGetPawnType() {
-		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		assertSame("The type of the Officer should be Officer", test.getPawnType(), PawnType.Officer);
 	}
 
@@ -167,7 +167,7 @@ public class OfficerTest {
 	 */
 	@Test
 	public final void testAddObserver() {
-		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Officer test = new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10);
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {

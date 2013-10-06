@@ -61,7 +61,7 @@ public class CrookTest {
 	@Test
 	public final void testCrook() {
 		try {
-			Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), null);
+			new Crook(new RoadTile(new Point(0, 0), new Mediator()), null, 0);
 			fail("Should throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
@@ -73,7 +73,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testIsWanted() {
-		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		boolean testWanted = test.isWanted();
 		assertFalse("Crook should start unwanted", testWanted);
 		test.setWanted(true);
@@ -89,7 +89,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testGetWallet() {
-		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		Wallet wallet = test.getWallet();
 		assertTrue("Crook should start unwanted", wallet != null);
 	}
@@ -99,9 +99,9 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
-		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -113,9 +113,9 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testSetIsInPoliceStation() {
-		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator()));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
@@ -127,7 +127,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testTilesMovedEachStep() {
-		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		int testMoves = test.tilesMovedEachStep();
 		assertTrue("Crook should start unwanted", testMoves == 1);
 	}
@@ -137,11 +137,11 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testSetCurrentTile() {
-		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", test.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});
@@ -154,7 +154,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testGetCurrentTile() {
-		final Crook test = new Crook(null, new Mediator());
+		final Crook test = new Crook(null, new Mediator(), 0);
 		assertNull("Should be null since its not set, and is allowed to be null", test.getCurrentTile());
 		AbstractWalkableTile walkable = new RoadTile(new Point(), new Mediator());
 		test.setCurrentTile(walkable);
@@ -167,7 +167,7 @@ public class CrookTest {
 	 */ 
 	@Test
 	public final void testMoveAndUpdate() {
-		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		AbstractWalkableTile walkable = new RoadTile(new Point(0, 0), new Mediator());
 		test.setCurrentTile(walkable);
 		TilePath path = new TilePath();
@@ -185,7 +185,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testGetPawnRole() {
-		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		assertSame("The role of the crook should be crook", test.getPawnRole(), Role.Crook);
 	}
 
@@ -194,7 +194,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testGetPawnType() {
-		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		assertSame("The type of the crook should be crook", test.getPawnType(), PawnType.Crook);
 	}
 
@@ -203,7 +203,7 @@ public class CrookTest {
 	 */
 	@Test
 	public final void testAddObserver() {
-		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		final Crook test = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {

@@ -47,16 +47,19 @@ public class TravelAgencyTileTest {
 	public void testRobBuilding(){
 		TravelAgencyTile.createTravelAgency(new Point(), new Mediator());
 		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
-		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		// Reset to avoid failure if other tests have been run before,
+		// since TravelAgencyTile is singleton
+		travelAgency.setValue(0);
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		
-		travelAgency.robBuilding(crook);
+		travelAgency.getRobbedBy(crook);
 		
 		if(crook.getWallet().getCash() != 0){
 			fail();
 		}
 		
 		travelAgency.setValue(2000);
-		travelAgency.robBuilding(crook);
+		travelAgency.getRobbedBy(crook);
 		assertTrue(crook.getWallet().getCash() == 2000);
 	}
 	

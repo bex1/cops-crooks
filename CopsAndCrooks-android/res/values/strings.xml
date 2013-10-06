@@ -1,4 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Cops \'n\' Crooks</string>
+    <string name="title_activity_menu">Main Menu</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_lobby">Lobby</string>
+    <string name="menu_host_game">Host Game</string>
+    <string name="menu_search_game">Search for Game</string>
+    <string name="menu_options">Options</string>
+    <string name="menu_exit_game">Exit Game</string>
+    <string name="menu_instructions">Instructions</string>
+    <string name="title_activity_instructions">Instructions</string>
+    <string name="instructions"><b>Intro</b>\n
+		Cops and Crooks is about getting the most money.
+		One of the players controls the law enforcement (Cops) and the rest of the players are thieves (Crooks).
+		The Crooks get money by robbing banks, post offices etc., while the Cops get money by catching and arresting Crooks. 
+		When a Cop arrests a Crook, he receives a share of the Crooks cash.
+		The winner is the player with the most money when the game ends.\n
+		
+		\n<b>How the Cops move</b>\n
+		The player playing as the Cops get to move only  one of his or hers pawns each turn, either a policeman or the paddy wagon (which is two tiles big). 
+		The pawn can move either vertically or horizontally.
+		The paddy wagons move two steps for every dot on the die, however, it can only move forward. 
+		A policeman can go through a building that is open to two direction. 
+		The paddy wagon cannot do this, it is limited to driving on the road. 
+		The policemen and paddy wagon can pass by each other but not stop on the same tile.\n
+		
+		\n<b>How the Crooks move</b>\n
+		The player playing as a Crook move his or her pawn the same as the policeman, either vertically or horizontally.
+		A Crook must always move on his or her turn, they cannot skip it. 
+		There can’t more than one Crook on a tile at any given moment. 
+		Crooks can always pass by each other on the board. 
+		A Crook can only pass by a policeman or the paddy wagon if the Crook is not Wanted.\n
+		
+		\n<b>Wanted</b>\n
+		A Crook becomes Wanted if he or she:\n
+			•	robs a Bank, Post office or the Travel agency\n
+			•	escapes the jail\n
+			•	collects stolen cash from the hideout\n
+		A Crook loses the Wanted status if he or she is arrested and serves their complete prison time.\n
+		
+		\n<b>Robbery</b>\n
+		If a Crook stops on a tile that is either a Bank, Post office or a Travel agency they successfully robs the establishment and receives the loot money.\n
+	
+		\n<b>Arrestation</b>\n
+		A Crook that is Wanted can be arrested by the Cops. 
+		A Crook is arrested if a policeman or the paddy wagon stops on the same tile as the Wanted Crook. 
+		The paddy wagon can arrest on both of its tiles, even two Crooks at the same time.
+		The Cops can also arrest Crooks by stopping on tiles that are right by Banks and Post offices\n</string>
+    <string name="title_activity_options">OptionsActivity</string>
+    <string name="options_name">Name:</string>
+    <string name="options_volume">Volume:</string>
+    <string name="options_sound">Sound:</string>
+    <string name="options_on_off">on/off</string>
+    <string name="title_activity_game_browse">GameBrowseActivity</string>
+    <string name="title_activity_host">HostActivity</string>
+    
+    
+    <string name="host_game">Host Game</string>
+    <string name="game_name">Gamename:</string>
+    <string name="player_cap">Playercap:</string>
+    <string name="player_cap_seekbar_default">[ 2 ]</string>
+    
+    
+    <string name="game_browser">Game Browser</string>
+    <string name="search_game_refresh">Refresh</string>
 </resources>

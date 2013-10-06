@@ -48,11 +48,12 @@ public class HideoutTest {
 	
 	@Test
 	public void testHasStoredCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(6);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.hasStoredCash(testCrook));
@@ -60,11 +61,12 @@ public class HideoutTest {
 
 	@Test
 	public void testGetStoredCashAmount(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(7);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.getStoredCashAmount(testCrook) == 7);
@@ -72,11 +74,12 @@ public class HideoutTest {
 	
 	@Test
 	public void testDepositCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(9);
 		testHideout.depositCash(testCrook);
 		assertTrue(testHideout.getStoredCashAmount(testCrook) == 9);
@@ -84,11 +87,12 @@ public class HideoutTest {
 	
 	@Test
 	public void testWithdrawCash(){
-		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator());
+		Crook testCrook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		List<Crook> crookList = new LinkedList<Crook>();
 		crookList.add(testCrook);
 		
-		HideoutTile testHideout = new HideoutTile(new Point(0,0), crookList, new Mediator());
+		HideoutTile testHideout = new HideoutTile(new Point(0,0), new Mediator());
+		testHideout.addCrooks(crookList);
 		testCrook.getWallet().setCash(7);
 		testHideout.depositCash(testCrook);
 		testHideout.withdrawCash(testCrook);

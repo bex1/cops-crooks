@@ -11,11 +11,13 @@ public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
+	private int turnsInPrison, timesArrested;
 	
-	public Crook(AbstractWalkableTile startTile, IMediator mediator) {
-		super(startTile, Role.Crook, PawnType.Crook, mediator, 1);
+	public static final String PROPERTY_IS_WANTED = "IsWanted";
+	
+	public Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
 		wallet = new Wallet();
-		attemptingGetAway = false;
 	}
 	
 	/**
@@ -32,6 +34,7 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
+		pcs.firePropertyChange(PROPERTY_IS_WANTED, null, isWanted);
 	}
 	
 	/**
@@ -64,5 +67,45 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setAttemptingGetAway(boolean attemptingGetAway) {
 		this.attemptingGetAway = attemptingGetAway;
+	}
+	/**
+	 * Returns whether the crook is in prison or not.
+	 * @return whether the crook is in prison or not.
+	 */
+	boolean isInPrison(){
+		return currentTile instanceof PoliceStationTile;
+	}
+	/**
+	 * Sets the number of turns in prison to the default value 3 if the crook is in prison
+	 */
+	void setTurnsInPrison(){
+			turnsInPrison = 3;
+	}
+	/**
+	 * The number of turns left in prison
+	 * @return turnsInPrison - number of turns left in prison
+	 */
+	int getTurnsInPrison(){
+		return turnsInPrison;
+	}
+	/**
+	 * Decrements the number of turns left in prison.
+	 */
+	public void decrementTurnsInPrison(){
+		if(turnsInPrison > 0)
+		--turnsInPrison;
+	}
+	/**
+	 * Increments the number of times arrested
+	 */
+	void incrementTimesArrested(){
+		++timesArrested;
+	}
+	/**
+	 * Returns the number of times arrested
+	 * @return the number of times arrested
+	 */
+	public int getTimesArrested(){
+		return timesArrested;
 	}
 }

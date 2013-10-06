@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -24,10 +25,10 @@ public class PathFinderTest {
 									{new RoadTile(new Point(2,0), new Mediator()), new RoadTile(new Point(2,1), new Mediator()), new RoadTile(new Point(2,2), new Mediator())}};
 
 		
-		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
+		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator, 0);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 6);
 		
@@ -48,10 +49,10 @@ public class PathFinderTest {
 		}
 		
 		
-		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
+		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator, 0);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 3);
 		
@@ -79,10 +80,10 @@ public class PathFinderTest {
 									new RoadTile(new Point(6,2), new Mediator())}};
 
 		
-		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator);
+		crook = new Crook(new RoadTile(new Point(0, 0), new Mediator()), mediator, 0);
 		crook.setCurrentTile(tiles[0][0]);
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 14);
 		
@@ -103,10 +104,10 @@ public class PathFinderTest {
 		}
 		
 		
-		crook = new Crook(null, mediator);
+		crook = new Crook(null, mediator, 0);
 		// crook.setCurrentTile(tiles[0][0]); this should force the calculate method to return null
 		
-		pathFinder = new PathFinder(tiles, mediator);
+		pathFinder = new PathFinder(tiles, mediator, new ArrayList<TramLine>());
 		
 		pathList = pathFinder.calculatePossiblePaths(crook, 3);
 		
