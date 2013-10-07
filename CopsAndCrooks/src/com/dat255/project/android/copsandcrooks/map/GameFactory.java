@@ -53,10 +53,13 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class GameFactory {
 	private Assets assets;
 	private ModelFactory modelFactory;
+	private TiledMap map;
+	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
+		readTMXMap();
 	}
 	
 	public static GameFactory getInstance(){
@@ -70,23 +73,23 @@ public class GameFactory {
 		this.assets = assets;
 	}
 	
-	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
+	private  void readTMXMap(){
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
 		
-		// Takes out the layer that will contain the background graphics
-		TiledMapTileLayer mapLayerBack;
-		// Takes out the layer that will contain the interactive tiles
-		TiledMapTileLayer mapLayerInteract;
 		try {
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
 			mapLayerInteract = (TiledMapTileLayer)map.getLayers().get("interact");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return;
 		}
 		Values.TILE_WIDTH = (int) mapLayerBack.getTileWidth();
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
+	}
+	
+	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
+		
 		
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
@@ -105,19 +108,8 @@ public class GameFactory {
 	}
 
 	public Screen loadLocalGame(CopsAndCrooks game, GameModel model){
+		//TODO REmove GameModel as a Parameter
 
-		
-		// This loads a TMX file
-		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
-		
-		// Takes out the layer that will contain the background graphics
-		TiledMapTileLayer mapLayerBack;
-		try {
-			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 		GameModel newModel;
 		try {
 			newModel = ModelFactory.loadLocalGameModel(model);
@@ -280,60 +272,60 @@ public class GameFactory {
         pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
         
         return pawnAnimations;
-}
-
-private EnumMap<Animations, Animation> getOfficerAnimations() {
-	TextureAtlas atlas = assets.getAtlas();
-	// Using an enumeration map makes sure that all keys passed are valid keys
-        EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
-        
-        AtlasRegion[] stopAnimation = new AtlasRegion[1];
-        for(int k = 1; k <= 1; k++)
-        {
-                stopAnimation[k-1] = atlas.findRegion("game-screen/officer/stopped s"+k);
-        }
-        Animation idle = new Animation(1f, stopAnimation);
-        
-        pawnAnimations.put(Animations.IDLE_ANIM, idle);
-        
-        AtlasRegion[] walkEastAnimation = new AtlasRegion[4];
-        for(int k = 1; k <= 4; k++)
-        {
-                walkEastAnimation[k-1] = atlas.findRegion("game-screen/officer/walking e"+k);
-        }
-        Animation walkEast = new Animation(0.2f, walkEastAnimation);
-        
-        pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
-        
-        AtlasRegion[] walkNorthAnimation = new AtlasRegion[4];
-        for(int k = 1; k <= 4; k++)
-        {
-                walkNorthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking n"+k);
-        }
-        Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
-        
-        pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
-        
-        AtlasRegion[] walkSouthAnimation = new AtlasRegion[4];
-        for(int k = 1; k <= 4; k++)
-        {
-                walkSouthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking s"+k);
-        }
-        Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
-        
-        pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
-        
-        AtlasRegion[] walkWestAnimation = new AtlasRegion[4];
-        for(int k = 1; k <= 4; k++)
-        {
-                walkWestAnimation[k-1] = atlas.findRegion("game-screen/officer/walking w"+k);
-        }
-        Animation walkWest = new Animation(0.2f, walkWestAnimation);
-        
-        pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
-        
-        return pawnAnimations;
-}
+	}
+	
+	private EnumMap<Animations, Animation> getOfficerAnimations() {
+		TextureAtlas atlas = assets.getAtlas();
+		// Using an enumeration map makes sure that all keys passed are valid keys
+	        EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
+	        
+	        AtlasRegion[] stopAnimation = new AtlasRegion[1];
+	        for(int k = 1; k <= 1; k++)
+	        {
+	                stopAnimation[k-1] = atlas.findRegion("game-screen/officer/stopped s"+k);
+	        }
+	        Animation idle = new Animation(1f, stopAnimation);
+	        
+	        pawnAnimations.put(Animations.IDLE_ANIM, idle);
+	        
+	        AtlasRegion[] walkEastAnimation = new AtlasRegion[4];
+	        for(int k = 1; k <= 4; k++)
+	        {
+	                walkEastAnimation[k-1] = atlas.findRegion("game-screen/officer/walking e"+k);
+	        }
+	        Animation walkEast = new Animation(0.2f, walkEastAnimation);
+	        
+	        pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
+	        
+	        AtlasRegion[] walkNorthAnimation = new AtlasRegion[4];
+	        for(int k = 1; k <= 4; k++)
+	        {
+	                walkNorthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking n"+k);
+	        }
+	        Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
+	        
+	        pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
+	        
+	        AtlasRegion[] walkSouthAnimation = new AtlasRegion[4];
+	        for(int k = 1; k <= 4; k++)
+	        {
+	                walkSouthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking s"+k);
+	        }
+	        Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
+	        
+	        pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
+	        
+	        AtlasRegion[] walkWestAnimation = new AtlasRegion[4];
+	        for(int k = 1; k <= 4; k++)
+	        {
+	                walkWestAnimation[k-1] = atlas.findRegion("game-screen/officer/walking w"+k);
+	        }
+	        Animation walkWest = new Animation(0.2f, walkWestAnimation);
+	        
+	        pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
+	        
+	        return pawnAnimations;
+	}
 
 	/**
 	 * Creates path actors for the specified paths connected to the specified player.
