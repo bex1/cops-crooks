@@ -42,11 +42,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	private final int mapWidth, mapHeight;
 
-	public GameScreen(Assets assets, GameFactory factory, final CopsAndCrooks game, final GameModel gameModel,
+	public GameScreen(Assets assets, final CopsAndCrooks game, final GameModel gameModel,
 			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
 			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
 		super(assets, game, mapWidth, mapHeight);
-		this.factory = factory;
+		this.factory = GameFactory.getInstance();
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
 		this.hudStage = hudStage;
