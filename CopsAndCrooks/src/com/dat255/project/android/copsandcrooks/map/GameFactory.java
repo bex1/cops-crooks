@@ -46,7 +46,8 @@ import com.dat255.project.android.copsandcrooks.screens.HideoutOptionsTable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
- * 
+ * This Class creates everything you need to create a game
+ * (You need to call and set the assets, it may give you errors otherwise)
  * @author Group 25
  *
  */
@@ -75,7 +76,7 @@ public class GameFactory {
 	
 	private  void readTMXMap(){
 		// This loads a TMX file
-		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
+		map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
 		
 		try {
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
