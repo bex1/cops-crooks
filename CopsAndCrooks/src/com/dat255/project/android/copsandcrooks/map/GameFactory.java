@@ -86,7 +86,7 @@ public class GameFactory {
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
 
-	public static Screen loadHostedGame(CopsAndCrooks game, GameModel model){
+	public static Screen loadLocalGame(CopsAndCrooks game, GameModel model){
 		
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
@@ -101,7 +101,7 @@ public class GameFactory {
 		}
 		GameModel newModel;
 		try {
-			newModel = ModelFactory.loadHostedGameModel(model);
+			newModel = ModelFactory.loadLocalGameModel(model);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
@@ -119,6 +119,7 @@ public class GameFactory {
 			return null;
 		}
 	}
+	
 	/**
 	 * Method to be able to add actors to a collection of players.
 	 * @param players - the collection you want to ad actors on.
