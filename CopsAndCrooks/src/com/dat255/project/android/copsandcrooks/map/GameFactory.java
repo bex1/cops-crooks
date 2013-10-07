@@ -90,7 +90,6 @@ public class GameFactory {
 	
 	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
 		
-		
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		//Loads a GameModel
@@ -106,6 +105,23 @@ public class GameFactory {
 		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
+	
+	public Screen loadHostedGame(CopsAndCrooks game, Map<Integer, Point> pawnsPoint, Map<String, Role> userInfo){
+		
+		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
+		
+		GameModel model = modelFactory.loadHostedGameModel(pawnsPoint, mapLayerInteract , userInfo);
+		Collection<? extends IPlayer> players = model.getPlayers();
+		
+		List<Actor> actors = addActor(players);
+		for (HideoutTile hideout : model.getHideouts()) {
+			actors.add(new HideoutActor(assets, hideout, players, hudStage));
+			new HideoutOptionsTable(assets, hideout, hudStage);
+		}
+		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
+	
+	} 
 
 	public Screen loadLocalGame(CopsAndCrooks game, GameModel model){
 		//TODO REmove GameModel as a Parameter
