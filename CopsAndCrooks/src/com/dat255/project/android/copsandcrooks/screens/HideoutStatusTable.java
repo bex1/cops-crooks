@@ -14,13 +14,12 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 public class HideoutStatusTable extends Table implements PropertyChangeListener {
 	private final HideoutTile hideout;
 	private final Map<Crook, Label> moneyLabels;
 	
-	public HideoutStatusTable(HideoutTile hideout, Collection<? extends IPlayer> players) {
+	public HideoutStatusTable(Assets assets, HideoutTile hideout, Collection<? extends IPlayer> players) {
 		this.hideout = hideout;
 		//this.debug();
 		hideout.addObserver(this);
@@ -28,7 +27,7 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 		
 		this.setFillParent(true);
 		
-		Label label = new Label("Hideout status", Utilities.getSkin());
+		Label label = new Label("Hideout status", assets.getSkin());
 		label.setFontScale(0.8f);
 		label.setAlignment(Align.center);
 		label.setColor(Color.BLACK);
@@ -42,13 +41,13 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 				if (pawn instanceof Crook) {
 					
 					Crook crook = (Crook)pawn;
-					Label nameLabel = new Label(player.getName() + ":", Utilities.getSkin());
+					Label nameLabel = new Label(player.getName() + ":", assets.getSkin());
 					nameLabel.setAlignment(Align.right);
 					nameLabel.setFontScale(0.6f);
 					nameLabel.setColor(Color.BLACK);
 					add(nameLabel).expandX().fillX().uniform().padRight(15);
 				
-					Label moneyLabel = new Label(String.format("%-6d%n", hideout.getStoredCashAmount(crook)), Utilities.getSkin());
+					Label moneyLabel = new Label(String.format("%-6d%n", hideout.getStoredCashAmount(crook)), assets.getSkin());
 					moneyLabel.setFontScale(0.6f);
 					moneyLabel.setAlignment(Align.left);
 					moneyLabel.setColor(Color.BLACK);

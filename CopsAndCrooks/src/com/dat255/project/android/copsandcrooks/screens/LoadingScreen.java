@@ -10,17 +10,18 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class LoadingScreen extends AbstractScreen {
 
-	public LoadingScreen(CopsAndCrooks game) {
-		super(game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+	public LoadingScreen(Assets assets, CopsAndCrooks game) {
+		super(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
 	}
 
 	@Override
 	public void show() {
 		super.show();
 		Map<String, Role> test = new TreeMap<String, Role>();
-		test.put("Tjuv", Role.Crook);
+		test.put("Tjuv1", Role.Crook);
 		test.put("Tjuv2", Role.Crook);
 		test.put("Polis", Role.Cop);
-		game.setScreen(GameFactory.loadGame(game, test));
+		GameFactory.getInstance().setAssets(assets);
+		game.setScreen(GameFactory.getInstance().loadGame(game, test));
 	}
 }

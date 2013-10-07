@@ -11,6 +11,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 
+import javax.swing.text.Utilities;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,9 +24,9 @@ import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.GameCamera;
 import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This class represents an abstract pawn in the game Cops&Crooks.
@@ -41,6 +43,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private GameCamera camera;
 	private final MovableActor thisActor;
 	private Image selectedBackground;
+	protected Assets assets;
 	
 	
 
@@ -52,11 +55,12 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		MOVE_SOUTH_ANIM,
 	}
 
-	public MovableActor(final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
+	public MovableActor(Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(drawable, scaling);
 		this.pawn = pawn;
 		this.animations = animations;
+		this.assets = assets;
 		thisActor = this;
 		currentDrawable = drawable;
 		currentAnimation = Animations.IDLE_ANIM;
@@ -65,7 +69,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	}
 	
 	protected void initBackgrounds() {
-		TextureAtlas atlas = Utilities.getAtlas();
+		TextureAtlas atlas = assets.getAtlas();
 		TextureRegionDrawable selected = new TextureRegionDrawable(atlas.findRegion("game-screen/status/Selected"));
 		selectedBackground = new Image(selected, Scaling.none);
 		selectedBackground.setSize(getWidth(), getHeight());

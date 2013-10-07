@@ -5,15 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 
 public class MoveByDiceOrMetroTable extends Table {
 
-	public MoveByDiceOrMetroTable(final GameModel model) {
+	public MoveByDiceOrMetroTable(Assets assets, final GameModel model) {
 		this.setFillParent(true);
 		
 		// register the button "roll dice"
-		final TextButton rollTheDiceButton = new TextButton("Roll the dice", Utilities.getSkin());
+		final TextButton rollTheDiceButton = new TextButton("Roll the dice", assets.getSkin());
 		rollTheDiceButton.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -26,7 +25,7 @@ public class MoveByDiceOrMetroTable extends Table {
 		});
 
 		// register the button "go by tram"
-		final TextButton goByTramButton = new TextButton("Go by tram", Utilities.getSkin());
+		final TextButton goByTramButton = new TextButton("Go by tram", assets.getSkin());
 		goByTramButton.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

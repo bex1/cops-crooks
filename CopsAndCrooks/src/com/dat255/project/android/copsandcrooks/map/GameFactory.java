@@ -6,6 +6,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.Utilities;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -38,10 +40,10 @@ import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 import com.dat255.project.android.copsandcrooks.screens.HideoutOptionsTable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * 
@@ -49,10 +51,26 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  *
  */
 public class GameFactory {
+	private Assets assets;
+	private ModelFactory modelFactory;
+	public static GameFactory instance = null;
 	
-	private static TextureAtlas atlas = Utilities.getAtlas();
+	private GameFactory() {
+		modelFactory = ModelFactory.getInstance();
+	}
 	
-	public static Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
+	public static GameFactory getInstance(){
+		if(instance == null){
+			instance = new GameFactory();
+		}
+		return instance;
+	}
+	
+	public void setAssets(Assets assets){
+		this.assets = assets;
+	}
+	
+	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
 		
@@ -73,20 +91,21 @@ public class GameFactory {
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		//Loads a GameModel
-		GameModel model = ModelFactory.loadGameModel(mapLayerInteract, userInfo);
+		GameModel model = modelFactory.loadGameModel(mapLayerInteract, userInfo);
 		Collection<? extends IPlayer> players = model.getPlayers();
 		
 		List<Actor> actors = addActor(players);
 		for (HideoutTile hideout : model.getHideouts()) {
-			actors.add(new HideoutActor(hideout, players, hudStage));
-			new HideoutOptionsTable(hideout, hudStage);
+			actors.add(new HideoutActor(assets, hideout, players, hudStage));
+			new HideoutOptionsTable(assets, hideout, hudStage);
 		}
 		
-		return new GameScreen(game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+		return new GameScreen(assets, this, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
 
-	public static Screen loadLocalGame(CopsAndCrooks game, GameModel model){
+	public Screen loadLocalGame(CopsAndCrooks game, GameModel model){
+
 		
 		// This loads a TMX file
 		TiledMap map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
@@ -107,11 +126,11 @@ public class GameFactory {
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 			
 			for (HideoutTile hideout : model.getHideouts()) {
-				actors.add(new HideoutActor(hideout, newModel.getPlayers(), hudStage));
-				new HideoutOptionsTable(hideout, hudStage);
+				actors.add(new HideoutActor(assets, hideout, newModel.getPlayers(), hudStage));
+				new HideoutOptionsTable(assets, hideout, hudStage);
 			}
 			
-			return new GameScreen(game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+			return new GameScreen(assets, this, game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	
 		}catch(Exception e){
@@ -125,7 +144,7 @@ public class GameFactory {
 	 * @param players - the collection you want to ad actors on.
 	 * @return - List of actors tht draws your animation of your players pawn
 	 */
-	private static List<Actor> addActor(Collection<? extends IPlayer> players){
+	private List<Actor> addActor(Collection<? extends IPlayer> players){
 		List<Actor> actors = new ArrayList<Actor>();
 		for(IPlayer player: players){	
 			Collection<? extends IMovable> pawns = player.getPawns();
@@ -135,13 +154,13 @@ public class GameFactory {
 					EnumMap<Animations, Animation> pawnAnimations = getOfficerAnimations();
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-					actors.add(new CopActor(drawable, Scaling.none, (Officer) pawn, pawnAnimations));
+					actors.add(new CopActor(assets, drawable, Scaling.none, (Officer) pawn, pawnAnimations));
 				}else if(pawn instanceof Crook){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getCrookAnimations();
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
-					actors.add(new CrookActor(drawable, Scaling.none, (Crook) pawn, pawnAnimations));
+					actors.add(new CrookActor(assets, drawable, Scaling.none, (Crook) pawn, pawnAnimations));
 				}else if(pawn instanceof CopCar){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getCopCarAnimations();
@@ -149,7 +168,7 @@ public class GameFactory {
 					// Specify the first drawable frame
 					TextureRegionDrawable drawable = new TextureRegionDrawable(pawnAnimations.get(Animations.IDLE_ANIM).getKeyFrame(0));
 					
-					actors.add(new CopCarActor(drawable, Scaling.none, (CopCar) pawn, pawnAnimations));
+					actors.add(new CopCarActor(assets, drawable, Scaling.none, (CopCar) pawn, pawnAnimations));
 				}
 			}
 		}
@@ -157,7 +176,8 @@ public class GameFactory {
 		return actors;
 	}
 	
-	private static EnumMap<Animations, Animation> getCopCarAnimations() {
+	private EnumMap<Animations, Animation> getCopCarAnimations() {
+		TextureAtlas atlas = assets.getAtlas();
 		// Using an enumeration map makes sure that all keys passed are valid keys
 		EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
 
@@ -209,8 +229,9 @@ public class GameFactory {
 		return pawnAnimations;
 	}
 
-	private static EnumMap<Animations, Animation> getCrookAnimations() {
-        // Using an enumeration map makes sure that all keys passed are valid keys
+	private EnumMap<Animations, Animation> getCrookAnimations() {
+		TextureAtlas atlas = assets.getAtlas();
+		// Using an enumeration map makes sure that all keys passed are valid keys
         EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
 
         AtlasRegion[] stopAnimation = new AtlasRegion[8];
@@ -261,8 +282,9 @@ public class GameFactory {
         return pawnAnimations;
 }
 
-private static EnumMap<Animations, Animation> getOfficerAnimations() {
-        // Using an enumeration map makes sure that all keys passed are valid keys
+private EnumMap<Animations, Animation> getOfficerAnimations() {
+	TextureAtlas atlas = assets.getAtlas();
+	// Using an enumeration map makes sure that all keys passed are valid keys
         EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
         
         AtlasRegion[] stopAnimation = new AtlasRegion[1];
@@ -320,7 +342,8 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 	 * @param player The player who can click the paths.
 	 * @return A list of PathActors.
 	 */
-	public static List<PathActor> getPathActorsFor(Collection<TilePath> paths, IPlayer player) {
+	public List<PathActor> getPathActorsFor(Collection<TilePath> paths, IPlayer player) {
+		TextureAtlas atlas = assets.getAtlas();
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
 		
@@ -366,7 +389,8 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 	 * @param player The player who can click the paths.
 	 * @return A list of PathActors.
 	 */
-	public static List<MetroLineActor> getMetroActorsFor(Collection<TilePath> paths, IPlayer player) {
+	public List<MetroLineActor> getMetroActorsFor(Collection<TilePath> paths, IPlayer player) {
+		TextureAtlas atlas = assets.getAtlas();
 		
 		List<MetroLineActor> pathActors = new ArrayList<MetroLineActor>();
 		
@@ -398,7 +422,9 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 		return pathActors;
 	}
 	
-	private static DiceActor getDiceActorFor(Dice dice) {
+	private DiceActor getDiceActorFor(Dice dice) {
+		TextureAtlas atlas = assets.getAtlas();
+		
 		if (dice == null) {
 			return null;
 		}
@@ -411,6 +437,6 @@ private static EnumMap<Animations, Animation> getOfficerAnimations() {
 		Animation animation = new Animation(0.05f, diceAnim);
 
 		
-		return new DiceActor(dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
+		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
 	}
 }

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
@@ -37,14 +38,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private MoveByDiceOrMetroTable moveByDiceOrMetro;
 	private MoveByDiceTable moveByDice;
 	private HUDTable hudTable;
+	private GameFactory factory;
 
 	private final int mapWidth, mapHeight;
 
-	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
+	public GameScreen(Assets assets, GameFactory factory, final CopsAndCrooks game, final GameModel gameModel,
 			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
 			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
-		super(game, mapWidth, mapHeight);
-
+		super(assets, game, mapWidth, mapHeight);
+		this.factory = factory;
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
 		this.hudStage = hudStage;
@@ -52,8 +54,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		this.mapHeight = (int) mapHeight;
 
 		hudStage.addActor(dice);
-		
-		
+
+
 		model.addObserver(this);
 		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
@@ -67,9 +69,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
-		moveByDice = new MoveByDiceTable(model);
-		moveByDiceOrMetro = new MoveByDiceOrMetroTable(model);
-		hudTable = new HUDTable(model.getPlayerClient());
+		moveByDice = new MoveByDiceTable(assets, model);
+		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
+		hudTable = new HUDTable(assets, model.getPlayerClient());
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		stage.setCamera(camera);
 		renderer.setView(camera);
 		renderer.render();
-		
+
 		super.render(delta);
 
 		hudStage.act(delta);
@@ -86,10 +88,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		Table.drawDebug(hudStage);
 	}
 
+
 	@Override
 	public void show(){
 		super.show();
-		
+
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
 		camera = new GameCamera(mapWidth, mapHeight);
 		// Show actors at right start pos, ie sync with model
@@ -100,22 +103,31 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				pawn.setCamera(camera);
 			}
 		}
-		
+
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
-		
+
 		hudStage.addActor(hudTable);
 
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
 		model.startGame();
+
 	}
 
 	@Override
 	public void dispose(){
 		renderer.dispose();
 		mapToRender.dispose();
+		hudStage.dispose();
+		assets.dispose();
 		super.dispose();
+	}
+
+
+	@Override
+	public void resume() {
+		super.resume();
 	}
 
 
@@ -175,7 +187,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			camPauseY = camera.position.y;
 		}
 	}
-	
+
 	private float camPauseX;
 	private float camPauseY;
 
@@ -236,9 +248,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private void showPossiblePaths(IPlayer player) {
 		List<? extends Actor> tmp = null;
 		if (player.isGoingByDice()) {
-			tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+			tmp = factory.getPathActorsFor(player.getPossiblePaths(), player);
 		} else if (player.isGoingByMetro()) {
-			tmp = GameFactory.getMetroActorsFor(player.getPossiblePaths(), player);
+			tmp = factory.getMetroActorsFor(player.getPossiblePaths(), player);
 		}
 		if (tmp != null) {
 			for(Actor pathActor: tmp){

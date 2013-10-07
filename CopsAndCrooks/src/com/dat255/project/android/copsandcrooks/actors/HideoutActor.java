@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.HideoutStatusTable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -15,11 +16,11 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class HideoutActor extends Actor {
 	private final HideoutStatusTable statusTable;
 	
-	public HideoutActor(final HideoutTile hideout, final Collection<? extends IPlayer> players, final Stage hudStage) {
+	public HideoutActor(Assets assets, final HideoutTile hideout, final Collection<? extends IPlayer> players, final Stage hudStage) {
 		Point p = hideout.getPosition();
 		this.setBounds(p.x * Values.TILE_WIDTH, p.y * Values.TILE_HEIGTH, Values.TILE_WIDTH, Values.TILE_HEIGTH);
 		
-		statusTable = new HideoutStatusTable(hideout, players);
+		statusTable = new HideoutStatusTable(assets, hideout, players);
 		this.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,

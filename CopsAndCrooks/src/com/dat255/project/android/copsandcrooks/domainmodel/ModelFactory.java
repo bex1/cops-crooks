@@ -7,20 +7,32 @@ import java.util.Map;
 import java.util.Random;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 // WILL be used to furter encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
 // It should instead be connected to this factory to get its model instances.
 public class ModelFactory {
-
+	
+	private static ModelFactory instance = null;
+	
+	private ModelFactory(){}
+	
+	public static ModelFactory getInstance(){
+		if(instance == null){
+			instance = new ModelFactory();
+		}
+		return instance;
+	}
+	
 	/**
 	 * This loads a game model from scratch and is used when you host a game
 	 * @param interact
 	 * @param userInfo
 	 * @return
 	 */
-	public static GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
+	public GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
@@ -130,6 +142,8 @@ public class ModelFactory {
 			}
 		}
 		
+		mediator.registerTimer(new Timer());
+		
 		new PathFinder(walkable, mediator, tramLines);
 		return new GameModel(mediator, players.get(0), players, walkable, tramLines);
 	}
@@ -141,7 +155,7 @@ public class ModelFactory {
 	 * @param userInfo
 	 * @return
 	 */
-	public static GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo){
+	public GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo){
 		GameModel model = loadGameModel(interact, userInfo);
 		
 		//Here we place the pawns to a tile, this has already been set by the host
@@ -241,7 +255,7 @@ public class ModelFactory {
 			newPlayers.add(new Player(player.getName(), pawns, player.getPlayerRole(), mediator));
 		}
 		
-		
+		mediator.registerTimer(new Timer());
 		
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
 		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines);
