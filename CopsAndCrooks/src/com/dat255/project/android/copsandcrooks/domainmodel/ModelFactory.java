@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -15,6 +14,12 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 // It should instead be connected to this factory to get its model instances.
 public class ModelFactory {
 
+	/**
+	 * This loads a game model from scratch and is used when you host a game
+	 * @param interact
+	 * @param userInfo
+	 * @return
+	 */
 	public static GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
@@ -129,7 +134,36 @@ public class ModelFactory {
 		return new GameModel(mediator, players.get(0), players, walkable, tramLines);
 	}
 	
-	public static GameModel loadHostedGameModel(GameModel model) throws Exception{
+	/**
+	 * Loads a model that is already hosted and the placement of all players is already placed
+	 * @param pawnsPoint
+	 * @param interact
+	 * @param userInfo
+	 * @return
+	 */
+	public static GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo){
+		GameModel model = loadGameModel(interact, userInfo);
+		
+		//Here we place the pawns to a tile, this has already been set by the host
+		IWalkableTile[][] walkable = model.getWalkabletiles();
+		List<Player> players = (List<Player>) model.getPlayers();
+		for(Player player : players){
+			Collection<AbstractPawn> pawns = player.getPawns();
+			for(AbstractPawn pawn : pawns){
+				Point point = pawnsPoint.get(pawn.getID());
+				pawn.setCurrentTile((AbstractWalkableTile) walkable[point.x][point.y]);
+			}
+		}
+		return model;
+	}
+	
+	
+	/**
+	 * This methods reads from a file and creates a new GameModel from a serialized model 
+	 * @return - Fully working gamemodel
+	 * @throws Exception
+	 */
+	public static GameModel loadLocalGameModel(GameModel model) throws Exception{
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		int mapWidth = model.getWalkabletiles().length;
