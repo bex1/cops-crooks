@@ -103,7 +103,7 @@ public class GameFactory {
 			new HideoutOptionsTable(assets, hideout, hudStage);
 		}
 		
-		return new GameScreen(assets, this, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
 
@@ -122,7 +122,7 @@ public class GameFactory {
 				new HideoutOptionsTable(assets, hideout, hudStage);
 			}
 			
-			return new GameScreen(assets, this, game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+			return new GameScreen(assets, game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	
 		}catch(Exception e){
