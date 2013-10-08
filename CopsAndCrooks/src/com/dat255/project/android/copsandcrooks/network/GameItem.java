@@ -19,6 +19,9 @@ public class GameItem implements Serializable{
 		this.playerCap = playerCap;
 		this.currentPlayerCount = 0;
 		gameStarted = false;
+	}
+	
+	public GameItem(){
 		playerList = new ArrayList<PlayerItem>();
 	}
 	

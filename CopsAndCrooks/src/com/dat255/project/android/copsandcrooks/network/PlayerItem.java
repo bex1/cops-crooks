@@ -10,6 +10,9 @@ public class PlayerItem implements Serializable{
 		this.name = name;
 	}
 	
+	public PlayerItem() {
+	}
+	
 	public String getName(){
 		return name;
 	}

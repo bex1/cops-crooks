@@ -46,17 +46,25 @@ public class GameBrowseActivity extends Activity {
 	public void refreshGameList(View v){
 		//TODO retrieve the games from the server and update the list
 		
-		new Thread(new Runnable(){
-			public void run(){
-				GameClient.getInstance().requestGameItemsFromServer();
-			}
-		}).start();
-		
-		if(GameClient.getInstance().getGameItems() != null){
-			for(GameItem gi: GameClient.getInstance().getGameItems()){
-				gameItemAdapter.add(gi);
-			}
-		}
+//		new Thread(new Runnable(){
+//			public void run(){
+//				GameClient.getInstance().requestGameItemsFromServer();
+//				
+//				try 
+//					this
+//                } catch (InterruptedException e) {
+//	                // TODO Auto-generated catch block
+//	                e.printStackTrace();
+//                }
+//				
+//				if(GameClient.getInstance().getGameItems() != null){
+//					for(GameItem gi: GameClient.getInstance().getGameItems()){
+//						gameItemAdapter.add(gi);
+//					}
+//				}
+//			}
+//		}).start();
+
 	}
 	
 	public void itemAnswer(GameItem gameItem){
