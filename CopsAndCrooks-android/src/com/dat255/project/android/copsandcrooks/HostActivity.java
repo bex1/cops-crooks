@@ -29,7 +29,7 @@ public class HostActivity extends Activity {
 	
 	public static final String GAME_ITEM = "GAME_ITEM";
 	
-	@SuppressLint("NewApi") //TODO use a lower requirement
+//	@SuppressLint("NewApi") //TODO use a lower requirement
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,8 +70,6 @@ public class HostActivity extends Activity {
 			// TODO Auto-generated method stub
 			
 		}
-
-		
 	};
 	
 	public OnKeyListener gameNameListener = new OnKeyListener(){
@@ -86,14 +84,14 @@ public class HostActivity extends Activity {
 		
 	};
 	
-	@SuppressLint("NewApi")
+//	@SuppressLint("NewApi")
 	public void hostButtonEnabled(boolean status){
 		if(status){
 			hostGameButton.setClickable(false);
-			hostGameButton.setAlpha(0.5f);
+//			hostGameButton.setAlpha(0.5f);
 		}else{
 			hostGameButton.setClickable(true);
-			hostGameButton.setAlpha(1);
+//			hostGameButton.setAlpha(1);
 		}
 	}
 	
