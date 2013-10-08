@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+
 /**
  * A player in the game Cops&Crooks.
  * 
@@ -30,6 +33,8 @@ public class Player implements IPlayer {
 	private boolean goByMetro;
 	private boolean goByDice;
 	private boolean isActive;
+
+	private int playerID;
 
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
@@ -158,6 +163,7 @@ public class Player implements IPlayer {
     @Override
     public void goByMetro() {
     	goByMetro = true;
+    	mediator.getCurrentTurn().setMoveType(MoveType.Metro);
     	updatePossiblePaths();
     }
     
@@ -197,6 +203,9 @@ public class Player implements IPlayer {
     public void choosePath(TilePath path){
     	if (possiblePaths != null && possiblePaths.contains(path) && goByDice) {
     		possiblePaths = null;
+    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    		mediator.getCurrentTurn().setPathWalked(new TilePath(path));
+    		mediator.getCurrentTurn().setEndTile(path.getTile(0));
     		// The path passed the test -> move
     		currentPawn.move(path);
     		diceResult = 0;
@@ -215,6 +224,8 @@ public class Player implements IPlayer {
     				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone(3f);
+    				mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    				mediator.getCurrentTurn().setEndTile(metroStop);
     				return;
     			}
     		}
@@ -263,6 +274,7 @@ public class Player implements IPlayer {
     		}
     	}
     	goByDice = true;
+    	mediator.getCurrentTurn().setMoveType(MoveType.Walk);
     	updatePossiblePaths();
 	}
 
@@ -274,5 +286,11 @@ public class Player implements IPlayer {
 	@Override
 	public void setActive(boolean active) {
 		isActive = active;
+	}
+
+
+	@Override
+	public int getID() {
+		return playerID;
 	}
 }

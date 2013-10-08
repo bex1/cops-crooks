@@ -5,11 +5,14 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public final class GameModel implements IObservable  {
 
@@ -25,9 +28,19 @@ public final class GameModel implements IObservable  {
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final IWalkableTile[][] walkable;
 	private final Collection<TramLine> tramLines;
+	private GameState state;
+	private Turn currentTurn;
+	private LinkedList<Turn> replayTurns;
 	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	public static final String PROPERTY_GAME_ENDED = "GameEnded";
+	public static final String PROPERTY_GAMESTATE = "GameState";
+	
+	public enum GameState {
+		Replay,
+		Playing,
+		Waiting,
+	}
 	
 	private class ChangePlayerTask extends Task {
 
@@ -75,9 +88,80 @@ public final class GameModel implements IObservable  {
 	}
 
 	public void startGame(){
-		this.currentPlayer = players.get(0);
-		currentPlayer.updateState();
-		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+		for (Player player : players) {
+			if (player.getPlayerRole() == Role.Cop) {
+				this.currentPlayer = player;
+			}
+		}
+		if (currentPlayer == playerClient) {
+			state = GameState.Playing;
+			this.currentTurn = new Turn();
+			currentPlayer.updateState();
+		} else {
+			state = GameState.Waiting;
+		}
+		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+	}
+	
+	public void addReplayTurns(LinkedList<Turn> turns) {
+		this.replayTurns = turns;
+		state = GameState.Replay;
+		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+	}
+	
+	public void replay() {
+		state = GameState.Replay;
+		replay(replayTurns.pollFirst());
+	}
+	
+	// TODO private
+	private void replay(Turn turn) {
+		// Test
+		this.currentTurn = turn;
+		turn = new Turn();
+		turn.setPawnID(currentPlayer.getCurrentPawn().getID());
+		turn.setMoveType(MoveType.Walk);
+		TilePath path = new TilePath();
+		Point pos = currentPlayer.getCurrentPawn().getCurrentTile().getPosition();
+		
+		AbstractWalkableTile endT = new RoadTile(new Point(pos.x, pos.y + 4), mediator);
+		path.addTileLast(endT);
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 3), mediator));
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 2), mediator));
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 1), mediator));
+		turn.setPathWalked(path);
+		turn.setEndTile(endT);
+		
+		
+		
+		AbstractPawn pawn = findPawnByID(turn.getPawnID());
+		IWalkableTile end = turn.getEndTile();
+		if (pawn != null && end != null) {
+			switch (turn.getMoveType()) {
+			case Metro:
+				if (end instanceof TramStopTile) {
+					pawn.moveByTram((TramStopTile)end);
+				}
+				break;
+			case Walk:
+				pawn.move(turn.getPathWalked());
+				break;
+			default:
+				assert false;
+				break;
+			}
+		}
+	}
+
+	private AbstractPawn findPawnByID(int pawnID) {
+		for (Player player : players) {
+			for (AbstractPawn pawn : player.getPawns()) {
+				if (pawn.getID() == pawnID) {
+					return pawn;
+				}
+			}
+		}
+		return null;
 	}
 
 	void nextPlayer(float delay){
@@ -104,10 +188,27 @@ public final class GameModel implements IObservable  {
 		}while (!currentPlayer.isActive());
 		currentPlayer.updateState();
 		if (currentPlayer.isActive()) {
-			pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+			if (playerClient == currentPlayer) {
+				this.currentTurn = new Turn();
+				state = GameState.Playing;
+				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
+			} else if (state == GameState.Replay) {
+				replay(replayTurns.pollFirst());
+			} else {
+				state = GameState.Waiting;
+				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+			}
 		} else {
 			nextPlayer(3f);
 		}
+	}
+	
+	public GameState getGameState() {
+		return state;
+	}
+	
+	Turn getCurrentTurn() {
+		return currentTurn;
 	}
 
 	private void endGame(){
