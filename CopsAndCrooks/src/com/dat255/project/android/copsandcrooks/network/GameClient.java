@@ -14,6 +14,7 @@ public class GameClient {
 	private static GameClient instance;
 	private Client client;
 	private ArrayList<GameItem> gameItems;
+	private final Object lock = new Object();
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -26,7 +27,7 @@ public class GameClient {
 		// initialize client
 		client = new Client();
 		Network.register(client);
-		final ArrayList<GameItem> gameItems = new ArrayList<GameItem>();
+		gameItems = new ArrayList<GameItem>();
 		
 		this.client.addListener(new Listener(){
 			// connected to the server
@@ -52,11 +53,15 @@ public class GameClient {
 					
 					// server sent a list of games
 					if(pck instanceof Pck3_GameItems){
-						System.out.println("Network: Received a list of games.");
-						gameItems.clear();
-						for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
-							gameItems.add(gi);
-						}
+//						synchronized(this){
+							System.out.println("Network: Received a list of games.");
+							gameItems.clear();
+							for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
+								gameItems.add(gi);
+								System.out.println("Network: Added a game.");
+							}
+//							notify();
+//						}
 					}
 				}
 			}
@@ -89,13 +94,21 @@ public class GameClient {
 	}
 	
 	// send a packet to the server requesting a list of games
-	public void requestGameItemsFromServer(){	
+//	public List requestGameItemsFromServer() throws InterruptedException {
+	public void requestGameItemsFromServer() {
 		connectToServer();
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
 			Pck2_ClientRequestGames pck = new Pck2_ClientRequestGames();
 			client.sendTCP(pck);
 		}
+
+//		synchronized(this){
+//			
+//			Thread.currentThread().wait();
+//		}
+
+//		return gameItems;
     }
 	
 	public ArrayList<GameItem> getGameItems(){

@@ -16,9 +16,9 @@ public class GameServer {
 		gameItems = new ArrayList<GameItem>();
 		
 		// test games
-		gameItems.add(new GameItem("Server created #1", 5));
-		gameItems.add(new GameItem("Server created #2", 5));
-		gameItems.add(new GameItem("Server created #3", 5));
+		gameItems.add(new GameItem("Olle's game", 5));
+		gameItems.add(new GameItem("Victor's game", 5));
+		gameItems.add(new GameItem("Nisse's game", 5));
 		
 		// initialize server
 		server = new Server();
