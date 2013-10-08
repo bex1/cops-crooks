@@ -1,6 +1,8 @@
 package com.dat255.project.android.copsandcrooks.network;
 
 import java.util.ArrayList;
+
+import com.dat255.project.android.copsandcrooks.*;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -17,8 +19,10 @@ public class Network {
 		kryo.register(ArrayList.class);
 		kryo.register(Pck0_ClientHandshake.class);
 		kryo.register(Pck1_ServerHandshake.class);
-		kryo.register(Pck2_ClientConfirmJoin.class);
-		kryo.register(Pck3_Message.class);
+		kryo.register(Pck2_ClientRequestGames.class);
+		kryo.register(Pck3_GameItems.class);
+		kryo.register(GameItem.class);
+		kryo.register(PlayerItem.class);
 	}
 
 	/** Packet */
@@ -50,13 +54,12 @@ public class Network {
 		public String message;
 	}
 
-	/** Sent by the client upon accepted join request */
-	public static class Pck2_ClientConfirmJoin extends Packet{
-		public String message;
+	/** Sent by the client upon requesting games */
+	public static class Pck2_ClientRequestGames extends Packet{
 	}
 
 	/** Message */
-	public static class Pck3_Message extends Packet{
-		public String message;
+	public static class Pck3_GameItems extends Packet{
+		public ArrayList<GameItem> gameItems;
 	}
 }

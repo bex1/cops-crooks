@@ -2,6 +2,9 @@ package com.dat255.project.android.copsandcrooks;
 
 import java.util.ArrayList;
 
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +45,18 @@ public class GameBrowseActivity extends Activity {
 	
 	public void refreshGameList(View v){
 		//TODO retrieve the games from the server and update the list
+		
+		new Thread(new Runnable(){
+			public void run(){
+				GameClient.getInstance().requestGameItemsFromServer();
+			}
+		}).start();
+		
+		if(GameClient.getInstance().getGameItems() != null){
+			for(GameItem gi: GameClient.getInstance().getGameItems()){
+				gameItemAdapter.add(gi);
+			}
+		}
 	}
 	
 	public void itemAnswer(GameItem gameItem){

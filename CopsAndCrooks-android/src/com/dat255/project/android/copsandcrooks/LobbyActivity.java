@@ -1,5 +1,8 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

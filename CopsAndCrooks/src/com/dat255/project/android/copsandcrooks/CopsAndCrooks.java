@@ -38,8 +38,8 @@ public class CopsAndCrooks extends Game {
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
         
-        Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
-		GameClient.getInstance().connectToServer();
+//      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
+//		GameClient.getInstance().connectToServer();
         
         fpsLogger = new FPSLogger();
         assets = new Assets();
