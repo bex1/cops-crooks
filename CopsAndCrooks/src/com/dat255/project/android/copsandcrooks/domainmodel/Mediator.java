@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 
 /**
@@ -116,5 +117,19 @@ public final class Mediator implements IMediator {
 	public void schedule(Task task, float delay) {
 		if (timer != null)
 			new Timer().scheduleTask(task, delay);
+	}
+
+	@Override
+	public GameState checkState() {
+		if (gameModel != null) 
+			return gameModel.getGameState();
+		return null;
+	}
+
+	@Override
+	public Turn getCurrentTurn() {
+		if (gameModel != null) 
+			return gameModel.getCurrentTurn();
+		return null;
 	}
 }

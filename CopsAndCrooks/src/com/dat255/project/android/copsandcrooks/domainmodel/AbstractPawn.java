@@ -3,6 +3,8 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -156,7 +158,7 @@ public abstract class AbstractPawn implements IMovable {
 									deltaX > 0 ? Direction.EAST : Direction.WEST);
 	}
 
-	private void interactWithTile() {
+	protected void interactWithTile() {
 		// Check if the endTile is an interactive tile
 		if (currentTile instanceof IInteractiveTile) {
 			IInteractiveTile interactableTile = (IInteractiveTile) currentTile;
