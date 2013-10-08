@@ -1,14 +1,10 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 public class ReplayTable extends Table{
 	

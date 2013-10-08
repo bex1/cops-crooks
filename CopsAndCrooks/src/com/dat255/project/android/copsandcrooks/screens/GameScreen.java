@@ -79,6 +79,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	@Override
 	public void render(float delta){
+		model.update(delta);
 
 		stage.setCamera(camera);
 		renderer.setView(camera);

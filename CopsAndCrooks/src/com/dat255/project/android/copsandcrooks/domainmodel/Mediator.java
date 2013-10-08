@@ -3,7 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 
@@ -111,12 +110,6 @@ public final class Mediator implements IMediator {
 		if (gameModel != null) 
 			return gameModel.isCurrentPlayerOwnerOfPawn(movable);
 		return false;
-	}
-
-	@Override
-	public void schedule(Task task, float delay) {
-		if (timer != null)
-			new Timer().scheduleTask(task, delay);
 	}
 
 	@Override
