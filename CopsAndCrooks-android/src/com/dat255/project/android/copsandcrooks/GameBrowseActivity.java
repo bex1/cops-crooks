@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.lang.InterruptedException;
 import java.util.ArrayList;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
@@ -48,15 +49,21 @@ public class GameBrowseActivity extends Activity {
 		
 		new Thread(new Runnable(){
 			public void run(){
-				GameClient.getInstance().requestGameItemsFromServer();
+				List<GameItem> gameItems;
+				try{
+					gameItems = GameClient.getInstance().requestGameItemsFromServer();
+				}catch (InterruptedException e){
+					// refresh failed
+				}
+
+				if(gameItems != null){
+					for(GameItem gi: gameItems){
+						gameItemAdapter.add(gi);
+					}
+				}
+
 			}
 		}).start();
-		
-		if(GameClient.getInstance().getGameItems() != null){
-			for(GameItem gi: GameClient.getInstance().getGameItems()){
-				gameItemAdapter.add(gi);
-			}
-		}
 	}
 	
 	public void itemAnswer(GameItem gameItem){

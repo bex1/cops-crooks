@@ -14,6 +14,7 @@ public class GameClient {
 	private static GameClient instance;
 	private Client client;
 	private ArrayList<GameItem> gameItems;
+	private final Object lock = new Object();
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -56,6 +57,7 @@ public class GameClient {
 						for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
 							gameItems.add(gi);
 						}
+						lock.notify();
 					}
 				}
 			}
@@ -88,13 +90,19 @@ public class GameClient {
 	}
 	
 	// send a packet to the server requesting a list of games
-	public void requestGameItemsFromServer(){	
+	public ArrayList<GameItem> requestGameItemsFromServer() throws InterruptedException {
 		connectToServer();
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
 			Pck2_ClientRequestGames pck = new Pck2_ClientRequestGames();
 			client.sendTCP(pck);
 		}
+
+		synchronized (lock){
+			Thread.currentThread().wait();
+		}
+
+		return gameItems;
     }
 	
 	public ArrayList<GameItem> getGameItems(){
