@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -8,7 +9,7 @@ import java.util.List;
  * @author Grupp 25, course DAT255 at Chalmers Uni.
  *
  */
-public class TramLine {
+public class TramLine implements Serializable{
 	
 	private List<TramStopTile> tramLine;
 

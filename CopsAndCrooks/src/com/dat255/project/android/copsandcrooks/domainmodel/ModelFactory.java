@@ -32,7 +32,7 @@ public class ModelFactory {
 	 * @param userInfo
 	 * @return
 	 */
-	public GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo){
+	public GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo, String gameName ){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
@@ -142,10 +142,8 @@ public class ModelFactory {
 			}
 		}
 		
-		mediator.registerTimer(new Timer());
-		
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, players.get(0), players, walkable, tramLines);
+		return new GameModel(mediator, players.get(0), players, walkable, tramLines, gameName);
 	}
 	
 	/**
@@ -155,8 +153,8 @@ public class ModelFactory {
 	 * @param userInfo
 	 * @return
 	 */
-	public GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo){
-		GameModel model = loadGameModel(interact, userInfo);
+	public GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo, String gameName){
+		GameModel model = loadGameModel(interact, userInfo, gameName);
 		
 		//Here we place the pawns to a tile, this has already been set by the host
 		IWalkableTile[][] walkable = model.getWalkabletiles();
@@ -177,7 +175,7 @@ public class ModelFactory {
 	 * @return - Fully working gamemodel
 	 * @throws Exception
 	 */
-	public static GameModel loadLocalGameModel(GameModel model) throws Exception{
+	public static GameModel loadLocalGameModel(GameModel model, String gameName) throws Exception{
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		int mapWidth = model.getWalkabletiles().length;
@@ -187,7 +185,7 @@ public class ModelFactory {
 		
 		//Loads all the tiles again to give them the new mediator
 		IWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
-		IWalkableTile[][] newWalkableTile = new IWalkableTile[mapWidth][mapHeight];
+		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[mapWidth][mapHeight];
 		// Get All the metro lines
 		TramLine[] oldMetroLines = null;
 		oldMetroLines = model.getTramLines().toArray(oldMetroLines);
@@ -255,9 +253,7 @@ public class ModelFactory {
 			newPlayers.add(new Player(player.getName(), pawns, player.getPlayerRole(), mediator));
 		}
 		
-		mediator.registerTimer(new Timer());
-		
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines);
+		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines, gameName);
 	}
 }

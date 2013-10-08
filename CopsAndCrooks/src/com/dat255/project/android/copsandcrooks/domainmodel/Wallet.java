@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
@@ -11,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Wallet implements IObservable {
+public final class Wallet implements IObservable, Serializable {
 	
 	private int cash;
 	

@@ -17,7 +17,6 @@ public final class Mediator implements IMediator {
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;
-	private Timer timer;
 
 	@Override
 	public void registerGameModel(GameModel gameModel) {
@@ -27,11 +26,6 @@ public final class Mediator implements IMediator {
 	@Override
 	public void registerDice(Dice dice) {
 		this.dice = dice;
-	}
-	
-	@Override
-	public void registerTimer(Timer timer) {
-		this.timer = timer;
 	}
 
 	@Override
@@ -110,11 +104,5 @@ public final class Mediator implements IMediator {
 		if (gameModel != null) 
 			return gameModel.isCurrentPlayerOwnerOfPawn(movable);
 		return false;
-	}
-
-	@Override
-	public void schedule(Task task, float delay) {
-		if (timer != null)
-			new Timer().scheduleTask(task, delay);
 	}
 }

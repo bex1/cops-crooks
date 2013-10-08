@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -12,7 +13,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public abstract class AbstractPawn implements IMovable {
+public abstract class AbstractPawn implements IMovable, Serializable {
 	
 	private Role pawnRole;
 	private PawnType pawnType;

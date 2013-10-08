@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +19,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public abstract class AbstractWalkableTile implements IWalkableTile{
+public abstract class AbstractWalkableTile implements IWalkableTile, Serializable{
 
 	private PawnType occupiedBy;
 	private Point position;
