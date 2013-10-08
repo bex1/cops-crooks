@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Timer;
@@ -14,7 +16,7 @@ import com.badlogic.gdx.utils.Timer.Task;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-interface IMediator {
+interface IMediator extends Serializable{
 	/**
 	 * Register the game model for communication.
 	 * 
@@ -28,13 +30,6 @@ interface IMediator {
 	 * @param dice to register for communication.
 	 */
 	void registerDice(Dice dice);
-	
-	/**
-	 * Register timer for communication.
-	 * 
-	 * @param timer to register for communication.
-	 */
-	void registerTimer(Timer timer);
 	
 	/**
 	 * Register the pathfinder for communication.
@@ -112,6 +107,4 @@ interface IMediator {
 	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 
 	boolean isItMyPlayerTurn(AbstractPawn movable);
-
-	void schedule(Task task, float delay);
 }

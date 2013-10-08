@@ -1,13 +1,16 @@
 package com.dat255.project.android.copsandcrooks.map;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.Utilities;
-
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -47,7 +50,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This Class creates everything you need to create a game
- * (You need to call and set the assets, it may give you errors otherwise)
+ * (You need to call init before using methods in Gamefactory)
  * @author Group 25
  *
  */
@@ -58,11 +61,18 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
+	private static final String absolutPath = "saved-games";
+	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
 		readTMXMap();
 	}
 	
+	public GameFactory(Assets assets) {
+		this();
+		this.assets = assets;
+	}
+
 	public static GameFactory getInstance(){
 		if(instance == null){
 			instance = new GameFactory();
@@ -70,15 +80,19 @@ public class GameFactory {
 		return instance;
 	}
 	
-	public void setAssets(Assets assets){
-		this.assets = assets;
+	public void checkAssets() throws NullPointerException{
+		if(assets == null)
+			throw new NullPointerException("You haven't loaded assets so you cant use any methods");
+	}
+	
+	public void init(Assets assets){
+		this.assets = assets;		
 	}
 	
 	private  void readTMXMap(){
 		// This loads a TMX file
-		map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx");  
-		
-		try {
+		map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx"); 
+		try { 
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
 			mapLayerInteract = (TiledMapTileLayer)map.getLayers().get("interact");
 		} catch (Exception e) {
@@ -89,12 +103,12 @@ public class GameFactory {
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 	}
 	
-	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo){
-		
+	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo, String gameName){
+		checkAssets();
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		//Loads a GameModel
-		GameModel model = modelFactory.loadGameModel(mapLayerInteract, userInfo);
+		GameModel model = modelFactory.loadGameModel(mapLayerInteract, userInfo, gameName);
 		Collection<? extends IPlayer> players = model.getPlayers();
 		
 		List<Actor> actors = addActor(players);
@@ -102,16 +116,16 @@ public class GameFactory {
 			actors.add(new HideoutActor(assets, hideout, players, hudStage));
 			new HideoutOptionsTable(assets, hideout, hudStage);
 		}
-		
+		this.saveModelToFile(model);
 		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
 	}
 	
-	public Screen loadHostedGame(CopsAndCrooks game, Map<Integer, Point> pawnsPoint, Map<String, Role> userInfo){
-		
+	public Screen loadHostedGame(CopsAndCrooks game, Map<Integer, Point> pawnsPoint, Map<String, Role> userInfo, String gameName){
+		checkAssets();
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 		
-		GameModel model = modelFactory.loadHostedGameModel(pawnsPoint, mapLayerInteract , userInfo);
+		GameModel model = modelFactory.loadHostedGameModel(pawnsPoint, mapLayerInteract , userInfo, gameName);
 		Collection<? extends IPlayer> players = model.getPlayers();
 		
 		List<Actor> actors = addActor(players);
@@ -124,12 +138,12 @@ public class GameFactory {
 	
 	} 
 
-	public Screen loadLocalGame(CopsAndCrooks game, GameModel model){
+	public Screen loadLocalGame(CopsAndCrooks game, GameModel model, String gameName){
 		//TODO REmove GameModel as a Parameter
-
+		checkAssets();
 		GameModel newModel;
 		try {
-			newModel = ModelFactory.loadLocalGameModel(model);
+			newModel = ModelFactory.loadLocalGameModel(model, gameName);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
@@ -352,6 +366,7 @@ public class GameFactory {
 	 * @return A list of PathActors.
 	 */
 	public List<PathActor> getPathActorsFor(Collection<TilePath> paths, IPlayer player) {
+		checkAssets();
 		TextureAtlas atlas = assets.getAtlas();
 		
 		List<PathActor> pathActors = new ArrayList<PathActor>();
@@ -399,6 +414,7 @@ public class GameFactory {
 	 * @return A list of PathActors.
 	 */
 	public List<MetroLineActor> getMetroActorsFor(Collection<TilePath> paths, IPlayer player) {
+		checkAssets();
 		TextureAtlas atlas = assets.getAtlas();
 		
 		List<MetroLineActor> pathActors = new ArrayList<MetroLineActor>();
@@ -429,6 +445,37 @@ public class GameFactory {
 			pathActors.add(new MetroLineActor(path, pathImages, pathClick, player));
 		}
 		return pathActors;
+	}
+	
+	TiledMapTileLayer getInteract(){
+		return mapLayerInteract;
+	}
+	
+	public void saveModelToFile(GameModel game){
+		System.out.println(absolutPath);
+		File dir = new File(absolutPath, game.gameName);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		File savefile = new File(dir, "model.ser");
+		try {
+			savefile.createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	    try {
+	      ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
+	      out.writeObject(game);
+
+	      out.close();
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	
+	    }
+	}
+	
+	public GameModel loadModelFromFile(String name){
+		
 	}
 	
 	private DiceActor getDiceActorFor(Dice dice) {

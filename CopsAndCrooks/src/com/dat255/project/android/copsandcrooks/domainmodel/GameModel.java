@@ -2,16 +2,16 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
-public final class GameModel implements IObservable  {
+public final class GameModel implements IObservable, Serializable{
 
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
@@ -20,14 +20,15 @@ public final class GameModel implements IObservable  {
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 	private final Dice dice;
-	private final IMediator mediator;
+	private IMediator mediator;
 
 	// Added only because of you need to be able to get them when you load a hosted game
-	private final IWalkableTile[][] walkable;
+	private final AbstractWalkableTile[][] walkable;
 	private final Collection<TramLine> tramLines;
 	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	public static final String PROPERTY_GAME_ENDED = "GameEnded";
+	public final String gameName;
 	
 	private class ChangePlayerTask extends Task {
 
@@ -40,7 +41,7 @@ public final class GameModel implements IObservable  {
 		}
 	}
 
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles, Collection<TramLine> tramLines) {
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -50,6 +51,7 @@ public final class GameModel implements IObservable  {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 
+		this.gameName = gameName;
 		this.mediator = mediator;
 		this.playerClient = playerClient;
 		this.players = players;
@@ -82,7 +84,7 @@ public final class GameModel implements IObservable  {
 
 	void nextPlayer(float delay){
 		if (delay > 0) {
-			mediator.schedule(new ChangePlayerTask(), delay);
+			
 		} else {
 			changePlayer();
 		}
@@ -219,4 +221,5 @@ public final class GameModel implements IObservable  {
 	public boolean isCurrentPlayerOwnerOfPawn(AbstractPawn movable) {
 		return currentPlayer != null && currentPlayer.getPawns().contains(movable);
 	}
+
 }

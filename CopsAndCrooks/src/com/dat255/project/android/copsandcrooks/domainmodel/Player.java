@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class Player implements IPlayer {
+public class Player implements IPlayer, Serializable {
 	private final IMediator mediator;
 
 	private final List<AbstractPawn> pawns;

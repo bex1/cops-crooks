@@ -2,13 +2,14 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Random;
 
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
-public final class Dice implements IObservable {
+public final class Dice implements IObservable, Serializable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
@@ -43,7 +44,6 @@ public final class Dice implements IObservable {
 	
 	void roll(Player player) {
 		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, true);
-		mediator.schedule(new RollTask(player), 1.4f);
 	}
 
 	@Override

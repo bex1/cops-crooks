@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public final class PathFinder {
+public final class PathFinder implements Serializable {
 	private final AbstractWalkableTile[][] tiles;
 	private final List<TramLine> metroLines;
 	private final IMediator mediator;
