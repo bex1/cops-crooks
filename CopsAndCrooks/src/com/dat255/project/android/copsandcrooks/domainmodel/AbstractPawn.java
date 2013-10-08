@@ -3,8 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 

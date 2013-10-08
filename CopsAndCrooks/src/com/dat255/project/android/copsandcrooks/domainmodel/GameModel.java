@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Timer.Task;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
@@ -24,6 +22,9 @@ public final class GameModel implements IObservable  {
 	private final PropertyChangeSupport pcs;
 	private final Dice dice;
 	private final IMediator mediator;
+	private boolean isChangingPlayer;
+	private float changePlayerTimer;
+	private float changePlayerDelay;
 
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final IWalkableTile[][] walkable;
@@ -40,17 +41,6 @@ public final class GameModel implements IObservable  {
 		Replay,
 		Playing,
 		Waiting,
-	}
-	
-	private class ChangePlayerTask extends Task {
-
-		@Override
-		public void run () {
-			currentPlayer.getCurrentPawn().setIsActivePawn(false);
-			changePlayer();
-			//changePlayerTimer.stop();
-			this.cancel();
-		}
 	}
 
 	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final IWalkableTile[][] tiles, Collection<TramLine> tramLines) {
@@ -101,6 +91,18 @@ public final class GameModel implements IObservable  {
 			state = GameState.Waiting;
 		}
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+	}
+	
+	public void update(float deltaTime) {
+		if (isChangingPlayer) {
+			changePlayerTimer += deltaTime;
+			if (changePlayerTimer >= changePlayerDelay) {
+				currentPlayer.getCurrentPawn().setIsActivePawn(false);
+				changePlayer();
+				isChangingPlayer = false;
+				changePlayerTimer = 0;
+			}
+		}
 	}
 	
 	public void addReplayTurns(LinkedList<Turn> turns) {
@@ -166,8 +168,11 @@ public final class GameModel implements IObservable  {
 
 	void nextPlayer(float delay){
 		if (delay > 0) {
-			mediator.schedule(new ChangePlayerTask(), delay);
+			isChangingPlayer = true;
+			changePlayerDelay = delay;
+			changePlayerTimer = 0;
 		} else {
+			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
 		}
 	}

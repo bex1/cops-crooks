@@ -13,6 +13,10 @@ public final class Dice implements IObservable {
 	private final Random rand = new Random();
 	private final IMediator mediator;
 	private int diceResult;
+	private boolean isRolling;
+	private float isRollingTimer;
+	private static final float ROLL_DELAY = 1.4f;
+	private Player player;
 	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
@@ -40,9 +44,24 @@ public final class Dice implements IObservable {
 		mediator.registerDice(this);
 	}
 	
+	public void update(float deltaTime) {
+		if (isRolling) {
+			isRollingTimer += deltaTime;
+			if (isRollingTimer >= ROLL_DELAY) {
+				isRolling = false;
+				isRollingTimer = 0;
+				diceResult = 1 + rand.nextInt(6);
+				pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+				player.diceResult(diceResult);
+			}
+		}
+	}
+	
 	void roll(Player player) {
+		this.player = player;
 		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, true);
-		mediator.schedule(new RollTask(player), 1.4f);
+		isRolling = true;
+		isRollingTimer = 0;
 	}
 
 	@Override

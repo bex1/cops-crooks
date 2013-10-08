@@ -6,8 +6,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.Utilities;
-
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 
 /**

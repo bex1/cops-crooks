@@ -3,7 +3,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 /**
@@ -113,8 +112,6 @@ interface IMediator {
 	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 
 	boolean isItMyPlayerTurn(AbstractPawn movable);
-
-	void schedule(Task task, float delay);
 	
 	GameState checkState();
 	
