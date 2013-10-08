@@ -1,8 +1,11 @@
 package com.dat255.project.android.copsandcrooks.map;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +64,7 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
-	private static final String absolutPath = "saved-games";
+	private static final String absolutPath = "saved-games/";
 	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
@@ -138,23 +141,23 @@ public class GameFactory {
 	
 	} 
 
-	public Screen loadLocalGame(CopsAndCrooks game, GameModel model, String gameName){
+	public Screen loadLocalGame(CopsAndCrooks game, String gameName){
 		//TODO REmove GameModel as a Parameter
 		checkAssets();
 		GameModel newModel;
 		try {
-			newModel = ModelFactory.loadLocalGameModel(model, gameName);
+			newModel = ModelFactory.loadLocalGameModel(this.loadModelFromFile(gameName), gameName);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 			
-			for (HideoutTile hideout : model.getHideouts()) {
+			for (HideoutTile hideout : newModel.getHideouts()) {
 				actors.add(new HideoutActor(assets, hideout, newModel.getPlayers(), hudStage));
 				new HideoutOptionsTable(assets, hideout, hudStage);
 			}
 			
 			return new GameScreen(assets, game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
+					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(newModel.getDice()));
 	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -475,7 +478,15 @@ public class GameFactory {
 	}
 	
 	public GameModel loadModelFromFile(String name){
-		
+		File fileToLoad = new File(absolutPath + name + "model.ser");
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
+			in.close();
+			return (GameModel) in.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} 
 	}
 	
 	private DiceActor getDiceActorFor(Dice dice) {
