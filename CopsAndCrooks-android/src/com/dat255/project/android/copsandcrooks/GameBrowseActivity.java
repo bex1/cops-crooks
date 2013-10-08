@@ -1,6 +1,8 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.lang.InterruptedException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -39,32 +41,35 @@ public class GameBrowseActivity extends Activity {
 	
 	//for testing
 	public void newItem(View v){
-		GameItem gi = new GameItem("new item", 5);
-		gameItemAdapter.add(gi);
+		if(GameClient.getInstance().getGameItems() != null){
+			System.out.println("Game list not null");
+			gameItemAdapter.getData().clear();
+			for(GameItem gi: GameClient.getInstance().getGameItems()){
+				gameItemAdapter.add(gi);
+			}						
+		} else {
+			System.out.println("Game list is null!");
+		}
 	}
 	
 	public void refreshGameList(View v){
-		//TODO retrieve the games from the server and update the list
-		
-//		new Thread(new Runnable(){
-//			public void run(){
-//				GameClient.getInstance().requestGameItemsFromServer();
-//				
-//				try 
-//					this
-//                } catch (InterruptedException e) {
-//	                // TODO Auto-generated catch block
-//	                e.printStackTrace();
-//                }
-//				
-//				if(GameClient.getInstance().getGameItems() != null){
-//					for(GameItem gi: GameClient.getInstance().getGameItems()){
+		new Thread(new Runnable(){
+			public void run(){
+				GameClient.getInstance().requestGameItemsFromServer();
+//				List<GameItem> gameItems = null;
+//				try{
+//					gameItems = GameClient.getInstance().requestGameItemsFromServer();
+//				}catch (InterruptedException e){
+					// refresh failed
+//				}
+
+//				if(gameItems != null){
+//					for(GameItem gi: gameItems){
 //						gameItemAdapter.add(gi);
 //					}
 //				}
-//			}
-//		}).start();
-
+			}
+		}).start();
 	}
 	
 	public void itemAnswer(GameItem gameItem){
