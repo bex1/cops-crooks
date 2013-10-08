@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks;
 
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

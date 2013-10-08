@@ -1,16 +1,19 @@
 package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
+
 public class GameClient {
 	
 	private static GameClient instance;
 	private Client client;
+	private ArrayList<GameItem> gameItems;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -20,33 +23,46 @@ public class GameClient {
 	}
 
 	private GameClient(){
+		// initialize client
 		client = new Client();
 		Network.register(client);
+		final ArrayList<GameItem> gameItems = new ArrayList<GameItem>();
 		
 		this.client.addListener(new Listener(){
+			// connected to the server
 			@Override
 			public void connected(Connection connection) {
 				// send a request to join the server
 				Pck0_ClientHandshake pck = new Pck0_ClientHandshake();
 				pck.message = "Client says hi!";
-				Gdx.app.log(CopsAndCrooks.LOG, "Network: Connecting..");
+				System.out.println("Network: Connecting..");
 				client.sendTCP(pck);
 			}
 
+			// received a packet
 			public void received(Connection con, Object pck) {
 				super.received(con, pck);
 				if (pck instanceof Packet) {
-					Gdx.app.log(CopsAndCrooks.LOG, "Network: Received!");
+					System.out.println("Network: Received!");
 
+					// server sent a handshake
 					if(pck instanceof Pck1_ServerHandshake){
-						System.out.println(((Pck1_ServerHandshake) pck).message);
+						System.out.println("Server says: " + ((Pck1_ServerHandshake) pck).message);
+					}
+					
+					// server sent a list of games
+					if(pck instanceof Pck3_GameItems){
+						gameItems.clear();
+						for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
+							gameItems.add(gi);
+						}
 					}
 				}
 			}
 
 			@Override
 			public void disconnected(Connection connection) {
-				Gdx.app.log(CopsAndCrooks.LOG, "Network: Disconnected!");
+				System.out.println( "Network: Disconnected!");
 			}
 		});
 		
@@ -54,18 +70,34 @@ public class GameClient {
 	}
 	
 	public void connectToServer(){
-		try {
-			Gdx.app.log(CopsAndCrooks.LOG, "Network: Trying to connect..");
-			client.connect(2000, "127.0.0.1", Network.PORT);
-		if(client.isConnected())
-				Gdx.app.log(CopsAndCrooks.LOG, "Network: Connected!");
-			else
-				Gdx.app.log(CopsAndCrooks.LOG, "Network: Not connected!");
-		} catch (IOException e) {
-			Gdx.app.log(CopsAndCrooks.LOG, "Network: Failed to connect!");
-			e.printStackTrace();
-			client.stop();
-			return;
+		if(!client.isConnected()){
+			try {
+				System.out.println("Network: Trying to connect..");
+				client.connect(5000, "192.168.1.3", Network.PORT);
+			if(client.isConnected())
+				System.out.println("Network: Connected!");
+				else
+					System.out.println("Network: Not connected!");
+			} catch (IOException e) {
+				System.out.println("Network: Failed to connect!");
+				e.printStackTrace();
+				client.stop();
+				return;
+			}
 		}
+	}
+	
+	// send a packet to the server requesting a list of games
+	public void requestGameItemsFromServer(){	
+		connectToServer();
+		if(client.isConnected()){
+			System.out.println("Network: Requesting list of games from server..");
+			Pck2_ClientRequestGames pck = new Pck2_ClientRequestGames();
+			client.sendTCP(pck);
+		}
+    }
+	
+	public ArrayList<GameItem> getGameItems(){
+		return gameItems;
 	}
 }
