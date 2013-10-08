@@ -43,15 +43,16 @@ public class GameClient {
 			public void received(Connection con, Object pck) {
 				super.received(con, pck);
 				if (pck instanceof Packet) {
-					System.out.println("Network: Received!");
+					System.out.println("Network: Received packet!");
 
 					// server sent a handshake
 					if(pck instanceof Pck1_ServerHandshake){
-						System.out.println("Server says: " + ((Pck1_ServerHandshake) pck).message);
+						System.out.println("Network: Server says: " + ((Pck1_ServerHandshake) pck).message);
 					}
 					
 					// server sent a list of games
 					if(pck instanceof Pck3_GameItems){
+						System.out.println("Network: Received a list of games.");
 						gameItems.clear();
 						for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
 							gameItems.add(gi);
@@ -73,7 +74,7 @@ public class GameClient {
 		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
-				client.connect(5000, "192.168.1.3", Network.PORT);
+				client.connect(60000, "192.168.1.3", Network.PORT);
 			if(client.isConnected())
 				System.out.println("Network: Connected!");
 				else
