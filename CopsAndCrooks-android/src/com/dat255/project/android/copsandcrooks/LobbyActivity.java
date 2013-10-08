@@ -43,6 +43,8 @@ public class LobbyActivity extends Activity {
 		gameItem.addPlayer(new PlayerItem("Player #2"));
 		gameItem.addPlayer(new PlayerItem("Player #3"));
 		
+		updatePlayerList();
+		
 		//TODO add gameItem to server somehow (I don't know...)
 	}
 
@@ -55,10 +57,20 @@ public class LobbyActivity extends Activity {
 	
 	public void updatePlayerList(){
 		playerListAdapter.clear();
-		for(PlayerItem p: gameItem.getPlayers()){
+		/*for(PlayerItem p: gameItem.getPlayers()){
 			playerListAdapter.add(p.getName());
-		}
+		}*/
+		playerListAdapter.add("");
+		playerListAdapter.add(gameItem.getPlayers().get(1).getName());
 		playerListAdapter.notifyDataSetChanged();
+	}
+	
+	public void updatePlayerCapTextView(int players){
+		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap());
+	}
+	
+	public void playerJoin(PlayerItem player){
+		
 	}
 	
 	public void startGame(View v){

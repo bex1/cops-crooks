@@ -4,8 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
-import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.dat255.project.android.copsandcrooks.Main;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 public final class Dice implements IObservable {
@@ -27,7 +29,10 @@ public final class Dice implements IObservable {
 
 		@Override
 		public void run () {
-			diceResult = 1 + rand.nextInt(6);
+			if(Gdx.app.getType()==Application.ApplicationType.Desktop)
+				diceResult = Main.getDiceDebugValue();
+			else
+				diceResult = 1 + rand.nextInt(6);
 			pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
 			player.diceResult(diceResult);
 			this.cancel();
