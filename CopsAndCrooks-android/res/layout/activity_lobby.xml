@@ -11,13 +11,15 @@
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game Lobby" />
+            android:text="@string/game_lobby"
+            android:textSize="30sp" />
 
     </TableRow>
 
@@ -30,12 +32,14 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game name:" />
+            android:text="@string/game_name"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/gameNameTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
 
     </TableRow>
 
@@ -48,13 +52,15 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Players: " />
+            android:text="@string/lobby_players"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/playerCapTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="18sp" />
 
     </TableRow>
 
@@ -82,14 +88,8 @@
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Game"
+            android:text="@string/lobby_start_game"
             android:onClick="startGame" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
 
     </TableRow>
     
