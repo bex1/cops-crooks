@@ -146,7 +146,8 @@ public class GameFactory {
 		checkAssets();
 		GameModel newModel;
 		try {
-			newModel = ModelFactory.loadLocalGameModel(this.loadModelFromFile(gameName), gameName);
+			GameModel oldModel = this.loadModelFromFile(gameName);
+			newModel = ModelFactory.loadLocalGameModel(oldModel, gameName);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
@@ -478,15 +479,20 @@ public class GameFactory {
 	}
 	
 	public GameModel loadModelFromFile(String name){
-		File fileToLoad = new File(absolutPath + name + "model.ser");
+		File fileToLoad = new File(absolutPath + name + "/model.ser");
+		if(!fileToLoad.exists()){
+			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
+		}
+		GameModel loadmodel;
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
+			loadmodel = (GameModel) in.readObject();
 			in.close();
-			return (GameModel) in.readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		} 
+		return loadmodel;
 	}
 	
 	private DiceActor getDiceActorFor(Dice dice) {
