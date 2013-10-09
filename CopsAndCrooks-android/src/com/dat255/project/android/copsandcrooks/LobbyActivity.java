@@ -83,4 +83,8 @@ public class LobbyActivity extends Activity {
 		startActivity(intent);
 		finish();
 	}
+	
+	public void joinGame(View v){
+		System.out.println("lol u join");
+	}
 }

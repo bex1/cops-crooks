@@ -89,11 +89,18 @@
         android:layout_weight="0" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/button_start_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lobby_start_game"
-            android:onClick="startGame" />
+            android:onClick="startGame"
+            android:text="@string/lobby_start_game" />
+
+        <Button
+            android:id="@+id/button_join_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="joinGame"
+            android:text="@string/join_game" />
 
     </TableRow>
     
