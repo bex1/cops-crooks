@@ -1,8 +1,9 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,13 +69,11 @@ public class HostActivity extends Activity {
 		@Override
 		public void onStartTrackingTouch(SeekBar arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 	};
 	
@@ -99,9 +98,17 @@ public class HostActivity extends Activity {
 	}
 	
 	public void hostGame(View v){
+		System.out.println("Network: Creating game");
+		
+		GameItem gameItem = new GameItem();
+		gameItem.setName("Testgame");
+		gameItem.setHostId(Installation.id(getApplicationContext()));
+		gameItem.addPlayer(new PlayerItem("Nisse"));
+		
+		GameClient.getInstance().sendCreatedGame(gameItem);
+		
+		
 		Intent intent = new Intent(this, LobbyActivity.class);
-		GameItem gameItem = new GameItem(gameName, playerCap);
-		//gameItem.setHostId( id from client?! );
 		intent.putExtra(GAME_ITEM, gameItem);
 		startActivity(intent);
 		finish();

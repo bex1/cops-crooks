@@ -23,6 +23,7 @@ public class Network {
 		kryo.register(Pck3_GameItems.class);
 		kryo.register(GameItem.class);
 		kryo.register(PlayerItem.class);
+		kryo.register(Pck4_PlayerItem.class);
 	}
 
 	/** Packet */
@@ -58,8 +59,14 @@ public class Network {
 	public static class Pck2_ClientRequestGames extends Packet{
 	}
 
-	/** Message */
+	/** Game item */
 	public static class Pck3_GameItems extends Packet{
 		public ArrayList<GameItem> gameItems;
+	}
+	
+	/** Player item */
+	public static class Pck4_PlayerItem extends Packet{
+		public int gameID;
+		public PlayerItem playerItem;
 	}
 }

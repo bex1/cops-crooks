@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TreeMap;
 
 import com.esotericsoftware.kryonet.*;
 
@@ -18,10 +19,12 @@ public class GameServer {
 		gameItems = new ArrayList<GameItem>();
 		
 		// test games
-		gameItems.add(new GameItem("Olle's game", 5));
-		gameItems.add(new GameItem("Victor's game", 5));
-		gameItems.add(new GameItem("Nisse's game", 5));
-		
+		GameItem testGame = new GameItem();
+		testGame.setID(5);
+		testGame.setName("Olle's testgame");
+		testGame.setHostId("1234");
+		gameItems.add(testGame);
+				
 		// initialize server
 		server = new Server();
 		Network.register(server);
@@ -47,7 +50,6 @@ public class GameServer {
 				    }
 
 					// client requested a list of game items
-					
 					if(packet instanceof Pck2_ClientRequestGames){
 						System.out.println(new Timestamp(System.currentTimeMillis()).toString().substring(0, 19) + " " + "Client #" + clientID + ": requesting list of games");
 						
@@ -58,6 +60,24 @@ public class GameServer {
 
 						System.out.println(new Timestamp(System.currentTimeMillis()).toString().substring(0, 19) + " " + "Client #" + clientID + ": sent list of games");
 				    }
+					
+					// client sent a created game
+					if(packet instanceof Pck3_GameItems){
+						System.out.println(new Timestamp(System.currentTimeMillis()).toString().substring(0, 19) + " " + "Client #" + clientID + ": sent a created game");
+						Pck3_GameItems gamePck = ((Pck3_GameItems)packet);
+						gameItems.add(gamePck.gameItems.get(0));
+					}
+					
+					// client joins a game
+					if(packet instanceof Pck4_PlayerItem){
+						System.out.println(new Timestamp(System.currentTimeMillis()).toString().substring(0, 19) + " " + "Client #" + clientID + ": join a game");
+						Pck4_PlayerItem gamePck = ((Pck4_PlayerItem)packet);
+						for(GameItem game : gameItems){
+							if(game.getID() == gamePck.gameID){
+								game.addPlayer(gamePck.playerItem);
+							}
+						}
+					}
 				}
 			}
 			
