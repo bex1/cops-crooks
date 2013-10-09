@@ -40,9 +40,6 @@ public final class Dice implements IObservable, Serializable {
 	}
 
 	private Dice() {
-		/*if (mediator == null)
-			throw new IllegalArgumentException("Mediator not allowed to be null");
-		mediator.registerDice(this);*/
 	}
 	
 	public static Dice getInstance(){
