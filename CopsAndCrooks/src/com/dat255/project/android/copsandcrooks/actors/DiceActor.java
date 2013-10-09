@@ -56,6 +56,7 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	public void act(float delta){
 		super.act(delta);
 		if (this.isVisible()) {
+			dice.update(delta);
 			animTimer += delta;
 			drawable.setRegion(animation.getKeyFrame(animTimer, true));
 		}

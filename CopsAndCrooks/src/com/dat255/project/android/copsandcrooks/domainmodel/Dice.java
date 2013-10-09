@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Random;
 
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
@@ -14,6 +13,10 @@ public final class Dice implements IObservable, Serializable {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
 	private int diceResult;
+	private boolean isRolling;
+	private float isRollingTimer;
+	private static final float ROLL_DELAY = 1.4f;
+	private Player player;
 	
 	private static Dice instance= null;
 	
@@ -49,8 +52,24 @@ public final class Dice implements IObservable, Serializable {
 		return instance;
 	}
 	
+	public void update(float deltaTime) {
+		if (isRolling) {
+			isRollingTimer += deltaTime;
+			if (isRollingTimer >= ROLL_DELAY) {
+				isRolling = false;
+				isRollingTimer = 0;
+				diceResult = 1 + rand.nextInt(6);
+				pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
+				player.diceResult(diceResult);
+			}
+		}
+	}
+	
 	void roll(Player player) {
+		this.player = player;
 		pcs.firePropertyChange(PROPERTY_DICE_ROLLING, false, true);
+		isRolling = true;
+		isRollingTimer = 0;
 	}
 
 	@Override

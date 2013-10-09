@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
+
 
 /**
  * A crook pawn in the game Cops&Crooks.
@@ -28,6 +30,26 @@ public class Crook extends AbstractWalkingPawn {
 		return isWanted;
 	}
 	
+	@Override
+	protected void interactWithTile() {
+		if (mediator.checkState() == GameState.Replay) {
+			if (currentTile instanceof HideoutTile) {
+				HideoutTile hideout = (HideoutTile)currentTile;
+				switch (mediator.getCurrentTurn().getHideoutChoice()) {
+				case Deposit:
+					hideout.depositCash(this);
+					break;
+				case Withdraw:
+					hideout.withdrawCash(this);
+					return;
+				default:
+					break;
+				}
+			}
+		} 
+		super.interactWithTile();
+	}
+
 	/**
 	 * Sets if the crook is wanted or not.
 	 * @param wanted true if the crook is wanted, false otherwise.
