@@ -13,8 +13,9 @@ public final class Dice implements IObservable, Serializable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
-	private final IMediator mediator;
 	private int diceResult;
+	
+	private static Dice instance= null;
 	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
@@ -35,11 +36,17 @@ public final class Dice implements IObservable, Serializable {
 		}
 	}
 
-	public Dice(IMediator mediator) {
-		if (mediator == null)
+	private Dice() {
+		/*if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
-		this.mediator = mediator;
-		mediator.registerDice(this);
+		mediator.registerDice(this);*/
+	}
+	
+	public static Dice getInstance(){
+		if(instance == null){
+			instance = new Dice();
+		}
+		return instance;
 	}
 	
 	void roll(Player player) {

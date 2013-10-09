@@ -19,9 +19,6 @@ public final class GameModel implements IObservable, Serializable{
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
-	private final Dice dice;
-	private IMediator mediator;
-
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
 	private final Collection<TramLine> tramLines;
@@ -52,12 +49,11 @@ public final class GameModel implements IObservable, Serializable{
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 
 		this.gameName = gameName;
-		this.mediator = mediator;
 		this.playerClient = playerClient;
 		this.players = players;
-		this.dice = new Dice(mediator);
 		this.walkable = tiles;
 		this.tramLines = tramLines;
+		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
@@ -200,10 +196,6 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		}
 		return false;
-	}
-	
-	public Dice getDice(){
-		return dice;
 	}
 	
 	public IWalkableTile[][] getWalkabletiles(){
