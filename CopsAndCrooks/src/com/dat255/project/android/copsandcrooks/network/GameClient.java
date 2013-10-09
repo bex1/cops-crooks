@@ -2,9 +2,6 @@ package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -14,7 +11,6 @@ public class GameClient {
 	private static GameClient instance;
 	private Client client;
 	private ArrayList<GameItem> gameItems;
-	private final Object lock = new Object();
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -53,15 +49,12 @@ public class GameClient {
 					
 					// server sent a list of games
 					if(pck instanceof Pck3_GameItems){
-//						synchronized(this){
-							System.out.println("Network: Received a list of games.");
-							gameItems.clear();
-							for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
-								gameItems.add(gi);
-								System.out.println("Network: Added a game.");
-							}
-//							notify();
-//						}
+						System.out.println("Network: Received a list of games.");
+						gameItems.clear();
+						for(GameItem gi : ((Pck3_GameItems)pck).gameItems){
+							gameItems.add(gi);
+							System.out.println("Network: Added a game.");
+						}
 					}
 				}
 			}
@@ -79,7 +72,7 @@ public class GameClient {
 		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
-				client.connect(60000, "192.168.1.3", Network.PORT);
+				client.connect(60000, "192.168.1.4", Network.PORT);
 			if(client.isConnected())
 				System.out.println("Network: Connected!");
 				else
@@ -94,7 +87,6 @@ public class GameClient {
 	}
 	
 	// send a packet to the server requesting a list of games
-//	public List requestGameItemsFromServer() throws InterruptedException {
 	public void requestGameItemsFromServer() {
 		connectToServer();
 		if(client.isConnected()){
@@ -102,13 +94,6 @@ public class GameClient {
 			Pck2_ClientRequestGames pck = new Pck2_ClientRequestGames();
 			client.sendTCP(pck);
 		}
-
-//		synchronized(this){
-//			
-//			Thread.currentThread().wait();
-//		}
-
-//		return gameItems;
     }
 	
 	public ArrayList<GameItem> getGameItems(){

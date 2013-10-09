@@ -29,7 +29,6 @@ public class HostActivity extends Activity {
 	
 	public static final String GAME_ITEM = "GAME_ITEM";
 	
-//	@SuppressLint("NewApi") //TODO use a lower requirement
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +41,14 @@ public class HostActivity extends Activity {
 		
 		playerCapSeekBar.setOnSeekBarChangeListener(playerCapListener);
 		gameNameEditText.setOnKeyListener(gameNameListener);
+		
+		//hostGameButton.setClickable(false);
+		
+		playerCap = 2;
+		
+		//testing
+		gameNameEditText.setText("test game");
+		
 	}
 
 	@Override
@@ -75,28 +82,24 @@ public class HostActivity extends Activity {
 	public OnKeyListener gameNameListener = new OnKeyListener(){
 
 		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) {
+		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 			gameName = gameNameEditText.getText().toString();
-			
 			hostButtonEnabled(gameName.equals(null) || gameName.length() == 0);
+			
 			return false;
 		}
 		
 	};
 	
-//	@SuppressLint("NewApi")
 	public void hostButtonEnabled(boolean status){
 		if(status){
 			hostGameButton.setClickable(false);
-//			hostGameButton.setAlpha(0.5f);
 		}else{
 			hostGameButton.setClickable(true);
-//			hostGameButton.setAlpha(1);
 		}
 	}
 	
 	public void hostGame(View v){
-		//TODO host a game & start a lobby
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(GAME_ITEM, new GameItem(gameName, playerCap));
 		startActivity(intent);
