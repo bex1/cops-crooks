@@ -1,6 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-public class Turn {
+import java.io.Serializable;
+
+public class Turn implements Serializable{
 	public enum HideoutChoice {
 		Withdraw,
 		Deposit,
