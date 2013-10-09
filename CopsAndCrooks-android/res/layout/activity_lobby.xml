@@ -11,13 +11,15 @@
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game Lobby" />
+            android:text="@string/game_lobby"
+            android:textSize="30sp" />
 
     </TableRow>
 
@@ -30,12 +32,14 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game name:" />
+            android:text="@string/game_name"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/gameNameTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
 
     </TableRow>
 
@@ -48,25 +52,31 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Players: " />
+            android:text="@string/lobby_players"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/playerCapTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="18sp" />
 
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
 
         <ListView
             android:id="@+id/playerListView"
             android:layout_width="match_parent"
-            android:layout_height="0dip" >
+            android:layout_height="match_parent"
+            tools:listheader="@android:layout/simple_list_item_1"
+            tools:listitem="@android:layout/simple_list_item_1" >
+
         </ListView>
 
     </TableRow>
@@ -76,20 +86,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:layout_weight="1" >
+        android:layout_weight="0" >
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Game"
+            android:text="@string/lobby_start_game"
             android:onClick="startGame" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
 
     </TableRow>
     

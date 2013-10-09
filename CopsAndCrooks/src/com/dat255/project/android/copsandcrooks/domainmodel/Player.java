@@ -34,6 +34,7 @@ public class Player implements IPlayer {
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_SELECTED_PAWN = "TheSelectedPawn";
+	public static final String PROPERTY_IS_IN_PRISON = "IsInPrison";
 
 
 	/**
@@ -97,13 +98,19 @@ public class Player implements IPlayer {
     public Wallet getWallet() {
     	return wallet;
     }
-    
+    /**
+     * Checks for update every turn.
+     */
     void updateState() {
     	currentPawn.setIsActivePawn(true);
     	checkIfCrookIsEscaping();
     	checkIfLifeTimeInPrison(); 
+    	checkIfInPrison();
     }
-    
+    /**
+     * Checks to see if the crook has been arrested four times
+     * if so, the game is over
+     */
     private void checkIfLifeTimeInPrison(){
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
@@ -113,7 +120,9 @@ public class Player implements IPlayer {
     		}
     	}
     }
-    
+    /**
+     * Checks to see if the crook is attempting to escape, thus finising the game session
+     */
     private void checkIfCrookIsEscaping() {
 		if (currentPawn instanceof Crook) {
 			Crook crook = (Crook)currentPawn;
@@ -126,7 +135,22 @@ public class Player implements IPlayer {
 			}
 		}
 	}
-
+    /**
+     * Checks to see if the crook is in prison
+     */
+    private void checkIfInPrison(){
+    	if(this.currentPawn instanceof Crook){
+    		Crook crook = (Crook)this.currentPawn;
+    		if(crook.isInPrison()){
+    			pcs.firePropertyChange(PROPERTY_IS_IN_PRISON, false, true);
+    		}
+    	}
+    }
+    /**
+     * Checks if the pawn is standing on a tram stop 
+     * @param pawn - the pawn currently active
+     * @return true - if the pawn is standing on a tram stop
+     */
 	private boolean isOnMetro(AbstractPawn pawn) {
     	if (pawn instanceof AbstractWalkingPawn) {
     		AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn)pawn;
@@ -165,7 +189,9 @@ public class Player implements IPlayer {
     public void rollDice() {
     	mediator.rollDice(this);
     }
-    
+    /**
+     * Updates the possible paths the player's pawn can walk
+     */
     void updatePossiblePaths() {
     	if (goByDice) {
     		int steps = diceResult * currentPawn.tilesMovedEachStep();
@@ -248,7 +274,11 @@ public class Player implements IPlayer {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-
+	/**
+	 * Takes the dice result and updates possible paths accordingly
+	 * If the player is a crook and is currently in prison, the only allowed result is then 6
+	 * @param result - the result from the die cast
+	 */
 	void diceResult(int result) {
 		diceResult = result;
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);

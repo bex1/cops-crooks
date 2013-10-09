@@ -30,6 +30,15 @@ public class GameItem implements Serializable{
 		return name;
 	}
 	
+	public List<String> getPlayerNames(){
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for(PlayerItem pi : playerList){
+			playerNames.add(pi.getName());
+		}
+		
+		return playerNames;
+	}
+	
 	public int getPlayerCap() {
 		return playerCap;
 	}

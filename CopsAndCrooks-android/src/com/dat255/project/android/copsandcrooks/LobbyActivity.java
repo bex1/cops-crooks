@@ -1,7 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
-import com.dat255.project.android.copsandcrooks.network.GameItem;
-import com.dat255.project.android.copsandcrooks.network.PlayerItem;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class LobbyActivity extends Activity {
 	
@@ -26,25 +28,32 @@ public class LobbyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lobby);
+
+		Intent intent = getIntent();
+		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
 		
 		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
 		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
 		
-		playerListAdapter = new ArrayAdapter<String>(this, 0);
-		playerListView.setAdapter(playerListAdapter);
-		
-		Intent intent = getIntent();
-		
-		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
-		
 		gameNameTextView.setText(gameItem.getName());
-		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap());
 		
 		//testing
 		gameItem.addPlayer(new PlayerItem("Player #1"));
 		gameItem.addPlayer(new PlayerItem("Player #2"));
 		gameItem.addPlayer(new PlayerItem("Player #3"));
+		
+		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
+		playerListView.setAdapter(playerListAdapter);
+		
+		playerListAdapter.notifyDataSetChanged();
+		
+		playerCapTextView.setText("0/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+		
+		gameItem.addPlayer(new PlayerItem("Player #4"));
+		playerListAdapter.notifyDataSetChanged();
+		
+		updatePlayerList();
 		
 		//TODO add gameItem to server somehow (I don't know...)
 	}
@@ -57,11 +66,15 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void updatePlayerList(){
-		playerListAdapter.clear();
-		for(PlayerItem p: gameItem.getPlayers()){
-			playerListAdapter.add(p.getName());
-		}
-		playerListAdapter.notifyDataSetChanged();
+		
+	}
+	
+	public void updatePlayerCapTextView(int players){
+		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+	}
+	
+	public void playerJoin(PlayerItem player){
+		
 	}
 	
 	public void startGame(View v){

@@ -4,6 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.sound.midi.Sequence;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
@@ -38,15 +41,16 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private MoveByDiceOrMetroTable moveByDiceOrMetro;
 	private MoveByDiceTable moveByDice;
 	private HUDTable hudTable;
+	private IsInPrisonTable isInPrison;
 	private GameFactory factory;
 
 	private final int mapWidth, mapHeight;
 
-	public GameScreen(Assets assets, GameFactory factory, final CopsAndCrooks game, final GameModel gameModel,
+	public GameScreen(Assets assets, final CopsAndCrooks game, final GameModel gameModel,
 			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
 			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
 		super(assets, game, mapWidth, mapHeight);
-		this.factory = factory;
+		this.factory = GameFactory.getInstance();
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
 		this.hudStage = hudStage;
@@ -69,9 +73,10 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
-		moveByDice = new MoveByDiceTable(assets, model);
+		moveByDice = new MoveByDiceTable(assets, model, hudStage);
 		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
 		hudTable = new HUDTable(assets, model.getPlayerClient());
+		isInPrison = new IsInPrisonTable(assets);
 	}
 
 	@Override
@@ -208,12 +213,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			// Extract relevant data
 			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
-			if(property == Player.PROPERTY_DICE_RESULT){ 
-				//TODO show the results
-				if(playerRole == Role.Cop){
-
-				}
-			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
+			if (property == Player.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
@@ -222,6 +222,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 				}
+			}else if (property == Player.PROPERTY_IS_IN_PRISON){
+				hudStage.addActor(isInPrison);
 			}
 		}
 	}
