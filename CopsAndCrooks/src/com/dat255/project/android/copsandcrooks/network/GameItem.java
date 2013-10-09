@@ -10,7 +10,7 @@ public class GameItem implements Serializable{
 	private int playerCap;
 	private int currentPlayerCount;
 	private boolean gameStarted;
-	private PlayerItem host;
+	private int hostId;
 	
 	private List<PlayerItem> playerList;
 	
@@ -79,7 +79,11 @@ public class GameItem implements Serializable{
 		return playerList;
 	}
 	
-	public void setHost(PlayerItem host){
-		this.host = host;
+	public void setHostId(int id){
+		hostId = id;
+	}
+	
+	public int getHostId(){
+		return hostId;
 	}
 }
