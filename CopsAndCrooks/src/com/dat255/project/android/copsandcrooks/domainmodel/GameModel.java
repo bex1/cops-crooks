@@ -6,10 +6,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Timer.Task;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public final class GameModel implements IObservable, Serializable{
 
@@ -19,23 +21,28 @@ public final class GameModel implements IObservable, Serializable{
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
+	private final IMediator mediator;
+	private boolean isChangingPlayer;
+	private float changePlayerTimer;
+	private float changePlayerDelay;
+	
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
 	private final Collection<TramLine> tramLines;
+	private GameState state;
+	private Turn currentTurn;
+	private LinkedList<Turn> replayTurns;
 	
 	public static final String PROPERTY_CURRENT_PLAYER = "CurrentPlayer";
 	public static final String PROPERTY_GAME_ENDED = "GameEnded";
+	public static final String PROPERTY_GAMESTATE = "GameState";
+	
 	public final String gameName;
 	
-	private class ChangePlayerTask extends Task {
-
-		@Override
-		public void run () {
-			currentPlayer.getCurrentPawn().setIsActivePawn(false);
-			changePlayer();
-			//changePlayerTimer.stop();
-			this.cancel();
-		}
+	public enum GameState {
+		Replay,
+		Playing,
+		Waiting,
 	}
 
 	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName) {
@@ -55,6 +62,7 @@ public final class GameModel implements IObservable, Serializable{
 		this.tramLines = tramLines;
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
+		this.mediator = mediator;
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
 		hideoutTiles = new ArrayList<HideoutTile>();
@@ -73,15 +81,101 @@ public final class GameModel implements IObservable, Serializable{
 	}
 
 	public void startGame(){
-		this.currentPlayer = players.get(0);
-		currentPlayer.updateState();
-		pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+		for (Player player : players) {
+			if (player.getPlayerRole() == Role.Cop) {
+				this.currentPlayer = player;
+			}
+		}
+		if (currentPlayer == playerClient) {
+			state = GameState.Playing;
+			this.currentTurn = new Turn();
+			currentPlayer.updateState();
+		} else {
+			state = GameState.Waiting;
+		}
+		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+	}
+	
+	public void update(float deltaTime) {
+		if (isChangingPlayer) {
+			changePlayerTimer += deltaTime;
+			if (changePlayerTimer >= changePlayerDelay) {
+				currentPlayer.getCurrentPawn().setIsActivePawn(false);
+				changePlayer();
+				isChangingPlayer = false;
+				changePlayerTimer = 0;
+			}
+		}
+	}
+	
+	public void addReplayTurns(LinkedList<Turn> turns) {
+		this.replayTurns = turns;
+		state = GameState.Replay;
+		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+	}
+	
+	public void replay() {
+		state = GameState.Replay;
+		replay(replayTurns.pollFirst());
+	}
+	
+	// TODO private
+	private void replay(Turn turn) {
+		// Test
+		this.currentTurn = turn;
+		turn = new Turn();
+		turn.setPawnID(currentPlayer.getCurrentPawn().getID());
+		turn.setMoveType(MoveType.Walk);
+		TilePath path = new TilePath();
+		Point pos = currentPlayer.getCurrentPawn().getCurrentTile().getPosition();
+		
+		AbstractWalkableTile endT = new RoadTile(new Point(pos.x, pos.y + 4), mediator);
+		path.addTileLast(endT);
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 3), mediator));
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 2), mediator));
+		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 1), mediator));
+		turn.setPathWalked(path);
+		turn.setEndTile(endT);
+		
+		
+		
+		AbstractPawn pawn = findPawnByID(turn.getPawnID());
+		IWalkableTile end = turn.getEndTile();
+		if (pawn != null && end != null) {
+			switch (turn.getMoveType()) {
+			case Metro:
+				if (end instanceof TramStopTile) {
+					pawn.moveByTram((TramStopTile)end);
+				}
+				break;
+			case Walk:
+				pawn.move(turn.getPathWalked());
+				break;
+			default:
+				assert false;
+				break;
+			}
+		}
+	}
+
+	private AbstractPawn findPawnByID(int pawnID) {
+		for (Player player : players) {
+			for (AbstractPawn pawn : player.getPawns()) {
+				if (pawn.getID() == pawnID) {
+					return pawn;
+				}
+			}
+		}
+		return null;
 	}
 
 	void nextPlayer(float delay){
 		if (delay > 0) {
-			
+			isChangingPlayer = true;
+			changePlayerDelay = delay;
+			changePlayerTimer = 0;
 		} else {
+			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
 		}
 	}
@@ -102,10 +196,27 @@ public final class GameModel implements IObservable, Serializable{
 		}while (!currentPlayer.isActive());
 		currentPlayer.updateState();
 		if (currentPlayer.isActive()) {
-			pcs.firePropertyChange(PROPERTY_CURRENT_PLAYER, null, currentPlayer);
+			if (playerClient == currentPlayer) {
+				this.currentTurn = new Turn();
+				state = GameState.Playing;
+				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
+			} else if (state == GameState.Replay) {
+				replay(replayTurns.pollFirst());
+			} else {
+				state = GameState.Waiting;
+				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+			}
 		} else {
 			nextPlayer(3f);
 		}
+	}
+	
+	public GameState getGameState() {
+		return state;
+	}
+	
+	Turn getCurrentTurn() {
+		return currentTurn;
 	}
 
 	private void endGame(){

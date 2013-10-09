@@ -27,6 +27,11 @@ public final class TilePath implements IObservable {
 		pathList = new LinkedList<AbstractWalkableTile>();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public TilePath(TilePath path) {
+		pathList = (LinkedList<AbstractWalkableTile>)path.pathList.clone();
+	}
+	
 	/**
 	 * Returns and consumes the next tile on the path.
 	 * @return the next tile on path.

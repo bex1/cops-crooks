@@ -98,4 +98,10 @@ public interface IPlayer extends IObservable {
 	 * @return true if the player is active
 	 */
 	boolean isActive();
+	
+	/**
+	 * Returns the id of the player.
+	 * @return the ID of the player
+	 */
+	int getID();
 }

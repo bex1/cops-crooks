@@ -157,7 +157,7 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 									deltaX > 0 ? Direction.EAST : Direction.WEST);
 	}
 
-	private void interactWithTile() {
+	protected void interactWithTile() {
 		// Check if the endTile is an interactive tile
 		if (currentTile instanceof IInteractiveTile) {
 			IInteractiveTile interactableTile = (IInteractiveTile) currentTile;

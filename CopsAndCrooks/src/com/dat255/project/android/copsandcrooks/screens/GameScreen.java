@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
@@ -38,6 +37,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private MoveByDiceOrMetroTable moveByDiceOrMetro;
 	private MoveByDiceTable moveByDice;
 	private HUDTable hudTable;
+	private ReplayTable replayTable;
+	private IsInPrisonTable isInPrison;
 	private GameFactory factory;
 
 	private final int mapWidth, mapHeight;
@@ -69,13 +70,16 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
-		moveByDice = new MoveByDiceTable(assets, model);
+		moveByDice = new MoveByDiceTable(assets, model, hudStage);
 		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
-		hudTable = new HUDTable(assets, model.getPlayerClient());
+		hudTable = new HUDTable(assets, model.getPlayerClient(), model);
+		replayTable = new ReplayTable(assets, model);
+		isInPrison = new IsInPrisonTable(assets);
 	}
 
 	@Override
 	public void render(float delta){
+		model.update(delta);
 
 		stage.setCamera(camera);
 		renderer.setView(camera);
@@ -199,9 +203,18 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 		// Check source, i.e. Who sent the event?
 		if(evt.getSource() == model) {
-			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
-				// New turn -> show buttons where the player can select its next move
-				showActButtons();
+			if(property == GameModel.PROPERTY_GAMESTATE){
+				switch (model.getGameState()) {
+				case Playing:
+					// New turn -> show buttons where the player can select its next move
+					showActButtons();
+					break;
+				case Replay:
+					hudStage.addActor(replayTable);
+					break;
+				}
+			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
+				Gdx.app.exit();
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
 				Gdx.app.exit();
 			}
@@ -210,12 +223,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			// Extract relevant data
 			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
-			if(property == Player.PROPERTY_DICE_RESULT){ 
-				//TODO show the results
-				if(playerRole == Role.Cop){
-
-				}
-			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
+			if (property == Player.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
@@ -224,6 +232,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 				}
+			}else if (property == Player.PROPERTY_IS_IN_PRISON){
+				hudStage.addActor(isInPrison);
 			}
 		}
 	}

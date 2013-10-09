@@ -19,20 +19,18 @@
             android:layout_height="wrap_content"
             android:text="@string/game_browser" />
 
-        <!-- Only used for testing! -->
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Item"
-            android:onClick="newItem" />
-
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search_game_refresh"
             android:onClick="refreshGameList" />
+
+        <CheckBox
+            android:id="@+id/hasStartedCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/has_started" />
 
     </TableRow>
 

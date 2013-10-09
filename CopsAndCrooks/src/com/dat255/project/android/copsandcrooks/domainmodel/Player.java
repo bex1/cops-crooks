@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+
 /**
  * A player in the game Cops&Crooks.
  * 
@@ -32,9 +34,12 @@ public class Player implements IPlayer, Serializable {
 	private boolean goByDice;
 	private boolean isActive;
 
+	private int playerID;
+
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 	public static final String PROPERTY_SELECTED_PAWN = "TheSelectedPawn";
+	public static final String PROPERTY_IS_IN_PRISON = "IsInPrison";
 
 
 	/**
@@ -98,13 +103,19 @@ public class Player implements IPlayer, Serializable {
     public Wallet getWallet() {
     	return wallet;
     }
-    
+    /**
+     * Checks for update every turn.
+     */
     void updateState() {
     	currentPawn.setIsActivePawn(true);
     	checkIfCrookIsEscaping();
     	checkIfLifeTimeInPrison(); 
+    	checkIfInPrison();
     }
-    
+    /**
+     * Checks to see if the crook has been arrested four times
+     * if so, the game is over
+     */
     private void checkIfLifeTimeInPrison(){
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
@@ -114,7 +125,9 @@ public class Player implements IPlayer, Serializable {
     		}
     	}
     }
-    
+    /**
+     * Checks to see if the crook is attempting to escape, thus finising the game session
+     */
     private void checkIfCrookIsEscaping() {
 		if (currentPawn instanceof Crook) {
 			Crook crook = (Crook)currentPawn;
@@ -127,7 +140,22 @@ public class Player implements IPlayer, Serializable {
 			}
 		}
 	}
-
+    /**
+     * Checks to see if the crook is in prison
+     */
+    private void checkIfInPrison(){
+    	if(this.currentPawn instanceof Crook){
+    		Crook crook = (Crook)this.currentPawn;
+    		if(crook.isInPrison()){
+    			pcs.firePropertyChange(PROPERTY_IS_IN_PRISON, false, true);
+    		}
+    	}
+    }
+    /**
+     * Checks if the pawn is standing on a tram stop 
+     * @param pawn - the pawn currently active
+     * @return true - if the pawn is standing on a tram stop
+     */
 	private boolean isOnMetro(AbstractPawn pawn) {
     	if (pawn instanceof AbstractWalkingPawn) {
     		AbstractWalkingPawn walkingPawn = (AbstractWalkingPawn)pawn;
@@ -159,6 +187,7 @@ public class Player implements IPlayer, Serializable {
     @Override
     public void goByMetro() {
     	goByMetro = true;
+    	mediator.getCurrentTurn().setMoveType(MoveType.Metro);
     	updatePossiblePaths();
     }
     
@@ -166,7 +195,9 @@ public class Player implements IPlayer, Serializable {
     public void rollDice() {
     	mediator.rollDice(this);
     }
-    
+    /**
+     * Updates the possible paths the player's pawn can walk
+     */
     void updatePossiblePaths() {
     	if (goByDice) {
     		int steps = diceResult * currentPawn.tilesMovedEachStep();
@@ -198,6 +229,9 @@ public class Player implements IPlayer, Serializable {
     public void choosePath(TilePath path){
     	if (possiblePaths != null && possiblePaths.contains(path) && goByDice) {
     		possiblePaths = null;
+    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    		mediator.getCurrentTurn().setPathWalked(new TilePath(path));
+    		mediator.getCurrentTurn().setEndTile(path.getTile(0));
     		// The path passed the test -> move
     		currentPawn.move(path);
     		diceResult = 0;
@@ -216,6 +250,8 @@ public class Player implements IPlayer, Serializable {
     				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone(3f);
+    				mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    				mediator.getCurrentTurn().setEndTile(metroStop);
     				return;
     			}
     		}
@@ -249,7 +285,11 @@ public class Player implements IPlayer, Serializable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-
+	/**
+	 * Takes the dice result and updates possible paths accordingly
+	 * If the player is a crook and is currently in prison, the only allowed result is then 6
+	 * @param result - the result from the die cast
+	 */
 	void diceResult(int result) {
 		diceResult = result;
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
@@ -264,6 +304,7 @@ public class Player implements IPlayer, Serializable {
     		}
     	}
     	goByDice = true;
+    	mediator.getCurrentTurn().setMoveType(MoveType.Walk);
     	updatePossiblePaths();
 	}
 
@@ -275,5 +316,11 @@ public class Player implements IPlayer, Serializable {
 	@Override
 	public void setActive(boolean active) {
 		isActive = active;
+	}
+
+
+	@Override
+	public int getID() {
+		return playerID;
 	}
 }

@@ -50,15 +50,15 @@ public final class PathFinder implements Serializable {
 		// Note that the current tile might be null
 		AbstractWalkableTile currentTile = pawn.getCurrentTile();
 		if (currentTile != null && stepsToMove > 0) {
-			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn, pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null));
+			return Collections.unmodifiableCollection(calculateActualPossiblePaths(pawn, pawn.getPawnType(), stepsToMove, stepsToMove, pawn.getCurrentTile(), pawn.getCurrentTile(), null, pawn.getDirection()));
 		} else {
 			return null;
 		}
 	}
 
 	private List<TilePath> calculateActualPossiblePaths(AbstractPawn pawn, PawnType pawnType,
-			int stepsRemaining, int stepsToMove, AbstractWalkableTile currentTile, AbstractWalkableTile startTile, AbstractWalkableTile previousTile) {
-		
+			int stepsRemaining, int stepsToMove, AbstractWalkableTile currentTile, AbstractWalkableTile startTile, AbstractWalkableTile previousTile, Direction direction) {
+
 		if(stepsRemaining==0 || (previousTile != null && currentTile instanceof HideoutTile )){
 			TilePath path = new TilePath();
 			path.addTileLast(currentTile);
@@ -66,42 +66,51 @@ public final class PathFinder implements Serializable {
 			subPaths.add(path);
 			return subPaths;
 		}
-		
+
 		int x = currentTile.getPosition().x;
 		int y = currentTile.getPosition().y;
-		
+
+		// temporary store direction to restore state after calculation,
+		// since the direction is changed when calculating
+		Direction _direction = direction;
+
 		List<TilePath> subPathsAllDirections = new ArrayList<TilePath>();
 		AbstractWalkableTile nextTile = null;
-		
+
 		for(int i=0; i<4; i++){
 			switch(i){
 			case 0:
-				if(x+1<tiles.length)
+				if(x+1<tiles.length && isAllowedDirection(Direction.EAST, pawn, direction)){
 					nextTile = tiles[x+1][y];
-				else
+					direction = Direction.EAST;
+				}else
 					nextTile = null;
 				break;
 			case 1:
-				if(y+1<tiles[x].length)
+				if(y+1<tiles[x].length && isAllowedDirection(Direction.NORTH, pawn, direction)){
 					nextTile = tiles[x][y+1];
-				else
+					direction = Direction.NORTH;
+				}else
 					nextTile = null;
 				break;
 			case 2:
-				if(x-1>=0)
+				if(x-1>=0 && isAllowedDirection(Direction.WEST, pawn, direction)){
 					nextTile = tiles[x-1][y];
-				else
+					direction = Direction.WEST;
+				}else
 					nextTile = null;
 				break;
 			case 3:
-				if(y-1>=0)
+				if(y-1>=0 && isAllowedDirection(Direction.SOUTH, pawn, direction)){
 					nextTile = tiles[x][y-1];
-				else
+					direction = Direction.SOUTH;
+				}else
 					nextTile = null;
 				break;
 			}
 			if(canMoveTo(nextTile, previousTile, pawn, pawnType, startTile, stepsRemaining)){
-				List<TilePath> subPaths = calculateActualPossiblePaths(pawn, pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile);
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawn, pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile, direction);
+				direction = _direction; // restore current direction
 				subPathsAllDirections.addAll(subPaths);
 				if(stepsToMove != stepsRemaining){
 					for(TilePath subPath : subPaths){
@@ -113,9 +122,27 @@ public final class PathFinder implements Serializable {
 					}
 				}
 			}
-		}		
+		}
 
 		return subPathsAllDirections;
+	}
+
+	private boolean isAllowedDirection(Direction direction, AbstractPawn pawn, Direction pawnsCurrentDirection){
+		if(pawn instanceof CopCar){
+			// CopCar can only make 90 degrees turns,
+			// i.e. not make 180 degrees turns
+			switch (direction){
+				case EAST:
+					return pawnsCurrentDirection!=Direction.WEST;
+				case NORTH:
+					return pawnsCurrentDirection!=Direction.SOUTH;
+				case WEST:
+					return pawnsCurrentDirection!=Direction.EAST;
+				case SOUTH:
+					return pawnsCurrentDirection!=Direction.NORTH;
+			}
+		}
+		return true;
 	}
 
 	private boolean canMoveTo(AbstractWalkableTile target, AbstractWalkableTile previous, AbstractPawn pawn, PawnType pawnType, AbstractWalkableTile startTile, int stepsRemaining){

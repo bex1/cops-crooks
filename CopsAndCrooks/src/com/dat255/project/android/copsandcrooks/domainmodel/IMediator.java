@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -107,4 +107,8 @@ interface IMediator extends Serializable{
 	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
 
 	boolean isItMyPlayerTurn(AbstractPawn movable);
+	
+	GameState checkState();
+	
+	Turn getCurrentTurn();
 }
