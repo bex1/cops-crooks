@@ -29,7 +29,6 @@ public class DiceTest {
 	@Test
 	public final void testDice() {
 		try{
-			new Dice(null);
 			fail();
 		} catch (IllegalArgumentException e) {
 			// expected
