@@ -64,7 +64,7 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
-	private static final String absolutPath = "saved-games/";
+	private static final String absolutPath = "assets/saved-games/";
 	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
@@ -121,7 +121,7 @@ public class GameFactory {
 		}
 		this.saveModelToFile(model);
 		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
 	}
 	
 	public Screen loadHostedGame(CopsAndCrooks game, Map<Integer, Point> pawnsPoint, Map<String, Role> userInfo, String gameName){
@@ -137,7 +137,7 @@ public class GameFactory {
 			new HideoutOptionsTable(assets, hideout, hudStage);
 		}
 		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(model.getDice()));
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
 	
 	} 
 
@@ -158,7 +158,7 @@ public class GameFactory {
 			}
 			
 			return new GameScreen(assets, game, newModel, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(newModel.getDice()));
+					mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
 	
 		}catch(Exception e){
 			e.printStackTrace();

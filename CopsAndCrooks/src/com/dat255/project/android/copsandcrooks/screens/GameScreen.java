@@ -121,6 +121,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		mapToRender.dispose();
 		hudStage.dispose();
 		assets.dispose();
+		//TODO dispose replay so it will finish before we dispose and save them model
+		factory.saveModelToFile(model);
 		super.dispose();
 	}
 
