@@ -25,6 +25,9 @@ public final class GameModel implements IObservable, Serializable{
 	private boolean isChangingPlayer;
 	private float changePlayerTimer;
 	private float changePlayerDelay;
+	private static int turnID = 1;
+	
+	private Dice dice;
 	
 	// Added only because of you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
@@ -44,6 +47,11 @@ public final class GameModel implements IObservable, Serializable{
 		Playing,
 		Waiting,
 	}
+	
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int diceResult) {
+		this(mediator, playerClient, players, tiles, tramLines, gameName);
+		dice.setResult(diceResult);
+	}
 
 	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName) {
 		if (mediator == null)
@@ -60,6 +68,7 @@ public final class GameModel implements IObservable, Serializable{
 		this.players = players;
 		this.walkable = tiles;
 		this.tramLines = tramLines;
+		this.dice = Dice.getInstance();
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 		this.mediator = mediator;
@@ -178,6 +187,7 @@ public final class GameModel implements IObservable, Serializable{
 			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
 		}
+		incrementTurnID();
 	}
 
 	private void changePlayer() {
@@ -323,6 +333,22 @@ public final class GameModel implements IObservable, Serializable{
 
 	public boolean isCurrentPlayerOwnerOfPawn(AbstractPawn movable) {
 		return currentPlayer != null && currentPlayer.getPawns().contains(movable);
+	}
+	
+	public int getDiceResults(){
+		return dice.getResult();
+	}
+	
+	private void incrementTurnID(){
+		turnID += 1;
+	}
+	
+	public int getTurnID(){
+		return turnID;
+	}
+
+	public String getName() {
+		return this.gameName;
 	}
 
 }

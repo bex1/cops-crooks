@@ -85,4 +85,8 @@ public final class Dice implements IObservable, Serializable {
 	public int getResult() {
 		return diceResult;
 	}
+	
+	void setResult(int i){
+		diceResult = (i%6) + 1;
+	}
 }

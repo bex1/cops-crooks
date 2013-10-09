@@ -175,11 +175,10 @@ public class ModelFactory {
 	 * @return - Fully working gamemodel
 	 * @throws Exception
 	 */
-	public static GameModel loadLocalGameModel(GameModel model, String gameName) throws Exception{
+	public static GameModel loadLocalGameModel(GameModel model) throws Exception{
+		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
-		int mapWidth = model.getWalkabletiles().length;
-		int mapHeight = model.getWalkabletiles()[1].length;
 		Collection<? extends IPlayer> oldPlayers = model.getPlayers();
 		List<Player> newPlayers = new ArrayList<Player>();
 		
@@ -255,6 +254,6 @@ public class ModelFactory {
 		}
 		
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines, gameName);
+		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines, gameName, model.getDiceResults());
 	}
 }
