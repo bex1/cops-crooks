@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.map;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,7 +11,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -141,12 +139,11 @@ public class GameFactory {
 	} 
 
 	public Screen loadLocalGame(CopsAndCrooks game, String gameName){
-		//TODO REmove GameModel as a Parameter
 		checkAssets();
 		GameModel newModel;
 		try {
 			GameModel oldModel = this.loadModelFromFile(gameName);
-			newModel = ModelFactory.loadLocalGameModel(oldModel, gameName);
+			newModel = ModelFactory.loadLocalGameModel(oldModel);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
 			Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
@@ -311,54 +308,54 @@ public class GameFactory {
 	private EnumMap<Animations, Animation> getOfficerAnimations() {
 		TextureAtlas atlas = assets.getAtlas();
 		// Using an enumeration map makes sure that all keys passed are valid keys
-	        EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
-	        
-	        AtlasRegion[] stopAnimation = new AtlasRegion[1];
-	        for(int k = 1; k <= 1; k++)
-	        {
-	                stopAnimation[k-1] = atlas.findRegion("game-screen/officer/stopped s"+k);
-	        }
-	        Animation idle = new Animation(1f, stopAnimation);
-	        
-	        pawnAnimations.put(Animations.IDLE_ANIM, idle);
-	        
-	        AtlasRegion[] walkEastAnimation = new AtlasRegion[4];
-	        for(int k = 1; k <= 4; k++)
-	        {
-	                walkEastAnimation[k-1] = atlas.findRegion("game-screen/officer/walking e"+k);
-	        }
-	        Animation walkEast = new Animation(0.2f, walkEastAnimation);
-	        
-	        pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
-	        
-	        AtlasRegion[] walkNorthAnimation = new AtlasRegion[4];
-	        for(int k = 1; k <= 4; k++)
-	        {
-	                walkNorthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking n"+k);
-	        }
-	        Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
-	        
-	        pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
-	        
-	        AtlasRegion[] walkSouthAnimation = new AtlasRegion[4];
-	        for(int k = 1; k <= 4; k++)
-	        {
-	                walkSouthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking s"+k);
-	        }
-	        Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
-	        
-	        pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
-	        
-	        AtlasRegion[] walkWestAnimation = new AtlasRegion[4];
-	        for(int k = 1; k <= 4; k++)
-	        {
-	                walkWestAnimation[k-1] = atlas.findRegion("game-screen/officer/walking w"+k);
-	        }
-	        Animation walkWest = new Animation(0.2f, walkWestAnimation);
-	        
-	        pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
-	        
-	        return pawnAnimations;
+        EnumMap<Animations, Animation> pawnAnimations = new EnumMap<Animations, Animation>(Animations.class);
+        
+        AtlasRegion[] stopAnimation = new AtlasRegion[1];
+        for(int k = 1; k <= 1; k++)
+        {
+                stopAnimation[k-1] = atlas.findRegion("game-screen/officer/stopped s"+k);
+        }
+        Animation idle = new Animation(1f, stopAnimation);
+        
+        pawnAnimations.put(Animations.IDLE_ANIM, idle);
+        
+        AtlasRegion[] walkEastAnimation = new AtlasRegion[4];
+        for(int k = 1; k <= 4; k++)
+        {
+                walkEastAnimation[k-1] = atlas.findRegion("game-screen/officer/walking e"+k);
+        }
+        Animation walkEast = new Animation(0.2f, walkEastAnimation);
+        
+        pawnAnimations.put(Animations.MOVE_EAST_ANIM, walkEast);
+        
+        AtlasRegion[] walkNorthAnimation = new AtlasRegion[4];
+        for(int k = 1; k <= 4; k++)
+        {
+                walkNorthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking n"+k);
+        }
+        Animation walkNorth = new Animation(0.2f, walkNorthAnimation);
+        
+        pawnAnimations.put(Animations.MOVE_NORTH_ANIM, walkNorth);
+        
+        AtlasRegion[] walkSouthAnimation = new AtlasRegion[4];
+        for(int k = 1; k <= 4; k++)
+        {
+                walkSouthAnimation[k-1] = atlas.findRegion("game-screen/officer/walking s"+k);
+        }
+        Animation walkSouth = new Animation(0.2f, walkSouthAnimation);
+        
+        pawnAnimations.put(Animations.MOVE_SOUTH_ANIM, walkSouth);
+        
+        AtlasRegion[] walkWestAnimation = new AtlasRegion[4];
+        for(int k = 1; k <= 4; k++)
+        {
+                walkWestAnimation[k-1] = atlas.findRegion("game-screen/officer/walking w"+k);
+        }
+        Animation walkWest = new Animation(0.2f, walkWestAnimation);
+        
+        pawnAnimations.put(Animations.MOVE_WEST_ANIM, walkWest);
+        
+        return pawnAnimations;
 	}
 
 	/**
@@ -455,7 +452,6 @@ public class GameFactory {
 	}
 	
 	public void saveModelToFile(GameModel game){
-		System.out.println(absolutPath);
 		File dir = new File(absolutPath, game.gameName);
 		if(!dir.exists()){
 			dir.mkdirs();
@@ -463,18 +459,12 @@ public class GameFactory {
 		File savefile = new File(dir, "model.ser");
 		try {
 			savefile.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
+			out.writeObject(game);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	    try {
-	      ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
-	      out.writeObject(game);
-
-	      out.close();
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	
-	    }
 	}
 	
 	public GameModel loadModelFromFile(String name){
@@ -482,14 +472,13 @@ public class GameFactory {
 		if(!fileToLoad.exists()){
 			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
 		}
-		GameModel loadmodel;
+		GameModel loadmodel = null;
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
 			loadmodel = (GameModel) in.readObject();
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
 		} 
 		return loadmodel;
 	}
