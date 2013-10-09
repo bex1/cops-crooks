@@ -185,9 +185,10 @@ public class ModelFactory {
 		
 		//Loads all the tiles again to give them the new mediator
 		IWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
-		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[mapWidth][mapHeight];
+		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[oldWalkableTile.length-1]
+				[oldWalkableTile[1].length-1];
 		// Get All the metro lines
-		TramLine[] oldMetroLines = null;
+		TramLine[] oldMetroLines = new TramLine[model.getTramLines().size()-1];
 		oldMetroLines = model.getTramLines().toArray(oldMetroLines);
 		//Lists to get all the tramstops
 		List<TramStopTile> oldStop1 = oldMetroLines[0].getTramStops();
@@ -196,8 +197,8 @@ public class ModelFactory {
 		List<TramStopTile> stop1 = new ArrayList<TramStopTile>();
 		List<TramStopTile> stop2 = new ArrayList<TramStopTile>();
 		List<TramStopTile> stop3 = new ArrayList<TramStopTile>();
-		for(int i = 0 ; i <mapWidth; i ++){
-			for(int j = 0; j < mapHeight; i ++){
+		for(int i = 0 ; i <oldWalkableTile.length-1; i ++){
+			for(int j = 0; j < oldWalkableTile[i].length- 1; j ++){
 				if(oldWalkableTile[i][j] instanceof RoadTile){
 					newWalkableTile[i][j] = new RoadTile(new Point(i, j), mediator);
 				}else if(oldWalkableTile[i][j] instanceof GetAwayTile){

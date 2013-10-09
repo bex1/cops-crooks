@@ -22,6 +22,7 @@ public class LoadingScreen extends AbstractScreen {
 		test.put("Tjuv2", Role.Crook);
 		test.put("Polis", Role.Cop);
 		GameFactory.getInstance().init(assets);
-		game.setScreen(GameFactory.getInstance().loadGame(game, test, "Blasa"));
+		//game.setScreen(GameFactory.getInstance().loadGame(game, test, "Blasa"));
+		game.setScreen(GameFactory.getInstance().loadLocalGame(game, "Blasa"));
 	}
 }
