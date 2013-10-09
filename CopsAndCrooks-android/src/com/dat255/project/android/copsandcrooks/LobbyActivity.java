@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
@@ -19,6 +20,7 @@ public class LobbyActivity extends Activity {
 	TextView playerCapTextView;
 	ListView playerListView;
 	Button startGameButton;
+	Button joinGameButton;
 	
 	GameItem gameItem;
 	ArrayAdapter<String> playerListAdapter;
@@ -37,6 +39,7 @@ public class LobbyActivity extends Activity {
 		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
 		startGameButton = (Button) findViewById(R.id.startGameButton);
+		joinGameButton = (Button) findViewById(R.id.joinGameButton);
 		
 		gameNameTextView.setText(gameItem.getName());
 		
@@ -82,11 +85,16 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void checkForHost(){
-		/*
-		if(gameItem.getHostId() != getClientId()){ 
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
+			System.out.println("Host for this game item");
+			joinGameButton.setClickable(false);
+			joinGameButton.setEnabled(false);
+			
+		} else {
+			System.out.println("Not host for this game item");
 	 		startGameButton.setClickable(false);
+	 		startGameButton.setEnabled(false);
 		}
-		*/
 	}
 	
 	public void startGame(View v){
@@ -97,6 +105,11 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void joinGame(View v){
-		System.out.println("lol u join");
+		int gameID = 5;
+		// ??? get the id of the clicked game item
+		
+		PlayerItem player = new PlayerItem();
+		player.setName("Kalle");
+		GameClient.getInstance().joinGame(gameID, player);
 	}
 }

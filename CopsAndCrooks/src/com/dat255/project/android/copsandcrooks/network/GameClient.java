@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.dat255.project.android.copsandcrooks.network.Network.Pck3_GameItems;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -72,7 +74,7 @@ public class GameClient {
 		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
-				client.connect(120000, "192.168.1.4", Network.PORT);
+				client.connect(120000, "192.168.1.2", Network.PORT);
 			if(client.isConnected())
 				System.out.println("Network: Connected!");
 				else
@@ -99,4 +101,26 @@ public class GameClient {
 	public ArrayList<GameItem> getGameItems(){
 		return gameItems;
 	}
+
+	public void sendCreatedGame(GameItem gameItem) {
+		connectToServer();
+		if(client.isConnected()){
+			System.out.println("Network: Sending created game to server");
+			Pck3_GameItems pck = new Pck3_GameItems();
+			pck.gameItems = new ArrayList<GameItem>();
+			pck.gameItems.add(gameItem);
+			client.sendTCP(pck);
+		}  
+    }
+
+	public void joinGame(int gameID, PlayerItem player) {
+		connectToServer();
+		if(client.isConnected()){
+			System.out.println("Network: Joining remote game");
+			Pck4_PlayerItem pck = new Pck4_PlayerItem();
+			pck.gameID = gameID;
+			pck.playerItem = player;
+			client.sendTCP(pck);
+		}  
+    }
 }
