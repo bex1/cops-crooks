@@ -39,6 +39,7 @@ public final class Dice implements IObservable, Serializable {
 		}
 	}
 
+	// Only added to make class singleton
 	private Dice() {
 	}
 	
