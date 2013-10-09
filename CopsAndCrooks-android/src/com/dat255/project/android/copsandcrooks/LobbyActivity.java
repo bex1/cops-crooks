@@ -1,13 +1,12 @@
 package com.dat255.project.android.copsandcrooks;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +18,8 @@ public class LobbyActivity extends Activity {
 	TextView gameNameTextView;
 	TextView playerCapTextView;
 	ListView playerListView;
+	Button startGameButton;
+	
 	GameItem gameItem;
 	ArrayAdapter<String> playerListAdapter;
 	
@@ -35,6 +36,7 @@ public class LobbyActivity extends Activity {
 		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
 		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
+		startGameButton = (Button) findViewById(R.id.startGameButton);
 		
 		gameNameTextView.setText(gameItem.getName());
 		
@@ -51,9 +53,11 @@ public class LobbyActivity extends Activity {
 		playerCapTextView.setText("0/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
 		
 		gameItem.addPlayer(new PlayerItem("Player #4"));
-		playerListAdapter.notifyDataSetChanged();
+		playerListAdapter.setNotifyOnChange(true);
 		
 		updatePlayerList();
+		
+		checkForHost();
 		
 		//TODO add gameItem to server somehow (I don't know...)
 	}
@@ -73,8 +77,16 @@ public class LobbyActivity extends Activity {
 		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
 	}
 	
-	public void playerJoin(PlayerItem player){
+	public void playerJoin(){
 		
+	}
+	
+	public void checkForHost(){
+		/*
+		if(gameItem.getHostId() != getClientId()){ 
+	 		startGameButton.setClickable(false);
+		}
+		*/
 	}
 	
 	public void startGame(View v){

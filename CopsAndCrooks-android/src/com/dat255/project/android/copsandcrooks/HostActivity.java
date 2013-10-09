@@ -48,7 +48,6 @@ public class HostActivity extends Activity {
 		
 		//testing
 		gameNameEditText.setText("test game");
-		
 	}
 
 	@Override
@@ -101,7 +100,9 @@ public class HostActivity extends Activity {
 	
 	public void hostGame(View v){
 		Intent intent = new Intent(this, LobbyActivity.class);
-		intent.putExtra(GAME_ITEM, new GameItem(gameName, playerCap));
+		GameItem gameItem = new GameItem(gameName, playerCap);
+		//gameItem.setHostId( id from client?! );
+		intent.putExtra(GAME_ITEM, gameItem);
 		startActivity(intent);
 		finish();
 	}
