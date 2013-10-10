@@ -12,6 +12,8 @@ import java.util.EnumMap;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -66,12 +68,6 @@ public class GameFactory {
 	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
-		readTMXMap();
-	}
-	
-	public GameFactory(Assets assets) {
-		this();
-		this.assets = assets;
 	}
 
 	public static GameFactory getInstance(){
@@ -87,12 +83,13 @@ public class GameFactory {
 	}
 	
 	public void init(Assets assets){
-		this.assets = assets;		
+		this.assets = assets;	
+		readTMXMap();	
 	}
 	
 	private  void readTMXMap(){
 		// This loads a TMX file
-		map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx"); 
+		map = assets.getMap();
 		try { 
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
 			mapLayerInteract = (TiledMapTileLayer)map.getLayers().get("interact");
