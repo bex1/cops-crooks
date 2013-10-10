@@ -30,10 +30,10 @@ public class ModelFactory {
 	}
 	
 	/**
-	 * This loads a game model from scratch and is used when you host a game
+	 * Loads a game from scratch or with players already placed 
 	 * @param interact
 	 * @param userInfo
-	 * @return
+	 * @return - a GameModel 
 	 */
 	public GameModel loadGameModel(GameItem gameitem, TiledMapTileLayer interact, boolean isGameHosted){
 		// Creates a mediator
