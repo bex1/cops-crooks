@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks;
+package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.Serializable;
 
@@ -8,6 +8,9 @@ public class PlayerItem implements Serializable{
 	
 	public PlayerItem(String name) {
 		this.name = name;
+	}
+	
+	public PlayerItem() {
 	}
 	
 	public String getName(){

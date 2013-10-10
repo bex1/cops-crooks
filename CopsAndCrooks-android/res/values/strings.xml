@@ -73,4 +73,6 @@
     <string name="game_browser">Game Browser</string>
     <string name="has_started">Started</string>
     <string name="search_game_refresh">Refresh</string>
+    <string name="get_new_games">Get list</string>
+    <string name="join_game">Join</string>
 </resources>

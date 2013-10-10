@@ -2,6 +2,8 @@ package com.dat255.project.android.copsandcrooks;
 
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ public class GameItemAdapter extends BaseAdapter{
 	
 	Context context;
 	private static LayoutInflater inflater = null;
-	List<GameItem> data;
+	private List<GameItem> data;
 
 	public GameItemAdapter(Context context, List<GameItem> data) {
         this.context = context;
@@ -27,6 +29,10 @@ public class GameItemAdapter extends BaseAdapter{
 	public void add(GameItem gameItem){
 		data.add(gameItem);
 	    notifyDataSetChanged();
+	}
+	
+	public List getData(){
+		return data;
 	}
 
     @Override
