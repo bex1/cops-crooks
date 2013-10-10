@@ -8,11 +8,12 @@ import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
 
-public class GameClient {
+public class GameClient extends Thread{
 	
 	private static GameClient instance;
 	private Client client;
 	private ArrayList<GameItem> gameItems;
+	private String playerName;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -90,7 +91,6 @@ public class GameClient {
 	
 	// send a packet to the server requesting a list of games
 	public void requestGameItemsFromServer() {
-		connectToServer();
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
 			Pck2_ClientRequestGames pck = new Pck2_ClientRequestGames();
@@ -103,7 +103,6 @@ public class GameClient {
 	}
 
 	public void sendCreatedGame(GameItem gameItem) {
-		connectToServer();
 		if(client.isConnected()){
 			System.out.println("Network: Sending created game to server");
 			Pck3_GameItems pck = new Pck3_GameItems();
@@ -114,13 +113,34 @@ public class GameClient {
     }
 
 	public void joinGame(int gameID, PlayerItem player) {
-		connectToServer();
 		if(client.isConnected()){
 			System.out.println("Network: Joining remote game");
 			Pck4_PlayerItem pck = new Pck4_PlayerItem();
 			pck.gameID = gameID;
 			pck.playerItem = player;
 			client.sendTCP(pck);
-		}  
+		}
     }
+	
+	public void setPlayerName(String name){
+		playerName = name;
+	}
+	
+	public String getPlayerName(){
+		return playerName;
+	}
+	
+	@Override
+	public void run(){
+		while(true){
+			if(!client.isConnected()){
+				connectToServer();
+			}
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
