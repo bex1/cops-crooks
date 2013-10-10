@@ -8,6 +8,9 @@ import java.util.Random;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Timer;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PawnItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 // WILL be used to furter encapsulate model.
@@ -32,7 +35,7 @@ public class ModelFactory {
 	 * @param userInfo
 	 * @return
 	 */
-	public GameModel loadGameModel(TiledMapTileLayer interact, Map<String, Role> userInfo, String gameName ){
+	public GameModel loadGameModel(GameItem gameitem, TiledMapTileLayer interact, boolean isGameHosted){
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
@@ -117,56 +120,51 @@ public class ModelFactory {
 		tramLines.add(new TramLine(red));
 		
 		List<Player> players = new ArrayList<Player>();
-		int numberOfOfficers = userInfo.keySet().size()-1;
+		List<PlayerItem> playeritems = gameitem.getPlayers();
+		int numberOfOfficers = gameitem.getCurrentPlayerCount()-1;
 		int crookID = 1;
 		Random rand = new Random();
-		for (String name : userInfo.keySet()) {
+		for (int i = 0; i < playeritems.size(); i ++ ) {
 			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
-			if (userInfo.get(name) == Role.Cop) {
-				for (int i = 0; i < numberOfOfficers; i++) {
-					int k = rand.nextInt(listOfPolicestationtile.size()-1);
-					pawns.add(new Officer(listOfPolicestationtile.get(k), mediator, 10 + i));
-					listOfPolicestationtile.remove(k);
+			if (playeritems.get(i).getRole() == Role.Cop) {
+				for (int j = 0; j < numberOfOfficers; j++) {
+					if(!isGameHosted){
+						int k = rand.nextInt(listOfPolicestationtile.size()-1);
+						pawns.add(new Officer(listOfPolicestationtile.get(k), mediator, 10 + j));
+						playeritems.get(i).addPawn(listOfPolicestationtile.get(k).getPosition(), 10 + j);
+						listOfPolicestationtile.remove(k);
+					}else{
+						Point point = playeritems.get(i).getPawnItem(10 + j).position;
+						pawns.add(new Officer(walkable[point.x][point.y], mediator, 10 + j));
+					}
 				}
-				pawns.add(new CopCar(policeCarStart, mediator, 20));
+				if(!isGameHosted){
+					pawns.add(new CopCar(policeCarStart, mediator, 20));
+					playeritems.get(i).addPawn(policeCarStart.getPosition(), 20);
+				}else{
+					Point point = playeritems.get(i).getPawnItem(crookID).position;
+					pawns.add(new CopCar(walkable[point.x][point.y], mediator, crookID));
+				}
+				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Cop, mediator));
 				
-				players.add( new Player(name, pawns, Role.Cop, mediator));
+			} else if (playeritems.get(i).getRole() == Role.Crook) {
+				if(!isGameHosted){
+					int k = rand.nextInt(listOfHideouts.size()-1);
+					pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
+					playeritems.get(i).addPawn(listOfPolicestationtile.get(k).getPosition(), crookID);
+					listOfHideouts.remove(k);
+				}else{
+					Point point = playeritems.get(i).getPawnItem(crookID).position;
+					pawns.add(new Crook(walkable[point.x][point.y], mediator, crookID));
+				}
 				
-			} else if (userInfo.get(name) == Role.Crook) {
-				int k = rand.nextInt(listOfHideouts.size()-1);
-				pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
-				listOfHideouts.remove(k);
-				
-				players.add( new Player(name, pawns, Role.Crook, mediator));
+				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Crook, mediator));
 				++crookID;
 			}
 		}
 		
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, players.get(0), players, walkable, tramLines, gameName);
-	}
-	
-	/**
-	 * Loads a model that is already hosted and the placement of all players is already placed
-	 * @param pawnsPoint
-	 * @param interact
-	 * @param userInfo
-	 * @return
-	 */
-	public GameModel loadHostedGameModel(Map<Integer, Point> pawnsPoint, TiledMapTileLayer interact,  Map<String, Role> userInfo, String gameName){
-		GameModel model = loadGameModel(interact, userInfo, gameName);
-		
-		//Here we place the pawns to a tile, this has already been set by the host
-		IWalkableTile[][] walkable = model.getWalkabletiles();
-		List<Player> players = (List<Player>) model.getPlayers();
-		for(Player player : players){
-			Collection<AbstractPawn> pawns = player.getPawns();
-			for(AbstractPawn pawn : pawns){
-				Point point = pawnsPoint.get(pawn.getID());
-				pawn.setCurrentTile((AbstractWalkableTile) walkable[point.x][point.y]);
-			}
-		}
-		return model;
+		return new GameModel(mediator, players.get(0), players, walkable, tramLines, gameitem.getName(), gameitem.getID());
 	}
 	
 	

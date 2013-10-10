@@ -22,22 +22,6 @@ public final class Dice implements IObservable, Serializable {
 	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
-	
-	private class RollTask extends Task {
-		private Player player;
-		
-		RollTask(Player player) {
-			this.player = player;
-		}
-
-		@Override
-		public void run () {
-			diceResult = 1 + rand.nextInt(6);
-			pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
-			player.diceResult(diceResult);
-			this.cancel();
-		}
-	}
 
 	// Only added to make class singleton
 	private Dice() {
