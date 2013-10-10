@@ -6,6 +6,8 @@ import java.util.TreeMap;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class LoadingScreen extends AbstractScreen {
@@ -17,12 +19,12 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-		Map<String, Role> test = new TreeMap<String, Role>();
-		test.put("Tjuv1", Role.Crook);
-		test.put("Tjuv2", Role.Crook);
-		test.put("Polis", Role.Cop);
+		GameItem gameitem = new GameItem("Nytt", 1);
+		PlayerItem player1 = new PlayerItem("Polis", Role.Cop);
+		PlayerItem player2 = new PlayerItem("Tjuv", Role.Crook);
+		gameitem.addPlayer(player1);
+		gameitem.addPlayer(player2);
 		GameFactory.getInstance().init(assets);
-		game.setScreen(GameFactory.getInstance().loadGame(game, test, "Blasa"));
-		//game.setScreen(GameFactory.getInstance().loadLocalGame(game, "Blasa"));
+		game.setScreen(GameFactory.getInstance().loadGame(game, gameitem, false));
 	}
 }
