@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
@@ -45,26 +46,13 @@ public class LobbyActivity extends Activity {
 		
 		gameNameTextView.setText(gameItem.getName());
 		
-		//testing
-		gameItem.addPlayer(new PlayerItem("Player #1"));
-		gameItem.addPlayer(new PlayerItem("Player #2"));
-		gameItem.addPlayer(new PlayerItem("Player #3"));
-		
 		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
 		playerListView.setAdapter(playerListAdapter);
 		
-		playerListAdapter.notifyDataSetChanged();
-		
-		playerCapTextView.setText("0/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
-		
-		gameItem.addPlayer(new PlayerItem("Player #4"));
-		playerListAdapter.setNotifyOnChange(true);
-		
+		playerCapTextView.setText("0/"+ gameItem.getPlayerCap());
 		updatePlayerList();
 		
 		checkForHost();
-		
-		//TODO add gameItem to server somehow (I don't know...)
 	}
 
 	@Override
@@ -80,10 +68,6 @@ public class LobbyActivity extends Activity {
 	
 	public void updatePlayerCapTextView(int players){
 		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
-	}
-	
-	public void playerJoin(){
-		
 	}
 	
 	public void checkForHost(){
@@ -118,9 +102,12 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void joinGame(View v){
-		PlayerItem player = new PlayerItem();
-		player.setName("Kalle");
-
+		PlayerItem player;
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+		}else{
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Crook);
+		}
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
 	}
 }

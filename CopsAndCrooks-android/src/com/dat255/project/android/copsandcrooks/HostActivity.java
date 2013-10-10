@@ -101,9 +101,8 @@ public class HostActivity extends Activity {
 		System.out.println("Network: Creating game");
 		
 		GameItem gameItem = new GameItem();
-		gameItem.setName("Testgame");
+		gameItem.setName(gameName);
 		gameItem.setHostId(Installation.id(getApplicationContext()));
-		gameItem.addPlayer(new PlayerItem("Nisse"));
 		
 		GameClient.getInstance().sendCreatedGame(gameItem);
 		
