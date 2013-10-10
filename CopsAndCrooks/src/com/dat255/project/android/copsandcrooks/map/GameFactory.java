@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -61,7 +62,8 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
-	private static final String absolutPath = "assets/saved-games/";
+	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
+	
 	
 	private GameFactory() {
 		modelFactory = ModelFactory.getInstance();
