@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -42,8 +41,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.GameScreen;
 import com.dat255.project.android.copsandcrooks.screens.HideoutOptionsTable;
@@ -60,7 +59,7 @@ public class GameFactory {
 	private ModelFactory modelFactory;
 	private TiledMap map;
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
-	public static GameFactory instance = null;
+	private static GameFactory instance = null;
 	
 	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
 	
@@ -105,12 +104,20 @@ public class GameFactory {
 		Values.TILE_HEIGTH = (int) mapLayerBack.getTileHeight();
 	}
 	
-	public Screen loadGame(CopsAndCrooks game, Map<String, Role> userInfo, String gameName){
+	/**
+	 * Loads a game from scratch or with players already placed and loads all the graphics for the game
+	 * @param game
+	 * @param gameitem
+	 * @param isGameHosted - set true if you already loaded the position of your pawns else false
+	 * @return A Screen that will display the game and contain the model you need to run it
+	 */
+	public Screen loadGame(CopsAndCrooks game, GameItem gameitem, boolean isGameHosted){
 		checkAssets();
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		//Loads a GameModel
-		GameModel model = modelFactory.loadGameModel(mapLayerInteract, userInfo, gameName);
+		GameModel model;
+		model = modelFactory.loadGameModel(gameitem, mapLayerInteract, isGameHosted);
 		Collection<? extends IPlayer> players = model.getPlayers();
 		
 		List<Actor> actors = addActor(players);
@@ -123,28 +130,20 @@ public class GameFactory {
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
 	}
 	
-	public Screen loadHostedGame(CopsAndCrooks game, Map<Integer, Point> pawnsPoint, Map<String, Role> userInfo, String gameName){
+	/**
+	 * Loads your local copy of a started game by the id from gameitem
+	 * @param game - 
+	 * @param gameitem -
+	 * @return
+	 */
+	public Screen loadLocalGame(CopsAndCrooks game, GameItem gameitem){
 		checkAssets();
-		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
-		
-		GameModel model = modelFactory.loadHostedGameModel(pawnsPoint, mapLayerInteract , userInfo, gameName);
-		Collection<? extends IPlayer> players = model.getPlayers();
-		
-		List<Actor> actors = addActor(players);
-		for (HideoutTile hideout : model.getHideouts()) {
-			actors.add(new HideoutActor(assets, hideout, players, hudStage));
-			new HideoutOptionsTable(assets, hideout, hudStage);
-		}
-		return new GameScreen(assets, game, model, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
-	
-	} 
-
-	public Screen loadLocalGame(CopsAndCrooks game, String gameName){
-		checkAssets();
-		GameModel newModel;
+		GameModel newModel, oldModel;
 		try {
-			GameModel oldModel = this.loadModelFromFile(gameName);
+			oldModel = this.loadModelFromFile(gameitem.getName());
+			if(oldModel.getID() != gameitem.getID()){
+				return null;
+			}
 			newModel = ModelFactory.loadLocalGameModel(oldModel);
 			List<Actor> actors = addActor(newModel.getPlayers());
 		
