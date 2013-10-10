@@ -5,9 +5,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.screens.*;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.LoadingScreen;
-import com.dat255.project.android.copsandcrooks.screens.MenuScreen;
+
 
 /**
  * TODO docs here
@@ -29,16 +31,22 @@ public class CopsAndCrooks extends Game {
     	super();
     }
     
+    
+    
     @Override
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
+        
+//      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
+//		GameClient.getInstance().connectToServer();
+        
         fpsLogger = new FPSLogger();
         assets = new Assets();
         if(Gdx.app.getType() == ApplicationType.Desktop)
-        	setScreen(new MenuScreen(assets, this));
+                setScreen(new MenuScreen(assets, this));
         else if(Gdx.app.getType() == ApplicationType.Android)
-        	setScreen(new LoadingScreen(assets, this));
+                setScreen(new LoadingScreen(assets, this));
     }
 
     @Override

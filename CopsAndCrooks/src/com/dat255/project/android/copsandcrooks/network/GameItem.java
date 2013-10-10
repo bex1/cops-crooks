@@ -1,4 +1,4 @@
-package com.dat255.project.android.copsandcrooks;
+package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,15 +6,17 @@ import java.util.List;
 
 public class GameItem implements Serializable{
 
+	private int id;
 	private String name;
 	private int playerCap;
 	private int currentPlayerCount;
 	private boolean gameStarted;
-	private PlayerItem host;
+	private String hostId;
 	
 	private List<PlayerItem> playerList;
 	
 	public GameItem(String name, int playerCap) {
+		id = (int) (Math.random()*1000);
 		this.name = name;
 		this.playerCap = playerCap;
 		this.currentPlayerCount = 0;
@@ -22,8 +24,29 @@ public class GameItem implements Serializable{
 		playerList = new ArrayList<PlayerItem>();
 	}
 	
+	public GameItem(){
+		playerList = new ArrayList<PlayerItem>();
+	}
+	
+	public int getID(){
+		return id;
+	}
+	
+	public void setID(int gameID){
+		id = gameID;
+	}
+	
 	public String getName(){
 		return name;
+	}
+	
+	public List<String> getPlayerNames(){
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for(PlayerItem pi : playerList){
+			playerNames.add(pi.getName());
+		}
+		
+		return playerNames;
 	}
 	
 	public int getPlayerCap() {
@@ -66,7 +89,11 @@ public class GameItem implements Serializable{
 		return playerList;
 	}
 	
-	public void setHost(PlayerItem host){
-		this.host = host;
+	public void setHostId(String id){
+		hostId = id;
+	}
+	
+	public String getHostId(){
+		return hostId;
 	}
 }
