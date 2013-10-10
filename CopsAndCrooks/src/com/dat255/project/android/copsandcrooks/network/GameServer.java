@@ -20,9 +20,9 @@ public class GameServer {
 		
 		// test games
 		GameItem testGame = new GameItem();
-		testGame.setHostId("olle3423");
-		testGame.setName("Olle's testgame");
-		gameItems.add(testGame);
+//		testGame.setHostId("olle3423");
+//		testGame.setName("Olle's testgame");
+//		gameItems.add(testGame);
 				
 		// initialize server
 		server = new Server();
@@ -74,6 +74,7 @@ public class GameServer {
 						for(GameItem game : gameItems){
 							if(game.getID() == gamePck.gameID){
 								game.addPlayer(gamePck.playerItem);
+								game.setCurrentPlayerCount(game.getCurrentPlayerCount() + 1);
 							}
 						}
 					}

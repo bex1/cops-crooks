@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
@@ -48,7 +49,7 @@ public class HostActivity extends Activity {
 		playerCap = 2;
 		
 		//testing
-		gameNameEditText.setText("test game");
+		gameNameEditText.setText("testgame");
 	}
 
 	@Override
@@ -101,11 +102,20 @@ public class HostActivity extends Activity {
 		System.out.println("Network: Creating game");
 		
 		GameItem gameItem = new GameItem();
-		gameItem.setName(gameName);
+		gameItem.setName(gameNameEditText.getText().toString());
 		gameItem.setHostId(Installation.id(getApplicationContext()));
+		gameItem.setPlayerCap(playerCap);
+		gameItem.setCurrentPlayerCount(1);
+		
+		PlayerItem player;
+		if(GameClient.getInstance().getPlayerName() != null)
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+		else
+			player = new PlayerItem("DefaultPlayerName", Role.Cop);
+		
+		gameItem.addPlayer(player);
 		
 		GameClient.getInstance().sendCreatedGame(gameItem);
-		
 		
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(GAME_ITEM, gameItem);
