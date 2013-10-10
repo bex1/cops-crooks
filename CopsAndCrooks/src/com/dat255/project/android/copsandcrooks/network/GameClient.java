@@ -13,6 +13,7 @@ public class GameClient {
 	private static GameClient instance;
 	private Client client;
 	private ArrayList<GameItem> gameItems;
+	private String playerName;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -123,4 +124,12 @@ public class GameClient {
 			client.sendTCP(pck);
 		}  
     }
+	
+	public void setPlayerName(String name){
+		playerName = name;
+	}
+	
+	public String getPlayerName(){
+		return playerName;
+	}
 }
