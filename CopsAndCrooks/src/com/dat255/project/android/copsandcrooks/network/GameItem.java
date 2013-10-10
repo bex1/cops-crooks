@@ -83,6 +83,7 @@ public class GameItem implements Serializable{
 	
 	public void addPlayer(PlayerItem player){
 		playerList.add(player);
+		this.setCurrentPlayerCount(getCurrentPlayerCount()+1);
 	}
 
 	public List<PlayerItem> getPlayers(){
