@@ -22,7 +22,6 @@ public class GameServer {
 		GameItem testGame = new GameItem();
 		testGame.setID(5);
 		testGame.setName("Olle's testgame");
-		testGame.setHostId("1234");
 		gameItems.add(testGame);
 				
 		// initialize server
