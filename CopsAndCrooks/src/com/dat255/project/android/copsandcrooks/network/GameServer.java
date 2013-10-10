@@ -20,7 +20,7 @@ public class GameServer {
 		
 		// test games
 		GameItem testGame = new GameItem();
-		testGame.setID(5);
+		testGame.setHostId("olle3423");
 		testGame.setName("Olle's testgame");
 		gameItems.add(testGame);
 				
