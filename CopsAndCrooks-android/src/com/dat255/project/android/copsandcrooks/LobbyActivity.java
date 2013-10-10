@@ -85,15 +85,18 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void checkForHost(){
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
-			System.out.println("Host for this game item");
-			joinGameButton.setClickable(false);
-			joinGameButton.setEnabled(false);
-			
+		if(gameItem != null){
+			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
+				System.out.println("Host for this game item");
+				joinGameButton.setClickable(false);
+				joinGameButton.setEnabled(false);		
+			} else {
+				System.out.println("Not host for this game item");
+				startGameButton.setClickable(false);
+				startGameButton.setEnabled(false);
+			}
 		} else {
-			System.out.println("Not host for this game item");
-	 		startGameButton.setClickable(false);
-	 		startGameButton.setEnabled(false);
+			System.out.println("Game item is null!");
 		}
 	}
 	
@@ -105,11 +108,9 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void joinGame(View v){
-		int gameID = 5;
-		// ??? get the id of the clicked game item
-		
 		PlayerItem player = new PlayerItem();
 		player.setName("Kalle");
-		GameClient.getInstance().joinGame(gameID, player);
+
+		GameClient.getInstance().joinGame(gameItem.getID(), player);
 	}
 }
