@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn;
+import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -34,5 +35,13 @@ public class PlayerItem implements Serializable{
 	
 	public void addPawn(Point p, int i){
 		pawns.add(new PawnItem(p, i));
+	}
+
+	public PawnItem getPawnItem(int pawnID) {
+		for(PawnItem pawn: pawns){
+			if(pawn.id == pawnID)
+				return pawn;
+		}
+		return null;
 	}
 }
