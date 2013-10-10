@@ -1,27 +1,20 @@
 package com.dat255.project.android.copsandcrooks.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
-	private AssetManager manager;
 	private TextureAtlas atlas;
 	private Skin skin;
+	private TiledMap map;
 	
 	public Assets() {
-		manager = new AssetManager();
 		atlas = new TextureAtlas(Gdx.files.internal("image-atlases/pages.atlas"));
-		manager.load("image-atlases/pages.atlas", TextureAtlas.class);
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        manager.load("skin/uiskin.json", Skin.class);
-        Texture.setAssetManager(manager);
-	}
-	
-	public AssetManager getAssetManager() {
-		return manager;
+        map = new TmxMapLoader().load("map-images/cops-crooks-map-v2.tmx"); 
 	}
 	
 	public TextureAtlas getAtlas() {
@@ -32,7 +25,7 @@ public class Assets {
         return skin;
     }
 	
-	public void dispose() {
-		manager.dispose();
+	public TiledMap getMap() {
+		return map;
 	}
 }
