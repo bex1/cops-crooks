@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -104,9 +106,16 @@ public class LobbyActivity extends Activity {
 		finish();
 	}
 	
+	public void showError(String text){
+		Context context = getApplicationContext();
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+	}
+	
 	public void joinGame(View v){
 		int gameID = 5;
-		// ??? get the id of the clicked game item
 		
 		PlayerItem player = new PlayerItem();
 		player.setName("Kalle");
