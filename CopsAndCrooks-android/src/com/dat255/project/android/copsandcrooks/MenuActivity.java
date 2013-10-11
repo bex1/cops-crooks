@@ -1,10 +1,16 @@
 package com.dat255.project.android.copsandcrooks;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
+
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 
 public class MenuActivity extends Activity {
 
@@ -12,7 +18,15 @@ public class MenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
+
+        //Retrieve the player's name and set it in the client
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		
+        if(preferences.getString("NAME", "invalid").equals("invalid")){
+        	firstTimeSetup();
+        }else{
+        	GameClient.getInstance().setPlayerName(preferences.getString("NAME", "default"));
+        }
 	}
 
 	@Override
@@ -22,8 +36,41 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 	
+	public void firstTimeSetup(){
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("*First Time Setup*");
+		alert.setMessage("Enter Name:");
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(this);
+		alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String name = input.getText().toString();
+				if(name.length() <= 0){
+					firstTimeSetup();
+				}
+				storePlayerName(name);
+			}
+		});
+
+		alert.show();
+	}
+	
+	public void storePlayerName(String name){
+		GameClient.getInstance().setPlayerName(name);
+
+		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+
+		editor.putString("NAME", name);
+
+		editor.commit();
+	}
+	
 	public void enterGame(View v){
-		//TODO should start the hostactivity instead
 		Intent intent = new Intent(this, HostActivity.class);
 		startActivity(intent);
 	}
