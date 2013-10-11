@@ -3,7 +3,7 @@ package com.dat255.project.android.copsandcrooks.network;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.dat255.project.android.copsandcrooks.network.Network.Pck3_GameItems;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -76,7 +76,7 @@ public class GameClient extends Thread{
 //		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
-				client.connect(120000, "192.168.1.2", Network.PORT);
+				client.connect(120000, "192.168.1.6", Network.PORT);
 			if(client.isConnected())
 				System.out.println("Network: Connected!");
 			else
@@ -152,4 +152,14 @@ public class GameClient extends Thread{
 			}
 		}
 	}
+
+	public void sentTurn(Turn currentTurn) {
+		System.out.println("Network: Sending turn");
+	    Pck5_Turns turnPck = new Pck5_Turns();
+	    turnPck.gameID = chosenGameItem.getID();
+	    turnPck.turns = new ArrayList<Turn>();
+	    turnPck.turns.add(currentTurn);
+	    
+	    client.sendTCP(turnPck);
+    }
 }
