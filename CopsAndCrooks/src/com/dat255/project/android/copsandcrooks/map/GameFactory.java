@@ -424,7 +424,7 @@ public class GameFactory {
 		return loadmodel;
 	}
 	
-	private DiceActor getDiceActorFor(Dice dice) {
+	private DiceActor getDiceActorFor(Dice dice, Stage hudStage) {
 		TextureAtlas atlas = assets.getAtlas();
 		
 		if (dice == null) {
@@ -439,7 +439,7 @@ public class GameFactory {
 		Animation animation = new Animation(0.05f, diceAnim);
 
 		
-		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
+		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none, hudStage);
 	}
 	
 	public Screen loadGameScreen(GameModel game, CopsAndCrooks copsAndCrooks) {
@@ -457,7 +457,7 @@ public class GameFactory {
 		this.saveModelToFile(game);
 
 		return new GameScreen(assets, copsAndCrooks, game, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance(), hudStage));
 	}
 
 	public boolean hasLoadedThisGameModel(GameItem item){
