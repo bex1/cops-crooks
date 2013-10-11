@@ -54,8 +54,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		this.mapWidth = (int) mapWidth;
 		this.mapHeight = (int) mapHeight;
 
-		hudStage.addActor(dice);
-
 
 		model.addObserver(this);
 		for(IPlayer player : model.getPlayers()){

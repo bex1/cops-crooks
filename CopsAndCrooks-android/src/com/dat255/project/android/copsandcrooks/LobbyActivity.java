@@ -124,9 +124,9 @@ public class LobbyActivity extends Activity {
 	public void joinGame(View v){
 		PlayerItem player;
 		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 		}else{
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Crook);
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 		}
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
 		joinGameButton.setEnabled(false);

@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,14 +30,15 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	private TextureRegionDrawable drawable;
 	private Label label;
 	private Assets assets;
+	private final Stage hudStage;
 	
 	
-	public DiceActor(Assets assets, final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling) {
+	public DiceActor(Assets assets, final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling, final Stage hudStage) {
 		super(firstDrawable, scaling);
+		this.hudStage = hudStage;
 		this.dice = dice;
 		this.animation = animation;
 		this.assets = assets;
-		this.setVisible(false);
 		dice.addObserver(this);
 		drawable = firstDrawable;
 		TextureRegion txtReg = drawable.getRegion();
@@ -55,11 +57,9 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	@Override
 	public void act(float delta){
 		super.act(delta);
-		if (this.isVisible()) {
-			dice.update(delta);
-			animTimer += delta;
-			drawable.setRegion(animation.getKeyFrame(animTimer, true));
-		}
+		dice.update(delta);
+		animTimer += delta;
+		drawable.setRegion(animation.getKeyFrame(animTimer, true));
 	}
 
 	@Override
@@ -67,14 +67,13 @@ public class DiceActor extends Image implements PropertyChangeListener{
 		if (evt.getSource() == dice) {
 			String property = evt.getPropertyName();
 			if (property == Dice.PROPERTY_DICE_ROLLING) {
-				this.setVisible(true);
+				hudStage.addActor(this);
 			} else if (property == Dice.PROPERTY_DICE_RESULT) {
-				this.setVisible(false);
+				this.addAction(removeActor());
 				animTimer = 0;
-				Stage stage = this.getStage();
 				label.setText("" + dice.getResult());
 				label.getColor().a = 0;
-				stage.addActor(label);
+				hudStage.addActor(label);
 				label.addAction(sequence(repeat(3, sequence(fadeIn(0.3f), delay(0.8f), fadeOut(0.3f))), removeActor()));
 			}
 		}

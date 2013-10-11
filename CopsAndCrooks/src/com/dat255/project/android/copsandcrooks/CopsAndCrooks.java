@@ -13,6 +13,9 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 
 
 /**
@@ -45,6 +48,18 @@ public class CopsAndCrooks extends Game {
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
+
+        PreferencesManager prefs = PreferencesManager.getInstance();
+        
+        // create the music manager
+        MusicManager musicManager = MusicManager.getInstance();
+        musicManager.setVolume( prefs.getVolume() );
+        musicManager.setEnabled( prefs.isMusicEnabled() );
+
+        // create the sound manager
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.setVolume( prefs.getVolume() );
+        soundManager.setEnabled( prefs.isSoundEnabled() );
         
 //      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
 //		GameClient.getInstance().connectToServer();
@@ -59,15 +74,19 @@ public class CopsAndCrooks extends Game {
         	GameItem gameToPlay;
         	if (Gdx.app.getType() == ApplicationType.Android) {
         		gameToPlay = GameClient.getInstance().getChosenGameItem();
-        		gameToPlay = new GameItem("spel", 2);
-        		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
-        		PlayerItem player2 = new PlayerItem("Kalle", Role.Crook);
+        		/*gameToPlay = new GameItem("spel", 2);
+        		PlayerItem player = new PlayerItem("Kalle", "1ad");
+        		player.setRole(Role.Cop);
+        		PlayerItem player2 = new PlayerItem("Kalle", "2ad");
+        		player2.setRole(Role.Crook);
         		gameToPlay.addPlayer(player);
-        		gameToPlay.addPlayer(player2);
+        		gameToPlay.addPlayer(player2);//*/
         	} else {
         		gameToPlay = new GameItem("spel", 2);
-        		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
-        		PlayerItem player2 = new PlayerItem("Kalle", Role.Crook);
+        		PlayerItem player = new PlayerItem("Kalle", "1ad");
+        		player.setRole(Role.Cop);
+        		PlayerItem player2 = new PlayerItem("Kalle", "2ad");
+        		player2.setRole(Role.Crook);
         		gameToPlay.addPlayer(player);
         		gameToPlay.addPlayer(player2);
         	}
@@ -129,9 +148,15 @@ public class CopsAndCrooks extends Game {
     {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
+        
+        // dipose some services
+        MusicManager.getInstance().dispose();
+        SoundManager.getInstance().dispose();
     }
 
 	public GameModel getModel() {
 		return game;
 	}
+	
+	
 }
