@@ -96,13 +96,6 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		Map<String, Role> userInfo = new HashMap<String, Role>();
-		for (PlayerItem item : gameItem.getPlayers()) {
-			userInfo.put(item.getName(), item.getRole());
-		}
-		GameFactory.getInstance().init(new Assets());
-		game = ModelFactory.getInstance().loadGameModel(GameFactory.getInstance().getInteract(), userInfo, gameItem.getName());
-		intent.putExtra(GameActivity.GAME, game);
 		startActivity(intent);
 		finish();
 	}

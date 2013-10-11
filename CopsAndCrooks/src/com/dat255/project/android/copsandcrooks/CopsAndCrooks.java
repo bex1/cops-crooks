@@ -1,18 +1,18 @@
 package com.dat255.project.android.copsandcrooks;
 
-import java.util.Map;
-
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
-import com.dat255.project.android.copsandcrooks.screens.LoadingScreen;
-import com.dat255.project.android.copsandcrooks.screens.MenuScreen;
 
 
 /**
@@ -53,9 +53,31 @@ public class CopsAndCrooks extends Game {
         fpsLogger = new FPSLogger();
         assets = GameFactory.getInstance().getAssets();
         if (game != null) {
-        	setScreen(GameFactory.getInstance().getGameScreenFor(game, this));
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         } else {
-        	setScreen(new LoadingScreen(assets, this));
+        	GameItem gameToPlay;
+        	if (Gdx.app.getType() == ApplicationType.Android) {
+    		gameToPlay = GameClient.getInstance().getChosenGameItem();
+        	} else {
+        		gameToPlay = new GameItem("spel", 2);
+        		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
+        		PlayerItem player2 = new PlayerItem("Kalle", Role.Crook);
+        		gameToPlay.addPlayer(player);
+        		gameToPlay.addPlayer(player2);
+        	}
+    		GameFactory factory = GameFactory.getInstance();
+    		ModelFactory modelFactory = ModelFactory.getInstance();
+    		if(!gameToPlay.hasGameStarted()){
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
+    		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
+    		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
+    			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
+    		}else{
+    			assert false;
+    			game = null;
+    		}
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         }
     }
 

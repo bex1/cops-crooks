@@ -15,6 +15,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -45,13 +46,6 @@ public class Main {
 		cfg.width = Values.GAME_VIEWPORT_WIDTH;
 		cfg.height = Values.GAME_VIEWPORT_HEIGHT;
 		
-		Map<String, Role> test = new HashMap<String, Role>();
-		test.put("Tjuv1", Role.Crook);
-		test.put("Tjuv2", Role.Crook);
-		test.put("Polis", Role.Cop);
-	
-		GameModel game = ModelFactory.getInstance().loadGameModel(GameFactory.getInstance().getInteract(), test, "spel");
-		
-		new LwjglApplication(new CopsAndCrooks(game), cfg);
+		new LwjglApplication(new CopsAndCrooks(), cfg);
 	}
 }
