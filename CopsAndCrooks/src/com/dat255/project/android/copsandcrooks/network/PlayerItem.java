@@ -12,17 +12,18 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 public class PlayerItem implements Serializable{
 
 	private final String name;
-	private final Role role;
+	private Role role;
+	private final String playerID;
 	private List<PawnItem> pawns = new ArrayList<PawnItem>();
 	
-	public PlayerItem(String name, Role role) {
+	public PlayerItem(String name, String playerID) {
 		this.name = name;
-		this.role = role;
+		this.playerID = playerID;
 	}
 	
 	public PlayerItem() {
 		name = "";
-		role = null;
+		playerID ="-1";
 	}
 	
 	public String getName(){
@@ -31,6 +32,10 @@ public class PlayerItem implements Serializable{
 	
 	public Role getRole(){
 		return role;
+	}
+	
+	public String getID(){
+		return playerID;
 	}
 	
 	public void addPawn(Point p, int i){
@@ -43,5 +48,9 @@ public class PlayerItem implements Serializable{
 				return pawn;
 		}
 		return null;
+	}
+	
+	public void setRole(Role role){
+		this.role = role;
 	}
 }

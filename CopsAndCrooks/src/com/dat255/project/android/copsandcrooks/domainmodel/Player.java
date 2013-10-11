@@ -34,7 +34,7 @@ public class Player implements IPlayer, Serializable {
 	private boolean goByDice;
 	private boolean isActive;
 
-	private int playerID;
+	private final String playerID;
 
 	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
@@ -51,7 +51,7 @@ public class Player implements IPlayer, Serializable {
 	 * @param role the role of the player.
 	 * @param mediator module communication unit. Not allowed to be null.
 	 */
-	public Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator) {
+	public Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator, String id) {
 		if (pawns == null || pawns.isEmpty()) {
 			throw new IllegalArgumentException("pawns not allowed to be null or empty");
 		}
@@ -74,6 +74,7 @@ public class Player implements IPlayer, Serializable {
 		this.mediator = mediator;
 		this.currentPawn = pawns.get(0);
 		this.isActive = true;
+		this.playerID = id;
 		wallet = new Wallet();
 	}
 
@@ -320,7 +321,7 @@ public class Player implements IPlayer, Serializable {
 
 
 	@Override
-	public int getID() {
+	public String getID() {
 		return playerID;
 	}
 }
