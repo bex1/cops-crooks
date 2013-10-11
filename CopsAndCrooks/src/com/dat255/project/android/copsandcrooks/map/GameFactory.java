@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -64,7 +64,7 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	public static GameFactory instance = null;
 	
-	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
+	private static final String absolutPath = "";//Gdx.files.getLocalStoragePath() + "saved-games/";
 	
 	
 	private GameFactory() {
@@ -88,9 +88,13 @@ public class GameFactory {
 		readTMXMap();	
 	}
 	
+	public Assets getAssets() {
+		return assets;
+	}
+	
 	private  void readTMXMap(){
 		// This loads a TMX file
-		map = assets.getMap();
+		map = new TmxMapLoader(new ExternalFileHandleResolver()).load("assets/map-images/cops-crooks-map-v2.tmx");
 		try { 
 			mapLayerBack = (TiledMapTileLayer)map.getLayers().get("background");					
 			mapLayerInteract = (TiledMapTileLayer)map.getLayers().get("interact");
@@ -446,12 +450,12 @@ public class GameFactory {
 		return pathActors;
 	}
 	
-	TiledMapTileLayer getInteract(){
+	public TiledMapTileLayer getInteract(){
 		return mapLayerInteract;
 	}
 	
 	public void saveModelToFile(GameModel game){
-		File dir = new File(absolutPath, game.gameName);
+		File dir = new File(absolutPath, game.getName());
 		if(!dir.exists()){
 			dir.mkdirs();
 		}
@@ -498,5 +502,27 @@ public class GameFactory {
 
 		
 		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
+	}
+
+	public Screen getGameScreenFor(GameModel game, CopsAndCrooks copsAndCrooks) {
+		
+		try {
+			game = ModelFactory.loadLocalGameModel(game);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<Actor> actors = addActor(game.getPlayers());
+		
+		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
+		
+		for (HideoutTile hideout : game.getHideouts()) {
+			actors.add(new HideoutActor(assets, hideout, game.getPlayers(), hudStage));
+			new HideoutOptionsTable(assets, hideout, hudStage);
+		}
+		
+		return new GameScreen(assets, copsAndCrooks, game, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance()));
 	}
 }
