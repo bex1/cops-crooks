@@ -109,9 +109,9 @@ public class HostActivity extends Activity {
 		
 		PlayerItem player;
 		if(GameClient.getInstance().getPlayerName() != null)
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()) );
 		else
-			player = new PlayerItem("DefaultPlayerName", Role.Cop);
+			player = new PlayerItem("DefaultPlayerName", Installation.id(getApplicationContext()));
 		
 		gameItem.addPlayer(player);
 		

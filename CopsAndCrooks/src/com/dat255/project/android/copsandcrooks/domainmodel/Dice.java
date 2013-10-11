@@ -70,5 +70,9 @@ public final class Dice implements IObservable, Serializable {
 	
 	void setResult(int i){
 		diceResult = (i%6) + 1;
+		// Added to prevent you can close the app to get one more try to roll dice
+		if(i == -1){			
+			diceResult = -1;		
+		}
 	}
 }

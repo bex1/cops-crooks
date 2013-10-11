@@ -103,5 +103,5 @@ public interface IPlayer extends IObservable {
 	 * Returns the id of the player.
 	 * @return the ID of the player
 	 */
-	int getID();
+	String getID();
 }
