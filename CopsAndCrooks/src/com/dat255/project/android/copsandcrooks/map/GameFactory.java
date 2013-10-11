@@ -445,13 +445,6 @@ public class GameFactory {
 	public Screen loadGameScreen(GameModel game, CopsAndCrooks copsAndCrooks) {
 		checkAssets();
 		
-		try {
-			game = ModelFactory.getInstance().loadLocalGameModel(game);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		List<Actor> actors = addActor(game.getPlayers());
 		
 		Stage hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
