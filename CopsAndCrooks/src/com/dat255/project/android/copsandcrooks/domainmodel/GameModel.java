@@ -152,7 +152,7 @@ public final class GameModel implements IObservable, Serializable{
 		
 		
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
-		IWalkableTile end = turn.getEndTile();
+		IWalkableTile end = getWalkabletiles()[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null && end != null) {
 			switch (turn.getMoveType()) {
 			case Metro:
@@ -161,7 +161,11 @@ public final class GameModel implements IObservable, Serializable{
 				}
 				break;
 			case Walk:
-				pawn.move(turn.getPathWalked());
+				List<Point> pathWalked = turn.getPathWalked();
+				TilePath tilePathWalked = new TilePath();
+				for(Point point : pathWalked)
+					tilePathWalked.addTileLast((AbstractWalkableTile) getWalkabletiles()[point.x][point.y]);
+				pawn.move(tilePathWalked);
 				break;
 			default:
 				assert false;
@@ -194,6 +198,10 @@ public final class GameModel implements IObservable, Serializable{
 	}
 
 	private void changePlayer() {
+		// sent the latest turn to the server
+		if(currentPlayer == playerClient)
+			GameClient.getInstance().sendTurn(currentTurn);
+		
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
@@ -216,8 +224,6 @@ public final class GameModel implements IObservable, Serializable{
 			} else if (state == GameState.Replay) {
 				replay(replayTurns.pollFirst());
 			} else {
-				GameClient.getInstance().sentTurn(currentTurn);
-				
 				state = GameState.Waiting;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 			}

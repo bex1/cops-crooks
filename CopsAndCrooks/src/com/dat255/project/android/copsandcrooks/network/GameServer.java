@@ -106,6 +106,17 @@ public class GameServer {
 						
 						gamePck.getConnection().sendTCP(responsePck);
 					}
+					
+					// client starts a game
+					if(packet instanceof Pck8_StartGame){
+						Pck8_StartGame gamePck = ((Pck8_StartGame)packet);
+						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
+						
+						for(GameItem gi : gameItems){
+							if(gi.getID() == gamePck.gameID)
+								gi.setGameStarted(true);
+						}
+					}
 				}
 			}
 			

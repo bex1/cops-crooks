@@ -52,6 +52,16 @@ public class LobbyActivity extends Activity {
 		startGameButton = (Button) findViewById(R.id.startGameButton);
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);
 		
+		joinGameButton.setEnabled(!gameItem.hasGameStarted());
+		
+		for(String name : gameItem.getPlayerNames()){
+			System.out.println(name);
+			System.out.println(GameClient.getInstance().getPlayerName());
+			if(name.equals(GameClient.getInstance().getPlayerName()))
+				joinGameButton.setEnabled(false);
+		}
+		
+		
 		gameNameTextView.setText(gameItem.getName());
 		
 		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
@@ -96,6 +106,9 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
+		GameClient.getInstance().setChosenGameItem(gameItem);
+		GameClient.getInstance().startGame(gameItem.getID());
+		
 		startActivity(intent);
 		finish();
 	}
@@ -116,5 +129,6 @@ public class LobbyActivity extends Activity {
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Crook);
 		}
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
+		joinGameButton.setEnabled(false);
 	}
 }

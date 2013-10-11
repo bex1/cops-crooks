@@ -153,7 +153,7 @@ public class GameClient extends Thread{
 		}
 	}
 
-	public void sentTurn(Turn currentTurn) {
+	public void sendTurn(Turn currentTurn) {
 		System.out.println("Network: Sending turn");
 	    Pck5_Turns turnPck = new Pck5_Turns();
 	    turnPck.gameID = chosenGameItem.getID();
@@ -161,5 +161,13 @@ public class GameClient extends Thread{
 	    turnPck.turns.add(currentTurn);
 	    
 	    client.sendTCP(turnPck);
+    }
+
+	public void startGame(int id) {
+	    System.out.println("Network: Starting game");
+		Pck8_StartGame pck = new Pck8_StartGame();
+		pck.gameID = chosenGameItem.getID();
+		
+		client.sendTCP(pck);
     }
 }

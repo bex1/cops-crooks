@@ -69,9 +69,7 @@ public class GameBrowseActivity extends Activity {
 	}
 	
 	public void itemAnswer(GameItem gameItem){
-		if(!gameItem.hasGameStarted()){
-			enterLobby(gameItem);
-		}
+		enterLobby(gameItem);
 	}
 	
 	public void enterLobby(GameItem gameItem){
