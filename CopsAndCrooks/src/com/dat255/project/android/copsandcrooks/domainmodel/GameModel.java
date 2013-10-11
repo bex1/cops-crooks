@@ -42,7 +42,7 @@ public final class GameModel implements IObservable, Serializable{
 	public static final String PROPERTY_GAME_ENDED = "GameEnded";
 	public static final String PROPERTY_GAMESTATE = "GameState";
 	
-	public final String gameName;
+	private final String gameName;
 	
 	public enum GameState {
 		Replay,

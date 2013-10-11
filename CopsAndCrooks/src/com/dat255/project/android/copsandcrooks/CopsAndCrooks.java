@@ -5,10 +5,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
-import com.dat255.project.android.copsandcrooks.screens.*;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
-import com.dat255.project.android.copsandcrooks.screens.LoadingScreen;
 
 
 /**
@@ -26,12 +30,16 @@ public class CopsAndCrooks extends Game {
     // a libgdx helper class that logs the current FPS each second
     private FPSLogger fpsLogger;
     private Assets assets;
+    private GameModel game;
 	
     public CopsAndCrooks(){
-    	super();
+    	this(null);
     }
     
-    
+    public CopsAndCrooks(GameModel game){
+    	super();
+    	this.game = game;
+    }
     
     @Override
     public void create()
@@ -41,12 +49,36 @@ public class CopsAndCrooks extends Game {
 //      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
 //		GameClient.getInstance().connectToServer();
         
+        GameFactory.getInstance().init(new Assets());
         fpsLogger = new FPSLogger();
-        assets = new Assets();
-        if(Gdx.app.getType() == ApplicationType.Desktop)
-                setScreen(new MenuScreen(assets, this));
-        else if(Gdx.app.getType() == ApplicationType.Android)
-                setScreen(new LoadingScreen(assets, this));
+        assets = GameFactory.getInstance().getAssets();
+        if (game != null) {
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
+        } else {
+        	GameItem gameToPlay;
+        	if (Gdx.app.getType() == ApplicationType.Android) {
+    		gameToPlay = GameClient.getInstance().getChosenGameItem();
+        	} else {
+        		gameToPlay = new GameItem("spel", 2);
+        		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
+        		PlayerItem player2 = new PlayerItem("Kalle", Role.Crook);
+        		gameToPlay.addPlayer(player);
+        		gameToPlay.addPlayer(player2);
+        	}
+    		GameFactory factory = GameFactory.getInstance();
+    		ModelFactory modelFactory = ModelFactory.getInstance();
+    		if(!gameToPlay.hasGameStarted()){
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
+    		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
+    		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
+    			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
+    		}else{
+    			assert false;
+    			game = null;
+    		}
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
+        }
     }
 
     @Override
@@ -92,4 +124,8 @@ public class CopsAndCrooks extends Game {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
     }
+
+	public GameModel getModel() {
+		return game;
+	}
 }
