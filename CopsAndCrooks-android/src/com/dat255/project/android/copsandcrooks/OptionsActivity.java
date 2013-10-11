@@ -30,8 +30,8 @@ public class OptionsActivity extends Activity {
 		soundCheckBox = (CheckBox) findViewById(R.id.soundCheckBox);
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		nameEditText.setText(preferences.getString("NAME", ""));
+		name = GameClient.getInstance().getPlayerName();
+		nameEditText.setText(name);
 		
 		soundCheckBox.setOnClickListener(new OnClickListener() {
 
@@ -51,7 +51,6 @@ public class OptionsActivity extends Activity {
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				name = nameEditText.getText().toString();
 				GameClient.getInstance().setPlayerName(name);
-				
 				return false;
 			}
 			
@@ -63,17 +62,5 @@ public class OptionsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.options, menu);
 		return true;
-	}
-	
-	@Override
-	protected void onPause(){
-		super.onPause();
-
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-		
-		editor.putString("NAME", name);
-
-		editor.commit();
 	}
 }
