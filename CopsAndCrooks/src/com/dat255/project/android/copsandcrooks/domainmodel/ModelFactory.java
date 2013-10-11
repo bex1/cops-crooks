@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
@@ -174,23 +175,29 @@ public class ModelFactory {
 		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
+		
+		// Gets the old Players and creates a arraylist for the new ones
 		Collection<? extends IPlayer> oldPlayers = model.getPlayers();
 		List<Player> newPlayers = new ArrayList<Player>();
 		
-		//Loads all the tiles again to give them the new mediator
+		// Get the old 2d array of tiles and creates an 2D array as big as the old
 		IWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
 		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[oldWalkableTile.length-1]
 				[oldWalkableTile[1].length-1];
-		// Get All the metro lines
+		
+		// Get All the metro lines and puts it in a array of size 3
 		TramLine[] oldMetroLines = new TramLine[model.getTramLines().size()-1];
 		oldMetroLines = model.getTramLines().toArray(oldMetroLines);
-		//Lists to get all the tramstops
+		
+		// gets the old tramstop tiles arrays och creates 3 new tramstop to put them in with the new mediator
 		List<TramStopTile> oldStop1 = oldMetroLines[0].getTramStops();
 		List<TramStopTile> oldStop2 = oldMetroLines[1].getTramStops();
 		List<TramStopTile> oldStop3 = oldMetroLines[2].getTramStops();
 		List<TramStopTile> stop1 = new ArrayList<TramStopTile>();
 		List<TramStopTile> stop2 = new ArrayList<TramStopTile>();
 		List<TramStopTile> stop3 = new ArrayList<TramStopTile>();
+		
+		//Loads all the tiles again to give them the new mediator
 		for(int i = 0 ; i <oldWalkableTile.length-1; i ++){
 			for(int j = 0; j < oldWalkableTile[i].length- 1; j ++){
 				if(oldWalkableTile[i][j] instanceof RoadTile){
@@ -204,7 +211,6 @@ public class ModelFactory {
 					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
 					newWalkableTile[i][j] = TravelAgencyTile.getInstance();
 				}else if(oldWalkableTile[i][j] instanceof TramStopTile){
-					//TODO Fixa så att man hämtar de olika setten av tramstops och gör en tramline och sedan flera tramlines
 					newWalkableTile[i][j] = new TramStopTile(new Point(i, j), mediator);
 					if(oldStop1.contains(oldWalkableTile[i][j])){
 						stop1.add((TramStopTile) newWalkableTile[i][j]);
@@ -224,6 +230,7 @@ public class ModelFactory {
 				}
 			}
 		}
+		
 		// the new Tramlines that is based on the model you get
 		List<TramLine> newTramLines = new ArrayList<TramLine>();
 		newTramLines.add(new TramLine(stop1));
@@ -231,6 +238,7 @@ public class ModelFactory {
 		newTramLines.add(new TramLine(stop3));
 		
 		//Loads the players and give them the new mediator
+		Player playerClient = null;
 		for(IPlayer player: oldPlayers){
 			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
 			for(IMovable pawn: player.getPawns()){
@@ -244,10 +252,10 @@ public class ModelFactory {
 					pawns.add(new Crook(tile, mediator, pawn.getID()));
 			}
 			Player newPlayer = new Player(player.getName(), pawns, player.getPlayerRole(), mediator, player.getID());
-			//TODO Check if player is playerClient
+			if(newPlayer.getID() == GameClient.getInstance().getClientID())
+				playerClient = newPlayer;				
 			newPlayers.add(newPlayer);
 		}
-		Player playerClient = newPlayers.get(0);
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
 		if(model.getDiceResults() == -1)
 			return new GameModel(mediator, playerClient, (Player) model.getCurrentPlayer(), newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getDiceResults());
