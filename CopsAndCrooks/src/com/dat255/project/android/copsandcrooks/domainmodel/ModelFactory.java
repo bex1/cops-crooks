@@ -163,6 +163,7 @@ public class ModelFactory {
 			}
 		}
 		
+		gameitem.setGameStarted(true);
 		new PathFinder(walkable, mediator, tramLines);
 		return new GameModel(mediator, players.get(0), players, walkable, tramLines, gameitem.getName(), gameitem.getID());
 	}
