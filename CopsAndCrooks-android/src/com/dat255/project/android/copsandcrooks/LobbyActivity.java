@@ -49,7 +49,7 @@ public class LobbyActivity extends Activity {
 		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
 		playerListView.setAdapter(playerListAdapter);
 		
-		playerCapTextView.setText("0/"+ gameItem.getPlayerCap());
+		playerCapTextView.setText(gameItem.getCurrentPlayerCount() + "/" + gameItem.getPlayerCap());
 		updatePlayerList();
 		
 		checkForHost();
@@ -103,11 +103,12 @@ public class LobbyActivity extends Activity {
 	
 	public void joinGame(View v){
 		PlayerItem player;
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
-		}else{
+//		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+//			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+//		}else{
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Crook);
-		}
+//		}
+		
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
 	}
 }

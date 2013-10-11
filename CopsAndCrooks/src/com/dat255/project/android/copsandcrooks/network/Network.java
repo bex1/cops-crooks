@@ -3,6 +3,7 @@ package com.dat255.project.android.copsandcrooks.network;
 import java.util.ArrayList;
 
 import com.dat255.project.android.copsandcrooks.*;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -24,6 +25,7 @@ public class Network {
 		kryo.register(GameItem.class);
 		kryo.register(PlayerItem.class);
 		kryo.register(Pck4_PlayerItem.class);
+		kryo.register(Role.class);
 	}
 
 	/** Packet */
