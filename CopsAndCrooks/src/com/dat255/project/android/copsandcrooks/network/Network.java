@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.dat255.project.android.copsandcrooks.*;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;
 
@@ -26,6 +27,9 @@ public class Network {
 		kryo.register(PlayerItem.class);
 		kryo.register(Pck4_PlayerItem.class);
 		kryo.register(Role.class);
+		kryo.register(Pck5_Turns.class);
+		kryo.register(Turn.class);
+		kryo.register(Pck6_RequestTurns.class);
 	}
 
 	/** Packet */
@@ -66,9 +70,22 @@ public class Network {
 		public ArrayList<GameItem> gameItems;
 	}
 	
-	/** Player item */
-	public static class Pck4_PlayerItem extends Packet{
+	/** */
+	public static class GamePacket extends Packet {
 		public int gameID;
+	}
+	
+	/** Player item */
+	public static class Pck4_PlayerItem extends GamePacket{
 		public PlayerItem playerItem;
 	}
+	
+	/** Turn item */
+	public static class Pck5_Turns extends GamePacket{
+		public ArrayList<Turn> turns;
+	}
+
+	/** Client request a list of turns */
+	public static class Pck6_RequestTurns extends  GamePacket{}
+
 }

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -215,6 +216,8 @@ public final class GameModel implements IObservable, Serializable{
 			} else if (state == GameState.Replay) {
 				replay(replayTurns.pollFirst());
 			} else {
+				GameClient.getInstance().sentTurn(currentTurn);
+				
 				state = GameState.Waiting;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 			}
