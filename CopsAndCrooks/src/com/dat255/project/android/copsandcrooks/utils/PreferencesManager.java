@@ -7,13 +7,21 @@ import com.badlogic.gdx.Preferences;
  * Handles the game preferences.
  */
 public class PreferencesManager {
+	private static PreferencesManager instance;
     // constants
     private static final String PREF_VOLUME = "volume";
     private static final String PREF_MUSIC_ENABLED = "music.enabled";
     private static final String PREF_SOUND_ENABLED = "sound.enabled";
     private static final String PREFS_NAME = "copsAndCrooks";
 
-    public PreferencesManager() {
+    private PreferencesManager() {
+    }
+    
+    public static PreferencesManager getInstance() {
+    	if (instance == null) {
+    		instance = new PreferencesManager();
+    	}
+    	return instance;
     }
 
     protected Preferences getPrefs() {
