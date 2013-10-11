@@ -1,5 +1,8 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +15,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class LobbyActivity extends Activity {
 	
@@ -28,7 +36,7 @@ public class LobbyActivity extends Activity {
 	GameItem gameItem;
 	ArrayAdapter<String> playerListAdapter;
 	
-	public static final String GAME_ITEM = "GAME_ITEM";
+	private GameModel game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +96,13 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		intent.putExtra(GAME_ITEM, gameItem);
+		Map<String, Role> userInfo = new HashMap<String, Role>();
+		for (PlayerItem item : gameItem.getPlayers()) {
+			userInfo.put(item.getName(), item.getRole());
+		}
+		GameFactory.getInstance().init(new Assets());
+		game = ModelFactory.getInstance().loadGameModel(GameFactory.getInstance().getInteract(), userInfo, gameItem.getName());
+		intent.putExtra(GameActivity.GAME, game);
 		startActivity(intent);
 		finish();
 	}
