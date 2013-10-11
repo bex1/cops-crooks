@@ -14,6 +14,7 @@ public class GameClient extends Thread{
 	private Client client;
 	private ArrayList<GameItem> gameItems;
 	private String playerName;
+	private GameItem chosenGameItem;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -100,6 +101,14 @@ public class GameClient extends Thread{
 	
 	public ArrayList<GameItem> getGameItems(){
 		return gameItems;
+	}
+	
+	public void setChosenGameItem(GameItem gameItem){
+		chosenGameItem = gameItem;
+	}
+	
+	public GameItem getChosenGameItem(){
+		return chosenGameItem;
 	}
 
 	public void sendCreatedGame(GameItem gameItem) {
