@@ -173,7 +173,7 @@ public class ModelFactory {
 	 * @return - Fully working gamemodel
 	 * @throws Exception
 	 */
-	public static GameModel loadLocalGameModel(GameModel model){
+	public GameModel loadLocalGameModel(GameModel model){
 		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
