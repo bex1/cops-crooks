@@ -14,6 +14,7 @@ public class GameClient extends Thread{
 	private Client client;
 	private ArrayList<GameItem> gameItems;
 	private String playerName;
+	private GameItem chosenGameItem;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -72,21 +73,21 @@ public class GameClient extends Thread{
 	}
 	
 	public void connectToServer(){
-		if(!client.isConnected()){
+//		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
 				client.connect(120000, "192.168.1.2", Network.PORT);
 			if(client.isConnected())
 				System.out.println("Network: Connected!");
-				else
-					System.out.println("Network: Not connected!");
+			else
+				System.out.println("Network: Not connected!");
 			} catch (IOException e) {
 				System.out.println("Network: Failed to connect!");
 				e.printStackTrace();
 				client.stop();
 				return;
 			}
-		}
+//		}
 	}
 	
 	// send a packet to the server requesting a list of games
@@ -100,6 +101,14 @@ public class GameClient extends Thread{
 	
 	public ArrayList<GameItem> getGameItems(){
 		return gameItems;
+	}
+	
+	public void setChosenGameItem(GameItem gameItem){
+		chosenGameItem = gameItem;
+	}
+	
+	public GameItem getChosenGameItem(){
+		return chosenGameItem;
 	}
 
 	public void sendCreatedGame(GameItem gameItem) {

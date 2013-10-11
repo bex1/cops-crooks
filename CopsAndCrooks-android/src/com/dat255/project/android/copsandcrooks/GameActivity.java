@@ -51,4 +51,19 @@ public class GameActivity extends AndroidApplication {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(GAME, game);
 	}
+
+	/*@Override
+	protected void onResume() {
+		setContentView(R.layout.activity_game);
+
+		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+		cfg.useGL20 = true;
+
+		game = (GameModel)savedInstanceState.get(GAME);
+
+		initialize(new CopsAndCrooks(game), cfg);
+		super.onResume();
+	}*/
+	
+	
 }

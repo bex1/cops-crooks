@@ -15,6 +15,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public final class GameModel implements IObservable, Serializable{
 
+	private final int id;
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
@@ -48,12 +49,12 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int diceResult) {
-		this(mediator, playerClient, players, tiles, tramLines, gameName);
-		dice.setResult(diceResult);
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int diceResult) {
+		this(mediator, playerClient, players, tiles, tramLines, gameName, id);
+		this.playerClient.diceResult(diceResult);
 	}
 
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName) {
+	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -69,6 +70,7 @@ public final class GameModel implements IObservable, Serializable{
 		this.walkable = tiles;
 		this.tramLines = tramLines;
 		this.dice = Dice.getInstance();
+		this.id = id;
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 		this.mediator = mediator;
@@ -349,6 +351,10 @@ public final class GameModel implements IObservable, Serializable{
 
 	public String getName() {
 		return this.gameName;
+	}
+
+	public int getID() {
+		return id;
 	}
 
 }
