@@ -14,9 +14,6 @@ public class MainActivity extends Activity {
         
         GameClient.getInstance().start();
         
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        GameClient.getInstance().setPlayerName(preferences.getString("NAME", "Default name"));
-        
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();
