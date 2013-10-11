@@ -12,7 +12,8 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public class MusicManager implements Disposable {
 	public static final String LOG = MusicManager.class.getSimpleName();
-	
+
+	private static MusicManager instance;
     /**
      * The available music files.
      */
@@ -58,7 +59,14 @@ public class MusicManager implements Disposable {
     /**
      * Creates the music manager.
      */
-    public MusicManager() {}
+    private MusicManager() {}
+    
+    public static MusicManager getInstance() {
+    	if (instance == null) {
+    		instance = new MusicManager();
+    	}
+    	return instance;
+    }
 
     /**
      * Plays the given music (starts the streaming).

@@ -13,6 +13,9 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 
 
 /**
@@ -45,6 +48,18 @@ public class CopsAndCrooks extends Game {
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
+
+        PreferencesManager prefs = PreferencesManager.getInstance();
+        
+        // create the music manager
+        MusicManager musicManager = MusicManager.getInstance();
+        musicManager.setVolume( prefs.getVolume() );
+        musicManager.setEnabled( prefs.isMusicEnabled() );
+
+        // create the sound manager
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.setVolume( prefs.getVolume() );
+        soundManager.setEnabled( prefs.isSoundEnabled() );
         
 //      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
 //		GameClient.getInstance().connectToServer();
@@ -133,9 +148,15 @@ public class CopsAndCrooks extends Game {
     {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
+        
+        // dipose some services
+        MusicManager.getInstance().dispose();
+        SoundManager.getInstance().dispose();
     }
 
 	public GameModel getModel() {
 		return game;
 	}
+	
+	
 }
