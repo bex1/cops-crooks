@@ -173,7 +173,7 @@ public class ModelFactory {
 	 * @return - Fully working gamemodel
 	 * @throws Exception
 	 */
-	public static GameModel loadLocalGameModel(GameModel model) throws Exception{
+	public static GameModel loadLocalGameModel(GameModel model){
 		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
@@ -215,8 +215,6 @@ public class ModelFactory {
 						stop2.add((TramStopTile) newWalkableTile[i][j]);
 					}else if(oldStop3.contains(oldWalkableTile[i][j])){
 						stop3.add((TramStopTile) newWalkableTile[i][j]);
-					}else{
-						throw new Exception("Couldn't find " + oldWalkableTile[i][j] + " in the old models tram lines ");
 					}
 				}else if(oldWalkableTile[i][j] instanceof IntelligenceAgencyTile){
 					newWalkableTile[i][j] = new IntelligenceAgencyTile(new Point(i,j), mediator);
