@@ -19,7 +19,7 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-		GameItem gameitem = new GameItem("Nytt", 1);
+		GameItem gameitem = new GameItem("Nytt", 2);
 		PlayerItem player1 = new PlayerItem("Polis", Role.Cop);
 		PlayerItem player2 = new PlayerItem("Tjuv", Role.Crook);
 		gameitem.addPlayer(player1);
