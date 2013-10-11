@@ -1,5 +1,8 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +15,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class LobbyActivity extends Activity {
 	
@@ -28,7 +36,7 @@ public class LobbyActivity extends Activity {
 	GameItem gameItem;
 	ArrayAdapter<String> playerListAdapter;
 	
-	public static final String GAME_ITEM = "GAME_ITEM";
+	private GameModel game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,6 @@ public class LobbyActivity extends Activity {
 
 		Intent intent = getIntent();
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
-		GameClient.getInstance().setChosenGameItem(gameItem);
 		
 		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
 		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
@@ -50,7 +57,7 @@ public class LobbyActivity extends Activity {
 		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
 		playerListView.setAdapter(playerListAdapter);
 		
-		playerCapTextView.setText(gameItem.getCurrentPlayerCount() + "/" + gameItem.getPlayerCap());
+		playerCapTextView.setText("0/"+ gameItem.getPlayerCap());
 		updatePlayerList();
 		
 		checkForHost();
@@ -89,7 +96,6 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		intent.putExtra(GAME_ITEM, gameItem);
 		startActivity(intent);
 		finish();
 	}
@@ -104,12 +110,11 @@ public class LobbyActivity extends Activity {
 	
 	public void joinGame(View v){
 		PlayerItem player;
-//		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
-//			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
-//		}else{
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Cop);
+		}else{
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Role.Crook);
-//		}
-		
+		}
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
 	}
 }
