@@ -15,6 +15,7 @@ public class GameClient extends Thread{
 	private ArrayList<GameItem> gameItems;
 	private String playerName;
 	private GameItem chosenGameItem;
+	private String clientID;
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -137,6 +138,14 @@ public class GameClient extends Thread{
 	
 	public String getPlayerName(){
 		return playerName;
+	}
+	
+	public void setClientID(String id){
+		this.clientID = id;
+	}
+	
+	public String getClientID(){
+		return clientID + "";
 	}
 	
 	@Override

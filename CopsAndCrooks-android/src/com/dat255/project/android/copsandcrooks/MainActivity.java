@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         GameClient.getInstance().start();
+        GameClient.getInstance().setClientID(Installation.id(getApplicationContext()));
         
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
