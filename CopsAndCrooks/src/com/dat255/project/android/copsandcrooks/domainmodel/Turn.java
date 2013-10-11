@@ -1,6 +1,10 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class Turn implements Serializable{
 	public enum HideoutChoice {
@@ -14,8 +18,8 @@ public class Turn implements Serializable{
 		Walk,
 	}
 
-	private TilePath pathWalked;
-	private IWalkableTile endTile;
+	private List<Point> pathWalked;
+	private Point endTilePos;
 	private int playerID, pawnID;
 	private HideoutChoice hideoutChoice;
 	private MoveType moveType;
@@ -36,20 +40,23 @@ public class Turn implements Serializable{
 		this.hideoutChoice = hideoutChoice;
 	}
 
-	public TilePath getPathWalked() {
+	public List<Point> getPathWalked() {
 		return pathWalked;
 	}
 	
-	public void setPathWalked(TilePath pathWalked) {
-		this.pathWalked = pathWalked;
+	public void setPathWalked(TilePath tilePathWalked) {
+		this.pathWalked = new LinkedList<Point>();
+		for(int i=0; i<tilePathWalked.getPathLength(); i++){
+			this.pathWalked.add(tilePathWalked.getTile(i).getPosition());
+		}
 	}
 	
-	public IWalkableTile getEndTile() {
-		return endTile;
+	public Point getEndTilePos() {
+		return endTilePos;
 	}
 	
 	public void setEndTile(IWalkableTile endTile) {
-		this.endTile = endTile;
+		endTilePos = endTile.getPosition();
 	}
 	
 	public int getPlayerID() {

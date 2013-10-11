@@ -1,10 +1,12 @@
 package com.dat255.project.android.copsandcrooks.network;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.esotericsoftware.kryonet.*;
@@ -13,10 +15,13 @@ public class GameServer {
 
 	private Server server;
 	private ArrayList<GameItem> gameItems;
+	private Map<Integer, ArrayList<Turn>> turns;
 	
 	public GameServer(){
 		
 		gameItems = new ArrayList<GameItem>();
+		turns = new TreeMap<Integer, ArrayList<Turn>>();
+		
 		
 		// test games
 		GameItem testGame = new GameItem();
@@ -76,6 +81,40 @@ public class GameServer {
 								game.addPlayer(gamePck.playerItem);
 								game.setCurrentPlayerCount(game.getCurrentPlayerCount() + 1);
 							}
+						}
+					}
+					
+					// client sends a turn
+					if(packet instanceof Pck5_Turns){
+						printMsg("Client #" + clientID + ": sent a turn");
+						Pck5_Turns gamePck = ((Pck5_Turns)packet);
+						ArrayList<Turn> oldTurns = turns.get(gamePck.gameID);
+						if(oldTurns == null){
+							oldTurns = new ArrayList<Turn>();
+						}
+						oldTurns.add(gamePck.turns.get(0));
+					}
+					
+					// client requests a list of turns
+					if(packet instanceof Pck6_RequestTurns){
+						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
+						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
+						
+						Pck5_Turns responsePck = new Pck5_Turns();
+						responsePck.turns = turns.get(gamePck.gameID);
+						responsePck.gameID = gamePck.gameID;
+						
+						gamePck.getConnection().sendTCP(responsePck);
+					}
+					
+					// client starts a game
+					if(packet instanceof Pck8_StartGame){
+						Pck8_StartGame gamePck = ((Pck8_StartGame)packet);
+						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
+						
+						for(GameItem gi : gameItems){
+							if(gi.getID() == gamePck.gameID)
+								gi.setGameStarted(true);
 						}
 					}
 				}
