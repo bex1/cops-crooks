@@ -112,7 +112,7 @@ public class HostActivity extends Activity {
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()) );
 		else
 			player = new PlayerItem("DefaultPlayerName", Installation.id(getApplicationContext()));
-		
+		player.setRole(Role.Cop);
 		gameItem.addPlayer(player);
 		
 		GameClient.getInstance().sendCreatedGame(gameItem);

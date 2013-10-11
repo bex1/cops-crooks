@@ -124,6 +124,7 @@ public class ModelFactory {
 		Random rand = new Random();
 		for (int i = 0; i < playeritems.size(); i ++ ) {
 			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+			System.out.println(playeritems.get(i).getRole());
 			if (playeritems.get(i).getRole() == Role.Cop) {
 				for (int j = 0; j < numberOfOfficers; j++) {
 					if(!isGameHosted){
