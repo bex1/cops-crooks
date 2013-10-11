@@ -25,7 +25,7 @@ public class GameModelTest {
 	public void testConstructor() {
 		
 		try{
-			GameModel gameModel = new GameModel(null, null, null, null, null, null, 0);
+			GameModel gameModel = new GameModel(null, null, null, null, null, null, null, 0);
 			fail();
 		}catch (IllegalArgumentException e){
 			//expected
@@ -44,8 +44,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
 		ArrayList <Player>players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -55,7 +55,7 @@ public class GameModelTest {
 				tiles [i][j] = new RoadTile(new Point(i, j), mediator);
 			}
 		}
-		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles, new ArrayList<TramLine>(), null, 0);
+		GameModel gameModel = new GameModel(mediator, players.get(0), player2, players, tiles, new ArrayList<TramLine>(), null, 0);
 		
 		gameModel.startGame();
 		
@@ -76,8 +76,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -88,7 +88,7 @@ public class GameModelTest {
 			}
 		}
 		tiles [2][2] = new PoliceStationTile(new Point(2, 2), mediator);
-		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles, new ArrayList<TramLine>(), null, 0);
+		GameModel gameModel = new GameModel(mediator, players.get(0), player2, players, tiles, new ArrayList<TramLine>(), null, 0);
 		
 		gameModel.startGame();
 		//Sets the position of the pawn to ensure that it doesn't start in the police station.
@@ -108,8 +108,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		//to specify where officer is in the list
@@ -122,7 +122,7 @@ public class GameModelTest {
 		}
 		tiles [2][2] = new PoliceStationTile(new Point(2, 2), mediator);
 		tiles [2][1] = new PoliceStationTile(new Point(2, 1), mediator);
-		GameModel gameModel = new GameModel(mediator, players.get(0), players, tiles, new ArrayList<TramLine>(), null, 0);
+		GameModel gameModel = new GameModel(mediator, players.get(0), player2, players, tiles, new ArrayList<TramLine>(), null, 0);
 		players.get(0).getCurrentPawn().setCurrentTile(tiles [1][1]);
 		((Crook)players.get(1).getCurrentPawn()).setWanted(true);
 		players.get(1).getCurrentPawn().setCurrentTile(tiles [1][1]);

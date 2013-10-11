@@ -3,13 +3,10 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
-import com.dat255.project.android.copsandcrooks.network.PawnItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -145,7 +142,7 @@ public class ModelFactory {
 					Point point = playeritems.get(i).getPawnItem(crookID).position;
 					pawns.add(new CopCar(walkable[point.x][point.y], mediator, crookID));
 				}
-				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Cop, mediator));
+				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Cop, mediator, playeritems.get(i).getID()));
 				
 			} else if (playeritems.get(i).getRole() == Role.Crook) {
 				if(!isGameHosted){
@@ -158,14 +155,13 @@ public class ModelFactory {
 					pawns.add(new Crook(walkable[point.x][point.y], mediator, crookID));
 				}
 				
-				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Crook, mediator));
+				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Crook, mediator, playeritems.get(i).getID()));
 				++crookID;
 			}
 		}
-		
 		gameitem.setGameStarted(true);
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, players.get(0), players, walkable, tramLines, gameitem.getName(), gameitem.getID());
+		return new GameModel(mediator, players.get(0), null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
 	}
 	
 	
@@ -247,10 +243,15 @@ public class ModelFactory {
 				else if(pawn instanceof Crook)
 					pawns.add(new Crook(tile, mediator, pawn.getID()));
 			}
-			newPlayers.add(new Player(player.getName(), pawns, player.getPlayerRole(), mediator));
+			Player newPlayer = new Player(player.getName(), pawns, player.getPlayerRole(), mediator, player.getID());
+			//TODO Check if player is playerClient
+			newPlayers.add(newPlayer);
 		}
-		
+		Player playerClient = newPlayers.get(0);
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		return new GameModel(mediator, newPlayers.get(0), newPlayers, newWalkableTile, newTramLines, gameName, model.getDiceResults());
+		if(model.getDiceResults() == -1)
+			return new GameModel(mediator, playerClient, (Player) model.getCurrentPlayer(), newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getDiceResults());
+		else
+			return new GameModel(mediator, playerClient, (Player) model.getCurrentPlayer(), newPlayers, newWalkableTile, newTramLines, gameName, model.getID());
 	}
 }

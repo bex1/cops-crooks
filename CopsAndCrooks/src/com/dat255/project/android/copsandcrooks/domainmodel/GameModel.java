@@ -20,7 +20,7 @@ public final class GameModel implements IObservable, Serializable{
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
-	private Player currentPlayer;
+	private Player currentPlayer = null;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
 	private final IMediator mediator;
@@ -50,12 +50,12 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int diceResult) {
-		this(mediator, playerClient, players, tiles, tramLines, gameName, id);
+	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int diceResult) {
+		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id);
 		this.playerClient.diceResult(diceResult);
 	}
 
-	public GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id) {
+	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -75,6 +75,15 @@ public final class GameModel implements IObservable, Serializable{
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 		this.mediator = mediator;
+		
+		if(currentPlayer != null){
+			for(Player player: this.players){
+				if(player.getID() == currentPlayer.getID()){
+					this.currentPlayer = player;
+					break;
+				}
+			}
+		}
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
 		hideoutTiles = new ArrayList<HideoutTile>();
@@ -93,9 +102,11 @@ public final class GameModel implements IObservable, Serializable{
 	}
 
 	public void startGame(){
-		for (Player player : players) {
-			if (player.getPlayerRole() == Role.Cop) {
-				this.currentPlayer = player;
+		if(currentPlayer == null){
+			for (Player player : players) {
+				if (player.getPlayerRole() == Role.Cop) {
+					this.currentPlayer = player;
+				}
 			}
 		}
 		if (currentPlayer == playerClient) {
@@ -193,6 +204,7 @@ public final class GameModel implements IObservable, Serializable{
 		} else {
 			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
+			dice.setResult(-1);
 		}
 		incrementTurnID();
 	}
