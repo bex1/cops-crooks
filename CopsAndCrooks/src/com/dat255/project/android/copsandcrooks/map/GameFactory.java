@@ -498,4 +498,10 @@ public class GameFactory {
 		
 		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none);
 	}
+	
+	public boolean hasLoadedThisGameModel(GameItem item){
+		return new File(absolutPath, item.getName() + "/model.ser").exists();
+		
+		
+	}
 }
