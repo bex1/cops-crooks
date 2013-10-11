@@ -12,6 +12,8 @@ import com.dat255.project.android.copsandcrooks.utils.SoundManager.CopsAndCrooks
  */
 public class SoundManager implements CacheEntryRemovedListener<CopsAndCrooksSound,Sound>, Disposable {
     public static final String LOG = SoundManager.class.getSimpleName();
+    
+    private static SoundManager instance;
 	
 	/**
      * The available sound files.
@@ -48,9 +50,16 @@ public class SoundManager implements CacheEntryRemovedListener<CopsAndCrooksSoun
     /**
      * Creates the sound manager.
      */
-    public SoundManager() {
+    private SoundManager() {
         soundCache = new LRUCache<SoundManager.CopsAndCrooksSound,Sound>( 10 );
         soundCache.setEntryRemovedListener( this );
+    }
+    
+    public static SoundManager getInstance() {
+    	if (instance == null) {
+    		instance = new SoundManager();
+    	}
+    	return instance;
     }
 
     /**

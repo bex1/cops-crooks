@@ -34,11 +34,6 @@ public class CopsAndCrooks extends Game {
     private FPSLogger fpsLogger;
     private Assets assets;
     private GameModel game;
-    
-    // services
-    private PreferencesManager preferencesManager;
-    private MusicManager musicManager;
-    private SoundManager soundManager;
 	
     public CopsAndCrooks(){
     	this(null);
@@ -53,19 +48,18 @@ public class CopsAndCrooks extends Game {
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
-        
-        // create the preferences manager
-        preferencesManager = new PreferencesManager();
 
+        PreferencesManager prefs = PreferencesManager.getInstance();
+        
         // create the music manager
-        musicManager = new MusicManager();
-        musicManager.setVolume( preferencesManager.getVolume() );
-        musicManager.setEnabled( preferencesManager.isMusicEnabled() );
+        MusicManager musicManager = MusicManager.getInstance();
+        musicManager.setVolume( prefs.getVolume() );
+        musicManager.setEnabled( prefs.isMusicEnabled() );
 
         // create the sound manager
-        soundManager = new SoundManager();
-        soundManager.setVolume( preferencesManager.getVolume() );
-        soundManager.setEnabled( preferencesManager.isSoundEnabled() );
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.setVolume( prefs.getVolume() );
+        soundManager.setEnabled( prefs.isSoundEnabled() );
         
 //      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
 //		GameClient.getInstance().connectToServer();
@@ -108,23 +102,6 @@ public class CopsAndCrooks extends Game {
     		}
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         }
-    }
-    
-    // Services' getters
-
-    public PreferencesManager getPreferencesManager()
-    {
-        return preferencesManager;
-    }
-    
-    public MusicManager getMusicManager()
-    {
-        return musicManager;
-    }
-
-    public SoundManager getSoundManager()
-    {
-        return soundManager;
     }
 
     @Override
@@ -171,8 +148,8 @@ public class CopsAndCrooks extends Game {
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
         
         // dipose some services
-        musicManager.dispose();
-        soundManager.dispose();
+        MusicManager.getInstance().dispose();
+        SoundManager.getInstance().dispose();
     }
 
 	public GameModel getModel() {
