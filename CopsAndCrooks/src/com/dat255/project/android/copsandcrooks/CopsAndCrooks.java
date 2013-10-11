@@ -53,11 +53,17 @@ public class CopsAndCrooks extends Game {
         fpsLogger = new FPSLogger();
         assets = GameFactory.getInstance().getAssets();
         if (game != null) {
+        	game = ModelFactory.getInstance().loadLocalGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         } else {
         	GameItem gameToPlay;
         	if (Gdx.app.getType() == ApplicationType.Android) {
-    		gameToPlay = GameClient.getInstance().getChosenGameItem();
+        		gameToPlay = GameClient.getInstance().getChosenGameItem();
+        		gameToPlay = new GameItem("spel", 2);
+        		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
+        		PlayerItem player2 = new PlayerItem("Kalle", Role.Crook);
+        		gameToPlay.addPlayer(player);
+        		gameToPlay.addPlayer(player2);
         	} else {
         		gameToPlay = new GameItem("spel", 2);
         		PlayerItem player = new PlayerItem("Kalle", Role.Cop);
