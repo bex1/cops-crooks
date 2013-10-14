@@ -99,7 +99,7 @@ public class LobbyActivity extends Activity {
 			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
 				System.out.println("Host for this game item");
 				joinGameButton.setClickable(false);
-				joinGameButton.setEnabled(false);	
+				joinGameButton.setEnabled(false);
 			} else {
 				System.out.println("Not host for this game item");
 				startGameButton.setClickable(false);
@@ -131,12 +131,10 @@ public class LobbyActivity extends Activity {
 	
 	public void joinGame(View v){
 		PlayerItem player;
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+		if(!gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
-		}else{
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
+			GameClient.getInstance().joinGame(gameItem.getID(), player);
+			joinGameButton.setEnabled(false);
 		}
-		GameClient.getInstance().joinGame(gameItem.getID(), player);
-		joinGameButton.setEnabled(false);
 	}
 }
