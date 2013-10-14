@@ -8,7 +8,7 @@ import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
 
-public class GameClient extends Thread{
+public class GameClient{
 	
 	private static GameClient instance;
 	private Client client;
@@ -16,6 +16,10 @@ public class GameClient extends Thread{
 	private String playerName;
 	private GameItem chosenGameItem;
 	private String clientID;
+	
+	public enum Server{
+		
+	}
 	
 	public static GameClient getInstance(){
 		if(instance == null)
@@ -74,21 +78,23 @@ public class GameClient extends Thread{
 	}
 	
 	public void connectToServer(){
-//		if(!client.isConnected()){
+		if(!client.isConnected()){
 			try {
 				System.out.println("Network: Trying to connect..");
-				client.connect(120000, "192.168.1.6", Network.PORT);
-			if(client.isConnected())
-				System.out.println("Network: Connected!");
-			else
-				System.out.println("Network: Not connected!");
+				String ip = "192.168.0.14";
+				System.out.println(ip);
+				client.connect(120000, ip, Network.PORT);
+				if(client.isConnected())
+					System.out.println("Network: Connected!");
+				else
+					System.out.println("Network: Not connected!");
 			} catch (IOException e) {
 				System.out.println("Network: Failed to connect!");
 				e.printStackTrace();
 				client.stop();
 				return;
 			}
-//		}
+		}
 	}
 	
 	// send a packet to the server requesting a list of games
@@ -103,6 +109,11 @@ public class GameClient extends Thread{
 	public ArrayList<GameItem> getGameItems(){
 		return gameItems;
 	}
+	
+	public Client getClient(){
+		return client;
+	}
+	
 	
 	public void setChosenGameItem(GameItem gameItem){
 		chosenGameItem = gameItem;
@@ -146,20 +157,6 @@ public class GameClient extends Thread{
 	
 	public String getClientID(){
 		return clientID + "";
-	}
-	
-	@Override
-	public void run(){
-		while(true){
-			if(!client.isConnected()){
-				connectToServer();
-			}
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void sendTurn(Turn currentTurn) {

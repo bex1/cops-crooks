@@ -119,7 +119,8 @@ public class ModelFactory {
 		
 		List<Player> players = new ArrayList<Player>();
 		List<PlayerItem> playeritems = gameitem.getPlayers();
-		int numberOfOfficers = gameitem.getCurrentPlayerCount()-1;
+		int numberOfOfficers = gameitem.getCurrentPlayerCount();
+		System.out.println(numberOfOfficers + "********************************************");
 		int crookID = 1;
 		Random rand = new Random();
 		for (int i = 0; i < playeritems.size(); i ++ ) {
@@ -141,8 +142,8 @@ public class ModelFactory {
 					pawns.add(new CopCar(policeCarStart, mediator, 20));
 					playeritems.get(i).addPawn(policeCarStart.getPosition(), 20);
 				}else{
-					Point point = playeritems.get(i).getPawnItem(crookID).position;
-					pawns.add(new CopCar(walkable[point.x][point.y], mediator, crookID));
+					Point point = playeritems.get(i).getPawnItem(20).position;
+					pawns.add(new CopCar(walkable[point.x][point.y], mediator, 20));
 				}
 				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Cop, mediator, playeritems.get(i).getID()));
 				

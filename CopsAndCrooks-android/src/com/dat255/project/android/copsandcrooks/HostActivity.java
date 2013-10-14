@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -7,6 +9,8 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -101,11 +105,10 @@ public class HostActivity extends Activity {
 	public void hostGame(View v){
 		System.out.println("Network: Creating game");
 		
-		GameItem gameItem = new GameItem();
-		gameItem.setName(gameNameEditText.getText().toString());
+		GameItem gameItem = new GameItem(gameNameEditText.getText().toString(), playerCap);
 		gameItem.setHostId(Installation.id(getApplicationContext()));
-		gameItem.setPlayerCap(playerCap);
-		gameItem.setCurrentPlayerCount(1);
+		System.out.println(Installation.id(getApplicationContext()));
+		
 		
 		PlayerItem player;
 		if(GameClient.getInstance().getPlayerName() != null)
@@ -115,7 +118,10 @@ public class HostActivity extends Activity {
 		player.setRole(Role.Cop);
 		gameItem.addPlayer(player);
 		
-		GameClient.getInstance().sendCreatedGame(gameItem);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			new CommunicateTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			new CommunicateTask(this).execute(gameItem);
 		
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(GAME_ITEM, gameItem);
