@@ -1,11 +1,10 @@
 package com.dat255.project.android.copsandcrooks;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -15,15 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
-import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
-import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class LobbyActivity extends Activity {
 	
@@ -32,12 +25,11 @@ public class LobbyActivity extends Activity {
 	ListView playerListView;
 	Button startGameButton;
 	Button joinGameButton;
+	CommunicateTask reciveTask, sendTask;
 	
 	GameItem gameItem;
 	ArrayAdapter<String> playerListAdapter;
 	
-	private GameModel game;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,14 +55,24 @@ public class LobbyActivity extends Activity {
 		
 		
 		gameNameTextView.setText(gameItem.getName());
-		
-		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
-		playerListView.setAdapter(playerListAdapter);
-		
-		playerCapTextView.setText("0/"+ gameItem.getPlayerCap());
+
 		updatePlayerList();
-		
+
 		checkForHost();
+		
+		reciveTask = new CommunicateTask(this);
+		sendTask = new CommunicateTask(this);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			reciveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+		else
+			reciveTask.execute();
+	}
+
+	@Override
+	protected void onStop() {
+		reciveTask.cancel(true);
+		sendTask.cancel(false);
+		super.onStop();
 	}
 
 	@Override
@@ -81,11 +83,15 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void updatePlayerList(){
+		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
+		playerListView.setAdapter(playerListAdapter);
 		
+		this.updatePlayerCapTextView();
 	}
 	
-	public void updatePlayerCapTextView(int players){
-		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+	private void updatePlayerCapTextView(){
+		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+	
 	}
 	
 	public void checkForHost(){
@@ -93,7 +99,7 @@ public class LobbyActivity extends Activity {
 			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
 				System.out.println("Host for this game item");
 				joinGameButton.setClickable(false);
-				joinGameButton.setEnabled(false);		
+				joinGameButton.setEnabled(false);	
 			} else {
 				System.out.println("Not host for this game item");
 				startGameButton.setClickable(false);
@@ -106,8 +112,10 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		GameClient.getInstance().setChosenGameItem(gameItem);
-		GameClient.getInstance().startGame(gameItem.getID());
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			sendTask.execute(gameItem);
 		
 		startActivity(intent);
 		finish();

@@ -79,7 +79,6 @@ public class GameServer {
 						for(GameItem game : gameItems){
 							if(game.getID() == gamePck.gameID){
 								game.addPlayer(gamePck.playerItem);
-								game.setCurrentPlayerCount(game.getCurrentPlayerCount() + 1);
 							}
 						}
 					}

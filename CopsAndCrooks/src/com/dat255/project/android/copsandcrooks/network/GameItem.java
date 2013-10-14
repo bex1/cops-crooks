@@ -9,7 +9,6 @@ public class GameItem implements Serializable{
 	private int id;
 	private String name;
 	private int playerCap;
-	private int currentPlayerCount;
 	private boolean gameStarted;
 	private String hostId;
 	
@@ -19,7 +18,6 @@ public class GameItem implements Serializable{
 		id = (int) (Math.random()*1000);
 		this.name = name;
 		this.playerCap = playerCap;
-		this.currentPlayerCount = 0;
 		gameStarted = false;
 		playerList = new ArrayList<PlayerItem>();
 	}
@@ -58,13 +56,9 @@ public class GameItem implements Serializable{
 	}
 
 	public int getCurrentPlayerCount() {
-		return currentPlayerCount;
+		return this.playerList.size();
 	}
-
-	public void setCurrentPlayerCount(int currentPlayerCount) {
-		this.currentPlayerCount = currentPlayerCount;
-	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -82,8 +76,8 @@ public class GameItem implements Serializable{
 	}
 	
 	public void addPlayer(PlayerItem player){
-		playerList.add(player);
-		this.setCurrentPlayerCount(getCurrentPlayerCount()+1);
+		if(this.getCurrentPlayerCount() < this.playerCap)
+			playerList.add(player);
 	}
 
 	public List<PlayerItem> getPlayers(){
