@@ -80,9 +80,8 @@ public class GameClient{
 	public void connectToServer(){
 		if(!client.isConnected()){
 			try {
-				System.out.println("Network: Trying to connect..");
-				String ip = "192.168.0.14";
-				System.out.println(ip);
+				String ip = "192.168.1.2";
+				System.out.println("Network: Trying to connect.. to server:" + ip);
 				client.connect(120000, ip, Network.PORT);
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
