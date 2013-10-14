@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,10 +32,8 @@ public class LobbyActivity extends Activity {
 	Button startGameButton;
 	Button joinGameButton;
 	
-	GameItem gameItem;
-	ArrayAdapter<String> playerListAdapter;
-	
-	private GameModel game;
+	private GameItem gameItem;
+	private PlayerItemAdapter playerListAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +60,11 @@ public class LobbyActivity extends Activity {
 		
 		
 		gameNameTextView.setText(gameItem.getName());
-		
-		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
+
+		playerListAdapter = new PlayerItemAdapter(this, gameItem.getPlayers());
 		playerListView.setAdapter(playerListAdapter);
 		
-		playerCapTextView.setText("0/"+ gameItem.getPlayerCap());
-		updatePlayerList();
+		playerCapTextView.setText(gameItem.getPlayers().size()+"/"+ gameItem.getPlayerCap());
 		
 		checkForHost();
 	}
@@ -80,12 +76,12 @@ public class LobbyActivity extends Activity {
 		return true;
 	}
 	
-	public void updatePlayerList(){
-		
+	public void updatePlayerCapTextView(){
+		playerCapTextView.setText(gameItem.getPlayers().size()+"/"+ gameItem.getPlayerCap());
 	}
 	
-	public void updatePlayerCapTextView(int players){
-		playerCapTextView.setText(players +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+	public boolean isGameFull(){
+		return gameItem.getPlayerCap()-gameItem.getPlayers().size() <= 0;
 	}
 	
 	public void checkForHost(){
@@ -93,7 +89,7 @@ public class LobbyActivity extends Activity {
 			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
 				System.out.println("Host for this game item");
 				joinGameButton.setClickable(false);
-				joinGameButton.setEnabled(false);		
+				joinGameButton.setEnabled(false);
 			} else {
 				System.out.println("Not host for this game item");
 				startGameButton.setClickable(false);
@@ -130,5 +126,28 @@ public class LobbyActivity extends Activity {
 		}
 		GameClient.getInstance().joinGame(gameItem.getID(), player);
 		joinGameButton.setEnabled(false);
+	}
+
+	public void changeRole(PlayerItem item) {
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+			for(PlayerItem pi : playerListAdapter.getData()){
+				pi.setRole(Role.Crook);
+			}
+			item.setRole(Role.Cop);
+			
+			playerListAdapter.notifyDataSetChanged();
+			
+			//REMOVE (testing)
+			testAddPlayer();
+		}
+	}
+	
+	public void testAddPlayer(){
+		if(!isGameFull()){
+			gameItem.addPlayer(new PlayerItem("Player #" + (int)((Math.random()*127)), "1"));
+			playerListAdapter.notifyDataSetChanged();
+			//this should be done when a player joins the game
+			updatePlayerCapTextView();
+		}
 	}
 }

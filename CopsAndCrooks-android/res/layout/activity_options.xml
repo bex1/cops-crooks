@@ -37,7 +37,7 @@
         android:layout_marginTop="@dimen/options_margin" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/roleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/options_name"
