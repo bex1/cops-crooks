@@ -83,6 +83,7 @@ public class GameClient{
 			try {
 				System.out.println("Network: Trying to connect to " + serverIP + "..");
 				client.connect(120000, serverIP, Network.PORT);
+				
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
 				else
