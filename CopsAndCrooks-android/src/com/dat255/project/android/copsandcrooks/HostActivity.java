@@ -1,7 +1,5 @@
 package com.dat255.project.android.copsandcrooks;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;

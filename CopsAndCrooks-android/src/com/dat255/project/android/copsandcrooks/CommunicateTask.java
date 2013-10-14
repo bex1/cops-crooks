@@ -17,14 +17,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 	}
 
 	@Override
-	protected void onPostExecute(Void result) {
-		if(activity instanceof LobbyActivity){
-			//TODO tell GameClient load the GAmeItem and update the player list
-			((LobbyActivity)activity).updatePlayerList();
-		}
-	}
-
-	@Override
 	protected Void doInBackground(GameItem... params) {
 		while(true){
 			System.out.println(this.getStatus() + "*************************************************************************");
@@ -32,12 +24,15 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				gameClient.connectToServer();
 			}else if(activity instanceof GameBrowseActivity){
 				gameClient.requestGameItemsFromServer();
+				gameClient.getChosenGameItem();
+				this.publishProgress();
 			}else if(activity instanceof HostActivity){
 				gameClient.sendCreatedGame(params[0]);
 				return null;
 			}else if(activity instanceof LobbyActivity){
 				if(params == null || params.length == 0){ 
 					gameClient.getGameItems();
+					this.publishProgress();
 				}else{
 					gameClient.setChosenGameItem(params[0]);
 					gameClient.startGame(params[0].getID());
@@ -53,5 +48,13 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 			}
 		}
 		
+	}
+
+	@Override
+	protected void onProgressUpdate(Void... values) {
+		if(activity instanceof LobbyActivity)
+			((LobbyActivity)activity).updatePlayerList();
+		else if(activity instanceof GameBrowseActivity)
+			((GameBrowseActivity)activity).refreshGameList();
 	}
 }

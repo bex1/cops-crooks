@@ -1,9 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
-import java.lang.InterruptedException;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
@@ -67,7 +64,7 @@ public class GameBrowseActivity extends Activity {
 		return true;
 	}
 	
-	public void refreshGameList(View v){
+	public void refreshGameList(){
 		if(GameClient.getInstance().getGameItems() != null){
 			System.out.println("Game list not null");
 			gameItemAdapter.getData().clear();
@@ -77,14 +74,6 @@ public class GameBrowseActivity extends Activity {
 		} else {
 			System.out.println("Game list is null!");
 		}
-	}
-	
-	public void getGameList(View v){
-		new Thread(new Runnable(){
-			public void run(){
-				GameClient.getInstance().requestGameItemsFromServer();
-			}
-		}).start();
 	}
 	
 	public void itemAnswer(GameItem gameItem){
