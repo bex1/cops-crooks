@@ -19,6 +19,9 @@ public class PlayerItem implements Serializable{
 	public PlayerItem(String name, String playerID) {
 		this.name = name;
 		this.playerID = playerID;
+		
+		//default role
+		role = Role.Crook;
 	}
 	
 	public PlayerItem() {

@@ -1,10 +1,5 @@
 package com.dat255.project.android.copsandcrooks;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
-import com.dat255.project.android.copsandcrooks.network.GameClient;
-import com.dat255.project.android.copsandcrooks.network.GameItem;
-import com.dat255.project.android.copsandcrooks.network.PlayerItem;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,6 +14,11 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class HostActivity extends Activity {
 	
