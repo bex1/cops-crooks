@@ -8,12 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
@@ -27,9 +27,9 @@ public class LobbyActivity extends Activity {
 	Button joinGameButton;
 	CommunicateTask reciveTask, sendTask;
 	
-	GameItem gameItem;
-	ArrayAdapter<String> playerListAdapter;
-	
+	private GameItem gameItem;
+	private PlayerItemAdapter playerListAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,8 +82,9 @@ public class LobbyActivity extends Activity {
 		return true;
 	}
 	
+
 	public void updatePlayerList(){
-		playerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, gameItem.getPlayerNames());
+		playerListAdapter = new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers());
 		playerListView.setAdapter(playerListAdapter);
 		
 		this.updatePlayerCapTextView();
@@ -91,7 +92,10 @@ public class LobbyActivity extends Activity {
 	
 	private void updatePlayerCapTextView(){
 		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+	}
 	
+	public boolean isGameFull(){
+		return gameItem.getPlayerCap()-gameItem.getPlayers().size() <= 0;
 	}
 	
 	public void checkForHost(){
@@ -135,6 +139,29 @@ public class LobbyActivity extends Activity {
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 			GameClient.getInstance().joinGame(gameItem.getID(), player);
 			joinGameButton.setEnabled(false);
+		}
+	}
+
+	public void changeRole(PlayerItem item) {
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+			for(PlayerItem pi : playerListAdapter.getData()){
+				pi.setRole(Role.Crook);
+			}
+			item.setRole(Role.Cop);
+			
+			playerListAdapter.notifyDataSetChanged();
+			
+			//REMOVE (testing)
+			testAddPlayer();
+		}
+	}
+	
+	public void testAddPlayer(){
+		if(!isGameFull()){
+			gameItem.addPlayer(new PlayerItem("Player #" + (int)((Math.random()*127)), "1"));
+			playerListAdapter.notifyDataSetChanged();
+			//this should be done when a player joins the game
+			updatePlayerCapTextView();
 		}
 	}
 }
