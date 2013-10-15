@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
@@ -54,7 +55,10 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				}
 				
 			}else if(activity instanceof GameActivity){
-				//TODO Check if you can get a turn!
+				if(gameClient.getCurrentGameModel()!=null){
+					if(gameClient.getCurrentGameModel().getGameState() != GameModel.GameState.Playing)
+						gameClient.requestTurns();
+				}
 			}//*/	
 			try {
 				Thread.sleep(5000);
