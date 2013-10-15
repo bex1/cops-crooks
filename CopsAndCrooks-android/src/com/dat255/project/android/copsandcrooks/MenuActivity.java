@@ -20,13 +20,24 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_menu);
 
         //Retrieve the player's name and set it in the client
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		
         if(preferences.getString("NAME", "invalid").equals("invalid")){
         	firstTimeSetup();
         }else{
         	GameClient.getInstance().setPlayerName(preferences.getString("NAME", "default"));
         }
+        
+        if(!preferences.getString("IP", "invalid").equals("invalid"))
+         	GameClient.getInstance().setServerIP(preferences.getString("IP", "default"));        	
+	}	
+	
+	public void storeVariable(String variableID, String variableValue){
+		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+
+		editor.putString(variableID, variableValue);
+		editor.commit();
 	}
 
 	@Override
@@ -39,8 +50,8 @@ public class MenuActivity extends Activity {
 	public void firstTimeSetup(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("*First Time Setup*");
-		alert.setMessage("Enter Name:");
+		alert.setTitle("First time setup");
+		alert.setMessage("Enter name:");
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
@@ -52,22 +63,14 @@ public class MenuActivity extends Activity {
 				if(name.length() <= 0){
 					firstTimeSetup();
 				}
-				storePlayerName(name);
+				storeVariable("NAME", name);
+				GameClient.getInstance().setPlayerName(name);
+				storeVariable("IP", "192.168.1.2");
+				GameClient.getInstance().setServerIP("192.168.1.2");
 			}
 		});
 
 		alert.show();
-	}
-	
-	public void storePlayerName(String name){
-		GameClient.getInstance().setPlayerName(name);
-
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-
-		editor.putString("NAME", name);
-
-		editor.commit();
 	}
 	
 	public void enterGame(View v){
