@@ -59,14 +59,8 @@ public class Network {
 		}
 	}
 	
-	/** Entity packet */
-	public static class EntityPacket extends Packet{
-		public int entityID;
-	}	
-	
 	/** Sent by the client upon connection */		
 	public static class Pck0_ClientHandshake extends Packet{
-		public String playerName;
 		public String message;
 	}
 
