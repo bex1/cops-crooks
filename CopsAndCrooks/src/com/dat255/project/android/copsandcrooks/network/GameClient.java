@@ -83,7 +83,6 @@ public class GameClient{
 			try {
 				System.out.println("Network: Trying to connect to " + serverIP + "..");
 				client.connect(120000, serverIP, Network.PORT);
-				
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
 				else
@@ -114,6 +113,15 @@ public class GameClient{
 		return client;
 	}
 	
+	public void updateChosenGameItem(){
+		getGameItems();
+		for(GameItem gameItem: gameItems){
+			if(gameItem.getID() == chosenGameItem.getID()){
+				chosenGameItem = gameItem;
+				break;
+			}
+		}
+	}
 	
 	public void setChosenGameItem(GameItem gameItem){
 		chosenGameItem = gameItem;
@@ -184,4 +192,7 @@ public class GameClient{
 		client.sendTCP(pck);
     }
 
+	public void updateCurrentGameItem(GameItem gameItem) {
+		
+	}
 }
