@@ -114,9 +114,9 @@ public class GameServer {
 						Pck9_ClientEditedGame gamePck = ((Pck9_ClientEditedGame)packet);
 						printMsg("Client #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
 						
-						for(GameItem gi : gameItems){
-							if(gi.getID() == gamePck.gameItem.getID())
-								gi = gamePck.gameItem;
+						for(int i = 0; i < gameItems.size(); i++){
+							if(gameItems.get(i).getID() == gamePck.gameItem.getID())
+								gameItems.set(i,gamePck.gameItem);
 						}
 					}
 				}
