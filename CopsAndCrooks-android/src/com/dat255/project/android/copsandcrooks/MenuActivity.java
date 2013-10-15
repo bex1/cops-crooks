@@ -48,10 +48,12 @@ public class MenuActivity extends Activity {
 	
 	@Override
 	protected void onStart() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        	task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
-        else
-        	task.execute();
+		if(task.getStatus() != AsyncTask.Status.RUNNING){
+	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+	        	task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+	        else
+	        	task.execute();
+		}
 		super.onStart();
 	}
 

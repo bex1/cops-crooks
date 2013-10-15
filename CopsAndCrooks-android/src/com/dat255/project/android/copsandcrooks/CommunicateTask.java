@@ -48,7 +48,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				if(params == null || params.length == 0){
 					gameClient.requestGameItemsFromServer();
 					gameClient.updateChosenGameItem();
-					gameClient.getChosenGameItem();
 					this.publishProgress();
 				}else{
 					gameClient.updateChosenGameItem();
