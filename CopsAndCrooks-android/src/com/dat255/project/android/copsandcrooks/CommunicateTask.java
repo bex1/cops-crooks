@@ -51,7 +51,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 						gameClient.updateCurrentGameItem(params[0]);
 					}
 					return null;
-					
 				}
 				
 			}else if(activity instanceof GameActivity){

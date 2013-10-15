@@ -17,7 +17,8 @@ import com.esotericsoftware.kryonet.*;
 
 /** Network utility class */
 public class Network {
-	static public final int PORT = 54555;
+	public static final int PORT = 54555;
+	public static final String DEFAULT_IP = "192.168.1.2";
 	
 	/**
 	 * Register the network classes.

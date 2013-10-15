@@ -16,6 +16,7 @@ public class GameClient{
 	private String playerName;
 	private GameItem chosenGameItem;
 	private String clientID;
+	private String serverIP;
 	
 	public enum Server{
 		
@@ -80,9 +81,8 @@ public class GameClient{
 	public void connectToServer(){
 		if(!client.isConnected()){
 			try {
-				String ip = "192.168.0.21";
-				System.out.println("Network: Trying to connect.. to server:" + ip);
-				client.connect(120000, ip, Network.PORT);
+				System.out.println("Network: Trying to connect to " + serverIP + "..");
+				client.connect(120000, serverIP, Network.PORT);
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
 				else
@@ -158,6 +158,13 @@ public class GameClient{
 	public String getPlayerName(){
 		return playerName;
 	}
+	
+	public void setServerIP(String ip){
+		serverIP = ip;
+	}
+	public String getServerIP() {
+	    return serverIP;
+    }
 	
 	public void setClientID(String id){
 		this.clientID = id;
