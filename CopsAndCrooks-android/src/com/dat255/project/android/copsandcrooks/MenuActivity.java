@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.Network;
 
 public class MenuActivity extends Activity {
 
@@ -65,8 +66,8 @@ public class MenuActivity extends Activity {
 				}
 				storeVariable("NAME", name);
 				GameClient.getInstance().setPlayerName(name);
-				storeVariable("IP", "192.168.1.2");
-				GameClient.getInstance().setServerIP("192.168.1.2");
+				storeVariable("IP", Network.DEFAULT_IP);
+				GameClient.getInstance().setServerIP(Network.DEFAULT_IP);
 			}
 		});
 
