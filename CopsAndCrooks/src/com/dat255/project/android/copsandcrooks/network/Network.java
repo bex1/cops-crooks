@@ -97,7 +97,7 @@ public class Network {
 	
 	/** Turn item */
 	public static class Pck5_Turns extends GamePacket{
-		public ArrayList<Turn> turns;
+		public LinkedList<Turn> turns;
 	}
 
 	/** Client request a list of turns */
