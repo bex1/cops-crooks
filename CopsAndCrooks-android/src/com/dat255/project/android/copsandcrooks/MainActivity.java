@@ -16,10 +16,7 @@ public class MainActivity extends Activity {
         
         
         GameClient.getInstance().setClientID(Installation.id(getApplicationContext()));
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        	new CommunicateTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
-        else
-        	new CommunicateTask(this).execute();
+        
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();
