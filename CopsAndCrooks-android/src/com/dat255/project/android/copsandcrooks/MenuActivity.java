@@ -2,17 +2,24 @@ package com.dat255.project.android.copsandcrooks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
 
 public class MenuActivity extends Activity {
+	
+	private CommunicateTask task;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +36,30 @@ public class MenuActivity extends Activity {
         }
         
         if(!preferences.getString("IP", "invalid").equals("invalid"))
-         	GameClient.getInstance().setServerIP(preferences.getString("IP", "default"));        	
-	}	
+         	GameClient.getInstance().setServerIP(preferences.getString("IP", "default"));  
+        task = new CommunicateTask(this);
+        
+	}
 	
+	
+	
+	@Override
+	protected void onStart() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        	task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+        else
+        	task.execute();
+		super.onStart();
+	}
+
+	@Override
+	protected void onDestroy() {
+		task.cancel(true);
+		super.onDestroy();
+	}
+
+
+
 	public void storeVariable(String variableID, String variableValue){
 		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
@@ -81,6 +109,14 @@ public class MenuActivity extends Activity {
 	public void openInstructions(View v){
 		Intent intent = new Intent(this, InstructionsActivity.class);
 		startActivity(intent);
+	}
+	
+	public void showError(String text){
+		Context context = getApplicationContext();
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 	
 	public void openOptions(View v){
