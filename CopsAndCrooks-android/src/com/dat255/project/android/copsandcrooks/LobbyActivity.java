@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -29,6 +30,14 @@ public class LobbyActivity extends Activity {
 	
 	private GameItem gameItem;
 	private PlayerItemAdapter playerListAdapter;
+	
+	private Task thisTask = Task.update;
+	
+	public enum Task{
+		join,
+		start,
+		update;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,7 @@ public class LobbyActivity extends Activity {
 
 		Intent intent = getIntent();
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
+		GameClient.getInstance().setChosenGameItem(gameItem);
 		
 		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
 		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
@@ -63,7 +73,7 @@ public class LobbyActivity extends Activity {
 		reciveTask = new CommunicateTask(this);
 		sendTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			reciveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+			reciveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
 			reciveTask.execute();
 	}
@@ -88,6 +98,7 @@ public class LobbyActivity extends Activity {
 		playerListView.setAdapter(playerListAdapter);
 		
 		this.updatePlayerCapTextView();
+		this.checkForHost();
 	}
 	
 	private void updatePlayerCapTextView(){
@@ -105,9 +116,11 @@ public class LobbyActivity extends Activity {
 				joinGameButton.setClickable(false);
 				joinGameButton.setEnabled(false);
 			} else {
-				System.out.println("Not host for this game item");
-				startGameButton.setClickable(false);
-				startGameButton.setEnabled(false);
+				if(!gameItem.hasGameStarted()){
+					System.out.println("Not host for this game item");
+					startGameButton.setClickable(false);
+					startGameButton.setEnabled(false);
+				}
 			}
 		} else {
 			System.out.println("Game item is null!");
@@ -116,11 +129,13 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
-		else
-			sendTask.execute(gameItem);
-		
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+			this.thisTask = Task.start;
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+			else
+				sendTask.execute(gameItem);
+		}
 		startActivity(intent);
 		finish();
 	}
@@ -134,12 +149,15 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void joinGame(View v){
-		PlayerItem player;
-		if(!gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
-			GameClient.getInstance().joinGame(gameItem.getID(), player);
-			joinGameButton.setEnabled(false);
-		}
+		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
+		gameItem.addPlayer(player);
+		thisTask = Task.join;
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			sendTask.execute(gameItem);
+		
+		joinGameButton.setEnabled(false);
 	}
 
 	public void changeRole(PlayerItem item) {
@@ -150,18 +168,10 @@ public class LobbyActivity extends Activity {
 			item.setRole(Role.Cop);
 			
 			playerListAdapter.notifyDataSetChanged();
-			
-			//REMOVE (testing)
-			testAddPlayer();
 		}
 	}
 	
-	public void testAddPlayer(){
-		if(!isGameFull()){
-			gameItem.addPlayer(new PlayerItem("Player #" + (int)((Math.random()*127)), "1"));
-			playerListAdapter.notifyDataSetChanged();
-			//this should be done when a player joins the game
-			updatePlayerCapTextView();
-		}
+	public Task getCurrentTask(){
+		return thisTask;
 	}
 }

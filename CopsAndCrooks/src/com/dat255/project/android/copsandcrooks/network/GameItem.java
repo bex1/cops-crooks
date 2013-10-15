@@ -77,7 +77,7 @@ public class GameItem implements Serializable{
 	
 	public void addPlayer(PlayerItem player){
 		if(this.getCurrentPlayerCount() < this.playerCap)
-			playerList.add(player);
+			playerList.add(0, player);
 	}
 
 	public List<PlayerItem> getPlayers(){
