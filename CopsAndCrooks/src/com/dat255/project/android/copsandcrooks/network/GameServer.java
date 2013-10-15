@@ -5,7 +5,6 @@ import com.dat255.project.android.copsandcrooks.network.Network.*;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,13 +20,6 @@ public class GameServer {
 		
 		gameItems = new ArrayList<GameItem>();
 		turns = new TreeMap<Integer, ArrayList<Turn>>();
-		
-		
-		// test games
-		GameItem testGame = new GameItem();
-//		testGame.setHostId("olle3423");
-//		testGame.setName("Olle's testgame");
-//		gameItems.add(testGame);
 				
 		// initialize server
 		server = new Server();
@@ -114,6 +106,17 @@ public class GameServer {
 						for(GameItem gi : gameItems){
 							if(gi.getID() == gamePck.gameID)
 								gi.setGameStarted(true);
+						}
+					}
+					
+					// client sends an edited game
+					if(packet instanceof Pck9_ClientEditedGame){
+						Pck9_ClientEditedGame gamePck = ((Pck9_ClientEditedGame)packet);
+						printMsg("Client #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
+						
+						for(GameItem gi : gameItems){
+							if(gi.getID() == gamePck.gameItem.getID())
+								gi = gamePck.gameItem;
 						}
 					}
 				}
