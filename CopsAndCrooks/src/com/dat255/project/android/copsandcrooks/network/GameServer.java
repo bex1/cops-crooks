@@ -4,9 +4,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.esotericsoftware.kryonet.*;
 
@@ -14,13 +12,13 @@ public class GameServer {
 
 	private Server server;
 	private ArrayList<GameItem> gameItems;
-	private Map<Integer, ArrayList<Turn>> turns;
+	private Map<Integer, LinkedList<Turn>> turns;
 	
 	public GameServer(){
 		
 		gameItems = new ArrayList<GameItem>();
-		turns = new TreeMap<Integer, ArrayList<Turn>>();
-				
+		turns = new TreeMap<Integer, LinkedList<Turn>>();
+
 		// initialize server
 		server = new Server();
 		Network.register(server);
@@ -79,9 +77,9 @@ public class GameServer {
 					if(packet instanceof Pck5_Turns){
 						printMsg("Client #" + clientID + ": sent a turn");
 						Pck5_Turns gamePck = ((Pck5_Turns)packet);
-						ArrayList<Turn> oldTurns = turns.get(gamePck.gameID);
+						LinkedList<Turn> oldTurns = turns.get(gamePck.gameID);
 						if(oldTurns == null){
-							oldTurns = new ArrayList<Turn>();
+							oldTurns = new LinkedList<Turn>();
 						}
 						oldTurns.add(gamePck.turns.get(0));
 					}
