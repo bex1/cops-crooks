@@ -4,8 +4,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.*;
-import com.dat255.project.android.copsandcrooks.domainmodel.RoadTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
@@ -45,6 +43,7 @@ public class Network {
 		kryo.register(HideoutChoice.class);
 		kryo.register(MoveType.class);
 		kryo.register(Pck8_StartGame.class);
+		kryo.register(Pck9_ClientEditedGame.class);
 	}
 
 	/** Packet */
@@ -86,25 +85,28 @@ public class Network {
 	}
 	
 	/** */
-	public static class GamePacket extends Packet {
+	public static class Pck_ExistingGame extends Packet {
 		public int gameID;
 	}
 	
 	/** Player item */
-	public static class Pck4_PlayerItem extends GamePacket{
+	public static class Pck4_PlayerItem extends Pck_ExistingGame{
 		public PlayerItem playerItem;
 	}
 	
 	/** Turn item */
-	public static class Pck5_Turns extends GamePacket{
+	public static class Pck5_Turns extends Pck_ExistingGame{
 		public ArrayList<Turn> turns;
 	}
 
 	/** Client request a list of turns */
-	public static class Pck6_RequestTurns extends GamePacket{}
+	public static class Pck6_RequestTurns extends Pck_ExistingGame{}
 
 	/** Client starts a game */
-	public static class Pck8_StartGame extends GamePacket{}
+	public static class Pck8_StartGame extends Pck_ExistingGame{}
 	
-
+	/** Client sends an edited game */
+	public static class Pck9_ClientEditedGame extends Packet {
+		public GameItem gameItem;
+	}
 }
