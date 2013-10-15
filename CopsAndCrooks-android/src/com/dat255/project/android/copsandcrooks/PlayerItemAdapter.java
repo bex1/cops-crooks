@@ -93,9 +93,8 @@ public class PlayerItemAdapter extends BaseAdapter{
         button.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View arg0) {
-				//Calls the changeRole-method in LobbyActivity, used for changing roles.
-				((LobbyActivity)arg0.getContext()).changeRole(getItem(position));
+			public void onClick(View v) {
+				((LobbyActivity)v.getRootView().getContext()).changeRole(getItem(position));
 			}
 			
         });

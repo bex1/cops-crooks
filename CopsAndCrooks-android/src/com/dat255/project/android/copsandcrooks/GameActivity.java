@@ -18,6 +18,7 @@ public class GameActivity extends AndroidApplication {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		
 		if (savedInstanceState == null) {
 			setContentView(R.layout.activity_game);
 
@@ -46,4 +47,12 @@ public class GameActivity extends AndroidApplication {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(GAME, cops.getModel());
 	}
+
+	@Override
+	protected void onStop() {
+		this.finish();
+		super.onStop();
+	}
+	
+	
 }
