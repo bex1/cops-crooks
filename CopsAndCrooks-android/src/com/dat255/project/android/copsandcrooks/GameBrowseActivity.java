@@ -26,7 +26,7 @@ public class GameBrowseActivity extends Activity {
 	protected void onStart() {
 		task = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
 			task.execute();
 		super.onStart();

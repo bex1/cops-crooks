@@ -70,7 +70,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private void initGuiElements() {
 		moveByDice = new MoveByDiceTable(assets, model, hudStage);
 		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
-		hudTable = new HUDTable(assets, model.getPlayerClient(), model);
+		hudTable = new HUDTable(assets, model.getPlayerClient(), model, hudStage, model.getPlayers());
 		replayTable = new ReplayTable(assets, model);
 		isInPrison = new IsInPrisonTable(assets);
 	}
