@@ -216,6 +216,10 @@ public class GameClient{
     }
 
 	public void updateCurrentGameItem(GameItem gameItem) {
+		System.out.println("Network: Sending edited game item to server");
+		Pck9_ClientEditedGame gamePck = new Pck9_ClientEditedGame();
+		gamePck.gameItem = gameItem;
 		
+		client.sendTCP(gamePck);
 	}
 }

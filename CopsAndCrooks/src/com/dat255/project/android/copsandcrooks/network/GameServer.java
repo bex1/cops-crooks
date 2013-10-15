@@ -18,14 +18,7 @@ public class GameServer {
 		
 		gameItems = new ArrayList<GameItem>();
 		turns = new TreeMap<Integer, LinkedList<Turn>>();
-		
-		
-		// test games
-		GameItem testGame = new GameItem();
-//		testGame.setHostId("olle3423");
-//		testGame.setName("Olle's testgame");
-//		gameItems.add(testGame);
-				
+
 		// initialize server
 		server = new Server();
 		Network.register(server);
@@ -111,6 +104,17 @@ public class GameServer {
 						for(GameItem gi : gameItems){
 							if(gi.getID() == gamePck.gameID)
 								gi.setGameStarted(true);
+						}
+					}
+					
+					// client sends an edited game
+					if(packet instanceof Pck9_ClientEditedGame){
+						Pck9_ClientEditedGame gamePck = ((Pck9_ClientEditedGame)packet);
+						printMsg("Client #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
+						
+						for(GameItem gi : gameItems){
+							if(gi.getID() == gamePck.gameItem.getID())
+								gi = gamePck.gameItem;
 						}
 					}
 				}
