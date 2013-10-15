@@ -14,42 +14,28 @@ import com.dat255.project.android.copsandcrooks.network.GameItem;
 public class GameActivity extends AndroidApplication {
 	
 	public static final String GAME = "game";
-	
-	private GameModel game;
-	private CopsAndCrooks cops;
 
-	private CommunicateTask turnUpdateTask;
+	private CopsAndCrooks cops;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
-		if (savedInstanceState == null) {
-			setContentView(R.layout.activity_game);
+		setContentView(R.layout.activity_game);
 
-			AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-			cfg.useGL20 = true;
-			
+		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+		cfg.useGL20 = true;
+
+		if (savedInstanceState == null)
 			cops = new CopsAndCrooks();
+		else
+			cops = new CopsAndCrooks((GameModel)savedInstanceState.getSerializable(GAME));
 
-			initialize(cops, cfg);
-		} else {
-			setContentView(R.layout.activity_game);
-
-			AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-			cfg.useGL20 = true;
-			
-			game = (GameModel)savedInstanceState.getSerializable(GAME);
-			
-			cops = new CopsAndCrooks(game);
-
-			initialize(cops, cfg);
-		}
+		initialize(cops, cfg);
 
 		GameClient.getInstance().setCurrentGameModel(cops.getModel());
 
-		turnUpdateTask = new CommunicateTask(this);
+		CommunicateTask turnUpdateTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
@@ -67,6 +53,5 @@ public class GameActivity extends AndroidApplication {
 		this.finish();
 		super.onStop();
 	}
-	
 	
 }
