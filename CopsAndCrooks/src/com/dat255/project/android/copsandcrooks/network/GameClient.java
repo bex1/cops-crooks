@@ -2,7 +2,9 @@ package com.dat255.project.android.copsandcrooks.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
@@ -15,6 +17,8 @@ public class GameClient{
 	private ArrayList<GameItem> gameItems;
 	private String playerName;
 	private GameItem chosenGameItem;
+	private GameModel currentGameModel;
+
 	private String clientID;
 	private String serverIP;
 	
@@ -65,6 +69,12 @@ public class GameClient{
 							gameItems.add(gi);
 							System.out.println("Network: Added a game.");
 						}
+					}
+
+					// server sent a list of turns
+					if(pck instanceof Pck5_Turns){
+						System.out.println("Network: Received a list of turns.");
+						getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
 					}
 				}
 			}
@@ -178,11 +188,24 @@ public class GameClient{
 		System.out.println("Network: Sending turn");
 	    Pck5_Turns turnPck = new Pck5_Turns();
 	    turnPck.gameID = chosenGameItem.getID();
-	    turnPck.turns = new ArrayList<Turn>();
+	    turnPck.turns = new LinkedList<Turn>();
 	    turnPck.turns.add(currentTurn);
 	    
 	    client.sendTCP(turnPck);
     }
+
+	public void requestTurns(){
+		System.out.println("Network: Requesting turns");
+		client.sendTCP(new Pck6_RequestTurns());
+	}
+
+	public GameModel getCurrentGameModel() {
+		return currentGameModel;
+	}
+
+	public void setCurrentGameModel(GameModel currentGameModel) {
+		this.currentGameModel = currentGameModel;
+	}
 
 	public void startGame(int id) {
 	    System.out.println("Network: Starting game");

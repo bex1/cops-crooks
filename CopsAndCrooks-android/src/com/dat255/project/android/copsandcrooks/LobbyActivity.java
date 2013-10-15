@@ -31,12 +31,13 @@ public class LobbyActivity extends Activity {
 	private GameItem gameItem;
 	private PlayerItemAdapter playerListAdapter;
 	
-	private Task thisTask = Task.update;
+	private Task thisTask = Task.none;
 	
 	public enum Task{
 		join,
 		start,
-		update;
+		update,
+		none;
 	}
 
 	@Override
@@ -94,6 +95,7 @@ public class LobbyActivity extends Activity {
 	
 
 	public void updatePlayerList(){
+		gameItem = GameClient.getInstance().getChosenGameItem();
 		playerListAdapter = new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers());
 		playerListView.setAdapter(playerListAdapter);
 		
@@ -135,17 +137,10 @@ public class LobbyActivity extends Activity {
 				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 			else
 				sendTask.execute(gameItem);
+			
 		}
 		startActivity(intent);
 		finish();
-	}
-	
-	public void showError(String text){
-		Context context = getApplicationContext();
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
 	}
 	
 	public void joinGame(View v){
@@ -156,6 +151,7 @@ public class LobbyActivity extends Activity {
 			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 		else
 			sendTask.execute(gameItem);
+		sendTask = new CommunicateTask(this);
 		
 		joinGameButton.setEnabled(false);
 	}
@@ -166,8 +162,13 @@ public class LobbyActivity extends Activity {
 				pi.setRole(Role.Crook);
 			}
 			item.setRole(Role.Cop);
-			
 			playerListAdapter.notifyDataSetChanged();
+			thisTask = Task.update;
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+			else
+				sendTask.execute(gameItem);
+			sendTask = new CommunicateTask(this);
 		}
 	}
 	
