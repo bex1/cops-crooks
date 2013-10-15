@@ -1,5 +1,9 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.Network;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,8 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dat255.project.android.copsandcrooks.network.GameClient;
-import com.dat255.project.android.copsandcrooks.network.GameItem;
+
 
 public class MenuActivity extends Activity {
 	
@@ -93,8 +96,8 @@ public class MenuActivity extends Activity {
 				}
 				storeVariable("NAME", name);
 				GameClient.getInstance().setPlayerName(name);
-				storeVariable("IP", "192.168.1.2");
-				GameClient.getInstance().setServerIP("192.168.1.2");
+				storeVariable("IP", Network.DEFAULT_IP);
+				GameClient.getInstance().setServerIP(Network.DEFAULT_IP);
 			}
 		});
 

@@ -2,23 +2,33 @@ package com.dat255.project.android.copsandcrooks;
 
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.network.GameItem;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+
+/**
+ * This class represents a BaseAdapter used for handling GameItems.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class GameItemAdapter extends BaseAdapter{
 	
 	Context context;
 	private static LayoutInflater inflater = null;
 	private List<GameItem> data;
 
+	/**
+	 * Create a new GameItemAdapter.
+	 * @param context the activity that this adapter belongs to
+	 * @param data a list of the items in the adapter
+	 */
 	public GameItemAdapter(Context context, List<GameItem> data) {
         this.context = context;
         this.data = data;
@@ -26,12 +36,20 @@ public class GameItemAdapter extends BaseAdapter{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 	
+	/**
+	 * Add a GameItem to the adapterlist.
+	 * @param gameItem the GameItem to add
+	 */
 	public void add(GameItem gameItem){
 		data.add(gameItem);
 	    notifyDataSetChanged();
 	}
 	
-	public List getData(){
+	/**
+	 * Get the list of GameItems.
+	 * @return the GameItem-list
+	 */
+	public List<GameItem> getData(){
 		return data;
 	}
 
@@ -58,6 +76,7 @@ public class GameItemAdapter extends BaseAdapter{
             vi = inflater.inflate(R.layout.game_item, null);
         }
         
+        //The textview that contains the game's name
         TextView text = (TextView) vi.findViewById(R.id.nameTextView);
         text.setText(data.get(position).getName());
         
@@ -65,6 +84,7 @@ public class GameItemAdapter extends BaseAdapter{
 
 			@Override
 			public void onClick(View arg0) {
+				//calls the itemAnswer method in GameBrowseActivity, updating the item
 				((GameBrowseActivity)arg0.getContext()).itemAnswer(getItem(position));
 			}
         	
