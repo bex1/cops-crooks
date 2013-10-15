@@ -8,19 +8,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
+/**
+ * This class represents a BaseAdapter that handles PlayerItems.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class PlayerItemAdapter extends BaseAdapter{
 	
 	Context context;
 	private static LayoutInflater inflater = null;
 	private List<PlayerItem> data;
 
+	/**
+	 * Create a new PlayerItemAdapter.
+	 * @param context the activity that uses it
+	 * @param list a list of PlayerItems
+	 */
 	public PlayerItemAdapter(Context context, List<PlayerItem> list) {
         this.context = context;
         this.data = list;
@@ -28,11 +37,19 @@ public class PlayerItemAdapter extends BaseAdapter{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 	
+	/**
+	 * Add a PlayerItem to the adapter.
+	 * @param playerItem the PlayerItem to be added
+	 */
 	public void add(PlayerItem playerItem){
 		data.add(playerItem);
 	    notifyDataSetChanged();
 	}
 	
+	/**
+	 * Get the PlayerItem-list.
+	 * @return the PlayerItem-list
+	 */
 	public List<PlayerItem> getData(){
 		return data;
 	}
@@ -62,9 +79,11 @@ public class PlayerItemAdapter extends BaseAdapter{
             vi = inflater.inflate(R.layout.player_item, null);
         }
         
+        //TextView that displays a player's name
         final TextView text = (TextView) vi.findViewById(R.id.playerNameTextView);
         text.setText(data.get(position).getName());
         
+        //TextView that displays a player's role.
         TextView roleText = (TextView) vi.findViewById(R.id.roleTextView);
         roleText.setText("Role: " + data.get(position).getRole().toString());
         
@@ -75,6 +94,7 @@ public class PlayerItemAdapter extends BaseAdapter{
 
 			@Override
 			public void onClick(View arg0) {
+				//Calls the changeRole-method in LobbyActivity, used for changing roles.
 				((LobbyActivity)arg0.getContext()).changeRole(getItem(position));
 			}
 			
