@@ -1,5 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
@@ -16,18 +17,27 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 		this.activity = activity;
 		this.gameClient = GameClient.getInstance();
 	}
-	
-	
+
+	@Override
+	protected void onPostExecute(Void result) {
+		if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
+			Intent intent = new Intent(activity.getApplicationContext(), MenuActivity.class);
+			activity.startActivity(intent);
+		}
+	}
+
+
 
 
 
 	@Override
 	protected Void doInBackground(GameItem... params) {
 		while(true){
-			System.out.println(this.getStatus() + "*************************************************************************");
-
-			if(activity instanceof MainActivity){
+			System.out.println(this.getStatus() + "*************************************************************************");			
+			if(activity instanceof MenuActivity){
 				gameClient.connectToServer();
+				if(!gameClient.getClient().isConnected())
+					this.publishProgress();
 			}else if(activity instanceof GameBrowseActivity){
 				gameClient.requestGameItemsFromServer();
 				this.publishProgress();
@@ -37,7 +47,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				return null;
 			}else if(activity instanceof LobbyActivity){
 				if(params == null || params.length == 0){
-					gameClient.getChosenGameItem();
+					gameClient.requestGameItemsFromServer();
 					gameClient.updateChosenGameItem();
 					this.publishProgress();
 				}else{
@@ -54,8 +64,14 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				}
 				
 			}else if(activity instanceof GameActivity){
-				//TODO Check if you can get a turn!
+				if(gameClient.getCurrentGameModel()!=null){
+					if(gameClient.getCurrentGameModel().getGameState() != GameModel.GameState.Playing)
+						gameClient.requestTurns();
+				}
 			}//*/	
+			if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
+				return null;
+			}
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e){
@@ -68,7 +84,9 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 
 	@Override
 	protected void onProgressUpdate(Void... values) {
-		if(activity instanceof LobbyActivity)
+		if(activity instanceof MenuActivity){
+			((MenuActivity)activity).showError("Trying to connect");;
+		}else if(activity instanceof LobbyActivity)
 			((LobbyActivity)activity).updatePlayerList();
 		else if(activity instanceof GameBrowseActivity)
 			((GameBrowseActivity)activity).refreshGameList();
