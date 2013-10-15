@@ -100,7 +100,9 @@ public class Network {
 	}
 
 	/** Client request a list of turns */
-	public static class Pck6_RequestTurns extends Pck_ExistingGame{}
+	public static class Pck6_RequestTurns extends Pck_ExistingGame{
+		public int clientTurnID;
+	}
 
 	/** Client starts a game */
 	public static class Pck8_StartGame extends Pck_ExistingGame{}

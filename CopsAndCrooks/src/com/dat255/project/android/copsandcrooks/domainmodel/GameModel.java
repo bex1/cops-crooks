@@ -27,7 +27,7 @@ public final class GameModel implements IObservable, Serializable{
 	private boolean isChangingPlayer;
 	private float changePlayerTimer;
 	private float changePlayerDelay;
-	private static int turnID = 1;
+	private int turnID = 0;
 	
 	private Dice dice;
 	
