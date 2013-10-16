@@ -2,14 +2,10 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import com.dat255.project.android.copsandcrooks.utils.Point;
-import com.dat255.project.android.copsandcrooks.utils.Values;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,7 +18,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 
 

@@ -146,7 +146,7 @@ public class CopsAndCrooks extends Game {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
         
-        // dipose some services
+        // dispose some services
         MusicManager.getInstance().dispose();
         SoundManager.getInstance().dispose();
     }

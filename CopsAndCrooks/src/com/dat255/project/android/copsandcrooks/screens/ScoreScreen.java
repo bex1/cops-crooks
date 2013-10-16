@@ -26,9 +26,9 @@ public class ScoreScreen extends AbstractScreen {
 	
 	private final Map<Wallet, Label> scoreLabels;
 	private final TextButton endButton;
-	private Table table;
+	private final Table table;
 
-	public ScoreScreen(Assets assets, CopsAndCrooks game, float stageWidth,
+	public ScoreScreen(final Assets assets, final CopsAndCrooks game, float stageWidth,
 			float stageHeight, final Collection<? extends IPlayer> players) {
 		super(assets, game, stageWidth, stageHeight);
 		table = new Table();

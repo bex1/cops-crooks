@@ -57,7 +57,7 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	 * Adds an amount of cash to the travel agency.
 	 * @param amount the amount of cash to be added
 	 */
-	public void addCash(int amount){
+	void addCash(int amount){
 		setValue(getValue() + amount);
 	}
 }

@@ -13,10 +13,10 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public abstract class AbstractScreen implements Screen {
 
     protected final CopsAndCrooks game;
-    protected Stage stage;
-    protected Assets assets;
+    protected final Stage stage;
+    protected final Assets assets;
     
-    public AbstractScreen(Assets assets, CopsAndCrooks game, float stageWidth, float stageHeight) {
+    public AbstractScreen(final Assets assets, final CopsAndCrooks game, float stageWidth, float stageHeight) {
         this.game = game;
         this.assets = assets;
         this.stage = new Stage(stageWidth, stageHeight, true);
