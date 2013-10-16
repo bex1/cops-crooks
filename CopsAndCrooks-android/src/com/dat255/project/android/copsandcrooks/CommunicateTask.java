@@ -58,9 +58,14 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				}
 				
 			}else if(activity instanceof GameActivity){
+				System.out.println("********************* GameActivity");
 				if(gameClient.getCurrentGameModel()!=null){
-					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting)
+					System.out.println("Hejsan");
+					System.out.println(gameClient.getCurrentGameModel().getGameState());
+					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting){
+						System.out.println("Hejdå");
 						gameClient.requestTurns();
+					}
 				}
 			}//*/	
 			if(!gameClient.getClient().isConnected())

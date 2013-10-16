@@ -98,6 +98,7 @@ public class CopsAndCrooks extends Game {
     			assert false;
     			game = null;
     		}
+    		GameClient.getInstance().setCurrentGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         }
     }
