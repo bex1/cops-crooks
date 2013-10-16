@@ -74,13 +74,7 @@ public class CopsAndCrooks extends Game {
         	GameItem gameToPlay;
         	if (Gdx.app.getType() == ApplicationType.Android) {
         		gameToPlay = GameClient.getInstance().getChosenGameItem();
-        		/*gameToPlay = new GameItem("spel", 2);
-        		PlayerItem player = new PlayerItem("Kalle", "1ad");
-        		player.setRole(Role.Cop);
-        		PlayerItem player2 = new PlayerItem("Kalle", "2ad");
-        		player2.setRole(Role.Crook);
-        		gameToPlay.addPlayer(player);
-        		gameToPlay.addPlayer(player2);//*/
+
         	} else {
         		gameToPlay = new GameItem("spel", 2);
         		PlayerItem player = new PlayerItem("Kalle", "1ad");
