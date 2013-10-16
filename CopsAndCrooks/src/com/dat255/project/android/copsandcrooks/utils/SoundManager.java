@@ -19,7 +19,8 @@ public class SoundManager implements CacheEntryRemovedListener<CopsAndCrooksSoun
      * The available sound files.
      */
     public enum CopsAndCrooksSound {
-        CLICK( "path" );
+        CASH( "soundeffects/cash-register.wav" ),
+        WIN( "soundeffects/winning.mp3" );
 
         private final String fileName;
 

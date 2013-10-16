@@ -19,6 +19,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager.CopsAndCrooksSound;
 
 public class ScoreScreen extends AbstractScreen {
 	
@@ -95,6 +97,7 @@ public class ScoreScreen extends AbstractScreen {
 	public void show(){
 		super.show();
 		stage.addActor(table);
+		SoundManager.getInstance().play(CopsAndCrooksSound.CASH);
 	}
 
 }
