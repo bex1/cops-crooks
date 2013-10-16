@@ -25,6 +25,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
@@ -114,6 +116,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
 		model.startGame();
+		
+		MusicManager.getInstance().play(CopsAndCrooksMusic.GAME);
 
 	}
 
@@ -211,9 +215,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					break;
 				}
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				Gdx.app.exit();
-			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				Gdx.app.exit();
+				game.setScreen(new ScoreScreen(assets, game, stage.getWidth(), stage.getHeight(), model.getPlayers()));
 			}
 		} else if (model.getCurrentPlayer() == evt.getSource()) {
 
