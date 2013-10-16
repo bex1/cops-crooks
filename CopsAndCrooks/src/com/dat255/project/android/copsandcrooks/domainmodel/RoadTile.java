@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 
@@ -17,12 +16,11 @@ public class RoadTile extends AbstractWalkableTile {
 	 * @param position the position of this tile
 	 * @param mediator the mediator
 	 */
-	public RoadTile(Point position, IMediator mediator) {
+	RoadTile(Point position, IMediator mediator) {
 		super(position, mediator);
 
 		pawnTypes.add(PawnType.Crook);
 		pawnTypes.add(PawnType.Car);
 		pawnTypes.add(PawnType.Officer);
 	}
-
 }

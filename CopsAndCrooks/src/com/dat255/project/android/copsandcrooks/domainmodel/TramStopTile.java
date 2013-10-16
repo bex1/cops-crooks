@@ -1,7 +1,6 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -17,7 +16,7 @@ public class TramStopTile extends AbstractWalkableTile{
 	 * @param position the position of this tile
 	 * @param mediator the mediator
 	 */
-	public TramStopTile(Point position, IMediator mediator) {
+	TramStopTile(Point position, IMediator mediator) {
 		super(position, mediator);
 		
 		pawnTypes.add(PawnType.Crook);

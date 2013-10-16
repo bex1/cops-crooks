@@ -8,8 +8,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 
 public class ReplayTable extends Table{
 	
-
-	public ReplayTable(Assets assets, final GameModel model) {
+	public ReplayTable(final Assets assets, final GameModel model) {
 		this.setFillParent(true);
 		
 		// register the button "roll dice"

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
@@ -24,7 +23,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 * Create a new hideout.
 	 * @param position the hideout's position
 	 */
-	public HideoutTile(Point position, IMediator mediator) {
+	HideoutTile(Point position, IMediator mediator) {
 		super(position, mediator);
 		
 		storedCash = new HashMap<Crook, Integer>();
@@ -32,7 +31,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		pawnTypes.add(PawnType.Crook);
 	}
 	
-	public void addCrooks(Collection<Crook> crooks) {
+	void addCrooks(Collection<Crook> crooks) {
 		for (Crook crook : crooks) {
 			storedCash.put(crook, crook.getWallet().getCash());
 		}

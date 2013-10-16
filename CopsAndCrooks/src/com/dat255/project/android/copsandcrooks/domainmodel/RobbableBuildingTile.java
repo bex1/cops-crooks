@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -13,14 +12,12 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	
 	private int value;
 
-	public static final String PROPERTY_BUILDING_ROBBERY = "Building_Robbery";
-
 	/**
 	 * Create a new RobbableBuilding with a position and a value.
 	 * @param position the building's position
 	 * @param value the building's value
 	 */
-	public RobbableBuildingTile(Point position, IMediator mediator, int value) {
+	RobbableBuildingTile(Point position, IMediator mediator, int value) {
 		super(position, mediator);
 		this.value = value;
 		
@@ -30,7 +27,7 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	@Override
 	public void interact(IMovable target) {
 		if(value > 0 && target instanceof Crook){
-			getRobbedBy((Crook) target); //TODO fix this... interaction(?)
+			getRobbedBy((Crook) target); 
 		}
 	}
 	
@@ -42,7 +39,6 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 		Wallet robberWallet = robber.getWallet();
 		robberWallet.incrementCash(value);
 		robber.setWanted(robberWallet.getCash() > 0);
-		pcs.firePropertyChange(PROPERTY_BUILDING_ROBBERY, null, null);
 	}
 	
 	/**
@@ -57,7 +53,7 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	 * Set the value of this building.
 	 * @param value the new value, all values < 0 are considered as equal to 0
 	 */
-	public void setValue(int value){
+	void setValue(int value){
 		if (value < 0) {
 			value = 0;
 		}

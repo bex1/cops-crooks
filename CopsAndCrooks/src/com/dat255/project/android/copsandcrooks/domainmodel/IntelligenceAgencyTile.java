@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -17,24 +16,24 @@ public class IntelligenceAgencyTile extends AbstractWalkableTile implements IInt
 	 * @param position the position of this tile
 	 * @param mediator the mediator
 	 */
-	public IntelligenceAgencyTile(Point position, IMediator mediator) {
+	IntelligenceAgencyTile(Point position, IMediator mediator) {
 		super(position, mediator);
 
         pawnTypes.add(PawnType.Officer);
 	}
 
-        @Override
-        public void interact(IMovable target) {
-        	mediator.hinderGetAway(this);
-        	// Call the mediator so the gameModel can provide us with the players.
-        }
+	@Override
+	public void interact(IMovable target) {
+		mediator.hinderGetAway(this);
+		// Call the mediator so the gameModel can provide us with the players.
+	}
         
 	/**
 	 * Hinders the get away of all crooks that are trying to escape. The crooks
 	 * are also moved to the policestation.
 	 * @param playerList a list of all players
 	 */
-	public void hinderGetAway(Collection<Player> playerList){
+	void hinderGetAway(Collection<Player> playerList){
 		//Access the players via the mediator
 		for(Player player:playerList){
 			//Check the role of the player, 

@@ -10,13 +10,20 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
  * The mediator is responsible for communicating within the module to avoid
  * cross-reference which decouples dependencies.
  * 
+ * Refers to the mediator pattern http://en.wikipedia.org/wiki/Mediator_pattern
+ * 
+ * Note that the interface is package private, which indicates that it solely handels communication
+ * in the domainmodel.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Mediator implements IMediator {
+final class Mediator implements IMediator {
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;
+	
+	Mediator() {}
 
 	@Override
 	public void registerGameModel(GameModel gameModel) {

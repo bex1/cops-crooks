@@ -13,6 +13,9 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
  * 
  * Refers to the mediator pattern http://en.wikipedia.org/wiki/Mediator_pattern
  * 
+ * Note that the interface is package private, which indicates that it solely handels communication
+ * in the domainmodel.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
@@ -102,13 +105,48 @@ interface IMediator extends Serializable{
 	 */
 	void changePawn(AbstractPawn pawn);
 
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check if there is a wanted crook on the specified tile.
+	 * 
+	 * @param tile the tile to check for crooks
+	 * 
+	 * @return true if there is a wanted crook on the tile, false otherwise.
+	 */
 	boolean isWantedCrookOn(IWalkableTile tile);
 
-	Collection<TilePath> getPossibleMetroPaths(AbstractPawn currentPawn);
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to get possible metro paths that a pawn can travel.
+	 * 
+	 * @param pawn the pawn to get possible metro paths for.
+	 * 
+	 * @return a collection of possible metro paths for the specified pawn.
+	 */
+	Collection<TilePath> getPossibleMetroPaths(AbstractPawn pawn);
 
-	boolean isItMyPlayerTurn(AbstractPawn movable);
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check if the player of a pawn has the turn.
+	 * 
+	 * @param pawn who requests a check if it is it's players turn.
+	 * 
+	 * @return a boolean indicating if the player of the specified pawn has the turn.
+	 */
+	boolean isItMyPlayerTurn(AbstractPawn pawn);
 	
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check the current game state.
+	 * 
+	 * @return the state of the game.
+	 */
 	GameState checkState();
 	
+	/**
+	 * Returns the current turn being played.
+	 * 
+	 * @return a the current turn being played.
+	 */
 	Turn getCurrentTurn();
 }
