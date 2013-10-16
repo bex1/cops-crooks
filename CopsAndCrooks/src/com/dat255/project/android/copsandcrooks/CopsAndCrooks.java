@@ -54,7 +54,6 @@ public class CopsAndCrooks extends Game {
         // create the music manager
         MusicManager musicManager = MusicManager.getInstance();
         musicManager.setVolume( prefs.getVolume() );
-        musicManager.setEnabled( prefs.isMusicEnabled() );
 
         // create the sound manager
         SoundManager soundManager = SoundManager.getInstance();
