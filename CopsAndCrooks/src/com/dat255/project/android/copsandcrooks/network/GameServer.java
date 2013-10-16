@@ -90,9 +90,13 @@ public class GameServer {
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
 						
 						Pck5_Turns responsePck = new Pck5_Turns();
-						responsePck.turns = turns.get(gamePck.gameID);
+						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
+						for(int i=gamePck.clientTurnID; i<turns.get(gamePck.gameID).size(); i++)
+							replayTurns.add(turns.get(gamePck.gameID).get(i));
+						responsePck.turns = replayTurns;
 						responsePck.gameID = gamePck.gameID;
-						
+
+						printMsg("Responded with a list of "+replayTurns.size()+" turns");
 						gamePck.getConnection().sendTCP(responsePck);
 					}
 					
@@ -112,9 +116,9 @@ public class GameServer {
 						Pck9_ClientEditedGame gamePck = ((Pck9_ClientEditedGame)packet);
 						printMsg("Client #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
 						
-						for(GameItem gi : gameItems){
-							if(gi.getID() == gamePck.gameItem.getID())
-								gi = gamePck.gameItem;
+						for(int i = 0; i < gameItems.size(); i++){
+							if(gameItems.get(i).getID() == gamePck.gameItem.getID())
+								gameItems.set(i,gamePck.gameItem);
 						}
 					}
 				}

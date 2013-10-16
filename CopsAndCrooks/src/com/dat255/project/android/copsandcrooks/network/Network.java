@@ -44,6 +44,7 @@ public class Network {
 		kryo.register(MoveType.class);
 		kryo.register(Pck8_StartGame.class);
 		kryo.register(Pck9_ClientEditedGame.class);
+		kryo.register(PawnItem.class);
 	}
 
 	/** Packet */
@@ -59,14 +60,8 @@ public class Network {
 		}
 	}
 	
-	/** Entity packet */
-	public static class EntityPacket extends Packet{
-		public int entityID;
-	}	
-	
 	/** Sent by the client upon connection */		
 	public static class Pck0_ClientHandshake extends Packet{
-		public String playerName;
 		public String message;
 	}
 
@@ -100,7 +95,9 @@ public class Network {
 	}
 
 	/** Client request a list of turns */
-	public static class Pck6_RequestTurns extends Pck_ExistingGame{}
+	public static class Pck6_RequestTurns extends Pck_ExistingGame{
+		public int clientTurnID;
+	}
 
 	/** Client starts a game */
 	public static class Pck8_StartGame extends Pck_ExistingGame{}
@@ -108,5 +105,9 @@ public class Network {
 	/** Client sends an edited game */
 	public static class Pck9_ClientEditedGame extends Packet {
 		public GameItem gameItem;
+	}
+	
+	public static class Pck10_PawnItem extends PawnItem{
+		public PawnItem pawnItem;
 	}
 }

@@ -36,8 +36,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 			System.out.println(this.getStatus() + "*************************************************************************");			
 			if(activity instanceof MenuActivity){
 				gameClient.connectToServer();
-				if(!gameClient.getClient().isConnected())
-					this.publishProgress();
 			}else if(activity instanceof GameBrowseActivity){
 				gameClient.requestGameItemsFromServer();
 				this.publishProgress();
@@ -49,7 +47,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				if(params == null || params.length == 0){
 					gameClient.requestGameItemsFromServer();
 					gameClient.updateChosenGameItem();
-					gameClient.getChosenGameItem();
 					this.publishProgress();
 				}else{
 					gameClient.updateChosenGameItem();
@@ -66,13 +63,12 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				
 			}else if(activity instanceof GameActivity){
 				if(gameClient.getCurrentGameModel()!=null){
-					if(gameClient.getCurrentGameModel().getGameState() != GameModel.GameState.Playing)
+					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting)
 						gameClient.requestTurns();
 				}
 			}//*/	
-			if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
-				return null;
-			}
+			if(!gameClient.getClient().isConnected())
+				this.publishProgress();
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e){

@@ -95,6 +95,7 @@ public class LobbyActivity extends Activity {
 	
 
 	public void updatePlayerList(){
+		gameItem = GameClient.getInstance().getChosenGameItem();
 		playerListAdapter = new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers());
 		playerListView.setAdapter(playerListAdapter);
 		
@@ -130,13 +131,6 @@ public class LobbyActivity extends Activity {
 	
 	public void startGame(View v){
 		Intent intent = new Intent(this, GameActivity.class);
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
-			this.thisTask = Task.start;
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
-			else
-				sendTask.execute(gameItem);
-		}
 		startActivity(intent);
 		finish();
 	}
@@ -149,12 +143,13 @@ public class LobbyActivity extends Activity {
 			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 		else
 			sendTask.execute(gameItem);
+		sendTask = new CommunicateTask(this);
 		
 		joinGameButton.setEnabled(false);
 	}
 
 	public void changeRole(PlayerItem item) {
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted()){
 			for(PlayerItem pi : playerListAdapter.getData()){
 				pi.setRole(Role.Crook);
 			}
@@ -165,6 +160,7 @@ public class LobbyActivity extends Activity {
 				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 			else
 				sendTask.execute(gameItem);
+			sendTask = new CommunicateTask(this);
 		}
 	}
 	
