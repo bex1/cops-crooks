@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -61,7 +63,7 @@ public class GameFactory {
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
 	private static GameFactory instance = null;
 	
-	private static final String absolutPath = "";//Gdx.files.getLocalStoragePath() + "saved-games/";
+	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
 	
 	
 	private GameFactory() {
@@ -409,19 +411,19 @@ public class GameFactory {
 	}
 	
 	public GameModel loadModelFromFile(String name){
-		File fileToLoad = new File(absolutPath + name + "/model.ser");
+		File fileToLoad = new File(absolutPath, name + "/model.ser");
 		if(!fileToLoad.exists()){
 			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
 		}
-		GameModel loadmodel = null;
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
-			loadmodel = (GameModel) in.readObject();
+			GameModel loadmodel = (GameModel) in.readObject();
 			in.close();
+			return loadmodel;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		} 
-		return loadmodel;
 	}
 	
 	private DiceActor getDiceActorFor(Dice dice, Stage hudStage) {
