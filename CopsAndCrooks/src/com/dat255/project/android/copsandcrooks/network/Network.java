@@ -60,14 +60,8 @@ public class Network {
 		}
 	}
 	
-	/** Entity packet */
-	public static class EntityPacket extends Packet{
-		public int entityID;
-	}	
-	
 	/** Sent by the client upon connection */		
 	public static class Pck0_ClientHandshake extends Packet{
-		public String playerName;
 		public String message;
 	}
 
@@ -101,7 +95,9 @@ public class Network {
 	}
 
 	/** Client request a list of turns */
-	public static class Pck6_RequestTurns extends Pck_ExistingGame{}
+	public static class Pck6_RequestTurns extends Pck_ExistingGame{
+		public int clientTurnID;
+	}
 
 	/** Client starts a game */
 	public static class Pck8_StartGame extends Pck_ExistingGame{}

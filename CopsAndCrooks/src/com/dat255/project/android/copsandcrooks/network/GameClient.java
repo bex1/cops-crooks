@@ -196,7 +196,9 @@ public class GameClient{
 
 	public void requestTurns(){
 		System.out.println("Network: Requesting turns");
-		client.sendTCP(new Pck6_RequestTurns());
+		Pck6_RequestTurns requestPck = new Pck6_RequestTurns();
+		requestPck.clientTurnID = getCurrentGameModel().getTurnID();
+		client.sendTCP(requestPck);
 	}
 
 	public GameModel getCurrentGameModel() {

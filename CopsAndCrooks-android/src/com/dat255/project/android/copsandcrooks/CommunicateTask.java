@@ -65,7 +65,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				
 			}else if(activity instanceof GameActivity){
 				if(gameClient.getCurrentGameModel()!=null){
-					if(gameClient.getCurrentGameModel().getGameState() != GameModel.GameState.Playing)
+					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting)
 						gameClient.requestTurns();
 				}
 			}//*/	
