@@ -131,6 +131,9 @@ public final class GameModel implements IObservable, Serializable{
 	}
 	
 	public void addReplayTurns(LinkedList<Turn> turns) {
+		if(turns==null || turns.size()==0)
+			return;
+		
 		this.replayTurns = turns;
 		state = GameState.Replay;
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
