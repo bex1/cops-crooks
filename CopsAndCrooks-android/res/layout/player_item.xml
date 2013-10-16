@@ -10,7 +10,8 @@
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/desc_lobby_role" />
 
     <TextView
         android:id="@+id/playerNameTextView"
@@ -18,14 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:gravity="left"
-        android:text="Invalid name" />
+        android:gravity="left" />
 
     <TextView
         android:id="@+id/roleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/playerNameTextView"
-        android:text="Role: Cop" />
+        android:layout_below="@+id/playerNameTextView" />
 </RelativeLayout>
