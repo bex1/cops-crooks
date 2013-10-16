@@ -120,7 +120,6 @@ public class ModelFactory {
 		List<Player> players = new ArrayList<Player>();
 		List<PlayerItem> playeritems = gameitem.getPlayers();
 		int numberOfOfficers = gameitem.getCurrentPlayerCount();
-		System.out.println(numberOfOfficers + "********************************************");
 		int crookID = 1;
 		Random rand = new Random();
 		for (int i = 0; i < playeritems.size(); i ++ ) {
@@ -151,7 +150,7 @@ public class ModelFactory {
 				if(!isGameHosted){
 					int k = rand.nextInt(listOfHideouts.size()-1);
 					pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
-					playeritems.get(i).addPawn(listOfPolicestationtile.get(k).getPosition(), crookID);
+					playeritems.get(i).addPawn(listOfHideouts.get(k).getPosition(), crookID);
 					listOfHideouts.remove(k);
 				}else{
 					Point point = playeritems.get(i).getPawnItem(crookID).position;
@@ -166,8 +165,13 @@ public class ModelFactory {
 			gameitem.setGameStarted(true);
 			GameClient.getInstance().updateCurrentGameItem(gameitem);
 		}
+		Player playerClient = players.get(0);
+		for(Player player: players){
+			if(player.getID().equals(GameClient.getInstance().getClientID()))
+				playerClient = player;
+		}
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, players.get(0), null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
+		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
 	}
 	
 	
