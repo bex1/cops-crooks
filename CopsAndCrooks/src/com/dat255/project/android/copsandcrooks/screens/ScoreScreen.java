@@ -97,7 +97,7 @@ public class ScoreScreen extends AbstractScreen {
 	public void show(){
 		super.show();
 		stage.addActor(table);
-		SoundManager.getInstance().play(CopsAndCrooksSound.CASH);
+		SoundManager.getInstance().play(CopsAndCrooksSound.WIN);
 	}
 
 }
