@@ -224,7 +224,7 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		} else {
 			nextPlayer(3f);
-		}
+		}//*/
 	}
 	
 	public GameState getGameState() {

@@ -34,8 +34,6 @@ public class GameActivity extends AndroidApplication {
 
 		initialize(cops, cfg);
 
-		GameClient.getInstance().setCurrentGameModel(cops.getModel());
-
 		
 		
 		turnUpdateTask = new CommunicateTask(this);
