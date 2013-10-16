@@ -103,7 +103,7 @@ public class LobbyActivity extends Activity {
 	}
 	
 	private void updatePlayerCapTextView(){
-		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap() + "   wat " + playerListAdapter.getCount());
+		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap());
 	}
 	
 	public boolean isGameFull(){
