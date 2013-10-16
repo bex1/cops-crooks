@@ -51,7 +51,12 @@ public final class GameModel implements IObservable, Serializable{
 	
 	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID, int diceResult) {
 		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
-		this.playerClient.diceResult(diceResult);
+		for(Player player: this.players){
+			if(player.getID().equals(this.currentPlayer)){
+				break;
+			}
+		}
+		
 	}
 
 	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID) {

@@ -111,10 +111,15 @@ public class LobbyActivity extends Activity {
 					Boolean forJoinButton = !gameItem.getPlayerNames().contains(GameClient.getInstance().getPlayerName());
 					joinGameButton.setClickable(forJoinButton);
 					joinGameButton.setEnabled(forJoinButton);
-				}else{
+				}else if(gameItem.hasGameStarted()){
 					Boolean forStartButton = gameItem.getPlayerNames().contains(GameClient.getInstance().getPlayerName());
 					startGameButton.setClickable(forStartButton);
 					startGameButton.setEnabled(forStartButton);
+					joinGameButton.setClickable(false);
+					joinGameButton.setEnabled(false);
+				}else{
+					startGameButton.setClickable(false);
+					startGameButton.setEnabled(false);
 					joinGameButton.setClickable(false);
 					joinGameButton.setEnabled(false);
 				}
@@ -138,6 +143,8 @@ public class LobbyActivity extends Activity {
 	public void joinGame(View v){
 		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 		gameItem.addPlayer(player);
+		joinGameButton.setEnabled(false);
+		joinGameButton.setClickable(false);
 		thisTask = Task.join;
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
@@ -147,7 +154,7 @@ public class LobbyActivity extends Activity {
 	}
 
 	public void changeRole(PlayerItem item) {
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted()){
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted() && gameItem.getCurrentPlayerCount() >1){
 			for(PlayerItem pi : gameItem.getPlayers()){
 				pi.setRole(Role.Crook);
 			}
