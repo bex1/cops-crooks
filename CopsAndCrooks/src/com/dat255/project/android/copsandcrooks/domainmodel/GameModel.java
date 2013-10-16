@@ -139,7 +139,7 @@ public final class GameModel implements IObservable, Serializable{
 	
 	public void replay() {
 		state = GameState.Replay;
-		replay(replayTurns.pollFirst());
+		replay(replayTurns.removeFirst());	
 	}
 	
 	// TODO private
@@ -234,7 +234,9 @@ public final class GameModel implements IObservable, Serializable{
 				state = GameState.Playing;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 			} else if (state == GameState.Replay) {
-				replay(replayTurns.pollFirst());
+//				replay(replayTurns.pollFirst());
+//				replay(replayTurns.pop());
+				replay(replayTurns.removeFirst());
 			} else {
 				state = GameState.Waiting;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
