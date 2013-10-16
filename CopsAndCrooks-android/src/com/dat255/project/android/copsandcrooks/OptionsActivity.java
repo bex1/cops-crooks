@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -14,11 +15,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class OptionsActivity extends Activity {
 	
-	CheckBox soundCheckBox;
-	EditText nameEditText;
+	private CheckBox soundCheckBox;
+	private EditText nameEditText;
+	private SeekBar volumeSeekBar;
 	private EditText editTextIP;
 	
 	private String name;
@@ -32,6 +36,12 @@ public class OptionsActivity extends Activity {
 		soundCheckBox = (CheckBox) findViewById(R.id.soundCheckBox);
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		editTextIP = (EditText) findViewById(R.id.textEditIP);
+		volumeSeekBar = (SeekBar) findViewById(R.id.volumeSeekBar);
+		
+		PreferencesManager prefs = PreferencesManager.getInstance();
+		prefs.setSoundEnabled(soundCheckBox.isChecked());
+		prefs.setVolume(volumeSeekBar.getProgress() / 100f);
+		
 		
 		name = GameClient.getInstance().getPlayerName();
 		nameEditText.setText(name);
@@ -39,14 +49,29 @@ public class OptionsActivity extends Activity {
 		ip = GameClient.getInstance().getServerIP();
 		editTextIP.setText(ip);
 		
+		volumeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				PreferencesManager.getInstance().setVolume(progress / 100f);
+			}
+		});
+		
 		soundCheckBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(soundCheckBox.isChecked()){
-                	
-                }else{
-                	
-                }
+            	boolean soundOn = soundCheckBox.isChecked();
+            	PreferencesManager prefs = PreferencesManager.getInstance();
+            	prefs.setSoundEnabled(soundOn);
             }
         });
 		
