@@ -18,8 +18,8 @@ public class MusicManager implements Disposable {
      * The available music files.
      */
     public enum CopsAndCrooksMusic {
-        MENU( "path" ),
-        GAME( "path" );
+        GAME( "music/Boys.ogg" ),
+        MENU( "path" );
 
         private String fileName;
         private Music musicResource;
