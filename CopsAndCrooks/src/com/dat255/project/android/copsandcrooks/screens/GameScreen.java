@@ -27,6 +27,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
@@ -123,6 +125,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	@Override
 	public void dispose(){
+		MusicManager.getInstance().dispose();
+		SoundManager.getInstance().dispose();
 		renderer.dispose();
 		mapToRender.dispose();
 		hudStage.dispose();
@@ -215,7 +219,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					break;
 				}
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				game.setScreen(new ScoreScreen(assets, game, stage.getWidth(), stage.getHeight(), model.getPlayers()));
+				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 			}
 		} else if (model.getCurrentPlayer() == evt.getSource()) {
 
