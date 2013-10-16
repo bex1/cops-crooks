@@ -44,6 +44,7 @@ public class Network {
 		kryo.register(MoveType.class);
 		kryo.register(Pck8_StartGame.class);
 		kryo.register(Pck9_ClientEditedGame.class);
+		kryo.register(PawnItem.class);
 	}
 
 	/** Packet */
@@ -108,5 +109,9 @@ public class Network {
 	/** Client sends an edited game */
 	public static class Pck9_ClientEditedGame extends Packet {
 		public GameItem gameItem;
+	}
+	
+	public static class Pck10_PawnItem extends PawnItem{
+		public PawnItem pawnItem;
 	}
 }

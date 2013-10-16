@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks;
 
 import java.util.ArrayList;
+
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 

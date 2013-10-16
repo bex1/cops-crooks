@@ -34,10 +34,10 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 	protected Void doInBackground(GameItem... params) {
 		while(true){
 			System.out.println(this.getStatus() + "*************************************************************************");			
+			if(!gameClient.getClient().isConnected())
+				this.publishProgress();
 			if(activity instanceof MenuActivity){
 				gameClient.connectToServer();
-				if(!gameClient.getClient().isConnected())
-					this.publishProgress();
 			}else if(activity instanceof GameBrowseActivity){
 				gameClient.requestGameItemsFromServer();
 				this.publishProgress();
@@ -69,9 +69,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 						gameClient.requestTurns();
 				}
 			}//*/	
-			if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
-				return null;
-			}
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e){

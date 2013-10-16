@@ -162,7 +162,10 @@ public class ModelFactory {
 				++crookID;
 			}
 		}
-		gameitem.setGameStarted(true);
+		if(!isGameHosted){
+			gameitem.setGameStarted(true);
+			GameClient.getInstance().updateCurrentGameItem(gameitem);
+		}
 		new PathFinder(walkable, mediator, tramLines);
 		return new GameModel(mediator, players.get(0), null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
 	}

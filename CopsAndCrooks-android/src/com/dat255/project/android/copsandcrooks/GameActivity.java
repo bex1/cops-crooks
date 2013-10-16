@@ -22,7 +22,7 @@ public class GameActivity extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game);
-
+		
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = true;
 
@@ -35,6 +35,8 @@ public class GameActivity extends AndroidApplication {
 
 		GameClient.getInstance().setCurrentGameModel(cops.getModel());
 
+		
+		
 		CommunicateTask turnUpdateTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
