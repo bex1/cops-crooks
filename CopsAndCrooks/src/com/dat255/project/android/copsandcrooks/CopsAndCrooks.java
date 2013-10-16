@@ -87,10 +87,13 @@ public class CopsAndCrooks extends Game {
     		GameFactory factory = GameFactory.getInstance();
     		ModelFactory modelFactory = ModelFactory.getInstance();
     		if(!gameToPlay.hasGameStarted()){
+    			System.out.println("host skapar ett spela");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
     		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("spelare går med i ett spela för första gången");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
     		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("detta såelet har jag sparat lokalt!!!!!");
     			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
     		}else{
     			assert false;
