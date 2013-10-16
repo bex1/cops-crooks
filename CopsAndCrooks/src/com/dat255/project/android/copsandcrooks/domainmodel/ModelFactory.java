@@ -173,7 +173,7 @@ public class ModelFactory {
 			GameClient.getInstance().updateCurrentGameItem(gameitem);
 		}
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
+		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID(), 0);
 	}
 	
 	
@@ -276,10 +276,11 @@ public class ModelFactory {
 				break;
 			}
 		}
+		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
 		if(model.getDiceResults() == -1)
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getDiceResults());
+			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
 		else
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID());
+			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getDiceResults());
 	}
 }
