@@ -110,7 +110,6 @@ public class GameServer {
 						
 						for(GameItem gi : gameItems){
 							if(gi.getID() == gamePck.gameID){
-								gi.setGameStarted(true);
 								turns.put(gamePck.gameID, new LinkedList<Turn>());
 							}
 						}
