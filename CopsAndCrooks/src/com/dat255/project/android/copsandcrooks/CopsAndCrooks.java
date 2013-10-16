@@ -74,13 +74,7 @@ public class CopsAndCrooks extends Game {
         	GameItem gameToPlay;
         	if (Gdx.app.getType() == ApplicationType.Android) {
         		gameToPlay = GameClient.getInstance().getChosenGameItem();
-        		/*gameToPlay = new GameItem("spel", 2);
-        		PlayerItem player = new PlayerItem("Kalle", "1ad");
-        		player.setRole(Role.Cop);
-        		PlayerItem player2 = new PlayerItem("Kalle", "2ad");
-        		player2.setRole(Role.Crook);
-        		gameToPlay.addPlayer(player);
-        		gameToPlay.addPlayer(player2);//*/
+
         	} else {
         		gameToPlay = new GameItem("spel", 2);
         		PlayerItem player = new PlayerItem("Kalle", "1ad");
@@ -93,10 +87,13 @@ public class CopsAndCrooks extends Game {
     		GameFactory factory = GameFactory.getInstance();
     		ModelFactory modelFactory = ModelFactory.getInstance();
     		if(!gameToPlay.hasGameStarted()){
+    			System.out.println("host skapar ett spela");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
     		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("spelare går med i ett spela för första gången");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
     		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("detta såelet har jag sparat lokalt!!!!!");
     			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
     		}else{
     			assert false;
