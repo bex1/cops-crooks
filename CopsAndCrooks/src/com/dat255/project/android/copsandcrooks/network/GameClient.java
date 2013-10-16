@@ -111,7 +111,7 @@ public class GameClient{
 		client.stop();
 	}
 	
-	// send a packet to the server requesting a list of games
+	// send a packet to the server uesting a list of games
 	public void requestGameItemsFromServer() {
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
@@ -202,6 +202,7 @@ public class GameClient{
 	public void requestTurns(){
 		System.out.println("Network: Requesting turns");
 		Pck6_RequestTurns requestPck = new Pck6_RequestTurns();
+		requestPck.gameID = getCurrentGameModel().getID();
 		requestPck.clientTurnID = getCurrentGameModel().getTurnID();
 		client.sendTCP(requestPck);
 	}

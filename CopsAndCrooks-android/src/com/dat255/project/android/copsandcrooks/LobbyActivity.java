@@ -130,6 +130,11 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void startGame(View v){
+		thisTask = Task.start;
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			sendTask.execute(gameItem);
 		Intent intent = new Intent(this, GameActivity.class);
 		startActivity(intent);
 		finish();
