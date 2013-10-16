@@ -43,27 +43,27 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				if(params == null || params.length == 0){
 					gameClient.requestGameItemsFromServer();
 					gameClient.updateChosenGameItem();
-					this.publishProgress();
+					publishProgress();
 				}else{
-					gameClient.updateChosenGameItem();
 					// If your the host you will  strt the game but if you are 
 					if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.start){
 						gameClient.startGame(params[0].getID());
-					}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.join){
-						gameClient.joinGame(params[0].getID(), params[0].getPlayers().get(0));
-					}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.update){
-						gameClient.updateCurrentGameItem(params[0]);
+					}else{
+						if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.join){
+							gameClient.joinGame(params[0].getID(), params[0].getPlayers().get(0));
+						}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.update){
+							gameClient.updateCurrentGameItem(params[0]);
+						}
+						gameClient.requestGameItemsFromServer();
+						gameClient.updateChosenGameItem();
+						publishProgress();
 					}
 					return null;
 				}
 				
 			}else if(activity instanceof GameActivity){
-				System.out.println("********************* GameActivity");
 				if(gameClient.getCurrentGameModel()!=null){
-					System.out.println("Hejsan");
-					System.out.println(gameClient.getCurrentGameModel().getGameState());
 					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting){
-						System.out.println("Hejdå");
 						gameClient.requestTurns();
 					}
 				}
