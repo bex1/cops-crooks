@@ -49,12 +49,12 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int diceResult) {
-		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id);
+	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID, int diceResult) {
+		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
 		this.playerClient.diceResult(diceResult);
 	}
 
-	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id) {
+	public GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -71,6 +71,7 @@ public final class GameModel implements IObservable, Serializable{
 		this.tramLines = tramLines;
 		this.dice = Dice.getInstance();
 		this.id = id;
+		this.turnID = turnID;
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 		this.mediator = mediator;
