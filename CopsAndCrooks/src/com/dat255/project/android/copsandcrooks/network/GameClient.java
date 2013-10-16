@@ -91,8 +91,9 @@ public class GameClient{
 	public void connectToServer(){
 		if(!client.isConnected()){
 			try {
+				client.start();
 				System.out.println("Network: Trying to connect to " + serverIP + "..");
-				client.connect(120000, serverIP, Network.PORT);
+				client.connect(10000, serverIP, Network.PORT);
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
 				else
@@ -104,6 +105,10 @@ public class GameClient{
 				return;
 			}
 		}
+	}
+	
+	public void changeIP(){
+		client.stop();
 	}
 	
 	// send a packet to the server requesting a list of games

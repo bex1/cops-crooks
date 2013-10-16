@@ -106,6 +106,14 @@ public class OptionsActivity extends Activity {
 		editor.putString("IP", serverIP);
 		editor.commit();
 	}
+	
+	
+
+	@Override
+	protected void onStop() {
+		GameClient.getInstance().changeIP();
+		super.onStop();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
