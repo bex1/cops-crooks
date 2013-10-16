@@ -15,9 +15,7 @@ public abstract class AbstractScreen implements Screen {
     protected final CopsAndCrooks game;
     protected Stage stage;
     protected Assets assets;
-
-    private Table table;
-
+    
     public AbstractScreen(Assets assets, CopsAndCrooks game, float stageWidth, float stageHeight) {
         this.game = game;
         this.assets = assets;
@@ -26,19 +24,6 @@ public abstract class AbstractScreen implements Screen {
 
     protected String getName() {
         return getClass().getSimpleName();
-    }
-
-    protected Table getTable()
-    {
-        if( table == null ) {
-            table = new Table(assets.getSkin());
-            table.setFillParent( true );
-            if(CopsAndCrooks.DEV_MODE ) {
-                table.debug();
-            }
-            stage.addActor( table );
-        }
-        return table;
     }
     
     @Override
