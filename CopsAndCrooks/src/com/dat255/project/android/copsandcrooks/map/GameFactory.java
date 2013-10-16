@@ -412,6 +412,7 @@ public class GameFactory {
 	
 	public GameModel loadModelFromFile(String name){
 		File fileToLoad = new File(absolutPath, name + "/model.ser");
+		System.out.println(fileToLoad.getPath() + "\n" + fileToLoad.exists());
 		if(!fileToLoad.exists()){
 			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
 		}
