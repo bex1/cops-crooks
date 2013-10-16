@@ -38,7 +38,7 @@ public final class TilePath implements IObservable, Serializable {
 	 * @return the next tile on path.
 	 */
 	synchronized AbstractWalkableTile consumeNextTile() {
-		return pathList.pollLast();
+		return pathList.removeLast();
 	}
 	
 	/**
