@@ -91,8 +91,11 @@ public class GameServer {
 						
 						Pck5_Turns responsePck = new Pck5_Turns();
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
+						
+												
 						for(int i=gamePck.clientTurnID; i<turns.get(gamePck.gameID).size(); i++)
 							replayTurns.add(turns.get(gamePck.gameID).get(i));
+						
 						responsePck.turns = replayTurns;
 						responsePck.gameID = gamePck.gameID;
 
@@ -106,8 +109,10 @@ public class GameServer {
 						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
 						
 						for(GameItem gi : gameItems){
-							if(gi.getID() == gamePck.gameID)
+							if(gi.getID() == gamePck.gameID){
 								gi.setGameStarted(true);
+								turns.put(gamePck.gameID, new LinkedList<Turn>());
+							}
 						}
 					}
 					
