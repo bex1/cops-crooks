@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
@@ -144,24 +143,6 @@ public final class GameModel implements IObservable, Serializable{
 	
 	// TODO private
 	private void replay(Turn turn) {
-		// Test
-		this.currentTurn = turn;
-		turn = new Turn();
-		turn.setPawnID(currentPlayer.getCurrentPawn().getID());
-		turn.setMoveType(MoveType.Walk);
-		TilePath path = new TilePath();
-		Point pos = currentPlayer.getCurrentPawn().getCurrentTile().getPosition();
-		
-		AbstractWalkableTile endT = new RoadTile(new Point(pos.x, pos.y + 4), mediator);
-		path.addTileLast(endT);
-		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 3), mediator));
-		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 2), mediator));
-		path.addTileLast(new RoadTile(new Point(pos.x, pos.y + 1), mediator));
-		turn.setPathWalked(path);
-		turn.setEndTile(endT);
-		
-		
-		
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
 		IWalkableTile end = getWalkabletiles()[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null && end != null) {

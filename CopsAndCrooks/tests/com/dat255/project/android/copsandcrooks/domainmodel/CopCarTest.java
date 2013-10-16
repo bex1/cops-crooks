@@ -13,6 +13,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -67,15 +69,28 @@ public class CopCarTest {
 		} 
 	}
 
-
 	/**
 	 * Test method for {@link com.dat255.project.android.copsandCopCars.domainmodel.CopCar#collisionAfterMove(com.dat255.project.android.copsandCopCars.domainmodel.IMovable)}.
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
-		CopCar test = new CopCar(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 20);
+		Mediator mediator = new Mediator();
+		
+		CopCar test = new CopCar(new RoadTile(new Point(0, 0), mediator), mediator, 20);
+		Crook crook = new Crook(new RoadTile(new Point(0, 0), mediator), mediator, 10);
+		List<AbstractPawn> pawnList = new ArrayList();
+		pawnList.add(test);
+		Player player = new Player(null, pawnList, Role.Cop, mediator, null);
+		crook.setWanted(true);
+		crook.getWallet().setCash(20000);
+		
+		test.collisionAfterMove(crook);
+		
+		assertTrue(crook.getTimesArrested() == 1 && crook.getCurrentTile() instanceof PoliceStationTile 
+				&& crook.getWallet().getCash() == 0 && player.getWallet().getCash() == 5000);
+		
 		try {
-			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 10));
+			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), mediator), mediator, 10));
 			fail("Should throw Assertion error");
 		} catch (AssertionError e) {
 			// expected
