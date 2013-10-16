@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
+import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**
@@ -49,7 +50,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 */
 	public void depositCash(Crook crook){
 		//Adds the crook to the list of crooks that have stored cash
-		
+		mediator.getCurrentTurn().setHideoutChoice(HideoutChoice.Deposit);
 		storedCash.put(crook, crook.getWallet().getCash() + getStoredCashAmount(crook));
 		crook.getWallet().setCash(0);
 		crook.setWanted(false);
@@ -64,7 +65,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 */
 	public void withdrawCash(Crook crook){
 		int cash;
-		
+		mediator.getCurrentTurn().setHideoutChoice(HideoutChoice.Withdraw);
 		//Checks if the crook has any cash in the hideout.
 		if(hasStoredCash(crook)){
 			cash = getStoredCashAmount(crook);
@@ -110,6 +111,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 * Cancels the crooks interaction with the hideout.
 	 */
 	public void cancelInteraction(){
+		mediator.getCurrentTurn().setHideoutChoice(HideoutChoice.Cancel);
 		mediator.playerTurnDone(2f);
 	}
 	

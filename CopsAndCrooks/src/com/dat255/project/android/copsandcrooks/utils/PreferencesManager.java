@@ -11,6 +11,8 @@ public class PreferencesManager {
     private float volume;
 
     private PreferencesManager() {
+    	soundOn = true;
+    	volume = 1f;
     }
     
     public static PreferencesManager getInstance() {
