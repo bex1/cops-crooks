@@ -45,7 +45,7 @@ public class GameClient{
 			public void connected(Connection connection) {
 				// send a request to join the server
 				Pck0_ClientHandshake pck = new Pck0_ClientHandshake();
-				pck.message = "Client says hi!";
+				pck.message = getPlayerName() + " says hi!";
 				System.out.println("Network: Connecting..");
 				client.sendTCP(pck);
 			}
