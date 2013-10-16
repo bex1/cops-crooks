@@ -342,8 +342,8 @@ public final class GameModel implements IObservable, Serializable{
 		return false;
 	}
 	
-	public IWalkableTile[][] getWalkabletiles(){
-		return walkable;
+	public AbstractWalkableTile[][] getWalkabletiles(){
+		return walkable.clone();
 	}
 
 	public Collection<TramLine> getTramLines() {
@@ -371,7 +371,7 @@ public final class GameModel implements IObservable, Serializable{
 	}
 
 	public String getName() {
-		return this.gameName;
+		return gameName +"";
 	}
 
 	public int getID() {

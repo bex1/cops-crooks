@@ -26,10 +26,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 		}
 	}
 
-
-
-
-
 	@Override
 	protected Void doInBackground(GameItem... params) {
 		while(true){
@@ -82,7 +78,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 	@Override
 	protected void onProgressUpdate(Void... values) {
 		if(activity instanceof MenuActivity){
-			((MenuActivity)activity).showError("Trying to connect");;
+			((MenuActivity)activity).showError("Trying to connect");
 		}else if(activity instanceof LobbyActivity)
 			((LobbyActivity)activity).updatePlayerList();
 		else if(activity instanceof GameBrowseActivity)
