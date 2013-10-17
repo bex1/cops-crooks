@@ -164,7 +164,7 @@ public final class GameModel implements IObservable, Serializable{
 				List<Point> pathWalked = turn.getPathWalked();
 				TilePath tilePathWalked = new TilePath();
 				for(Point point : pathWalked)
-					tilePathWalked.addTileLast((AbstractWalkableTile) getWalkabletiles()[point.x][point.y]);
+					tilePathWalked.addTileLast(getWalkabletiles()[point.x][point.y]);
 				pawn.move(tilePathWalked);
 				break;
 			default:
@@ -223,8 +223,6 @@ public final class GameModel implements IObservable, Serializable{
 				state = GameState.Playing;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 			} else if (state == GameState.Replay) {
-//				replay(replayTurns.pollFirst());
-//				replay(replayTurns.pop());
 				replay(replayTurns.removeFirst());
 			} else {
 				state = GameState.Waiting;
@@ -232,7 +230,7 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		} else {
 			nextPlayer(3f);
-		}//*/
+		}
 	}
 	
 	public GameState getGameState() {
@@ -268,7 +266,7 @@ public final class GameModel implements IObservable, Serializable{
 				return tile;
 			}
 		}
-		// Should always be room in policehouse.
+		// Should always be room in police house.
 		assert false;
 		return null;
 	}
