@@ -6,9 +6,12 @@
  <tileset firstgid="15" name="background-tileset-v1" tilewidth="60" tileheight="60">
   <image source="background-tileset-v1.png" width="60" height="60"/>
  </tileset>
+ <tileset firstgid="16" name="PoliceStationBackground" tilewidth="60" tileheight="60">
+  <image source="PoliceStationBackground.png" width="60" height="60"/>
+ </tileset>
  <layer name="background" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJztw0ENAAAMA6FzUP9uJ2JfSFg1VVX19QC1QyqL
+   eJztziEBAAAIA7A3gP5paYBDMTG/SlIAcKAXnw7ADwP2VyqZ
   </data>
  </layer>
  <layer name="interact" width="33" height="22">
