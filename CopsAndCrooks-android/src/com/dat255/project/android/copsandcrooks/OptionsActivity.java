@@ -108,7 +108,7 @@ public class OptionsActivity extends Activity {
 
 	@Override
 	protected void onStop() {
-		GameClient.getInstance().changeIP();
+		GameClient.getInstance().stopClient();
 		super.onStop();
 	}
 

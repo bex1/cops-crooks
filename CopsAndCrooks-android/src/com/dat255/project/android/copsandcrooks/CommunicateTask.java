@@ -20,7 +20,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
+		if(!gameClient.isConnected() && !(activity instanceof MenuActivity)){
 			Intent intent = new Intent(activity.getApplicationContext(), MenuActivity.class);
 			activity.startActivity(intent);
 		}
@@ -68,7 +68,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 					}
 				}
 			}//*/	
-			if(!gameClient.getClient().isConnected())
+			if(!gameClient.isConnected())
 				this.publishProgress();
 			try {
 				Thread.sleep(5000);
