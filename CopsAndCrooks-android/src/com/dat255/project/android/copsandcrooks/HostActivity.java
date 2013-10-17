@@ -51,8 +51,6 @@ public class HostActivity extends Activity {
 		
 		playerCap = 2;
 		
-		//testing
-		gameNameEditText.setText("testgame");
 	}
 
 	@Override
