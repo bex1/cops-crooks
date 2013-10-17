@@ -72,13 +72,10 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 						gameClient.requestTurns();
 					}
 				}
-			}//*/	
+			}	
 
 			if(!gameClient.isConnected())
 				this.publishProgress();
-
-			//	if(!gameClient.getClient().isConnected())
-			//	this.publishProgress();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e){
@@ -92,7 +89,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 	@Override
 	protected void onProgressUpdate(Boolean... values) {
 		if(activity instanceof MenuActivity){
-			((MenuActivity)activity).showMessage("Trying to connect");
+			((MenuActivity)activity).showMessage("Failed to connect");
 		}else if(activity instanceof LobbyActivity){
 			((LobbyActivity)activity).updatePlayerList();
 		}else if(activity instanceof GameBrowseActivity){
