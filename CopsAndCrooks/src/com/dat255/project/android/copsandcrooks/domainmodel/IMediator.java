@@ -1,10 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 
-import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 /**

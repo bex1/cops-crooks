@@ -2,9 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.badlogic.gdx.utils.Timer;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
-
 
 /**
  * The mediator is responsible for communicating within the module to avoid
