@@ -125,6 +125,16 @@ public class GameServer {
 								gameItems.set(i,gamePck.gameItem);
 						}
 					}
+
+					// client ends the game
+					if(packet instanceof Pck11_EndGame){
+						for(int i = 0; i < gameItems.size(); i++){
+							if(gameItems.get(i).getID() == ((Pck11_EndGame) packet).gameID){
+								gameItems.remove(i);
+								// TODO Remove associated turns from this game when all clients have received last turn
+							}
+						}
+					}
 				}
 			}
 			

@@ -226,4 +226,10 @@ public class GameClient{
 		
 		client.sendTCP(gamePck);
 	}
+
+	public void sendGameEnd() {
+		Pck11_EndGame pck = new Pck11_EndGame();
+		pck.gameID = chosenGameItem.getID();
+		client.sendTCP(pck);
+	}
 }
