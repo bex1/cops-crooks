@@ -30,10 +30,6 @@ public class GameItem implements Serializable{
 		return id;
 	}
 	
-	public void setID(int gameID){
-		id = gameID;
-	}
-	
 	public String getName(){
 		return name;
 	}
@@ -49,10 +45,6 @@ public class GameItem implements Serializable{
 	
 	public int getPlayerCap() {
 		return playerCap;
-	}
-
-	public void setPlayerCap(int playerCap) {
-		this.playerCap = playerCap;
 	}
 
 	public int getCurrentPlayerCount() {

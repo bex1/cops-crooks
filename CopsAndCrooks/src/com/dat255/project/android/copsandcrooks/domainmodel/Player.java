@@ -107,6 +107,7 @@ public class Player implements IPlayer, Serializable {
     	checkIfCrookIsEscaping();
     	checkIfLifeTimeInPrison();
     	checkIfCrookStillInPrison();
+    	mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     }
     
     private void checkIfCrookStillInPrison() {
@@ -207,7 +208,8 @@ public class Player implements IPlayer, Serializable {
     	// No possible paths and crook... -> Next player
 
 		if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
-			mediator.playerTurnDone(0);
+			mediator.playerTurnDone(2f);
+			mediator.getCurrentTurn().setEndTile(currentPawn.getCurrentTile());
 			return;
 		}
 		pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
@@ -263,6 +265,7 @@ public class Player implements IPlayer, Serializable {
      */
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
+    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     		currentPawn.setIsActivePawn(false);
     		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
