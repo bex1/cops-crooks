@@ -24,7 +24,8 @@ public class GameModelTest {
 	public void testConstructor() {
 		
 		try{
-			GameModel gameModel = new GameModel(null, null, null, null, null, null, null, 0, 0);
+			@SuppressWarnings("unused")
+            GameModel gameModel = new GameModel(null, null, null, null, null, null, null, 0, 0);
 			fail();
 		}catch (IllegalArgumentException e){
 			//expected
