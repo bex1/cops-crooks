@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 
 
-public class MenuActivity extends Activity {
+public class MenuActivity extends AbstractActivity {
 	
 	private CommunicateTask task;
 
@@ -114,14 +114,6 @@ public class MenuActivity extends Activity {
 	public void openInstructions(View v){
 		Intent intent = new Intent(this, InstructionsActivity.class);
 		startActivity(intent);
-	}
-	
-	public void showError(String text){
-		Context context = getApplicationContext();
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
 	}
 	
 	public void openOptions(View v){

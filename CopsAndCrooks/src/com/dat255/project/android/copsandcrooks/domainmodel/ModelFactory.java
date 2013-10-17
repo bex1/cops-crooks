@@ -1,10 +1,17 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -17,6 +24,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 public class ModelFactory {
 	
 	private static ModelFactory instance = null;
+	
+	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
 	
 	private ModelFactory(){}
 	
@@ -278,9 +287,44 @@ public class ModelFactory {
 		}
 		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		if(model.getDiceResults() == -1)
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
-		else
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getDiceResults());
+		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
+	}
+	
+
+	public void saveModelToFile(GameModel game){
+		File dir = new File(absolutPath, game.getName());
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		File savefile = new File(dir, "model.ser");
+		try {
+			savefile.createNewFile();
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
+			out.writeObject(game);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public GameModel loadModelFromFile(String name){
+		File fileToLoad = new File(absolutPath, name + "/model.ser");
+		System.out.println(fileToLoad.getPath() + "\n" + fileToLoad.exists());
+		if(!fileToLoad.exists()){
+			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
+		}
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
+			GameModel loadmodel = (GameModel) in.readObject();
+			in.close();
+			return loadmodel;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} 
+	}
+	
+	public boolean hasLoadedThisGameModel(GameItem item){
+		return new File(absolutPath, item.getName() + "/model.ser").exists();
 	}
 }
