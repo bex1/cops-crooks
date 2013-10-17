@@ -6,8 +6,6 @@ import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.KeyListener;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -35,13 +33,12 @@ public class OptionsActivity extends Activity {
 		
 		soundCheckBox = (CheckBox) findViewById(R.id.soundCheckBox);
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
-		editTextIP = (EditText) findViewById(R.id.textEditIP);
+		editTextIP = (EditText) findViewById(R.id.serverIPTextEdit);
 		volumeSeekBar = (SeekBar) findViewById(R.id.volumeSeekBar);
 		
 		PreferencesManager prefs = PreferencesManager.getInstance();
 		prefs.setSoundEnabled(soundCheckBox.isChecked());
 		prefs.setVolume(volumeSeekBar.getProgress() / 100f);
-		
 		
 		name = GameClient.getInstance().getPlayerName();
 		nameEditText.setText(name);

@@ -21,11 +21,8 @@ public class GameClient{
 
 	private String clientID;
 	private String serverIP;
-	
-	public enum Server{
-		
-	}
-	
+
+
 	public static GameClient getInstance(){
 		if(instance == null)
 			instance = new GameClient();
@@ -110,7 +107,6 @@ public class GameClient{
 				System.out.println("Network: Failed to connect!");
 				e.printStackTrace();
 				client.stop();
-				return;
 			}
 		}
 	}
@@ -119,7 +115,7 @@ public class GameClient{
 		client.stop();
 	}
 	
-	// send a packet to the server uesting a list of games
+	// send a packet to the server requesting a list of games
 	public void requestGameItemsFromServer() {
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
@@ -223,7 +219,7 @@ public class GameClient{
 		this.currentGameModel = currentGameModel;
 	}
 
-	public void startGame(int id) {
+	public void startGame() {
 	    System.out.println("Network: Starting game");
 		Pck8_StartGame pck = new Pck8_StartGame();
 		pck.gameID = chosenGameItem.getID();
@@ -237,5 +233,11 @@ public class GameClient{
 		gamePck.gameItem = gameItem;
 		
 		client.sendTCP(gamePck);
+	}
+
+	public void sendGameEnd() {
+		Pck10_EndGame pck = new Pck10_EndGame();
+		pck.gameID = chosenGameItem.getID();
+		client.sendTCP(pck);
 	}
 }

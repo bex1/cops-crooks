@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,8 @@ public class GameModelTest {
 	public void testConstructor() {
 		
 		try{
-			GameModel gameModel = new GameModel(null, null, null, null, null, null, null, 0, 0);
+			@SuppressWarnings("unused")
+            GameModel gameModel = new GameModel(null, null, null, null, null, null, null, 0, 0);
 			fail();
 		}catch (IllegalArgumentException e){
 			//expected

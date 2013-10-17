@@ -14,7 +14,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/gameNameTextView"
+            android:id="@+id/gameNameDisplayTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -25,69 +25,54 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow2"
+        android:id="@+id/tableRow4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TableLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/menuTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_name" />
+
+        <EditText
+            android:id="@+id/gameNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text" >
+
+            <requestFocus />
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/soundTextView"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:gravity="center|left"
+            android:text="@string/player_cap" />
 
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        <SeekBar
+            android:id="@+id/playerCapSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="3"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
 
-                <TextView
-                    android:id="@+id/roleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/game_name" />
-
-                <EditText
-                    android:id="@+id/gameNameEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="text" >
-
-                    <requestFocus />
-                </EditText>
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/player_cap"
-                    android:gravity="center|left" />
-
-                <SeekBar
-                    android:id="@+id/playerCapSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="3"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp" />
-
-                <TextView
-                    android:id="@+id/seekBarTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/player_cap_seekbar_default" />
-
-            </TableRow>
-        </TableLayout>
-
+        <TextView
+            android:id="@+id/seekBarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/player_cap_seekbar_default" />
     </TableRow>
 
     <TableRow

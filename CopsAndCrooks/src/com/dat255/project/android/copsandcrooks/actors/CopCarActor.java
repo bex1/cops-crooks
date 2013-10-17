@@ -10,7 +10,7 @@ import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class CopCarActor extends CopActor{
 
-	public CopCarActor(Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
+	public CopCarActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(assets, drawable, scaling, pawn, animations);
 	}
