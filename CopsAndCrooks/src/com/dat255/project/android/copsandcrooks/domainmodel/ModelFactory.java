@@ -279,7 +279,6 @@ public class ModelFactory {
 		Player currentPlayer = null;
 		for(Player player: newPlayers){
 			if(player.getID().equals(model.getCurrentPlayer().getID())){
-				System.out.println("Vi hitta en currentPlayer");
 				currentPlayer = player;
 				break;
 			}
