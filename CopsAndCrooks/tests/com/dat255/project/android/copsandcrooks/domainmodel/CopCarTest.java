@@ -75,7 +75,7 @@ public class CopCarTest {
 		
 		CopCar test = new CopCar(new RoadTile(new Point(0, 0), mediator), mediator, 20);
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), mediator), mediator, 10);
-		List<AbstractPawn> pawnList = new ArrayList();
+		List<AbstractPawn> pawnList = new ArrayList<AbstractPawn>();
 		pawnList.add(test);
 		Player player = new Player(null, pawnList, Role.Cop, mediator, null);
 		crook.setWanted(true);

@@ -78,8 +78,8 @@ public abstract class AbstractWalkableTile implements IWalkableTile, Serializabl
 	}
 	
 	/**
-	 * Get the allowed pawntypes for this tile
-	 * @return the allowed pawntypes
+	 * Get the allowed PawnTypes for this tile
+	 * @return the allowed PawnTypes
 	 */
 	Collection<PawnType> getAllowedPawnTypes() {
 		return Collections.unmodifiableCollection(pawnTypes);
