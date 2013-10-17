@@ -27,7 +27,6 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 	private int tilesMovedEachStep;
 	private final int id;
 	
-	// TODO likely add a previous tile field so we know which tile we should animate the player move from
 	private TilePath pathToMove;
 	
 	private boolean isMoving, isPlaying, isActivePawn;
@@ -54,19 +53,19 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 	/**
 	 * Sets the current tile on which the movable is standing on.
 	 *
-	 * @param currTile the current tile on which the movable is standing on.
+	 * @param currentTile the current tile on which the movable is standing on.
 	 * Allowed to be null to move the pawn out of the game.
 	 */
-	protected void setCurrentTile(AbstractWalkableTile currTile) {
-		if(currentTile!=null)
-			currentTile.setNotOccupied();
-		AbstractWalkableTile oldTile = currentTile;
-		this.currentTile = currTile;
-		if(currentTile!=null)
-			currentTile.setOccupiedBy(pawnType);
+	protected void setCurrentTile(AbstractWalkableTile currentTile) {
+		if(this.currentTile !=null)
+			this.currentTile.setNotOccupied();
+		AbstractWalkableTile oldTile = this.currentTile;
+		this.currentTile = currentTile;
+		if(this.currentTile !=null)
+			this.currentTile.setOccupiedBy(pawnType);
 
 		// The current tiled changed, someone moved us -> notify
-		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, currentTile);
+		pcs.firePropertyChange(PROPERTY_CURRENT_TILE, oldTile, this.currentTile);
 	}
 
 	@Override
