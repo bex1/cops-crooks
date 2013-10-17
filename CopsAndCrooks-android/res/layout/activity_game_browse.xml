@@ -14,10 +14,13 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/roleTextView"
+            android:id="@+id/menuTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/game_browser" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/game_browser"
+            android:textSize="30sp" />
 
     </TableRow>
 
@@ -27,10 +30,12 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/hasStartedCheckBox"
+            android:id="@+id/displayActiveGamesCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/has_started" />
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="@string/display_active_games" />
 
     </TableRow>
 

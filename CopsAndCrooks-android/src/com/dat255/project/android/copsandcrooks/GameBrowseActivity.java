@@ -2,25 +2,26 @@ package com.dat255.project.android.copsandcrooks;
 
 import java.util.ArrayList;
 
-import com.dat255.project.android.copsandcrooks.network.GameClient;
-import com.dat255.project.android.copsandcrooks.network.GameItem;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
+
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class GameBrowseActivity extends Activity {
 	
 	ListView gameListView;
 	GameItemAdapter gameItemAdapter;
-	CheckBox hasStartedCheckBox;
+	CheckBox displayActiveGamesCheckBox;
 	CommunicateTask task;
 	
 	@Override
@@ -39,7 +40,7 @@ public class GameBrowseActivity extends Activity {
 		super.onStop();
 	}
 
-	private boolean showHasStarted;
+	private boolean displayActiveGames;
 	
 	public static final String FROM_LOBBY = "FROM_LOBBY";
 	public static final String GAME_ITEM = "GAME_ITEM";
@@ -53,9 +54,11 @@ public class GameBrowseActivity extends Activity {
 		gameItemAdapter = new GameItemAdapter(this, new ArrayList<GameItem>());
 		gameListView.setAdapter(gameItemAdapter);
 		
-		hasStartedCheckBox = (CheckBox) findViewById(R.id.hasStartedCheckBox);
-		hasStartedCheckBox.setOnClickListener(hasStartedListener);
-		showHasStarted = hasStartedCheckBox.isChecked();
+		displayActiveGamesCheckBox = (CheckBox) findViewById(R.id.displayActiveGamesCheckBox);
+		displayActiveGamesCheckBox.setOnCheckedChangeListener(activeGamesListener);
+		displayActiveGames = displayActiveGamesCheckBox.isChecked();
+		
+		displayActiveGames = false;
 	}
 
 	@Override
@@ -70,7 +73,22 @@ public class GameBrowseActivity extends Activity {
 			System.out.println("Game list not null");
 			gameItemAdapter.getData().clear();
 			for(GameItem gi: GameClient.getInstance().getGameItems()){
-				gameItemAdapter.add(gi);
+				boolean inGame = false;
+				for(PlayerItem pi : gi.getPlayers()){
+					if(pi.getID().equals(Installation.id(getApplicationContext()))){
+						//Check to see if the client has joined the game
+						inGame = true;
+					}
+				}
+				if(displayActiveGames && inGame){
+					//Displays the game if the player is active (has joined) this game
+					gameItemAdapter.add(gi);
+				}else if(!gi.hasGameStarted() && (gi.getPlayerCap()-gi.getCurrentPlayerCount()) > 0
+						&& !inGame){
+					//Displays the game in the list if the game hasn't started,
+					//isn't full and the player isn't in the game.
+					gameItemAdapter.add(gi);
+				}				
 			}						
 		} else {
 			System.out.println("Game list is null!");
@@ -88,13 +106,12 @@ public class GameBrowseActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	public OnClickListener hasStartedListener = new OnClickListener(){
+	public OnCheckedChangeListener activeGamesListener = new OnCheckedChangeListener() {
 
-		@Override
-		public void onClick(View arg0) {
-			showHasStarted = hasStartedCheckBox.isChecked();
-		}
-		
-	};
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        	displayActiveGames = isChecked;
+        }
+    };
 
 }

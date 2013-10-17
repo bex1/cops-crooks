@@ -31,7 +31,7 @@ public class OptionsActivity extends Activity {
 		
 		soundCheckBox = (CheckBox) findViewById(R.id.soundCheckBox);
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
-		editTextIP = (EditText) findViewById(R.id.textEditIP);
+		editTextIP = (EditText) findViewById(R.id.serverIPTextEdit);
 		
 		name = GameClient.getInstance().getPlayerName();
 		nameEditText.setText(name);
