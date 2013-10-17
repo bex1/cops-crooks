@@ -120,7 +120,6 @@ public class ModelFactory {
 		List<Player> players = new ArrayList<Player>();
 		List<PlayerItem> playeritems = gameitem.getPlayers();
 		int numberOfOfficers = gameitem.getCurrentPlayerCount();
-		System.out.println(numberOfOfficers + "********************************************");
 		int crookID = 1;
 		Random rand = new Random();
 		for (int i = 0; i < playeritems.size(); i ++ ) {
@@ -151,7 +150,7 @@ public class ModelFactory {
 				if(!isGameHosted){
 					int k = rand.nextInt(listOfHideouts.size()-1);
 					pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
-					playeritems.get(i).addPawn(listOfPolicestationtile.get(k).getPosition(), crookID);
+					playeritems.get(i).addPawn(listOfHideouts.get(k).getPosition(), crookID);
 					listOfHideouts.remove(k);
 				}else{
 					Point point = playeritems.get(i).getPawnItem(crookID).position;
@@ -162,12 +161,19 @@ public class ModelFactory {
 				++crookID;
 			}
 		}
+		Player playerClient = null;
+		for(Player player : players){
+			if(player.getID().equals(GameClient.getInstance().getClientID())){
+				playerClient = player;
+				break;
+			}
+		}
 		if(!isGameHosted){
 			gameitem.setGameStarted(true);
 			GameClient.getInstance().updateCurrentGameItem(gameitem);
 		}
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, players.get(0), null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
+		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID(), 0);
 	}
 	
 	
@@ -177,6 +183,7 @@ public class ModelFactory {
 	 * @throws Exception
 	 */
 	public GameModel loadLocalGameModel(GameModel model){
+		System.out.println(model.getName());
 		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
@@ -257,14 +264,23 @@ public class ModelFactory {
 					pawns.add(new Crook(tile, mediator, pawn.getID()));
 			}
 			Player newPlayer = new Player(player.getName(), pawns, player.getPlayerRole(), mediator, player.getID());
-			if(newPlayer.getID() == GameClient.getInstance().getClientID())
+			if(newPlayer.getID().equals(GameClient.getInstance().getClientID()))
 				playerClient = newPlayer;				
 			newPlayers.add(newPlayer);
 		}
+		Player currentPlayer = null;
+		for(Player player: newPlayers){
+			if(player.getID().equals(model.getCurrentPlayer().getID())){
+				System.out.println("Vi hitta en currentPlayer");
+				currentPlayer = player;
+				break;
+			}
+		}
+		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
 		if(model.getDiceResults() == -1)
-			return new GameModel(mediator, playerClient, (Player) model.getCurrentPlayer(), newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getDiceResults());
+			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
 		else
-			return new GameModel(mediator, playerClient, (Player) model.getCurrentPlayer(), newPlayers, newWalkableTile, newTramLines, gameName, model.getID());
+			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getDiceResults());
 	}
 }

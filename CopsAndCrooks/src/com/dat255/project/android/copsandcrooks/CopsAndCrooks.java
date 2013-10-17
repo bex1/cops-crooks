@@ -54,7 +54,6 @@ public class CopsAndCrooks extends Game {
         // create the music manager
         MusicManager musicManager = MusicManager.getInstance();
         musicManager.setVolume( prefs.getVolume() );
-        musicManager.setEnabled( prefs.isMusicEnabled() );
 
         // create the sound manager
         SoundManager soundManager = SoundManager.getInstance();
@@ -99,6 +98,7 @@ public class CopsAndCrooks extends Game {
     			assert false;
     			game = null;
     		}
+    		GameClient.getInstance().setCurrentGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         }
     }
@@ -146,7 +146,7 @@ public class CopsAndCrooks extends Game {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
         
-        // dipose some services
+        // dispose some services
         MusicManager.getInstance().dispose();
         SoundManager.getInstance().dispose();
     }

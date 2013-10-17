@@ -41,7 +41,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	private GameCamera camera;
 	private final MovableActor thisActor;
 	private Image selectedBackground;
-	protected Assets assets;
+	protected final Assets assets;
 	
 	
 
@@ -53,7 +53,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		MOVE_SOUTH_ANIM,
 	}
 
-	public MovableActor(Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
+	public MovableActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(drawable, scaling);
 		this.pawn = pawn;

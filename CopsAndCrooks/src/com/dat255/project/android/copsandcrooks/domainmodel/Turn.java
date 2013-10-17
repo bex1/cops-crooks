@@ -20,7 +20,7 @@ public class Turn implements Serializable{
 
 	private List<Point> pathWalked;
 	private Point endTilePos;
-	private int playerID, pawnID;
+	private int pawnID;
 	private HideoutChoice hideoutChoice;
 	private MoveType moveType;
 	
@@ -57,14 +57,6 @@ public class Turn implements Serializable{
 	
 	public void setEndTile(IWalkableTile endTile) {
 		endTilePos = endTile.getPosition();
-	}
-	
-	public int getPlayerID() {
-		return playerID;
-	}
-	
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
 	}
 	
 	public int getPawnID() {

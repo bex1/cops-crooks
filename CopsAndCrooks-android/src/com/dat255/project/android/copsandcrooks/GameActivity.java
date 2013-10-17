@@ -16,6 +16,7 @@ public class GameActivity extends AndroidApplication {
 	public static final String GAME = "game";
 
 	private CopsAndCrooks cops;
+	CommunicateTask turnUpdateTask ;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +34,9 @@ public class GameActivity extends AndroidApplication {
 
 		initialize(cops, cfg);
 
-		GameClient.getInstance().setCurrentGameModel(cops.getModel());
-
 		
 		
-		CommunicateTask turnUpdateTask = new CommunicateTask(this);
+		turnUpdateTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
@@ -53,6 +52,7 @@ public class GameActivity extends AndroidApplication {
 	@Override
 	protected void onStop() {
 		this.finish();
+		this.turnUpdateTask.cancel(true);
 		super.onStop();
 	}
 	
