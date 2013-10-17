@@ -85,6 +85,14 @@ public class GameClient{
 		client.start();
 	}
 	
+	public boolean doseGameExist(String name){
+		for(GameItem gameItem: gameItems){
+			if(gameItem.getName().equals(name))
+				return true;
+		}
+		return false;
+	}
+	
 	public void connectToServer(){
 		if(!client.isConnected()){
 			try {
@@ -228,7 +236,7 @@ public class GameClient{
 	}
 
 	public void sendGameEnd() {
-		Pck11_EndGame pck = new Pck11_EndGame();
+		Pck10_EndGame pck = new Pck10_EndGame();
 		pck.gameID = chosenGameItem.getID();
 		client.sendTCP(pck);
 	}
