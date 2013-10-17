@@ -19,7 +19,7 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 	private final HideoutTile hideout;
 	private final Map<Crook, Label> moneyLabels;
 	
-	public HideoutStatusTable(Assets assets, HideoutTile hideout, Collection<? extends IPlayer> players) {
+	public HideoutStatusTable(final Assets assets, final HideoutTile hideout, final Collection<? extends IPlayer> players) {
 		this.hideout = hideout;
 		//this.debug();
 		hideout.addObserver(this);

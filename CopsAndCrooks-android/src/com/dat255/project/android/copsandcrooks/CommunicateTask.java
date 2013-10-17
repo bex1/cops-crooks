@@ -26,10 +26,6 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 		}
 	}
 
-
-
-
-
 	@Override
 	protected Void doInBackground(GameItem... params) {
 		while(true){
@@ -47,24 +43,29 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				if(params == null || params.length == 0){
 					gameClient.requestGameItemsFromServer();
 					gameClient.updateChosenGameItem();
-					this.publishProgress();
+					publishProgress();
 				}else{
-					gameClient.updateChosenGameItem();
 					// If your the host you will  strt the game but if you are 
 					if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.start){
 						gameClient.startGame(params[0].getID());
-					}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.join){
-						gameClient.joinGame(params[0].getID(), params[0].getPlayers().get(0));
-					}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.update){
-						gameClient.updateCurrentGameItem(params[0]);
+					}else{
+						if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.join){
+							gameClient.joinGame(params[0].getID(), params[0].getPlayers().get(0));
+						}else if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.update){
+							gameClient.updateCurrentGameItem(params[0]);
+						}
+						gameClient.requestGameItemsFromServer();
+						gameClient.updateChosenGameItem();
+						publishProgress();
 					}
 					return null;
 				}
 				
 			}else if(activity instanceof GameActivity){
 				if(gameClient.getCurrentGameModel()!=null){
-					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting)
+					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting){
 						gameClient.requestTurns();
+					}
 				}
 			}//*/	
 			if(!gameClient.getClient().isConnected())
@@ -82,7 +83,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 	@Override
 	protected void onProgressUpdate(Void... values) {
 		if(activity instanceof MenuActivity){
-			((MenuActivity)activity).showError("Trying to connect");;
+			((MenuActivity)activity).showError("Trying to connect");
 		}else if(activity instanceof LobbyActivity)
 			((LobbyActivity)activity).updatePlayerList();
 		else if(activity instanceof GameBrowseActivity)

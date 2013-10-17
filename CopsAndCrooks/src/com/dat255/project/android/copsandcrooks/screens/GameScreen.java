@@ -20,11 +20,16 @@ import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
 import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
+import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
-import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
@@ -38,8 +43,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private MoveByDiceTable moveByDice;
 	private HUDTable hudTable;
 	private ReplayTable replayTable;
-	private IsInPrisonTable isInPrison;
-	private GameFactory factory;
+	private final GameFactory factory;
 
 	private final int mapWidth, mapHeight;
 
@@ -58,6 +62,9 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		model.addObserver(this);
 		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
+			for (IMovable pawn : player.getPawns()) {
+				pawn.addObserver(this);
+			}
 		}
 
 		for (Actor actor : actors) {
@@ -72,7 +79,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
 		hudTable = new HUDTable(assets, model.getPlayerClient(), model, hudStage, model.getPlayers());
 		replayTable = new ReplayTable(assets, model);
-		isInPrison = new IsInPrisonTable(assets);
 	}
 
 	@Override
@@ -114,11 +120,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
 		model.startGame();
+		
+		MusicManager.getInstance().play(CopsAndCrooksMusic.GAME);
 
 	}
 
 	@Override
 	public void dispose(){
+		MusicManager.getInstance().dispose();
+		SoundManager.getInstance().dispose();
 		renderer.dispose();
 		mapToRender.dispose();
 		hudStage.dispose();
@@ -197,9 +207,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
+		Object source = evt.getSource();
+		IPlayer currPlayer = model.getCurrentPlayer();
 
 		// Check source, i.e. Who sent the event?
-		if(evt.getSource() == model) {
+		if(source == model) {
 			if(property == GameModel.PROPERTY_GAMESTATE){
 				switch (model.getGameState()) {
 				case Playing:
@@ -211,26 +223,28 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					break;
 				}
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				Gdx.app.exit();
-			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				Gdx.app.exit();
+				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 			}
-		} else if (model.getCurrentPlayer() == evt.getSource()) {
+		} else if (currPlayer == source) {
 
-			// Extract relevant data
-			IPlayer currPlayer = model.getCurrentPlayer();
 			Role playerRole = currPlayer.getPlayerRole();
-			if (property == Player.PROPERTY_POSSIBLE_PATHS){
+			if (property == IPlayer.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
 
-			}else if(property == Player.PROPERTY_SELECTED_PAWN){
+			}else if(property == IPlayer.PROPERTY_SELECTED_PAWN){
 				if(playerRole == Role.Cop){
 					clearVisiblePaths();
 				}
-			}else if (property == Player.PROPERTY_IS_IN_PRISON){
-				hudStage.addActor(isInPrison);
+			}
+		}  else if (currPlayer.getPawns().contains(source) && source instanceof Crook) {
+			if (property == Crook.PROPERTY_TURNS_IN_PRISON) {
+				// Will remove itself
+				hudStage.addActor(new IsInPrisonTable(assets, currPlayer, (Crook)source));
+			} else if (property == Crook.PROPERTY_TIMES_ARRESTED) {
+				// Will remove itself
+				hudStage.addActor(new ArrestedTable(assets, currPlayer, (Crook)source));
 			}
 		}
 	}

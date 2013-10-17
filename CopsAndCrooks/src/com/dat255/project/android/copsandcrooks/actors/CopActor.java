@@ -12,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.screens.Assets;
 
 public class CopActor extends MovableActor{
 	
-	public CopActor(Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
+	public CopActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(assets, drawable, scaling, pawn, animations);
 		this.addListener(new ClickListener(){

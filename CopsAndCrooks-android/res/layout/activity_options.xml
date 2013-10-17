@@ -91,7 +91,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            android:paddingRight="16dp"
+            android:progress="50" />
 
     </TableRow>
 

@@ -24,17 +24,7 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 		isInPoliceHouse = inHouse;
 		pcs.firePropertyChange(PROPERTY_IS_IN_POLICE_HOUSE, oldValue, isInPoliceHouse);
 	}
-	
-	@Override
-	protected void move(TilePath path) {
-		super.move(path);
-	}
 
-	@Override
-	protected void collisionAfterMove(IMovable pawn) {
-		// TODO Auto-generated method stub
-		
-	}
 	/**
 	 * return true if the pawn is standing on a TramStop, false otherwise
 	 * @return true if the pawn is standing on a TramStop, false otherwise

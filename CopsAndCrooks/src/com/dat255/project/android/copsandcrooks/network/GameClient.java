@@ -45,7 +45,7 @@ public class GameClient{
 			public void connected(Connection connection) {
 				// send a request to join the server
 				Pck0_ClientHandshake pck = new Pck0_ClientHandshake();
-				pck.message = "Client says hi!";
+				pck.message = getPlayerName() + " says hi!";
 				System.out.println("Network: Connecting..");
 				client.sendTCP(pck);
 			}
@@ -91,8 +91,9 @@ public class GameClient{
 	public void connectToServer(){
 		if(!client.isConnected()){
 			try {
+				client.start();
 				System.out.println("Network: Trying to connect to " + serverIP + "..");
-				client.connect(120000, serverIP, Network.PORT);
+				client.connect(10000, serverIP, Network.PORT);
 				if(client.isConnected())
 					System.out.println("Network: Connected!");
 				else
@@ -106,7 +107,11 @@ public class GameClient{
 		}
 	}
 	
-	// send a packet to the server requesting a list of games
+	public void changeIP(){
+		client.stop();
+	}
+	
+	// send a packet to the server uesting a list of games
 	public void requestGameItemsFromServer() {
 		if(client.isConnected()){
 			System.out.println("Network: Requesting list of games from server..");
@@ -197,6 +202,7 @@ public class GameClient{
 	public void requestTurns(){
 		System.out.println("Network: Requesting turns");
 		Pck6_RequestTurns requestPck = new Pck6_RequestTurns();
+		requestPck.gameID = getCurrentGameModel().getID();
 		requestPck.clientTurnID = getCurrentGameModel().getTurnID();
 		client.sendTCP(requestPck);
 	}

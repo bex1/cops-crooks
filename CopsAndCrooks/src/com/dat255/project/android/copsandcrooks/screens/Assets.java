@@ -7,9 +7,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
-	private TextureAtlas atlas;
-	private Skin skin;
-	private TiledMap map;
+	private final TextureAtlas atlas;
+	private final Skin skin;
+	private final TiledMap map;
 	
 	public Assets() {
 		atlas = new TextureAtlas(Gdx.files.internal("image-atlases/pages.atlas"));

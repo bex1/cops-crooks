@@ -28,11 +28,11 @@ public class DiceActor extends Image implements PropertyChangeListener{
 	private float animTimer;
 	private TextureRegionDrawable drawable;
 	private Label label;
-	private Assets assets;
+	private final Assets assets;
 	private final Stage hudStage;
 	
 	
-	public DiceActor(Assets assets, final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling, final Stage hudStage) {
+	public DiceActor(final Assets assets, final Dice dice, final Animation animation, final TextureRegionDrawable firstDrawable, final Scaling scaling, final Stage hudStage) {
 		super(firstDrawable, scaling);
 		this.hudStage = hudStage;
 		this.dice = dice;
