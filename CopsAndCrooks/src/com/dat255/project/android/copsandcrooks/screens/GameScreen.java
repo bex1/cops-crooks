@@ -204,7 +204,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private float camPauseX;
 	private float camPauseY;
 
-	@Override
+	@SuppressWarnings("incomplete-switch")
+    @Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		Object source = evt.getSource();

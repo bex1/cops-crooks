@@ -23,6 +23,7 @@ import com.dat255.project.android.copsandcrooks.utils.SoundManager;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
+@SuppressWarnings("unused")
 public class CopsAndCrooks extends Game {
 	// constant useful for logging
     public static final String LOG = CopsAndCrooks.class.getSimpleName();
