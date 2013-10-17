@@ -68,6 +68,7 @@
     <string name="game_lobby">Game Lobby</string>
     <string name="lobby_players">Players: </string>
     <string name="lobby_start_game">Start Game</string>
+    <string name="game_name_hint">Enter game-name&#8230;</string>
     
     
     <string name="game_browser">Game Browser</string>
