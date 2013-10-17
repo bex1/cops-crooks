@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 /**
  * A player in the game Cops&Crooks.
@@ -36,12 +37,6 @@ public class Player implements IPlayer, Serializable {
 
 	private final String playerID;
 
-	public static final String PROPERTY_POSSIBLE_PATHS = "PossiblePaths";
-	public static final String PROPERTY_DICE_RESULT = "DiceResult";
-	public static final String PROPERTY_SELECTED_PAWN = "TheSelectedPawn";
-	public static final String PROPERTY_IS_IN_PRISON = "IsInPrison";
-
-
 	/**
 	 * Initializes a new player.
 	 * 
@@ -51,7 +46,7 @@ public class Player implements IPlayer, Serializable {
 	 * @param role the role of the player.
 	 * @param mediator module communication unit. Not allowed to be null.
 	 */
-	public Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator, String id) {
+	Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator, String id) {
 		if (pawns == null || pawns.isEmpty()) {
 			throw new IllegalArgumentException("pawns not allowed to be null or empty");
 		}
@@ -110,17 +105,30 @@ public class Player implements IPlayer, Serializable {
     void updateState() {
     	currentPawn.setIsActivePawn(true);
     	checkIfCrookIsEscaping();
-    	checkIfLifeTimeInPrison(); 
-    	checkIfInPrison();
+    	checkIfLifeTimeInPrison();
+    	checkIfCrookStillInPrison();
+    	mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    	mediator.getCurrentTurn().setEndTile(currentPawn.getCurrentTile());
     }
-    /**
+    
+    private void checkIfCrookStillInPrison() {
+		if(this.currentPawn instanceof Crook){
+    		Crook crook = ((Crook)this.currentPawn);
+    		if(crook.isInPrison()){
+    			crook.decrementTurnsInPrison();
+    		}
+    	}
+	}
+
+
+	/**
      * Checks to see if the crook has been arrested four times
      * if so, the game is over
      */
     private void checkIfLifeTimeInPrison(){
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
-    		if(crook.getTimesArrested() == 4){
+    		if(crook.getTimesArrested() == Values.MAX_TIMES_ARRESTED){
     			crook.setIsntPlaying();
     			this.setActive(false);
     		}
@@ -141,17 +149,7 @@ public class Player implements IPlayer, Serializable {
 			}
 		}
 	}
-    /**
-     * Checks to see if the crook is in prison
-     */
-    private void checkIfInPrison(){
-    	if(this.currentPawn instanceof Crook){
-    		Crook crook = (Crook)this.currentPawn;
-    		if(crook.isInPrison()){
-    			pcs.firePropertyChange(PROPERTY_IS_IN_PRISON, false, true);
-    		}
-    	}
-    }
+    
     /**
      * Checks if the pawn is standing on a tram stop 
      * @param pawn - the pawn currently active
@@ -211,7 +209,7 @@ public class Player implements IPlayer, Serializable {
     	// No possible paths and crook... -> Next player
 
 		if ((possiblePaths == null || possiblePaths.isEmpty()) && playerRole == Role.Crook) {
-			mediator.playerTurnDone(0);
+			mediator.playerTurnDone(2f);
 			return;
 		}
 		pcs.firePropertyChange(PROPERTY_POSSIBLE_PATHS, null, possiblePaths);
@@ -267,6 +265,7 @@ public class Player implements IPlayer, Serializable {
      */
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
+    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     		currentPawn.setIsActivePawn(false);
     		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
@@ -298,8 +297,7 @@ public class Player implements IPlayer, Serializable {
     	// if so then the player isn't able to move unless rolling a six.
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
-    		if(crook.isInPrison() && diceResult!=6 && crook.getTurnsInPrison() > 0){
-    			crook.decrementTurnsInPrison();
+    		if(crook.isInPrison() && diceResult!=Values.DICE_RESULT_TO_ESCAPE && crook.getTurnsInPrison() > 0){
     			mediator.playerTurnDone(3f);
     			return;
     		}

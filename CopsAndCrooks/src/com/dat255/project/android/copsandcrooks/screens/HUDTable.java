@@ -30,9 +30,9 @@ import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooks
 public class HUDTable extends Table implements PropertyChangeListener {
 	private Wallet wallet;
 	private Label scoreLabel;
-	private Label waitingLabel;
+	private final Label waitingLabel;
 	private final GameModel model;
-	private CheckBox checkBox;
+	private final CheckBox checkBox;
 	
 	
 	public HUDTable(final Assets assets, final IPlayer player, final GameModel model, final Stage hudStage, final Collection<? extends IPlayer> players) {

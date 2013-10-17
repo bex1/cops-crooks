@@ -1,6 +1,5 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -17,7 +16,7 @@ public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTil
 	 * Create a new GetAway with a position.
 	 * @param position the position
 	 */
-	public GetAwayTile(Point position, IMediator mediator) {
+	GetAwayTile(Point position, IMediator mediator) {
 		super(position, mediator);
 
 		pawnTypes.add(PawnType.Crook);

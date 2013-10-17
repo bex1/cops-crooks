@@ -23,6 +23,7 @@ import com.dat255.project.android.copsandcrooks.utils.SoundManager;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
+@SuppressWarnings("unused")
 public class CopsAndCrooks extends Game {
 	// constant useful for logging
     public static final String LOG = CopsAndCrooks.class.getSimpleName();
@@ -60,9 +61,6 @@ public class CopsAndCrooks extends Game {
         soundManager.setVolume( prefs.getVolume() );
         soundManager.setEnabled( prefs.isSoundEnabled() );
         
-//      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
-//		GameClient.getInstance().connectToServer();
-        
         GameFactory.getInstance().init(new Assets());
         fpsLogger = new FPSLogger();
         assets = GameFactory.getInstance().getAssets();
@@ -88,16 +86,17 @@ public class CopsAndCrooks extends Game {
     		if(!gameToPlay.hasGameStarted()){
     			System.out.println("host skapar ett spela");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
-    		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
+    		}else if(gameToPlay.hasGameStarted() && !modelFactory.hasLoadedThisGameModel(gameToPlay)){
     			System.out.println("spelare går med i ett spela för första gången");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
-    		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
+    		}else if(gameToPlay.hasGameStarted() && modelFactory.hasLoadedThisGameModel(gameToPlay)){
     			System.out.println("detta såelet har jag sparat lokalt!!!!!");
-    			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
+    			game = modelFactory.loadLocalGameModel(modelFactory.loadModelFromFile(gameToPlay.getName()));
     		}else{
     			assert false;
     			game = null;
     		}
+    		GameClient.getInstance().setCurrentGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         }
     }
@@ -145,7 +144,7 @@ public class CopsAndCrooks extends Game {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
         
-        // dipose some services
+        // dispose some services
         MusicManager.getInstance().dispose();
         SoundManager.getInstance().dispose();
     }

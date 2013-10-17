@@ -5,14 +5,13 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Random;
 
-import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 public final class Dice implements IObservable, Serializable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
-	private int diceResult;
+	private int diceResult = -1;
 	private boolean isRolling;
 	private float isRollingTimer;
 	private static final float ROLL_DELAY = 1.4f;

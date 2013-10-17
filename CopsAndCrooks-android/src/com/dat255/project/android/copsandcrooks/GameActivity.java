@@ -4,11 +4,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
 public class GameActivity extends AndroidApplication {
@@ -34,8 +32,6 @@ public class GameActivity extends AndroidApplication {
 
 		initialize(cops, cfg);
 
-		GameClient.getInstance().setCurrentGameModel(cops.getModel());
-
 		
 		
 		turnUpdateTask = new CommunicateTask(this);
@@ -53,9 +49,10 @@ public class GameActivity extends AndroidApplication {
 
 	@Override
 	protected void onStop() {
-		this.finish();
 		this.turnUpdateTask.cancel(true);
+		this.cops.dispose();
 		super.onStop();
+		this.finish();
 	}
 	
 }

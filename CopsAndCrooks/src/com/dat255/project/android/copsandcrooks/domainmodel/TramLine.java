@@ -13,7 +13,7 @@ public class TramLine implements Serializable{
 	
 	private List<TramStopTile> tramLine;
 
-	public TramLine(List<TramStopTile> tramLine){
+	TramLine(List<TramStopTile> tramLine){
 		this.tramLine = tramLine;
 	}
 	

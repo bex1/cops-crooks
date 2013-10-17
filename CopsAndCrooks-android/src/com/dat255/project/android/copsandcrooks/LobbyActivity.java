@@ -1,7 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -11,9 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
@@ -26,18 +22,17 @@ public class LobbyActivity extends Activity {
 	ListView playerListView;
 	Button startGameButton;
 	Button joinGameButton;
-	CommunicateTask reciveTask, sendTask;
+	CommunicateTask receiveTask, sendTask;
 	
 	private GameItem gameItem;
-	private PlayerItemAdapter playerListAdapter;
-	
+
 	private Task thisTask = Task.none;
 	
 	public enum Task{
 		join,
 		start,
 		update,
-		none;
+		none
 	}
 
 	@Override
@@ -49,39 +44,27 @@ public class LobbyActivity extends Activity {
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
 		GameClient.getInstance().setChosenGameItem(gameItem);
 		
-		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
-		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
+		gameNameTextView = (TextView) findViewById(R.id.gameNameDisplayTextView);
+		playerCapTextView = (TextView) findViewById(R.id.playerCapDisplayTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
 		startGameButton = (Button) findViewById(R.id.startGameButton);
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);
 		
-		joinGameButton.setEnabled(!gameItem.hasGameStarted());
-		
-		for(String name : gameItem.getPlayerNames()){
-			System.out.println(name);
-			System.out.println(GameClient.getInstance().getPlayerName());
-			if(name.equals(GameClient.getInstance().getPlayerName()))
-				joinGameButton.setEnabled(false);
-		}
-		
-		
 		gameNameTextView.setText(gameItem.getName());
 
 		updatePlayerList();
-
-		checkForHost();
 		
-		reciveTask = new CommunicateTask(this);
+		receiveTask = new CommunicateTask(this);
 		sendTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			reciveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+			receiveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
-			reciveTask.execute();
+			receiveTask.execute();
 	}
 
 	@Override
 	protected void onStop() {
-		reciveTask.cancel(true);
+		receiveTask.cancel(true);
 		sendTask.cancel(false);
 		super.onStop();
 	}
@@ -96,8 +79,7 @@ public class LobbyActivity extends Activity {
 
 	public void updatePlayerList(){
 		gameItem = GameClient.getInstance().getChosenGameItem();
-		playerListAdapter = new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers());
-		playerListView.setAdapter(playerListAdapter);
+		playerListView.setAdapter(new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers()));
 		
 		this.updatePlayerCapTextView();
 		this.checkForHost();
@@ -108,20 +90,36 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public boolean isGameFull(){
-		return gameItem.getPlayerCap()-gameItem.getPlayers().size() <= 0;
+		return (gameItem.getPlayerCap()-gameItem.getCurrentPlayerCount()) <= 0;
 	}
 	
-	public void checkForHost(){
+	private void checkForHost(){
 		if(gameItem != null){
 			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
 				System.out.println("Host for this game item");
 				joinGameButton.setClickable(false);
 				joinGameButton.setEnabled(false);
+				startGameButton.setClickable(gameItem.getCurrentPlayerCount() > 1);
+				startGameButton.setEnabled(gameItem.getCurrentPlayerCount() > 1);
 			} else {
-				if(!gameItem.hasGameStarted()){
-					System.out.println("Not host for this game item");
+				System.out.println("Not host for this game item");
+				if(!gameItem.hasGameStarted() && !isGameFull()){
 					startGameButton.setClickable(false);
 					startGameButton.setEnabled(false);
+					Boolean forJoinButton = !gameItem.getPlayerNames().contains(GameClient.getInstance().getPlayerName());
+					joinGameButton.setClickable(forJoinButton);
+					joinGameButton.setEnabled(forJoinButton);
+				}else if(gameItem.hasGameStarted()){
+					Boolean forStartButton = gameItem.getPlayerNames().contains(GameClient.getInstance().getPlayerName());
+					startGameButton.setClickable(forStartButton);
+					startGameButton.setEnabled(forStartButton);
+					joinGameButton.setClickable(false);
+					joinGameButton.setEnabled(false);
+				}else{
+					startGameButton.setClickable(false);
+					startGameButton.setEnabled(false);
+					joinGameButton.setClickable(false);
+					joinGameButton.setEnabled(false);
 				}
 			}
 		} else {
@@ -130,6 +128,11 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void startGame(View v){
+		thisTask = Task.start;
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			sendTask.execute(gameItem);
 		Intent intent = new Intent(this, GameActivity.class);
 		startActivity(intent);
 		finish();
@@ -138,28 +141,28 @@ public class LobbyActivity extends Activity {
 	public void joinGame(View v){
 		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 		gameItem.addPlayer(player);
+		joinGameButton.setEnabled(false);
+		joinGameButton.setClickable(false);
 		thisTask = Task.join;
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 		else
 			sendTask.execute(gameItem);
 		sendTask = new CommunicateTask(this);
-		
-		joinGameButton.setEnabled(false);
 	}
 
 	public void changeRole(PlayerItem item) {
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted()){
-			for(PlayerItem pi : playerListAdapter.getData()){
+		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted() && gameItem.getCurrentPlayerCount() >1){
+			for(PlayerItem pi : gameItem.getPlayers()){
 				pi.setRole(Role.Crook);
 			}
 			item.setRole(Role.Cop);
-			playerListAdapter.notifyDataSetChanged();
 			thisTask = Task.update;
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 			else
 				sendTask.execute(gameItem);
+			
 			sendTask = new CommunicateTask(this);
 		}
 	}

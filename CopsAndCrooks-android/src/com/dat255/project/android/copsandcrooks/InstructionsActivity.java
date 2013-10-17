@@ -1,10 +1,8 @@
 package com.dat255.project.android.copsandcrooks;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 
 public class InstructionsActivity extends Activity {
 
