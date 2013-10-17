@@ -22,18 +22,17 @@ public class LobbyActivity extends Activity {
 	ListView playerListView;
 	Button startGameButton;
 	Button joinGameButton;
-	CommunicateTask reciveTask, sendTask;
+	CommunicateTask receiveTask, sendTask;
 	
 	private GameItem gameItem;
-	private PlayerItemAdapter playerListAdapter;
-	
+
 	private Task thisTask = Task.none;
 	
 	public enum Task{
 		join,
 		start,
 		update,
-		none;
+		none
 	}
 
 	@Override
@@ -45,8 +44,8 @@ public class LobbyActivity extends Activity {
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
 		GameClient.getInstance().setChosenGameItem(gameItem);
 		
-		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
-		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
+		gameNameTextView = (TextView) findViewById(R.id.gameNameDisplayTextView);
+		playerCapTextView = (TextView) findViewById(R.id.playerCapDisplayTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
 		startGameButton = (Button) findViewById(R.id.startGameButton);
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);
@@ -55,17 +54,17 @@ public class LobbyActivity extends Activity {
 
 		updatePlayerList();
 		
-		reciveTask = new CommunicateTask(this);
+		receiveTask = new CommunicateTask(this);
 		sendTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			reciveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+			receiveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
-			reciveTask.execute();
+			receiveTask.execute();
 	}
 
 	@Override
 	protected void onStop() {
-		reciveTask.cancel(true);
+		receiveTask.cancel(true);
 		sendTask.cancel(false);
 		super.onStop();
 	}
@@ -80,8 +79,7 @@ public class LobbyActivity extends Activity {
 
 	public void updatePlayerList(){
 		gameItem = GameClient.getInstance().getChosenGameItem();
-		playerListAdapter = new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers());
-		playerListView.setAdapter(playerListAdapter);
+		playerListView.setAdapter(new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers()));
 		
 		this.updatePlayerCapTextView();
 		this.checkForHost();

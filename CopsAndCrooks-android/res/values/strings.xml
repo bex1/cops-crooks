@@ -76,6 +76,7 @@
     <string name="get_new_games">Get list</string>
     <string name="join_game">Join</string>
     <string name="options_ip">Server IP:</string>
+    <string name="display_active_games">Display your active games</string>
     
     <string name="desc_lobby_role">Set the player-role</string>
 </resources>

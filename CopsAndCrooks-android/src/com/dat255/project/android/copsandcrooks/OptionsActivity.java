@@ -35,13 +35,12 @@ public class OptionsActivity extends Activity {
 		
 		soundCheckBox = (CheckBox) findViewById(R.id.soundCheckBox);
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
-		editTextIP = (EditText) findViewById(R.id.textEditIP);
+		editTextIP = (EditText) findViewById(R.id.serverIPTextEdit);
 		volumeSeekBar = (SeekBar) findViewById(R.id.volumeSeekBar);
 		
 		PreferencesManager prefs = PreferencesManager.getInstance();
 		prefs.setSoundEnabled(soundCheckBox.isChecked());
 		prefs.setVolume(volumeSeekBar.getProgress() / 100f);
-		
 		
 		name = GameClient.getInstance().getPlayerName();
 		nameEditText.setText(name);
