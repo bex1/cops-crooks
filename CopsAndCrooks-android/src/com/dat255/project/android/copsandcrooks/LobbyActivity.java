@@ -162,6 +162,7 @@ public class LobbyActivity extends Activity {
 				sendTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 			else
 				sendTask.execute(gameItem);
+			
 			sendTask = new CommunicateTask(this);
 		}
 	}

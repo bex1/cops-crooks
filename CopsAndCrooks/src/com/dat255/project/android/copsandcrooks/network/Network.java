@@ -106,10 +106,6 @@ public class Network {
 	public static class Pck9_ClientEditedGame extends Packet {
 		public GameItem gameItem;
 	}
-	
-	public static class Pck10_PawnItem extends PawnItem{
-		public PawnItem pawnItem;
-	}
 
-	public static class Pck11_EndGame extends Pck_ExistingGame{}
+	public static class Pck10_EndGame extends Pck_ExistingGame{}
 }

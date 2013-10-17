@@ -49,9 +49,10 @@ public class GameActivity extends AndroidApplication {
 
 	@Override
 	protected void onStop() {
-		this.finish();
 		this.turnUpdateTask.cancel(true);
+		this.cops.dispose();
 		super.onStop();
+		this.finish();
 	}
 	
 }

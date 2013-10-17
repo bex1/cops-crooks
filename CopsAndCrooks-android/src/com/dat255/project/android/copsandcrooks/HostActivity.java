@@ -20,7 +20,7 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
-public class HostActivity extends Activity {
+public class HostActivity extends AbstractActivity {
 	
 	SeekBar playerCapSeekBar;
 	TextView seekBarTextView;
@@ -32,6 +32,16 @@ public class HostActivity extends Activity {
 	private String gameName;
 	
 	public static final String GAME_ITEM = "GAME_ITEM";
+	
+	public static final String defaultText = "Enter a name for the game";
+	
+	private ThisTask thisTask = ThisTask.none;
+	
+	public enum ThisTask{
+		hostGame,
+		checkName,
+		none;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +56,12 @@ public class HostActivity extends Activity {
 		playerCapSeekBar.setOnSeekBarChangeListener(playerCapListener);
 		gameNameEditText.setOnKeyListener(gameNameListener);
 		
-		//hostGameButton.setClickable(false);
+		hostGameButton.setClickable(false);
+		hostGameButton.setEnabled(false);
 		
 		playerCap = 2;
 		
-		//testing
-		gameNameEditText.setText("testgame");
+		showError("Enter a  game name");
 	}
 
 	@Override
@@ -85,18 +95,34 @@ public class HostActivity extends Activity {
 		@Override
 		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 			gameName = gameNameEditText.getText().toString();
-			hostButtonEnabled(gameName.equals(null) || gameName.length() == 0);
-			
+			if(!gameName.equals(null) || gameName.length() != 0);
+				canHostGame(gameName);
 			return false;
 		}
 		
 	};
 	
+	public ThisTask getThisTask(){
+		return thisTask;
+	}
+	
+	private void canHostGame(String gameName){
+		GameItem gameItem = new GameItem(gameName, 0);
+		thisTask = ThisTask.checkName;
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			new CommunicateTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
+		else
+			new CommunicateTask(this).execute(gameItem);
+	}
+	
 	public void hostButtonEnabled(boolean status){
 		if(status){
-			hostGameButton.setClickable(false);
-		}else{
 			hostGameButton.setClickable(true);
+			hostGameButton.setEnabled(true);
+		}else{
+			hostGameButton.setClickable(false);
+			hostGameButton.setEnabled(false);
+			showError("This game name already exist");
 		}
 	}
 	
@@ -115,7 +141,7 @@ public class HostActivity extends Activity {
 			player = new PlayerItem("DefaultPlayerName", Installation.id(getApplicationContext()));
 		player.setRole(Role.Cop);
 		gameItem.addPlayer(player);
-		
+		thisTask = ThisTask.hostGame;
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			new CommunicateTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, gameItem);
 		else

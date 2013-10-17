@@ -129,9 +129,9 @@ public class GameServer {
 					}
 
 					// client ends the game
-					else if(packet instanceof Pck11_EndGame){
+					else if(packet instanceof Pck10_EndGame){
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == ((Pck11_EndGame) packet).gameID){
+							if(gameItems.get(i).getID() == ((Pck10_EndGame) packet).gameID){
 								gameItems.remove(i);
 								// TODO Remove associated turns from this game when all clients have received last turn
 							}
