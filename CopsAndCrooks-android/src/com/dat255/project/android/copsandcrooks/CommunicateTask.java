@@ -45,9 +45,9 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 					gameClient.updateChosenGameItem();
 					publishProgress();
 				}else{
-					// If your the host you will  strt the game but if you are 
+					// If your the host you will start the game but if you are
 					if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.start){
-						gameClient.startGame(params[0].getID());
+						gameClient.startGame();
 					}else{
 						if(((LobbyActivity)activity).getCurrentTask() == LobbyActivity.Task.join){
 							gameClient.joinGame(params[0].getID(), params[0].getPlayers().get(0));

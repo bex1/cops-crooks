@@ -113,7 +113,7 @@ public final class GameModel implements IObservable, Serializable{
 				}
 			}
 		}
-		if (currentPlayer == playerClient) {
+		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
 			currentPlayer.updateState();
@@ -164,11 +164,11 @@ public final class GameModel implements IObservable, Serializable{
 				List<Point> pathWalked = turn.getPathWalked();
 				TilePath tilePathWalked = new TilePath();
 				for(Point point : pathWalked)
-					tilePathWalked.addTileLast((AbstractWalkableTile) getWalkabletiles()[point.x][point.y]);
+					tilePathWalked.addTileLast(getWalkabletiles()[point.x][point.y]);
 				pawn.move(tilePathWalked);
 				break;
 			default:
-				assert false;
+				nextPlayer(2f);
 				break;
 			}
 		}
@@ -200,7 +200,7 @@ public final class GameModel implements IObservable, Serializable{
 
 	private void changePlayer() {
 		// sent the latest turn to the server
-		if(currentPlayer == playerClient)
+		if(isLocalPlayersTurn())
 			GameClient.getInstance().sendTurn(currentTurn);
 		
 		Player previousPlayer = currentPlayer;
@@ -213,6 +213,9 @@ public final class GameModel implements IObservable, Serializable{
 			// The game should end then.
 			if(currentPlayer==previousPlayer) {
 				endGame();
+				// tell server that the game has ended
+				if(isLocalPlayersTurn())
+					GameClient.getInstance().sendGameEnd();
 				return;
 			}
 		}while (!currentPlayer.isActive());
@@ -223,8 +226,6 @@ public final class GameModel implements IObservable, Serializable{
 				state = GameState.Playing;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 			} else if (state == GameState.Replay) {
-//				replay(replayTurns.pollFirst());
-//				replay(replayTurns.pop());
 				replay(replayTurns.removeFirst());
 			} else {
 				state = GameState.Waiting;
@@ -232,9 +233,13 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		} else {
 			nextPlayer(3f);
-		}//*/
+		}
 	}
-	
+
+	private boolean isLocalPlayersTurn() {
+		return currentPlayer == playerClient;
+	}
+
 	public GameState getGameState() {
 		return state;
 	}
@@ -268,7 +273,7 @@ public final class GameModel implements IObservable, Serializable{
 				return tile;
 			}
 		}
-		// Should always be room in policehouse.
+		// Should always be room in police house.
 		assert false;
 		return null;
 	}

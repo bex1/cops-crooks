@@ -110,4 +110,6 @@ public class Network {
 	public static class Pck10_PawnItem extends PawnItem{
 		public PawnItem pawnItem;
 	}
+
+	public static class Pck11_EndGame extends Pck_ExistingGame{}
 }
