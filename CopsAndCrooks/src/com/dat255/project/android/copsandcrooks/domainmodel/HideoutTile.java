@@ -41,6 +41,13 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	public void interact(IMovable target) {
 		//this needs to be listened to by something
 		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, target);
+		if(target instanceof Crook){
+						Crook crook = (Crook)target;
+						if(crook.getWallet().getCash() == 0){
+							crook.setWanted(false);
+						}
+					}
+
 	}
 
 	/**

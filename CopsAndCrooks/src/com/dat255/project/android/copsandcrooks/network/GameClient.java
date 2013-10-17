@@ -91,6 +91,16 @@ public class GameClient{
 		client.start();
 	}
 	
+
+	/** Check if a game with a given name exist */
+	public boolean hasGame(String name){
+		for(GameItem gameItem: gameItems){
+			if(gameItem.getName().equals(name))
+				return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Connect to the server if connection is not already established
 	 */
