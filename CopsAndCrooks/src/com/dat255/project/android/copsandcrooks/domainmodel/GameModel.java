@@ -113,7 +113,7 @@ public final class GameModel implements IObservable, Serializable{
 				}
 			}
 		}
-		if (currentPlayer == playerClient) {
+		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
 			currentPlayer.updateState();
@@ -200,7 +200,7 @@ public final class GameModel implements IObservable, Serializable{
 
 	private void changePlayer() {
 		// sent the latest turn to the server
-		if(currentPlayer == playerClient)
+		if(isLocalPlayersTurn())
 			GameClient.getInstance().sendTurn(currentTurn);
 		
 		Player previousPlayer = currentPlayer;
@@ -214,7 +214,7 @@ public final class GameModel implements IObservable, Serializable{
 			if(currentPlayer==previousPlayer) {
 				endGame();
 				// tell server that the game has ended
-				if(currentPlayer == playerClient)
+				if(isLocalPlayersTurn())
 					GameClient.getInstance().sendGameEnd();
 				return;
 			}
@@ -235,7 +235,11 @@ public final class GameModel implements IObservable, Serializable{
 			nextPlayer(3f);
 		}
 	}
-	
+
+	private boolean isLocalPlayersTurn() {
+		return currentPlayer == playerClient;
+	}
+
 	public GameState getGameState() {
 		return state;
 	}
