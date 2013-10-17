@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -60,7 +61,11 @@ public class MenuActivity extends AbstractActivity {
 		super.onUserLeaveHint();
 	}
 
-
+	@Override
+	public void onBackPressed() {
+		task.cancel(true);
+		super.onBackPressed();
+	}
 
 	@Override
 	protected void onDestroy() {
