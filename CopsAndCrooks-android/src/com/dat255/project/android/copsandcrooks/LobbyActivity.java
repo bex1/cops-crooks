@@ -49,8 +49,8 @@ public class LobbyActivity extends Activity {
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
 		GameClient.getInstance().setChosenGameItem(gameItem);
 		
-		gameNameTextView = (TextView) findViewById(R.id.gameNameTextView);
-		playerCapTextView = (TextView) findViewById(R.id.playerCapTextView);
+		gameNameTextView = (TextView) findViewById(R.id.gameNameDisplayTextView);
+		playerCapTextView = (TextView) findViewById(R.id.playerCapDisplayTextView);
 		playerListView = (ListView) findViewById(R.id.playerListView);
 		startGameButton = (Button) findViewById(R.id.startGameButton);
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);

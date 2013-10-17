@@ -8,13 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".OptionsActivity" >
 
-    <!--
-        Volume
-    	sound on/off
-    	graphics
-    	name
-    -->
-
     <TableRow
         android:id="@+id/tableRow3"
         android:layout_width="wrap_content"
@@ -37,7 +30,7 @@
         android:layout_marginTop="@dimen/options_margin" >
 
         <TextView
-            android:id="@+id/roleTextView"
+            android:id="@+id/menuTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/options_name"
@@ -63,7 +56,7 @@
         android:layout_marginTop="@dimen/options_margin" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/soundTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/options_sound"
@@ -85,7 +78,7 @@
         android:layout_marginTop="@dimen/options_margin" >
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/volumeTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center|left"
@@ -109,7 +102,7 @@
         android:layout_marginTop="@dimen/options_margin" >
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/serverIPTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -117,7 +110,7 @@
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/textEditIP"
+            android:id="@+id/serverIPTextEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
