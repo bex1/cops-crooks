@@ -31,16 +31,20 @@
 
         <TextView
             android:id="@+id/menuTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/game_name" />
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:text="@string/game_name"
+            android:layout_width="0dp"
+            android:layout_weight="30" />
 
         <EditText
             android:id="@+id/gameNameEditText"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text" >
+            android:inputType="text"
+            android:hint="@string/game_name_hint"
+            android:layout_width="0dp"
+            android:layout_weight="70" >
 
             <requestFocus />
         </EditText>
@@ -53,26 +57,29 @@
 
         <TextView
             android:id="@+id/soundTextView"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="left"
             android:gravity="center|left"
-            android:text="@string/player_cap" />
+            android:text="@string/player_cap"
+            android:layout_width="0dp"
+            android:layout_weight="30" />
 
         <SeekBar
             android:id="@+id/playerCapSeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
             android:max="3"
             android:paddingLeft="16dp"
             android:paddingRight="16dp" />
 
         <TextView
             android:id="@+id/seekBarTextView"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/player_cap_seekbar_default" />
+            android:text="@string/player_cap_seekbar_default"
+            android:layout_width="0dp"
+            android:layout_weight="10" />
     </TableRow>
 
     <TableRow

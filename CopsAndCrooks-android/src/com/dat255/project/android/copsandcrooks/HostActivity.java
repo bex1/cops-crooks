@@ -59,8 +59,6 @@ public class HostActivity extends AbstractActivity {
 		hostGameButton.setEnabled(false);
 		
 		playerCap = 2;
-		
-		showMessage("Enter a  game name");
 	}
 
 	@Override
@@ -94,7 +92,7 @@ public class HostActivity extends AbstractActivity {
 		@Override
 		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 			gameName = gameNameEditText.getText().toString();
-			if(!gameName.equals(null) || gameName.length() != 0){
+			if(!gameName.equals(null) && gameName.length() != 0){
 				canHostGame(gameName);
 			}else{
 				hostGameButton.setClickable(false);
