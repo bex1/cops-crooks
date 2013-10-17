@@ -61,7 +61,7 @@ public class HostActivity extends AbstractActivity {
 		
 		playerCap = 2;
 		
-		showError("Enter a  game name");
+		showMessage("Enter a  game name");
 	}
 
 	@Override
@@ -95,8 +95,13 @@ public class HostActivity extends AbstractActivity {
 		@Override
 		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 			gameName = gameNameEditText.getText().toString();
-			if(!gameName.equals(null) || gameName.length() != 0);
+			if(!gameName.equals(null) || gameName.length() != 0){
 				canHostGame(gameName);
+			}else{
+				hostGameButton.setClickable(false);
+				hostGameButton.setEnabled(false);
+				showMessage("Enter a Game Name");
+			}		
 			return false;
 		}
 		
@@ -122,7 +127,7 @@ public class HostActivity extends AbstractActivity {
 		}else{
 			hostGameButton.setClickable(false);
 			hostGameButton.setEnabled(false);
-			showError("This game name already exist");
+			showMessage("This game name already exist");
 		}
 	}
 	
