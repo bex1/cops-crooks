@@ -24,6 +24,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
+import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager;
@@ -133,10 +135,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		mapToRender.dispose();
 		hudStage.dispose();
 		//TODO dispose replay so it will finish before we dispose and save them model
-		factory.saveModelToFile(model);
 		super.dispose();
 	}
 
+
+	@Override
+	public void hide() {
+		ModelFactory.getInstance().saveModelToFile(model);
+		super.dispose();
+	}
 
 	@Override
 	public void resume() {
@@ -204,7 +211,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private float camPauseX;
 	private float camPauseY;
 
-	@Override
+	@SuppressWarnings("incomplete-switch")
+    @Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		Object source = evt.getSource();

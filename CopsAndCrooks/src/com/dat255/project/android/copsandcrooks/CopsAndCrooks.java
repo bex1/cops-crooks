@@ -23,6 +23,7 @@ import com.dat255.project.android.copsandcrooks.utils.SoundManager;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
+@SuppressWarnings("unused")
 public class CopsAndCrooks extends Game {
 	// constant useful for logging
     public static final String LOG = CopsAndCrooks.class.getSimpleName();
@@ -85,12 +86,12 @@ public class CopsAndCrooks extends Game {
     		if(!gameToPlay.hasGameStarted()){
     			System.out.println("host skapar ett spela");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
-    		}else if(gameToPlay.hasGameStarted() && !factory.hasLoadedThisGameModel(gameToPlay)){
-    			System.out.println("spelare gï¿½r med i ett spela fï¿½r fï¿½rsta gï¿½ngen");
+    		}else if(gameToPlay.hasGameStarted() && !modelFactory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("spelare går med i ett spela för första gången");
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
-    		}else if(gameToPlay.hasGameStarted() && factory.hasLoadedThisGameModel(gameToPlay)){
-    			System.out.println("detta sï¿½elet har jag sparat lokalt!!!!!");
-    			game = modelFactory.loadLocalGameModel(factory.loadModelFromFile(gameToPlay.getName()));
+    		}else if(gameToPlay.hasGameStarted() && modelFactory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("detta såelet har jag sparat lokalt!!!!!");
+    			game = modelFactory.loadLocalGameModel(modelFactory.loadModelFromFile(gameToPlay.getName()));
     		}else{
     			assert false;
     			game = null;

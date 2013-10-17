@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
+public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 
 	private GameClient gameClient;
 	private Activity activity;
@@ -20,7 +20,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
+		if(!gameClient.isConnected() && !(activity instanceof MenuActivity)){
 			Intent intent = new Intent(activity.getApplicationContext(), MenuActivity.class);
 			activity.startActivity(intent);
 		}
@@ -36,8 +36,13 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 				gameClient.requestGameItemsFromServer();
 				this.publishProgress();
 			}else if(activity instanceof HostActivity){
-				// When a game is created this will send it to the server and set the chosen game to the created game
-				gameClient.sendCreatedGame(params[0]);
+				if(((HostActivity) activity).getThisTask() == HostActivity.ThisTask.hostGame){
+					// When a game is created this will send it to the server and set the chosen game to the created game
+					gameClient.sendCreatedGame(params[0]);
+				}else if(((HostActivity) activity).getThisTask() == HostActivity.ThisTask.checkName){
+					gameClient.requestGameItemsFromServer();
+					publishProgress(gameClient.hasGame(params[0].getName()));
+				}
 				return null;
 			}else if(activity instanceof LobbyActivity){
 				if(params == null || params.length == 0){
@@ -68,10 +73,14 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 					}
 				}
 			}//*/	
-			if(!gameClient.getClient().isConnected())
+
+			if(!gameClient.isConnected())
 				this.publishProgress();
+
+			//	if(!gameClient.getClient().isConnected())
+			//	this.publishProgress();
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e){
 				e.printStackTrace();
 				return null;
@@ -81,12 +90,17 @@ public class CommunicateTask extends AsyncTask<GameItem, Void, Void> {
 	}
 
 	@Override
-	protected void onProgressUpdate(Void... values) {
+	protected void onProgressUpdate(Boolean... values) {
 		if(activity instanceof MenuActivity){
-			((MenuActivity)activity).showError("Trying to connect");
-		}else if(activity instanceof LobbyActivity)
+			((MenuActivity)activity).showMessage("Trying to connect");
+		}else if(activity instanceof LobbyActivity){
 			((LobbyActivity)activity).updatePlayerList();
-		else if(activity instanceof GameBrowseActivity)
+		}else if(activity instanceof GameBrowseActivity){
 			((GameBrowseActivity)activity).refreshGameList();
+		}else if(activity instanceof HostActivity){
+			if(((HostActivity) activity).getThisTask() == HostActivity.ThisTask.checkName){
+				((HostActivity)activity).hostButtonEnabled(!values[0]);
+			}
+		}
 	}
 }

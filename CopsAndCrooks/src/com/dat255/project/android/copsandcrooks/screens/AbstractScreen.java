@@ -3,7 +3,6 @@ package com.dat255.project.android.copsandcrooks.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 

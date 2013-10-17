@@ -150,6 +150,7 @@ public final class GameModel implements IObservable, Serializable{
 	}
 	
 	private void replay(Turn turn) {
+		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
 		IWalkableTile end = getWalkabletiles()[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null && end != null) {

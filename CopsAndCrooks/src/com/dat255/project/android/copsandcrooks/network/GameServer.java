@@ -8,6 +8,7 @@ import java.util.*;
 
 import com.esotericsoftware.kryonet.*;
 
+/** Server application */
 public class GameServer {
 
 	private Server server;
@@ -15,12 +16,12 @@ public class GameServer {
 	private Map<Integer, LinkedList<Turn>> turns;
 	
 	public GameServer(){
-		
-		gameItems = new ArrayList<GameItem>();
-		turns = new TreeMap<Integer, LinkedList<Turn>>();
-
 		// initialize server
 		server = new Server();
+		gameItems = new ArrayList<GameItem>();
+		turns = new TreeMap<Integer, LinkedList<Turn>>();
+		
+		// register network classes (in the same way as the client)
 		Network.register(server);
 		
 		server.addListener(new Listener(){
@@ -62,7 +63,7 @@ public class GameServer {
 						gameItems.add(gamePck.gameItems.get(0));
 					}
 					
-					// client joins a game
+					// client wants to join a game
 					else if(packet instanceof Pck4_PlayerItem){
 						printMsg("Client #" + clientID + ": join a game");
 						Pck4_PlayerItem gamePck = ((Pck4_PlayerItem)packet);
@@ -88,6 +89,11 @@ public class GameServer {
 					else if(packet instanceof Pck6_RequestTurns){
 						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
+
+						if(turns.get(gamePck.gameID) == null){
+							printMsg("Invalid game ID: "+gamePck.gameID);
+							return;
+						}
 
 						// don't send empty lists
 						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size())
@@ -129,9 +135,9 @@ public class GameServer {
 					}
 
 					// client ends the game
-					else if(packet instanceof Pck11_EndGame){
+					else if(packet instanceof Pck10_EndGame){
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == ((Pck11_EndGame) packet).gameID){
+							if(gameItems.get(i).getID() == ((Pck10_EndGame) packet).gameID){
 								gameItems.remove(i);
 								// TODO Remove associated turns from this game when all clients have received last turn
 							}
@@ -154,6 +160,9 @@ public class GameServer {
 		});
 	}
 	
+	/**
+	 * Start the server. It will fail if an existing server is running on the same port
+	 */
 	public void startServer() {
 		try {
 			server.start();
@@ -165,6 +174,10 @@ public class GameServer {
         }
 	}
 	
+	/**
+	 * Print a message with a timestamp
+	 * @param message
+	 */
 	private void printMsg(String message){
 		System.out.println(new Timestamp(System.currentTimeMillis()).toString().substring(0, 19) + " " +  message);
 	}
