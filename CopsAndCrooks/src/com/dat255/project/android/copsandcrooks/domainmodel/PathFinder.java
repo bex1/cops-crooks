@@ -6,19 +6,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-
 /**
  * Path finder in the game Cops&Crooks.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public final class PathFinder implements Serializable {
+final class PathFinder implements Serializable {
 	private final AbstractWalkableTile[][] tiles;
 	private final List<TramLine> metroLines;
 	private final IMediator mediator;
 
-	public PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<TramLine> metroLines) {
+	PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<TramLine> metroLines) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		if (mediator == null)
@@ -58,7 +56,7 @@ public final class PathFinder implements Serializable {
 
 	private List<TilePath> calculateActualPossiblePaths(AbstractPawn pawn, PawnType pawnType,
 			int stepsRemaining, int stepsToMove, AbstractWalkableTile currentTile, AbstractWalkableTile startTile, AbstractWalkableTile previousTile, Direction direction) {
-		
+
 		if(stepsRemaining==0 || (previousTile != null && (currentTile instanceof HideoutTile || currentTile instanceof RobbableBuildingTile 
 				||(pawn.getPawnRole() == Role.Cop && mediator.isWantedCrookOn(currentTile))))){
 			TilePath path = new TilePath();

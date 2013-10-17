@@ -15,8 +15,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
 
 public class MetroLineActor extends Group {
-
-	
 	private final MetroLineActor thisActor;
 
 	/**

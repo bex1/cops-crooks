@@ -16,5 +16,11 @@ public class Values {
 	 // the fixed viewport dimensions (ratio: 1.6)
     public static final int GAME_VIEWPORT_WIDTH = 800, GAME_VIEWPORT_HEIGHT = 480;
 
+	public static final int TURNS_IN_PRISON = 4;
+
+	public static final int DICE_RESULT_TO_ESCAPE = 6;
+
+	public static final int MAX_TIMES_ARRESTED = 4;
+
     public static int TILE_WIDTH = 60, TILE_HEIGTH = 60;
 }

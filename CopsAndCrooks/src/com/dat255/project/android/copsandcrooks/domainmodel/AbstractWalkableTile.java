@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 
@@ -79,8 +78,8 @@ public abstract class AbstractWalkableTile implements IWalkableTile, Serializabl
 	}
 	
 	/**
-	 * Get the allowed pawntypes for this tile
-	 * @return the allowed pawntypes
+	 * Get the allowed PawnTypes for this tile
+	 * @return the allowed PawnTypes
 	 */
 	Collection<PawnType> getAllowedPawnTypes() {
 		return Collections.unmodifiableCollection(pawnTypes);

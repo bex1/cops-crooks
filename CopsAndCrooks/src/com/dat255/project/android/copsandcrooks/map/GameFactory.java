@@ -13,13 +13,11 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -52,23 +50,18 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This Class creates everything you need to create a game
- * (You need to call init before using methods in Gamefactory)
+ * (You need to call init before using methods in GameFactory)
  * @author Group 25
  *
  */
 public class GameFactory {
 	private Assets assets;
-	private ModelFactory modelFactory;
 	private TiledMap map;
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
-	private static GameFactory instance = null;
+
+	private static GameFactory instance = null;	
 	
-	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
-	
-	
-	private GameFactory() {
-		modelFactory = ModelFactory.getInstance();
-	}
+	private GameFactory() {}
 
 	public static GameFactory getInstance(){
 		if(instance == null){
@@ -394,39 +387,6 @@ public class GameFactory {
 		return mapLayerInteract;
 	}
 	
-	public void saveModelToFile(GameModel game){
-		File dir = new File(absolutPath, game.getName());
-		if(!dir.exists()){
-			dir.mkdirs();
-		}
-		File savefile = new File(dir, "model.ser");
-		try {
-			savefile.createNewFile();
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
-			out.writeObject(game);
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public GameModel loadModelFromFile(String name){
-		File fileToLoad = new File(absolutPath, name + "/model.ser");
-		System.out.println(fileToLoad.getPath() + "\n" + fileToLoad.exists());
-		if(!fileToLoad.exists()){
-			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
-		}
-		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
-			GameModel loadmodel = (GameModel) in.readObject();
-			in.close();
-			return loadmodel;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} 
-	}
-	
 	private DiceActor getDiceActorFor(Dice dice, Stage hudStage) {
 		TextureAtlas atlas = assets.getAtlas();
 		
@@ -434,12 +394,12 @@ public class GameFactory {
 			return null;
 		}
 		
-		AtlasRegion[] diceAnim = new AtlasRegion[14];
+		AtlasRegion[] diceAnimation = new AtlasRegion[14];
 		for(int k = 0; k < 14; k++)
 		{
-			diceAnim[k] = atlas.findRegion("game-screen/dice/Dice"+k);
+			diceAnimation[k] = atlas.findRegion("game-screen/dice/Dice"+k);
 		}
-		Animation animation = new Animation(0.05f, diceAnim);
+		Animation animation = new Animation(0.05f, diceAnimation);
 
 		
 		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none, hudStage);
@@ -457,14 +417,9 @@ public class GameFactory {
 			new HideoutOptionsTable(assets, hideout, hudStage);
 		}
 		
-		this.saveModelToFile(game);
+		ModelFactory.getInstance().saveModelToFile(game);
 
 		return new GameScreen(assets, copsAndCrooks, game, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
 				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance(), hudStage));
-	}
-
-	public boolean hasLoadedThisGameModel(GameItem item){
-		return new File(absolutPath, item.getName() + "/model.ser").exists();
-		
 	}
 }

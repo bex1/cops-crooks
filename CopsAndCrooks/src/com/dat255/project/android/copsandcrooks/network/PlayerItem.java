@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.AbstractPawn;
-import com.dat255.project.android.copsandcrooks.domainmodel.AbstractWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 

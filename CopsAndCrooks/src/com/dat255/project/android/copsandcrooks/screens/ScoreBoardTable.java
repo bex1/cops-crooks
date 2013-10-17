@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,6 +21,8 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager.CopsAndCrooksSound;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 
 public class ScoreBoardTable extends Table implements PropertyChangeListener {
 
@@ -99,6 +100,9 @@ public class ScoreBoardTable extends Table implements PropertyChangeListener {
 		if (scoreLabels.containsKey(obj)) {
 			if (evt.getPropertyName() == Wallet.PROPERTY_CASH) {
 				Wallet wallet = (Wallet)obj;
+				if (wallet.getCash() > 0) {
+					SoundManager.getInstance().play(CopsAndCrooksSound.CASH);
+				}
 				Label score = scoreLabels.get(wallet);
 				score.setText(String.format("%-6d%n", wallet.getCash()));
 			}

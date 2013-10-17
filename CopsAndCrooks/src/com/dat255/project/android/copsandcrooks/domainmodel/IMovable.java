@@ -36,8 +36,8 @@ public interface IMovable extends IObservable {
 	/**
 	 * Crook 0 =< id < 10
 	 * Cop 10 =< id <20
-	 * CopCar = 20 (There will always only be 1 Copcar)
-	 * @return
+	 * CopCar = 20 (There will always be one Copcar)
+	 * @return the id of the pawn.
 	 */
 	public int getID();
 	
@@ -47,8 +47,16 @@ public interface IMovable extends IObservable {
 	 */
 	boolean isMoving();
 	
+	/**
+	 * Returns true if the pawn is playing, false otherwise.
+	 * @return true if the pawn is playing, false otherwise.
+	 */
 	boolean isPlaying();
 	
+	/**
+	 * Returns true if the pawn is active, false otherwise.
+	 * @return true if the pawn is active, false otherwise.
+	 */
 	boolean isActivePawn();
 	
 	public static final String PROPERTY_NEXT_TILE = "NextTile";
@@ -57,13 +65,4 @@ public interface IMovable extends IObservable {
 	public static final String PROPERTY_IS_IN_POLICE_HOUSE = "IsInPoliceHouse";
 	public static final String PROPERTY_IS_PLAYING = "IsPlaying";
 	public static final String PROPERTY_IS_ACTIVE_PAWN = "IsActivePawn";
-	
-	//TODO: MAKE OWN CLASS, PACKAGE PRIVATE
-	public enum PawnType {
-		Crook,
-		Officer,
-		Car,
-	}
-
-	
 }

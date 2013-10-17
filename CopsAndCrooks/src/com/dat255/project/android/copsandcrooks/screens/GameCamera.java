@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameCamera extends OrthographicCamera {
-	private int mapWidth, mapHeight;
+	private final int mapWidth, mapHeight;
 	
 	GameCamera(int mapWidth, int mapHeight) {
 		super(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);

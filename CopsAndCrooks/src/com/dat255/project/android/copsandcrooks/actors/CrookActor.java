@@ -16,7 +16,7 @@ public class CrookActor extends MovableActor {
 	private final Crook crook;
 	private Image wanted;
 
-	public CrookActor(Assets assets, TextureRegionDrawable drawable, Scaling scaling,
+	public CrookActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling,
 			Crook pawn, EnumMap<Animations, Animation> animations) {
 		super(assets, drawable, scaling, pawn, animations);
 		crook = pawn;
@@ -38,5 +38,5 @@ public class CrookActor extends MovableActor {
 		TextureAtlas atlas = assets.getAtlas();
 		TextureRegionDrawable selected = new TextureRegionDrawable(atlas.findRegion("game-screen/crook/bounty"));
 		wanted = new Image(selected, Scaling.none);
-	}	
+	}
 }

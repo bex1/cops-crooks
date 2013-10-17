@@ -1,22 +1,31 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
-// WILL be used to furter encapsulate model.
+// WILL be used to further encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
 // It should instead be connected to this factory to get its model instances.
 public class ModelFactory {
 	
 	private static ModelFactory instance = null;
+	
+	private static final String absolutPath = Gdx.files.getLocalStoragePath() + "saved-games/";
 	
 	private ModelFactory(){}
 	
@@ -30,8 +39,7 @@ public class ModelFactory {
 	/**
 	 * Loads a game from scratch or with players already placed 
 	 * @param interact
-	 * @param userInfo
-	 * @return - a GameModel 
+	 * @return - a GameModel
 	 */
 	public GameModel loadGameModel(GameItem gameitem, TiledMapTileLayer interact, boolean isGameHosted){
 		// Creates a mediator
@@ -46,13 +54,13 @@ public class ModelFactory {
 		
 		List<HideoutTile> listOfHideouts = new ArrayList<HideoutTile>();
 		
-		// List to registrat all the diffrent metrostops
+		// List to register all the different metrostops
 		List<TramStopTile> red = new ArrayList<TramStopTile>();
 		List<TramStopTile> blue = new ArrayList<TramStopTile>();
 		List<TramStopTile> green = new ArrayList<TramStopTile>();
 		for(int i = 0; i < interact.getWidth(); i++){
 			for(int j = 0; j < interact.getHeight(); j++){
-				//try catch made because of null pointer exception when we dont have a walkable tile when we read it from the .tmx file
+				//try catch made because of null pointer exception when we don't have a walkable tile when we read it from the .tmx file
 				try{
 					
 					switch(interact.getCell(i, j).getTile().getId()){
@@ -97,7 +105,7 @@ public class ModelFactory {
 						walkable[i][j] = new HideoutTile(new Point(i, j), mediator);
 						listOfHideouts.add((HideoutTile) walkable[i][j]);
 						break;
-					case 13: 	// According to tileset case 13 will be the coordinate of the poliscar(this will be a road tile)
+					case 13: 	// According to tileset case 13 will be the coordinate of the policeCar (this will be a road tile)
 						walkable[i][j] = new RoadTile(new Point(i, j), mediator);
 						policeCarStart = walkable[i][j];
 						break;
@@ -118,68 +126,68 @@ public class ModelFactory {
 		tramLines.add(new TramLine(red));
 		
 		List<Player> players = new ArrayList<Player>();
-		List<PlayerItem> playeritems = gameitem.getPlayers();
+		List<PlayerItem> playerItems = gameitem.getPlayers();
 		int numberOfOfficers = gameitem.getCurrentPlayerCount();
 		int crookID = 1;
 		Random rand = new Random();
-		for (int i = 0; i < playeritems.size(); i ++ ) {
+		for (PlayerItem playerItem : playerItems) {
 			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
-			System.out.println(playeritems.get(i).getRole());
-			if (playeritems.get(i).getRole() == Role.Cop) {
+			System.out.println(playerItem.getRole());
+			if (playerItem.getRole() == Role.Cop) {
 				for (int j = 0; j < numberOfOfficers; j++) {
-					if(!isGameHosted){
-						int k = rand.nextInt(listOfPolicestationtile.size()-1);
+					if (!isGameHosted) {
+						int k = rand.nextInt(listOfPolicestationtile.size() - 1);
 						pawns.add(new Officer(listOfPolicestationtile.get(k), mediator, 10 + j));
-						playeritems.get(i).addPawn(listOfPolicestationtile.get(k).getPosition(), 10 + j);
+						playerItem.addPawn(listOfPolicestationtile.get(k).getPosition(), 10 + j);
 						listOfPolicestationtile.remove(k);
-					}else{
-						Point point = playeritems.get(i).getPawnItem(10 + j).position;
+					} else {
+						Point point = playerItem.getPawnItem(10 + j).position;
 						pawns.add(new Officer(walkable[point.x][point.y], mediator, 10 + j));
 					}
 				}
-				if(!isGameHosted){
+				if (!isGameHosted) {
 					pawns.add(new CopCar(policeCarStart, mediator, 20));
-					playeritems.get(i).addPawn(policeCarStart.getPosition(), 20);
-				}else{
-					Point point = playeritems.get(i).getPawnItem(20).position;
+					playerItem.addPawn(policeCarStart.getPosition(), 20);
+				} else {
+					Point point = playerItem.getPawnItem(20).position;
 					pawns.add(new CopCar(walkable[point.x][point.y], mediator, 20));
 				}
-				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Cop, mediator, playeritems.get(i).getID()));
-				
-			} else if (playeritems.get(i).getRole() == Role.Crook) {
-				if(!isGameHosted){
-					int k = rand.nextInt(listOfHideouts.size()-1);
+				players.add(new Player(playerItem.getName(), pawns, Role.Cop, mediator, playerItem.getID()));
+
+			} else if (playerItem.getRole() == Role.Crook) {
+				if (!isGameHosted) {
+					int k = rand.nextInt(listOfHideouts.size() - 1);
 					pawns.add(new Crook(listOfHideouts.get(k), mediator, crookID));
-					playeritems.get(i).addPawn(listOfHideouts.get(k).getPosition(), crookID);
+					playerItem.addPawn(listOfHideouts.get(k).getPosition(), crookID);
 					listOfHideouts.remove(k);
-				}else{
-					Point point = playeritems.get(i).getPawnItem(crookID).position;
+				} else {
+					Point point = playerItem.getPawnItem(crookID).position;
 					pawns.add(new Crook(walkable[point.x][point.y], mediator, crookID));
 				}
-				
-				players.add( new Player(playeritems.get(i).getName(), pawns, Role.Crook, mediator, playeritems.get(i).getID()));
+
+				players.add(new Player(playerItem.getName(), pawns, Role.Crook, mediator, playerItem.getID()));
 				++crookID;
+			}
+		}
+		Player playerClient = null;
+		for(Player player : players){
+			if(player.getID().equals(GameClient.getInstance().getClientID())){
+				playerClient = player;
+				break;
 			}
 		}
 		if(!isGameHosted){
 			gameitem.setGameStarted(true);
 			GameClient.getInstance().updateCurrentGameItem(gameitem);
 		}
-		Player playerClient = players.get(0);
-		for(Player player: players){
-			if(player.getID().equals(GameClient.getInstance().getClientID())){
-				playerClient = player;
-				break;
-			}
-		}
 		new PathFinder(walkable, mediator, tramLines);
-		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID());
+		return new GameModel(mediator, playerClient, null, players, walkable, tramLines, gameitem.getName(), gameitem.getID(), 0);
 	}
 	
 	
 	/**
 	 * This methods reads from a file and creates a new GameModel from a serialized model 
-	 * @return - Fully working gamemodel
+	 * @return - Fully working GameModel
 	 * @throws Exception
 	 */
 	public GameModel loadLocalGameModel(GameModel model){
@@ -188,7 +196,7 @@ public class ModelFactory {
 		// Creates a mediator
 		Mediator mediator = new Mediator();
 		
-		// Gets the old Players and creates a arraylist for the new ones
+		// Gets the old Players and creates a ArrayList for the new ones
 		Collection<? extends IPlayer> oldPlayers = model.getPlayers();
 		List<Player> newPlayers = new ArrayList<Player>();
 		
@@ -255,7 +263,7 @@ public class ModelFactory {
 			List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
 			for(IMovable pawn: player.getPawns()){
 				Point tilesPos = pawn.getCurrentTile().getPosition();
-				AbstractWalkableTile tile = (AbstractWalkableTile) newWalkableTile[tilesPos.x][tilesPos.y];
+				AbstractWalkableTile tile = newWalkableTile[tilesPos.x][tilesPos.y];
 				if(pawn instanceof Officer)
 					pawns.add(new Officer(tile, mediator, pawn.getID()));
 				else if(pawn instanceof CopCar)
@@ -271,15 +279,50 @@ public class ModelFactory {
 		Player currentPlayer = null;
 		for(Player player: newPlayers){
 			if(player.getID().equals(model.getCurrentPlayer().getID())){
-				System.out.println("Vi hitta en currentPlayer");
 				currentPlayer = player;
 				break;
 			}
 		}
+		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		if(model.getDiceResults() == -1)
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getDiceResults());
-		else
-			return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID());
+		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
+	}
+	
+
+	public void saveModelToFile(GameModel game){
+		File dir = new File(absolutPath, game.getName());
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		File savefile = new File(dir, "model.ser");
+		try {
+			savefile.createNewFile();
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(savefile));
+			out.writeObject(game);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public GameModel loadModelFromFile(String name){
+		File fileToLoad = new File(absolutPath, name + "/model.ser");
+		System.out.println(fileToLoad.getPath() + "\n" + fileToLoad.exists());
+		if(!fileToLoad.exists()){
+			throw new NullPointerException(fileToLoad.getPath() + "\nWas not able to be loaded");
+		}
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToLoad));
+			GameModel loadmodel = (GameModel) in.readObject();
+			in.close();
+			return loadmodel;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} 
+	}
+	
+	public boolean hasLoadedThisGameModel(GameItem item){
+		return new File(absolutPath, item.getName() + "/model.ser").exists();
 	}
 }
