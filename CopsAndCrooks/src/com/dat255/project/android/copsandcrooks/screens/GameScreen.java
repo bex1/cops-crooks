@@ -131,17 +131,11 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	public void dispose(){
 		MusicManager.getInstance().dispose();
 		SoundManager.getInstance().dispose();
+		ModelFactory.getInstance().saveModelToFile(model);
 		renderer.dispose();
 		mapToRender.dispose();
 		hudStage.dispose();
 		//TODO dispose replay so it will finish before we dispose and save them model
-		super.dispose();
-	}
-
-
-	@Override
-	public void hide() {
-		ModelFactory.getInstance().saveModelToFile(model);
 		super.dispose();
 	}
 
@@ -202,6 +196,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	@Override
 	public void pause() {
 		super.pause();
+		System.out.println("********************Pause");
+		ModelFactory.getInstance().saveModelToFile(model);
 		if (camera != null) {
 			camPauseX = camera.position.x;
 			camPauseY = camera.position.y;

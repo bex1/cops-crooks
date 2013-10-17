@@ -51,15 +51,6 @@ public class LobbyActivity extends Activity {
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);
 		
 		gameNameTextView.setText(gameItem.getName());
-
-		updatePlayerList();
-		
-		receiveTask = new CommunicateTask(this);
-		sendTask = new CommunicateTask(this);
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			receiveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
-		else
-			receiveTask.execute();
 	}
 
 	@Override
@@ -67,6 +58,19 @@ public class LobbyActivity extends Activity {
 		receiveTask.cancel(true);
 		sendTask.cancel(false);
 		super.onStop();
+	}
+
+	@Override
+	protected void onStart() {
+		receiveTask = new CommunicateTask(this);
+		sendTask = new CommunicateTask(this);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			receiveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+		else
+			receiveTask.execute();
+		
+		updatePlayerList();
+		super.onStart();
 	}
 
 	@Override
