@@ -43,10 +43,12 @@ public class Crook extends AbstractWalkingPawn {
 					break;
 				case Withdraw:
 					hideout.withdrawCash(this);
-					return;
-				default:
+					break;
+				case Cancel:
+					hideout.cancelInteraction();
 					break;
 				}
+				return;
 			}
 		} 
 		super.interactWithTile();

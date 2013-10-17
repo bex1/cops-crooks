@@ -157,6 +157,7 @@ public final class GameModel implements IObservable, Serializable{
 			case Metro:
 				if (end instanceof TramStopTile) {
 					pawn.moveByTram((TramStopTile)end);
+					nextPlayer(3f);
 				}
 				break;
 			case Walk:
