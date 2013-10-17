@@ -90,6 +90,11 @@ public class GameServer {
 						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
 
+						if(turns.get(gamePck.gameID) == null){
+							printMsg("Invalid game ID: "+gamePck.gameID);
+							return;
+						}
+
 						// don't send empty lists
 						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size())
 							return;
