@@ -20,7 +20,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		if(!gameClient.getClient().isConnected() && !(activity instanceof MenuActivity)){
+		if(!gameClient.isConnected() && !(activity instanceof MenuActivity)){
 			Intent intent = new Intent(activity.getApplicationContext(), MenuActivity.class);
 			activity.startActivity(intent);
 		}
@@ -41,7 +41,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 					gameClient.sendCreatedGame(params[0]);
 				}else if(((HostActivity) activity).getThisTask() == HostActivity.ThisTask.checkName){
 					gameClient.requestGameItemsFromServer();
-					publishProgress(gameClient.doseGameExist(params[0].getName()));
+					publishProgress(gameClient.hasGame(params[0].getName()));
 				}
 				return null;
 			}else if(activity instanceof LobbyActivity){
@@ -73,7 +73,11 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 					}
 				}
 			}//*/	
-		///	if(!gameClient.getClient().isConnected())
+
+			if(!gameClient.isConnected())
+				this.publishProgress();
+
+			//	if(!gameClient.getClient().isConnected())
 			//	this.publishProgress();
 			try {
 				Thread.sleep(1000);
