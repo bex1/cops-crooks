@@ -47,7 +47,7 @@ public class Network {
 		kryo.register(PawnItem.class);
 	}
 
-	/** Packet */
+	/** Super-class packet */
 	public static class Packet{
 		private Connection connection;
 		
@@ -65,7 +65,7 @@ public class Network {
 		public String message;
 	}
 
-	/** Answer sent by the server */
+	/** Handshake sent by the server */
 	public static class Pck1_ServerHandshake extends Packet{
 		public String message;
 	}
@@ -79,7 +79,7 @@ public class Network {
 		public ArrayList<GameItem> gameItems;
 	}
 	
-	/** */
+	/** Super-class for game item packets */
 	public static class Pck_ExistingGame extends Packet {
 		public int gameID;
 	}
@@ -106,10 +106,7 @@ public class Network {
 	public static class Pck9_ClientEditedGame extends Packet {
 		public GameItem gameItem;
 	}
-	
-	public static class Pck10_PawnItem extends PawnItem{
-		public PawnItem pawnItem;
-	}
 
-	public static class Pck11_EndGame extends Pck_ExistingGame{}
+	/** Game has ended */
+	public static class Pck10_EndGame extends Pck_ExistingGame{}
 }
