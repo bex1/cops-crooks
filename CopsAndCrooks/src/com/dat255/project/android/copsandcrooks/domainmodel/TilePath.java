@@ -24,12 +24,12 @@ public final class TilePath implements IObservable, Serializable {
 	private final LinkedList<AbstractWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	public TilePath() {
+	TilePath() {
 		pathList = new LinkedList<AbstractWalkableTile>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public TilePath(TilePath path) {
+	TilePath(TilePath path) {
 		pathList = (LinkedList<AbstractWalkableTile>)path.pathList.clone();
 	}
 	

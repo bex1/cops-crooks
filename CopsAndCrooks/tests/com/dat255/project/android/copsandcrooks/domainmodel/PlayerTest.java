@@ -29,8 +29,6 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  */
 public class PlayerTest {
 	
-	private Player player;
-
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -181,6 +179,7 @@ public class PlayerTest {
 	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Player#rollDice()}.
 	 */
 	@Test
+	@SuppressWarnings("unused")
 	public final void testRollDice() {
 		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
 		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);

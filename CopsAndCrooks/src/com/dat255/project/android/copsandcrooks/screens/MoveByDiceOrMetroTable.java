@@ -8,7 +8,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 
 public class MoveByDiceOrMetroTable extends Table {
 
-	public MoveByDiceOrMetroTable(Assets assets, final GameModel model) {
+	public MoveByDiceOrMetroTable(final Assets assets, final GameModel model) {
 		this.setFillParent(true);
 		
 		// register the button "roll dice"

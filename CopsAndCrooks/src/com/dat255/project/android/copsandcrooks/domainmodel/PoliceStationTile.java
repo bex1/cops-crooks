@@ -1,8 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 
 /**
@@ -18,7 +18,7 @@ public class PoliceStationTile extends AbstractWalkableTile implements IInteract
 	 * @param position the position of this tile
 	 * @param mediator the mediator
 	 */
-	public PoliceStationTile(Point position, IMediator mediator) {
+	PoliceStationTile(Point position, IMediator mediator) {
 		super(position, mediator);
 		
 		pawnTypes.add(PawnType.Officer);
@@ -28,9 +28,7 @@ public class PoliceStationTile extends AbstractWalkableTile implements IInteract
 	public void interact(IMovable target) {
 		if(target instanceof Crook){
 			Crook crook = (Crook)target;
-			crook.setTurnsInPrison();
+			crook.setTurnsInPrison(Values.TURNS_IN_PRISON);
 		}
-		
 	}
-
 }

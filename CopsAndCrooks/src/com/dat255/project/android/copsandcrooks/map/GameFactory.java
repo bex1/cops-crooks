@@ -13,13 +13,11 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -52,20 +50,18 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
  * This Class creates everything you need to create a game
- * (You need to call init before using methods in Gamefactory)
+ * (You need to call init before using methods in GameFactory)
  * @author Group 25
  *
  */
 public class GameFactory {
 	private Assets assets;
-	private ModelFactory modelFactory;
 	private TiledMap map;
 	private TiledMapTileLayer mapLayerBack, mapLayerInteract;
+
 	private static GameFactory instance = null;	
 	
-	private GameFactory() {
-		modelFactory = ModelFactory.getInstance();
-	}
+	private GameFactory() {}
 
 	public static GameFactory getInstance(){
 		if(instance == null){
@@ -398,12 +394,12 @@ public class GameFactory {
 			return null;
 		}
 		
-		AtlasRegion[] diceAnim = new AtlasRegion[14];
+		AtlasRegion[] diceAnimation = new AtlasRegion[14];
 		for(int k = 0; k < 14; k++)
 		{
-			diceAnim[k] = atlas.findRegion("game-screen/dice/Dice"+k);
+			diceAnimation[k] = atlas.findRegion("game-screen/dice/Dice"+k);
 		}
-		Animation animation = new Animation(0.05f, diceAnim);
+		Animation animation = new Animation(0.05f, diceAnimation);
 
 		
 		return new DiceActor(assets, dice, animation, new TextureRegionDrawable(animation.getKeyFrame(0)), Scaling.none, hudStage);

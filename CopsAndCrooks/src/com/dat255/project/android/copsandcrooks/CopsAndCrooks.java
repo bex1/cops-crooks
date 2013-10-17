@@ -23,6 +23,7 @@ import com.dat255.project.android.copsandcrooks.utils.SoundManager;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
+@SuppressWarnings("unused")
 public class CopsAndCrooks extends Game {
 	// constant useful for logging
     public static final String LOG = CopsAndCrooks.class.getSimpleName();
@@ -59,9 +60,6 @@ public class CopsAndCrooks extends Game {
         SoundManager soundManager = SoundManager.getInstance();
         soundManager.setVolume( prefs.getVolume() );
         soundManager.setEnabled( prefs.isSoundEnabled() );
-        
-//      Gdx.app.log(CopsAndCrooks.LOG, "Creating and connecting network client");
-//		GameClient.getInstance().connectToServer();
         
         GameFactory.getInstance().init(new Assets());
         fpsLogger = new FPSLogger();
@@ -146,7 +144,7 @@ public class CopsAndCrooks extends Game {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
         
-        // dipose some services
+        // dispose some services
         MusicManager.getInstance().dispose();
         SoundManager.getInstance().dispose();
     }

@@ -32,7 +32,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 	private static final String withEmpty = "Nothing to withdraw";
 	private static final String depEmpty = "Nothing to deposit";
 
-	public HideoutOptionsTable(Assets assets, HideoutTile hideout, Stage hudStage) {
+	public HideoutOptionsTable(final Assets assets, final HideoutTile hideout, final Stage hudStage) {
 		this.hideout = hideout;
 		this.hudStage = hudStage;
 		thisTable = this;

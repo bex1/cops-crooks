@@ -16,7 +16,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class HideoutActor extends Actor {
 	private final HideoutStatusTable statusTable;
 	
-	public HideoutActor(Assets assets, final HideoutTile hideout, final Collection<? extends IPlayer> players, final Stage hudStage) {
+	public HideoutActor(final Assets assets, final HideoutTile hideout, final Collection<? extends IPlayer> players, final Stage hudStage) {
 		Point p = hideout.getPosition();
 		this.setBounds(p.x * Values.TILE_WIDTH, p.y * Values.TILE_HEIGTH, Values.TILE_WIDTH, Values.TILE_HEIGTH);
 		

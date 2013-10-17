@@ -10,7 +10,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 
 public class MoveByDiceTable extends Table{
 
-	public MoveByDiceTable(Assets assets, final GameModel model, final Stage hudStage) {
+	public MoveByDiceTable(final Assets assets, final GameModel model, final Stage hudStage) {
 		this.setFillParent(true);
 		
 		// register the button "roll dice"
