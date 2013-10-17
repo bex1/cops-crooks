@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Random;
 
-import com.badlogic.gdx.utils.Timer.Task;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 public final class Dice implements IObservable, Serializable {
