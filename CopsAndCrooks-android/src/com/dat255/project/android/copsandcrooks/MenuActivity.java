@@ -34,9 +34,8 @@ public class MenuActivity extends AbstractActivity {
         }
         
         if(!preferences.getString("IP", "invalid").equals("invalid"))
-         	GameClient.getInstance().setServerIP(preferences.getString("IP", "default"));  
+         	GameClient.getInstance().setServerIP(preferences.getString("IP", "default"));
         task = new CommunicateTask(this);
-        
 	}
 	
 	
@@ -44,6 +43,8 @@ public class MenuActivity extends AbstractActivity {
 	@Override
 	protected void onResume() {
 		if(task.getStatus() != AsyncTask.Status.RUNNING){
+			if(task.isCancelled())
+				task = new CommunicateTask(this);
 	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 	        	task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 	        else
@@ -51,6 +52,15 @@ public class MenuActivity extends AbstractActivity {
 		}
 		super.onResume();
 	}
+
+
+	@Override
+	protected void onUserLeaveHint() {
+		task.cancel(true);
+		super.onUserLeaveHint();
+	}
+
+
 
 	@Override
 	protected void onDestroy() {

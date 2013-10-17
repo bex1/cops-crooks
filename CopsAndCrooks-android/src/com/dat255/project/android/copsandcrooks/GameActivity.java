@@ -34,11 +34,7 @@ public class GameActivity extends AndroidApplication {
 
 		
 		
-		turnUpdateTask = new CommunicateTask(this);
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
-		else
-			turnUpdateTask.execute();
+		
 	}
 
 	@Override
@@ -50,9 +46,17 @@ public class GameActivity extends AndroidApplication {
 	@Override
 	protected void onStop() {
 		this.turnUpdateTask.cancel(true);
-		this.cops.dispose();
 		super.onStop();
-		this.finish();
+	}
+
+	@Override
+	protected void onStart() {
+		turnUpdateTask = new CommunicateTask(this);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
+		else
+			turnUpdateTask.execute();
+		super.onStart();
 	}
 	
 }
