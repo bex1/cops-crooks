@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 public abstract class AbstractActivity extends Activity {
 	
-	public void showError(String text){
+	public void showMessage(String text){
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
 
