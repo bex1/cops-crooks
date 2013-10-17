@@ -168,7 +168,7 @@ public final class GameModel implements IObservable, Serializable{
 				pawn.move(tilePathWalked);
 				break;
 			default:
-				assert false;
+				nextPlayer(2f);
 				break;
 			}
 		}
