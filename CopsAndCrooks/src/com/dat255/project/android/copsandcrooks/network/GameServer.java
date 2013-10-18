@@ -80,6 +80,10 @@ public class GameServer {
 							oldTurns = new LinkedList<Turn>();
 							turns.put(gamePck.gameID, oldTurns);
 						}
+						if(gamePck.turns==null || gamePck.turns.size()==0 || gamePck.turns.get(0)==null){
+							printMsg("\t\t\tINVALID TURN PACKET");
+							return;
+						}
 						Turn turn = gamePck.turns.get(0);
 						if (!oldTurns.contains(turn)) {
 							oldTurns.add(turn);
@@ -94,7 +98,7 @@ public class GameServer {
 							printMsg(con, "Requested a list of turns of INVALID game #" + gamePck.gameID);
 							return;
 						}
-
+						
 						printMsg(con, "Requested a list of turns of game #" + gamePck.gameID + ", has turn ID "+gamePck.clientTurnID + " turn size: " + turns.get(gamePck.gameID).size());
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
