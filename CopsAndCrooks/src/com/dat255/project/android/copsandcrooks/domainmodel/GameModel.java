@@ -228,11 +228,12 @@ public final class GameModel implements IObservable, Serializable{
 			// and all players are inactive (all crooks have escaped),
 			// currentPlayer is the same as before (police player).
 			// The game should end then.
+			currentPlayer.updateState();
 			if(currentPlayer==previousPlayer) {
 				endGame();
 			}
 		}while (!currentPlayer.isActive());
-		currentPlayer.updateState();
+		
 		if (playerClient == currentPlayer) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
@@ -245,8 +246,6 @@ public final class GameModel implements IObservable, Serializable{
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;
-			}else{
-				nextPlayer(0);
 			}
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 		} else if (state == GameState.Replay) {
