@@ -21,6 +21,7 @@ public class Turn implements Serializable{
 	public enum MoveType {
 		Metro,
 		Walk,
+		None,
 	}
 
 	private List<Point> pathWalked;
@@ -28,6 +29,15 @@ public class Turn implements Serializable{
 	private int pawnID, turnID;
 	private HideoutChoice hideoutChoice;
 	private MoveType moveType;
+	
+	public Turn(){
+		moveType = MoveType.None;
+		hideoutChoice = HideoutChoice.Cancel;
+		endTilePos = new Point(0, 0);
+	}
+	
+	
+	
 	/**
 	 * Returns the type of how the pawn is moving
 	 * @return the type of how the pawn is moving
