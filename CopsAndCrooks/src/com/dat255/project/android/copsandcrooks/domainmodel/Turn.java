@@ -25,7 +25,7 @@ public class Turn implements Serializable{
 
 	private List<Point> pathWalked;
 	private Point endTilePos;
-	private int pawnID;
+	private int pawnID, turnID;
 	private HideoutChoice hideoutChoice;
 	private MoveType moveType;
 	/**
@@ -100,5 +100,34 @@ public class Turn implements Serializable{
 	 */
 	public void setPawnID(int pawnID) {
 		this.pawnID = pawnID;
+	}
+	
+	/**
+	 * Returns the ID of the pawn
+	 * @return the ID of the pawn
+	 */
+	public int getTurnID() {
+		return turnID;
+	}
+	/**
+	 * Sets the ID of the pawn
+	 * @param pawnID the ID of the pawn
+	 */
+	public void setTurnID(int pawnID) {
+		this.pawnID = pawnID;
+	}
+	
+	/**
+	 * Two turns are considered equal if their ID is the same!
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		} else if (o instanceof Turn) {
+			Turn turn = (Turn)o;
+			return turn.getTurnID() == this.getTurnID();
+		}
+		return false;
 	}
 }

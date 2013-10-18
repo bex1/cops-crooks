@@ -79,8 +79,13 @@ public class GameServer {
 						LinkedList<Turn> oldTurns = turns.get(gamePck.gameID);
 						if(oldTurns == null){
 							oldTurns = new LinkedList<Turn>();
+							turns.put(gamePck.gameID, oldTurns);
 						}
-						oldTurns.add(gamePck.turns.get(0));
+						Turn turn = gamePck.turns.get(0);
+						if (!oldTurns.contains(turn)) {
+							System.out.println("Added turn to list");
+							oldTurns.add(turn);
+						}
 					}
 					
 					// client requests a list of turns
