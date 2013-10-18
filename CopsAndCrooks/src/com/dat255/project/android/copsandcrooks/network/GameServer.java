@@ -89,6 +89,7 @@ public class GameServer {
 					else if(packet instanceof Pck6_RequestTurns){
 						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
+						printMsg("Client #" + clientID + " has turn ID "+gamePck.clientTurnID);
 
 						if(turns.get(gamePck.gameID) == null){
 							printMsg("Invalid game ID: "+gamePck.gameID);
@@ -96,7 +97,7 @@ public class GameServer {
 						}
 
 						// don't send empty lists
-						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size())
+						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size()-1)
 							return;
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
