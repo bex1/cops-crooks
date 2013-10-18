@@ -78,7 +78,10 @@ public class GameClient{
 					if(pck instanceof Pck5_Turns){
 						System.out.println("Network: Received a list of turns.");
 						if (getCurrentGameModel().getGameState() == GameState.Waiting) {
-							getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
+							if(((Pck5_Turns) pck).turns.size() < getCurrentGameModel().getTurnID())
+								sendTurn(currentGameModel.getCurrentTurn());
+							else if(((Pck5_Turns) pck).turns.size() > getCurrentGameModel().getTurnID())
+								getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
 						}
 					}
 				}
