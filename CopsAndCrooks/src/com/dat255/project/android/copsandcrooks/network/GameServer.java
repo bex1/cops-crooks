@@ -97,10 +97,6 @@ public class GameServer {
 						
 						printMsg("Client " + con.toString() + " #" + clientID + " has turn ID "+gamePck.clientTurnID + " turn size: " + turns.get(gamePck.gameID).size());
 
-						// don't send empty lists
-						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size())
-							return;
-
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
 						
 						for(int i = gamePck.clientTurnID; i < turns.get(gamePck.gameID).size(); i++)

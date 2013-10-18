@@ -246,7 +246,7 @@ public final class GameModel implements IObservable, Serializable{
 		return state;
 	}
 	
-	Turn getCurrentTurn() {
+	public Turn getCurrentTurn() {
 		return currentTurn;
 	}
 
