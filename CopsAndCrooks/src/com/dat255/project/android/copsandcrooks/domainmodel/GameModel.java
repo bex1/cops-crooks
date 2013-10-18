@@ -16,7 +16,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public final class GameModel implements IObservable, Serializable{
 
-	private final int id;
+	private final String id;
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
@@ -50,7 +50,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID, int diceResult) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, int diceResult) {
 		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
 		for(Player player: this.players){
 			if(player.getID().equals(this.currentPlayer)){
@@ -60,7 +60,7 @@ public final class GameModel implements IObservable, Serializable{
 		
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -153,7 +153,7 @@ public final class GameModel implements IObservable, Serializable{
 	private void replay(Turn turn) {
 		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
-		IWalkableTile end = getWalkabletiles()[turn.getEndTilePos().x][turn.getEndTilePos().y];
+		IWalkableTile end = walkable[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null && end != null) {
 			switch (turn.getMoveType()) {
 			case Metro:
@@ -224,6 +224,9 @@ public final class GameModel implements IObservable, Serializable{
 		currentPlayer.updateState();
 		if (playerClient == currentPlayer) {
 			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+	    	currentTurn.setEndTile(pawn.getCurrentTile());
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;
@@ -246,7 +249,7 @@ public final class GameModel implements IObservable, Serializable{
 		return state;
 	}
 	
-	Turn getCurrentTurn() {
+	public Turn getCurrentTurn() {
 		return currentTurn;
 	}
 
@@ -372,7 +375,12 @@ public final class GameModel implements IObservable, Serializable{
 		return gameName +"";
 	}
 
-	public int getID() {
+	
+	/**
+	 * 
+	 * @return - A String that is the id for this model
+	 */
+	public String getID() {
 		return id;
 	}
 	
