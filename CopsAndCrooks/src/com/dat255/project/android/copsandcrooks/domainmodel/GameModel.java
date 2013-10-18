@@ -221,20 +221,20 @@ public final class GameModel implements IObservable, Serializable{
 				return;
 			}
 		}while (!currentPlayer.isActive());
-		this.currentTurn = new Turn();
 		currentPlayer.updateState();
-		if (currentPlayer.isActive()) {
-			if (playerClient == currentPlayer) {
-				state = GameState.Playing;
-				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
-			} else if (state == GameState.Replay) {
-				replay(replayTurns.removeFirst());
-			} else {
-				state = GameState.Waiting;
-				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+		if (playerClient == currentPlayer) {
+			this.currentTurn = new Turn();
+			if (!currentPlayer.isActive()) {
+				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
+				return;
 			}
+			state = GameState.Playing;
+			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
+		} else if (state == GameState.Replay) {
+			replay(replayTurns.removeFirst());
 		} else {
-			nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
+			state = GameState.Waiting;
+			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 		}
 	}
 
@@ -379,5 +379,14 @@ public final class GameModel implements IObservable, Serializable{
 	 */
 	public String getID() {
 		return id;
+	}
+	
+	public IPlayer getPlayerFor(IMovable pawn) {
+		for (IPlayer player : players) {
+			if (player.getPawns().contains(pawn)) {
+				return player;
+			}
+		}
+		return null;
 	}
 }

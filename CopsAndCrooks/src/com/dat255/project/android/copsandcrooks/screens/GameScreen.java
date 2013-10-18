@@ -243,12 +243,13 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				}
 			}
 		}  if (source instanceof Crook) {
+			Crook crook = (Crook)source;
 			if (currPlayer.getPawns().contains(source) && property == Crook.PROPERTY_TURNS_IN_PRISON) {
 				// Will remove itself
-				hudStage.addActor(new IsInPrisonTable(assets, currPlayer, (Crook)source));
+				hudStage.addActor(new IsInPrisonTable(assets, currPlayer, crook));
 			} else if (property == Crook.PROPERTY_TIMES_ARRESTED) {
 				// Will remove itself
-				hudStage.addActor(new ArrestedTable(assets, currPlayer, (Crook)source));
+				hudStage.addActor(new ArrestedTable(assets, model.getPlayerFor(crook), crook));
 			}
 		} 
 	}
