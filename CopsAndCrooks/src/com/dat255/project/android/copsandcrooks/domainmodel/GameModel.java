@@ -203,11 +203,7 @@ public final class GameModel implements IObservable, Serializable{
 		incrementTurnID();
 	}
 
-	private void changePlayer() {
-		// sent the latest turn to the server
-		if(isLocalPlayersTurn())
-			GameClient.getInstance().sendTurn(currentTurn);
-		
+	private void changePlayer() {		
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
