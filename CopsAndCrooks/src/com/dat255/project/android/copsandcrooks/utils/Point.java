@@ -1,6 +1,8 @@
 package com.dat255.project.android.copsandcrooks.utils;
 
-public final class Point {
+import java.io.Serializable;
+
+public final class Point implements Serializable{
 	public int x, y;
 	
 	public Point() {

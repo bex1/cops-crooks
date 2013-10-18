@@ -1,18 +1,21 @@
 package com.dat255.project.android.copsandcrooks;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 
-public class MainActivity extends AndroidApplication {
+public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = true;
-        
-        initialize(new CopsAndCrooks(), cfg);
+      
+      
+        GameClient.getInstance().setClientID(Installation.id(getApplicationContext()));
+          
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

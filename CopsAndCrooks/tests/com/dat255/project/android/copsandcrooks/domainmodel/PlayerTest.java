@@ -20,7 +20,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.utils.Point;
+
 
 /**
  * @author Bex
@@ -28,8 +29,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
  */
 public class PlayerTest {
 	
-	private Player player;
-
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -64,30 +63,30 @@ public class PlayerTest {
 	@Test
 	public final void testPlayer() {
 		try {
-			Player player = new Player("Kalle", null, Role.Crook, new Mediator());
+			new Player("Kalle", null, Role.Crook, new Mediator(), null, null);
 			fail("Should throw IllegalArgumentException since pawns not allowed to be null");
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		try {
-			Player player = new Player("Kalle", new ArrayList<IMovable>(), Role.Crook, new Mediator());
+			new Player("Kalle", new ArrayList<AbstractPawn>(), Role.Crook, new Mediator(), null, null);
 			fail("Should throw IllegalArgumentException since pawns list is empty");
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		try {
-			Player player = new Player("Kalle", new ArrayList<IMovable>(), Role.Crook, null);
+			new Player("Kalle", new ArrayList<AbstractPawn>(), Role.Crook, null, null, null);
 			fail("Should throw IllegalArgumentException since mediator is null");
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
 		
 		try {
-			Player player = new Player("Kalle", pawns, Role.Police, new Mediator());
+			new Player("Kalle", pawns, Role.Cop, new Mediator(), null, null);
 			fail("Should throw IllegalArgumentException since the role of a pawn does" +
 					" not match the role of the player");
 		} catch (IllegalArgumentException e) {
@@ -95,7 +94,7 @@ public class PlayerTest {
 		}
 		
 		try {
-			Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
+			new Player("Kalle", pawns, Role.Crook, new Mediator(), null, null);
 
 		} catch (IllegalArgumentException e) {
 			fail("Should not throw IllegalArgumentException since the roles of the pawns does" +
@@ -109,11 +108,11 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPlayerRole() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
 		Role l = Role.Crook;
-		Player player = new Player("Kalle", pawns, l, new Mediator());
+		Player player = new Player("Kalle", pawns, l, new Mediator(), null, null);
 		assertSame("The player role should be Crook", player.getPlayerRole(), l);
 	}
 
@@ -122,10 +121,10 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPawns() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
-		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
+		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator(), null, null);
 		assertArrayEquals("The player pawns should be the same as in the test", player.getPawns().toArray(), pawns.toArray());
 	}
 
@@ -134,14 +133,14 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetCurrentPawn() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
-		Crook d = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
+		Crook d = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 1);
 		pawns.add(c);
 		pawns.add(d);
-		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
+		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator(), null, null);
 		assertSame("The current pawn after init should be the first pawn added", player.getCurrentPawn(), c);
-		Crook b = new Crook(new Mediator());
+		Crook b = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 2);
 		player.setCurrentPawn(b); 
 		assertSame("Pawn should not have changed, since b is not the players pawn", player.getCurrentPawn(), c);
 		player.setCurrentPawn(d); 
@@ -153,13 +152,13 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetName() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
 		String n = "Kalle";
-		Player player = new Player(n, pawns, Role.Crook, new Mediator());
+		Player player = new Player(n, pawns, Role.Crook, new Mediator(), null, n);
 		assertSame("The name should be Kalle", player.getName(), n);
-		player = new Player(null, pawns, Role.Crook, new Mediator());
+		player = new Player(null, pawns, Role.Crook, new Mediator(), null, n);
 		assertTrue("The name should be an empty string", player.getName().isEmpty());
 	}
 
@@ -168,10 +167,10 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetWallet() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
-		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator());
+		Player player = new Player("Kalle", pawns, Role.Crook, new Mediator(), null, null);
 		Wallet w = player.getWallet();
 		assertNotNull("Should never be null", w);
 	}
@@ -180,14 +179,15 @@ public class PlayerTest {
 	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Player#rollDice()}.
 	 */
 	@Test
+	@SuppressWarnings("unused")
 	public final void testRollDice() {
-		List<IMovable> pawns = new ArrayList<IMovable>();
-		Crook c = new Crook(new Mediator());
+		List<AbstractPawn> pawns = new ArrayList<AbstractPawn>();
+		Crook c = new Crook(new RoadTile(new Point(0, 0), new Mediator()), new Mediator(), 0);
 		pawns.add(c);
 		Mediator mediator = new Mediator();
-		final Player player = new Player("Kalle", pawns, Role.Crook, mediator);
-		PathFinder pathFinder = new PathFinder(new IWalkableTile[1][1], mediator);
-		Dice dice = new Dice(mediator);
+		final Player player = new Player("Kalle", pawns, Role.Crook, mediator, null, null);
+		PathFinder pathFinder = new PathFinder(new AbstractWalkableTile[1][1], mediator, new ArrayList<TramLine>());
+		Dice dice = Dice.getInstance();
 		player.addObserver(new PropertyChangeListener() {
 
 			@Override

@@ -1,12 +1,9 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 /**
  * A mediator implementation is responsible for communicating within the module to avoid
@@ -14,10 +11,13 @@ import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAg
  * 
  * Refers to the mediator pattern http://en.wikipedia.org/wiki/Mediator_pattern
  * 
+ * Note that the interface is package private, which indicates that it solely handels communication
+ * in the domainmodel.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public interface IMediator {
+interface IMediator extends Serializable{
 	/**
 	 * Register the game model for communication.
 	 * 
@@ -32,9 +32,6 @@ public interface IMediator {
 	 */
 	void registerDice(Dice dice);
 	
-
-	
-	
 	/**
 	 * Register the pathfinder for communication.
 	 * 
@@ -48,7 +45,7 @@ public interface IMediator {
 	 * 
 	 * @param movable the movable to be moved.
 	 */
-	void moveToPoliceStation(IMovable movable);
+	void moveToPoliceStation(AbstractPawn movable);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -56,7 +53,7 @@ public interface IMediator {
 	 * 
 	 * @param movable the movable that requests information about what it collided with.
 	 */
-	void didCollideAfterMove(IMovable movable);
+	void didCollideAfterMove(AbstractPawn movable);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
@@ -65,39 +62,36 @@ public interface IMediator {
 	 * @param cash the cash to add.
 	 * @param movable the movable which the player should control.
 	 */
-	void addCashToMyPlayer(int cash, IMovable movable);
+	void addCashToMyPlayer(int cash, AbstractPawn movable);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to roll the dice.
-	 * 
-	 * @return the result.
 	 */
-	int rollDice();
+	void rollDice(Player player);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to calculate the possible paths a pawn can move.
 	 * 
-	 * @param pawnType The type of the pawn.
+	 *
 	 * @param pawn The pawn itself.
 	 * @param stepsToMove The number of steps to be moved.
-	 * @return A collection with tilepaths representing paths that can be walked
+	 * @return A collection of TilePaths representing paths that can be walked
 	 */
-	Collection<TilePath> getPossiblePaths(PawnType pawnType, 
-			IMovable pawn, int stepsToMove);
+	Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove);
 	
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * to react on that the turn is done.
 	 */
-	void playerTurnDone();
+	void playerTurnDone(float delay);
 
 	/**
 	 * Ask the mediator to communicate with the necessary objects
 	 * hinder a getaway.
 	 * 
-	 * Move whole method to gamemodel instead of callback?
+	 * Move whole method to GameModel instead of callback?
 	 */
 	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile);
 	
@@ -107,7 +101,50 @@ public interface IMediator {
 	 * 
 	 * @param pawn the pawn that wants to be selected
 	 */
-	void changePawn(IMovable pawn);
+	void changePawn(AbstractPawn pawn);
 
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check if there is a wanted crook on the specified tile.
+	 * 
+	 * @param tile the tile to check for crooks
+	 * 
+	 * @return true if there is a wanted crook on the tile, false otherwise.
+	 */
 	boolean isWantedCrookOn(IWalkableTile tile);
+
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to get possible metro paths that a pawn can travel.
+	 * 
+	 * @param pawn the pawn to get possible metro paths for.
+	 * 
+	 * @return a collection of possible metro paths for the specified pawn.
+	 */
+	Collection<TilePath> getPossibleMetroPaths(AbstractPawn pawn);
+
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check if the player of a pawn has the turn.
+	 * 
+	 * @param pawn who requests a check if it is it's players turn.
+	 * 
+	 * @return a boolean indicating if the player of the specified pawn has the turn.
+	 */
+	boolean isItMyPlayerTurn(AbstractPawn pawn);
+	
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to check the current game state.
+	 * 
+	 * @return the state of the game.
+	 */
+	GameState checkState();
+	
+	/**
+	 * Returns the current turn being played.
+	 * 
+	 * @return a the current turn being played.
+	 */
+	Turn getCurrentTurn();
 }

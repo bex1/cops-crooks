@@ -2,6 +2,7 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
@@ -11,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Wallet implements IObservable {
+public final class Wallet implements IObservable, Serializable {
 	
 	private int cash;
 	
@@ -22,7 +23,7 @@ public final class Wallet implements IObservable {
 	 * Sets the cash for the crook.
 	 * @param money the cash the crook will hold.
 	 */
-	public void setCash(int money) {
+	void setCash(int money) {
 		int oldValue = cash;
 		cash = money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
@@ -40,27 +41,25 @@ public final class Wallet implements IObservable {
 	 * Increments the cash amount on the crook.
 	 * @param money the money to increment with
 	 */
-	public void incrementCash(int money) {
+	void incrementCash(int money) {
 		int oldValue = cash;
 		cash += money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
 	}
 	
 	/**
-	 * Decrements the cash amount on the crook.
-	 * 
+	 * Decrements the amount of cash in the wallet by a value,
+	 * if the current amount of cash is enough.
 	 * @param money the money to decrement with
-	 * @return true if there was enough cash
 	 */
-	public boolean decrementCash(int money) {
-		if (cash < money) {
-			return false;
-		}
+	void decrementCash(int money) {
+		if (cash < money)
+			return;
+
 		int oldValue = cash;
 		cash -= money;
 		pcs.firePropertyChange(PROPERTY_CASH, oldValue, cash);
-		return true;
-		
+
 	}
 
 	@Override

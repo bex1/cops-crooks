@@ -2,22 +2,26 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.util.Collection;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable.PawnType;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IntelligenceAgencyTile;
-
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 
 /**
  * The mediator is responsible for communicating within the module to avoid
  * cross-reference which decouples dependencies.
  * 
+ * Refers to the mediator pattern http://en.wikipedia.org/wiki/Mediator_pattern
+ * 
+ * Note that the interface is package private, which indicates that it solely handels communication
+ * in the domainmodel.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Mediator implements IMediator {
+final class Mediator implements IMediator {
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;
+	
+	Mediator() {}
 
 	@Override
 	public void registerGameModel(GameModel gameModel) {
@@ -34,52 +38,48 @@ public final class Mediator implements IMediator {
 		this.pathFinder = pathFinder;
 	}
 	@Override
-	public void didCollideAfterMove(IMovable movable) {
+	public void didCollideAfterMove(AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.notifyWhatICollidedWith(movable);
 	}
 	
 	@Override
-	public void changePawn(IMovable pawn){
+	public void changePawn(AbstractPawn pawn){
 		if (gameModel != null)
 			gameModel.pawnSelected(pawn);
 	}
 	
 	@Override
-	public void moveToPoliceStation(IMovable movable) {
+	public void moveToPoliceStation(AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.moveToEmptyPoliceStationTile(movable);
 	}
 
 	@Override
-	public void addCashToMyPlayer(int cash, IMovable movable) {
+	public void addCashToMyPlayer(int cash, AbstractPawn movable) {
 		if (gameModel != null)
 			gameModel.findPlayerAndAddCash(cash, movable);
 	}
 
 	@Override
-	public int rollDice() {
-		if (dice != null) {
-			return dice.roll();
-		} else {
-			throw new NullPointerException("No dice is registered");
-		}
+	public void rollDice(Player player) {
+		if (dice != null) 
+			dice.roll(player);
 	}
 
 	@Override
-	public Collection<TilePath> getPossiblePaths(PawnType pawnType,
-			IMovable pawn, int stepsToMove) {
+	public Collection<TilePath> getPossiblePaths(AbstractPawn pawn, int stepsToMove) {
 		if (pathFinder != null) {
 			return pathFinder.calculatePossiblePaths(pawn, stepsToMove);
 		} else {
-				throw new NullPointerException("No pathfinder is registered");
+			throw new NullPointerException("No pathfinder is registered");
 		}
 	}
 	
 	@Override
-	public void playerTurnDone(){
+	public void playerTurnDone(float delay){
 		if (gameModel != null) 
-			gameModel.nextPlayer();
+			gameModel.nextPlayer(delay);
 	}
 
 	@Override
@@ -93,5 +93,35 @@ public final class Mediator implements IMediator {
 		if (gameModel != null) 
 			return gameModel.checkIfWantedCrookAt(tile);
 		return false;
+	}
+
+	@Override
+	public Collection<TilePath> getPossibleMetroPaths(AbstractPawn pawn) {
+		if (pathFinder != null) {
+			return pathFinder.calculatePossibleMetroPaths(pawn);
+		} else {
+			throw new NullPointerException("No pathfinder is registered");
+		}
+	}
+
+	@Override
+	public boolean isItMyPlayerTurn(AbstractPawn movable) {
+		if (gameModel != null) 
+			return gameModel.isCurrentPlayerOwnerOfPawn(movable);
+		return false;
+	}
+
+	@Override
+	public GameState checkState() {
+		if (gameModel != null) 
+			return gameModel.getGameState();
+		return null;
+	}
+
+	@Override
+	public Turn getCurrentTurn() {
+		if (gameModel != null) 
+			return gameModel.getCurrentTurn();
+		return null;
 	}
 }

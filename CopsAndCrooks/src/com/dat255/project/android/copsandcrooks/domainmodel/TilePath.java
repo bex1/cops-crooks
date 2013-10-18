@@ -2,9 +2,9 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
 /**
@@ -19,28 +19,33 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class TilePath implements IObservable {
+public final class TilePath implements IObservable, Serializable {
 
-	private final LinkedList<IWalkableTile> pathList;
+	private final LinkedList<AbstractWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	public TilePath() {
-		pathList = new LinkedList<IWalkableTile>();
+	TilePath() {
+		pathList = new LinkedList<AbstractWalkableTile>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	TilePath(TilePath path) {
+		pathList = (LinkedList<AbstractWalkableTile>)path.pathList.clone();
 	}
 	
 	/**
 	 * Returns and consumes the next tile on the path.
 	 * @return the next tile on path.
 	 */
-	public synchronized IWalkableTile consumeNextTile() {
-		return pathList.pollLast();
+	synchronized AbstractWalkableTile consumeNextTile() {
+		return pathList.removeLast();
 	}
 	
 	/**
 	 * Returns the tile with the specified index.
 	 * @return the specified tile.
 	 */
-	public IWalkableTile getTile(int i) {
+	public AbstractWalkableTile getTile(int i) {
 		return pathList.get(i);
 	}
 	
@@ -48,14 +53,14 @@ public final class TilePath implements IObservable {
 	 * Checks to see if the path is empty.
 	 * @return true if the path list is empty.
 	 */
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		return pathList.isEmpty();
 	}
 	/**
 	 * Add a tile to the path.
 	 * @param tile - the tile to be added to the path.
 	 */
-	public synchronized void addTileLast(IWalkableTile tile){
+	synchronized void addTileLast(AbstractWalkableTile tile){
 		pathList.addLast(tile);
 	}
 	/**
@@ -67,10 +72,10 @@ public final class TilePath implements IObservable {
 	}
 	/**
 	 * Checks to see if the list already contains a tile.
-	 * @param tile
+	 * @param tile the tile to check
 	 * @return true if the tile already is in the list
 	 */
-	public synchronized boolean contains(IWalkableTile tile){
+	synchronized boolean contains(AbstractWalkableTile tile){
 		return pathList.contains(tile);
 	}
 	

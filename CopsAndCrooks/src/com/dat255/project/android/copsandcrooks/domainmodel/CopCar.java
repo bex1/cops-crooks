@@ -1,16 +1,17 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.IWalkableTile;
+import com.dat255.project.android.copsandcrooks.utils.Values;
+
 
 /**
  * A cop car in the game Cops&Crooks
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class CopCar extends AbstractPawn {
+public class CopCar extends AbstractPawn implements ISelectablePawn {
 
-	public CopCar(IMediator mediator) {
-		super(Role.Police, PawnType.Car, mediator, 2);
+	CopCar(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		super(startTile, Role.Cop, PawnType.Car, mediator, Values.CAR_MOVE_FACTOR, id);
 	}
 
 	@Override
@@ -20,18 +21,26 @@ public class CopCar extends AbstractPawn {
 			if (crook.isWanted()) {
 				// We collided with a wanted crook -> Arrest
 				// Car stays and crook gets moved to the police station
+				if(crook.getTimesArrested() != Values.MAX_TIMES_ARRESTED)
+					crook.incrementTimesArrested();
 				mediator.moveToPoliceStation(crook);
 				crook.setIsInPoliceStation(true);
+				
+				Wallet crookWallet = crook.getWallet();
+				//Take bounty
+				mediator.addCashToMyPlayer((int)(crookWallet.getCash() * 
+						Values.POLICE_CASH_REWARD_FACTOR), this);
+				crookWallet.setCash(0);
+				crook.setWanted(false);
 			}
 		}
 	}
 
 	@Override
-	public int tilesMovedEachStep() {
-		return 2;
-	}
-
 	public void gotSelected() {
 		mediator.changePawn(this);
+		if (mediator.isItMyPlayerTurn(this)) {
+			this.setIsActivePawn(true);
+		}
 	}
 }

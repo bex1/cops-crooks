@@ -1,6 +1,8 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.tiles.HideoutTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
+import com.dat255.project.android.copsandcrooks.utils.Values;
+
 
 /**
  * A crook pawn in the game Cops&Crooks.
@@ -12,13 +14,22 @@ public class Crook extends AbstractWalkingPawn {
 	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
+	private int turnsInPrison, timesArrested;
 	
-	public Crook(IMediator mediator) {
-		super(Role.Crook, PawnType.Crook, mediator, 1);
-		wallet = new Wallet();
-		attemptingGetAway = false;
+	public static final String PROPERTY_IS_WANTED = "IsWanted";
+	public static final String PROPERTY_TIMES_ARRESTED = "TimesArrested";
+	public static final String PROPERTY_TURNS_IN_PRISON = "TurnsInPrison";
+	
+	Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
+		this(startTile, mediator, new Wallet(), id);
 	}
 	
+	public Crook(AbstractWalkableTile tile, IMediator mediator, Wallet wallet, int id) {
+		super(tile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
+		this.wallet = wallet;
+		
+	}
+
 	/**
 	 * Returns true if the crook is wanted.
 	 * @return true if the crook is wanted.
@@ -27,12 +38,35 @@ public class Crook extends AbstractWalkingPawn {
 		return isWanted;
 	}
 	
+	@Override
+	protected void interactWithTile() {
+		if (mediator.checkState() == GameState.Replay) {
+			if (currentTile instanceof HideoutTile) {
+				HideoutTile hideout = (HideoutTile)currentTile;
+				switch (mediator.getCurrentTurn().getHideoutChoice()) {
+				case Deposit:
+					hideout.depositCash(this);
+					break;
+				case Withdraw:
+					hideout.withdrawCash(this);
+					break;
+				case Cancel:
+					hideout.cancelInteraction();
+					break;
+				}
+				return;
+			}
+		} 
+		super.interactWithTile();
+	}
+
 	/**
 	 * Sets if the crook is wanted or not.
 	 * @param wanted true if the crook is wanted, false otherwise.
 	 */
-	public void setWanted(boolean wanted) {
+	void setWanted(boolean wanted) {
 		this.isWanted = wanted;
+		pcs.firePropertyChange(PROPERTY_IS_WANTED, null, isWanted);
 	}
 	
 	/**
@@ -55,7 +89,7 @@ public class Crook extends AbstractWalkingPawn {
 	 * Return true if the crook is attempting to escape.
 	 * @return true if the crook is attempting to escape
 	 */
-	public boolean isAttemptingGetAway() {
+	boolean isAttemptingGetAway() {
 		return attemptingGetAway;
 	}
 
@@ -63,7 +97,52 @@ public class Crook extends AbstractWalkingPawn {
 	 * Set attempting get away status for this crook.
 	 * @param attemptingGetAway the new get away status
 	 */
-	public void setAttemptingGetAway(boolean attemptingGetAway) {
+	void setAttemptingGetAway(boolean attemptingGetAway) {
 		this.attemptingGetAway = attemptingGetAway;
+	}
+	/**
+	 * Returns whether the crook is in prison or not.
+	 * @return whether the crook is in prison or not.
+	 */
+	boolean isInPrison(){
+		return currentTile instanceof PoliceStationTile;
+	}
+	/**
+	 * Sets the number of turns in prison to the default value 3 if the crook is in prison
+	 */
+	void setTurnsInPrison(int turns){
+		turnsInPrison = turns;
+	}
+	/**
+	 * The number of turns left in prison
+	 * @return turnsInPrison - number of turns left in prison
+	 */
+	public int getTurnsInPrison(){
+		return turnsInPrison;
+	}
+	/**
+	 * Decrements the number of turns left in prison.
+	 */
+	void decrementTurnsInPrison(){
+		if(turnsInPrison > 0) {
+			--turnsInPrison;
+			if (mediator.isItMyPlayerTurn(this) && mediator.checkState() == GameState.Playing) {
+				pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
+			}
+		}
+	}
+	/**
+	 * Increments the number of times arrested
+	 */
+	void incrementTimesArrested(){
+		++timesArrested;
+		pcs.firePropertyChange(PROPERTY_TIMES_ARRESTED, -1, timesArrested);
+	}
+	/**
+	 * Returns the number of times arrested
+	 * @return the number of times arrested
+	 */
+	public int getTimesArrested(){
+		return timesArrested;
 	}
 }

@@ -3,21 +3,62 @@
     package="com.dat255.project.android.copsandcrooks"
     android:versionCode="1"
     android:versionName="1.0" >
+	
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+    
+    <uses-sdk
+        android:minSdkVersion="5"
+        android:targetSdkVersion="17" />
 
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+            android:name="com.dat255.project.android.copsandcrooks.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.GameActivity"
+            android:label="@string/title_activity_game"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.LobbyActivity"
+            android:label="@string/title_activity_lobby" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.InstructionsActivity"
+            android:label="@string/title_activity_instructions" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.OptionsActivity"
+            android:label="@string/title_activity_options" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.GameBrowseActivity"
+            android:label="@string/title_activity_game_browse" >
+        </activity>
+        <activity
+            android:name="com.dat255.project.android.copsandcrooks.HostActivity"
+            android:label="@string/title_activity_host" >
         </activity>
     </application>
 
