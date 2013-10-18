@@ -78,7 +78,10 @@ public class GameClient{
 					if(pck instanceof Pck5_Turns){
 						System.out.println("Network: Received a list of turns.");
 						if (getCurrentGameModel().getGameState() == GameState.Waiting) {
-							getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
+							if(((Pck5_Turns) pck).turns.size() < getCurrentGameModel().getTurnID())
+								sendTurn(currentGameModel.getCurrentTurn());
+							else if(((Pck5_Turns) pck).turns.size() > getCurrentGameModel().getTurnID())
+								getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
 						}
 					}
 				}
@@ -167,7 +170,7 @@ public class GameClient{
 	 */
 	public void updateChosenGameItem(){
 		for(GameItem gameItem: gameItems){
-			if(gameItem.getID() == chosenGameItem.getID()){
+			if(gameItem.getID().equals(chosenGameItem.getID())){
 				chosenGameItem = gameItem;
 				break;
 			}
@@ -210,7 +213,7 @@ public class GameClient{
 	 * @param gameID
 	 * @param player
 	 */
-	public void joinGame(int gameID, PlayerItem player) {
+	public void joinGame(String gameID, PlayerItem player) {
 		if(client.isConnected()){
 			System.out.println("Network: Joining remote game");
 			Pck4_PlayerItem pck = new Pck4_PlayerItem();
