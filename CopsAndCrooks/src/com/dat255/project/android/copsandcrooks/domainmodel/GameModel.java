@@ -165,7 +165,8 @@ public final class GameModel implements IObservable, Serializable{
 	 */
 	public void replay() {
 		state = GameState.Replay;
-		replay(replayTurns.removeFirst());	
+		if(replayTurns.size() != 0)
+			replay(replayTurns.removeFirst());
 	}
 
 	private void replay(Turn turn) {
