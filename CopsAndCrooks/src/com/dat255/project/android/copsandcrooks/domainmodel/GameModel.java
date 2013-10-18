@@ -252,7 +252,8 @@ public final class GameModel implements IObservable, Serializable{
 			}
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 		} else if (state == GameState.Replay) {
-			replay(replayTurns.removeFirst());
+			if(replayTurns.size() != 0)
+				replay(replayTurns.removeFirst());
 		} else {
 			state = GameState.Waiting;
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
