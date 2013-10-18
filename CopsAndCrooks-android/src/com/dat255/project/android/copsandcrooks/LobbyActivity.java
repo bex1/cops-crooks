@@ -80,7 +80,10 @@ public class LobbyActivity extends Activity {
 		return true;
 	}
 	
-
+	/**
+	 * Update playerListView, setting a new PlayerItemAdapter with playerItems
+	 * from the server.
+	 */
 	public void updatePlayerList(){
 		gameItem = GameClient.getInstance().getChosenGameItem();
 		playerListView.setAdapter(new PlayerItemAdapter(this.getApplicationContext(), gameItem.getPlayers()));
@@ -89,10 +92,17 @@ public class LobbyActivity extends Activity {
 		this.checkForHost();
 	}
 	
+	/**
+	 * Update playerCapTextView.
+	 */
 	private void updatePlayerCapTextView(){
 		playerCapTextView.setText(gameItem.getCurrentPlayerCount() +"/"+ gameItem.getPlayerCap());
 	}
 	
+	/**
+	 * Check to see if the GameItem stored in this lobby is full.
+	 * @return true if the GameItem is full
+	 */
 	public boolean isGameFull(){
 		return (gameItem.getPlayerCap()-gameItem.getCurrentPlayerCount()) <= 0;
 	}
@@ -131,6 +141,10 @@ public class LobbyActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Start a game when the startGameButton is clicked.
+	 * @param v the view that calls this method (startGameButton)
+	 */
 	public void startGame(View v){
 		thisTask = Task.start;
 		if(!gameItem.hasGameStarted()){
@@ -144,6 +158,11 @@ public class LobbyActivity extends Activity {
 		finish();
 	}
 	
+	/**
+	 * Join a game when the joinGameButton is clicked, adding the client(player)
+	 * to the GameItem. joinGameButton is disabled.
+	 * @param v the view that calls this method (joinGameButton)
+	 */
 	public void joinGame(View v){
 		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
 		gameItem.addPlayer(player);
@@ -157,6 +176,10 @@ public class LobbyActivity extends Activity {
 		sendTask = new CommunicateTask(this);
 	}
 
+	/**
+	 * Change the role of a PlayerItem to Cop. All other players are set to Crooks.
+	 * @param item the playerItem to change the role of
+	 */
 	public void changeRole(PlayerItem item) {
 		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted() && gameItem.getCurrentPlayerCount() >1){
 			for(PlayerItem pi : gameItem.getPlayers()){
@@ -173,6 +196,10 @@ public class LobbyActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Return the current task.
+	 * @return thisTask
+	 */
 	public Task getCurrentTask(){
 		return thisTask;
 	}
