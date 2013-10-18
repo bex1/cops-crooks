@@ -162,7 +162,6 @@ public class HostActivity extends AbstractActivity {
 		GameItem gameItem = new GameItem(gameName, playerCap);
 		gameItem.setHostId(GameClient.getInstance().getClientID());
 		
-		
 		PlayerItem player;
 		if(GameClient.getInstance().getPlayerName() != null)
 			player = new PlayerItem(GameClient.getInstance().getPlayerName(), GameClient.getInstance().getClientID());
