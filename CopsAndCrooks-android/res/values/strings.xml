@@ -72,6 +72,8 @@
 		\n<b>Game end</b>\n
 		The game ends when all crooks have either been caught four times or successfully fled from the map. When this happens the player with the most money wins.\n\n
 		
+	</string>
+	
     <string name="title_activity_options">Options</string>
     <string name="options_name">Name:</string>
     <string name="options_volume">Volume:</string>
