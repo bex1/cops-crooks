@@ -12,8 +12,8 @@ public abstract class AbstractActivity extends Activity {
 	public void showMessage(String text){
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast = Toast.makeText(context, text, duration);
+		toast.setGravity(Gravity.TOP, 0, 0);
 		toast.show();
 	}
 
