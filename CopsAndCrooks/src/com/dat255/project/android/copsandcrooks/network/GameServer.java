@@ -127,7 +127,7 @@ public class GameServer {
 						printMsg(con.toString() + " #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
 						
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == gamePck.gameItem.getID())
+							if(gameItems.get(i).getID().equals(gamePck.gameItem.getID()))
 								gameItems.set(i,gamePck.gameItem);
 						}
 					}
