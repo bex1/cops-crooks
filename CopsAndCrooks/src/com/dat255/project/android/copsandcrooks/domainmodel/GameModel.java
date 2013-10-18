@@ -125,7 +125,9 @@ public final class GameModel implements IObservable, Serializable{
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
-			currentTurn.setEndTile(pawn.getCurrentTile());
+			if (pawn.getCurrentTile() != null) {
+				currentTurn.setEndTile(pawn.getCurrentTile());
+			}
 			currentPlayer.updateState();
 		} else {
 			state = GameState.Waiting;
@@ -186,7 +188,7 @@ public final class GameModel implements IObservable, Serializable{
 					tilePathWalked.addTileLast(getWalkabletiles()[point.x][point.y]);
 				pawn.move(tilePathWalked);
 				break;
-			default:
+			case None:
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				break;
 			}
@@ -240,7 +242,9 @@ public final class GameModel implements IObservable, Serializable{
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
-			currentTurn.setEndTile(pawn.getCurrentTile());
+			if (pawn.getCurrentTile() != null) {
+				currentTurn.setEndTile(pawn.getCurrentTile());
+			}
 			currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
