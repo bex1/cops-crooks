@@ -375,4 +375,13 @@ public final class GameModel implements IObservable, Serializable{
 	public int getID() {
 		return id;
 	}
+	
+	public IPlayer getPlayerFor(IMovable pawn) {
+		for (IPlayer player : players) {
+			if (player.getPawns().contains(pawn)) {
+				return player;
+			}
+		}
+		return null;
+	}
 }
