@@ -11,7 +11,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class CopCar extends AbstractPawn implements ISelectablePawn {
 
 	CopCar(AbstractWalkableTile startTile, IMediator mediator, int id) {
-		super(startTile, Role.Cop, PawnType.Car, mediator, 2, id);
+		super(startTile, Role.Cop, PawnType.Car, mediator, Values.CAR_MOVE_FACTOR, id);
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class CopCar extends AbstractPawn implements ISelectablePawn {
 			if (crook.isWanted()) {
 				// We collided with a wanted crook -> Arrest
 				// Car stays and crook gets moved to the police station
-				if(crook.getTimesArrested() != 4)
+				if(crook.getTimesArrested() != Values.MAX_TIMES_ARRESTED)
 					crook.incrementTimesArrested();
 				mediator.moveToPoliceStation(crook);
 				crook.setIsInPoliceStation(true);

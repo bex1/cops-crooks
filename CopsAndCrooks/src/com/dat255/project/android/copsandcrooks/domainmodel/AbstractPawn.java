@@ -118,12 +118,12 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 		        	if (currentTile != null && currentTile.isOccupied()) {
 		        		// We collided, communicate with the module via the mediator	
 		        		mediator.didCollideAfterMove(this);
-		        		mediator.playerTurnDone(3f);
+		        		mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_ON_COLLISION);
 		        		return;
 		        	}
 		        	if (!(currentTile instanceof HideoutTile)) {
 		        		currentTile.setOccupiedBy(pawnType);
-		        		mediator.playerTurnDone(2f);
+		        		mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_STANDARD);
 		        	}
 		        	
 		        	// Try to interact with the tile

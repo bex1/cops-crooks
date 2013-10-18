@@ -242,15 +242,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					clearVisiblePaths();
 				}
 			}
-		}  else if (currPlayer.getPawns().contains(source) && source instanceof Crook) {
-			if (property == Crook.PROPERTY_TURNS_IN_PRISON) {
+		}  if (source instanceof Crook) {
+			if (currPlayer.getPawns().contains(source) && property == Crook.PROPERTY_TURNS_IN_PRISON) {
 				// Will remove itself
 				hudStage.addActor(new IsInPrisonTable(assets, currPlayer, (Crook)source));
 			} else if (property == Crook.PROPERTY_TIMES_ARRESTED) {
 				// Will remove itself
 				hudStage.addActor(new ArrestedTable(assets, currPlayer, (Crook)source));
 			}
-		}
+		} 
 	}
 
 	private void clearVisiblePaths() {
