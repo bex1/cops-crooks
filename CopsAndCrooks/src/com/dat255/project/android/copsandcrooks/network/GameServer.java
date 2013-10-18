@@ -36,10 +36,10 @@ public class GameServer {
 					
 					// client sent a handshake
 					if(packet instanceof Pck0_ClientHandshake){
-						printMsg("Client #" + clientID + ": received a handshake");
-					
+						printMsg("Client #" + clientID + " (" + ((Pck0_ClientHandshake) packet).playerName + ")" + ": received a handshake");
+						con.setName(((Pck0_ClientHandshake) packet).playerName);
+						
 						Pck1_ServerHandshake responsePacket = new Pck1_ServerHandshake();
-						printMsg("Client #" + clientID + ": received message: \"" + ((Pck0_ClientHandshake) packet).message + "\"");
 						responsePacket.message = "Welcome!";
 					   	packet.getConnection().sendTCP(responsePacket);
 				    }
@@ -58,14 +58,14 @@ public class GameServer {
 					
 					// client sent a created game
 					else if(packet instanceof Pck3_GameItems){
-						printMsg("Client #" + clientID + ": sent a created game");
+						printMsg("Client " + con.toString() + " #" + clientID + ": sent a created game");
 						Pck3_GameItems gamePck = ((Pck3_GameItems)packet);
 						gameItems.add(gamePck.gameItems.get(0));
 					}
 					
 					// client wants to join a game
 					else if(packet instanceof Pck4_PlayerItem){
-						printMsg("Client #" + clientID + ": join a game");
+						printMsg("Client " + con.toString() + " #" + clientID + ": join a game");
 						Pck4_PlayerItem gamePck = ((Pck4_PlayerItem)packet);
 						for(GameItem game : gameItems){
 							if(game.getID() == gamePck.gameID){
@@ -76,7 +76,7 @@ public class GameServer {
 					
 					// client sends a turn
 					else if(packet instanceof Pck5_Turns){
-						printMsg("Client #" + clientID + ": sent a turn");
+						printMsg("Client " + con.toString() + " #" + clientID + ": sent a turn");
 						Pck5_Turns gamePck = ((Pck5_Turns)packet);
 						LinkedList<Turn> oldTurns = turns.get(gamePck.gameID);
 						if(oldTurns == null){
@@ -88,16 +88,17 @@ public class GameServer {
 					// client requests a list of turns
 					else if(packet instanceof Pck6_ClientRequestTurns){
 						Pck6_ClientRequestTurns gamePck = ((Pck6_ClientRequestTurns)packet);
-						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
-						printMsg("Client #" + clientID + " has turn ID "+gamePck.clientTurnID);
-
+						printMsg("Client " + con.toString() + " #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
+						
 						if(turns.get(gamePck.gameID) == null){
 							printMsg("Invalid game ID: "+gamePck.gameID);
 							return;
 						}
+						
+						printMsg("Client " + con.toString() + " #" + clientID + " has turn ID "+gamePck.clientTurnID + " turn size: " + turns.get(gamePck.gameID).size());
 
 						// don't send empty lists
-						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size()-1)
+						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size())
 							return;
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
@@ -109,14 +110,14 @@ public class GameServer {
 						responsePck.turns = replayTurns;
 						responsePck.gameID = gamePck.gameID;
 
-						printMsg("Responded with a list of "+replayTurns.size()+" turns");
+						printMsg("    Responded with a list of "+replayTurns.size()+" turns");
 						gamePck.getConnection().sendTCP(responsePck);
 					}
 					
 					// client starts a game
 					else if(packet instanceof Pck8_ClientStartGame){
 						Pck8_ClientStartGame gamePck = ((Pck8_ClientStartGame)packet);
-						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
+						printMsg("Client " + con.toString() + " #" + clientID + ": started game: " + gamePck.gameID);
 						
 						for(GameItem gi : gameItems){
 							if(gi.getID() == gamePck.gameID){
@@ -128,7 +129,7 @@ public class GameServer {
 					// client sends an edited game
 					else if(packet instanceof Pck9_ClientEditedGame){
 						Pck9_ClientEditedGame gamePck = ((Pck9_ClientEditedGame)packet);
-						printMsg("Client #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
+						printMsg("Client " + con.toString() + " #" + clientID + ": sent an edited game: " + gamePck.gameItem.getID());
 						
 						for(int i = 0; i < gameItems.size(); i++){
 							if(gameItems.get(i).getID() == gamePck.gameItem.getID())
