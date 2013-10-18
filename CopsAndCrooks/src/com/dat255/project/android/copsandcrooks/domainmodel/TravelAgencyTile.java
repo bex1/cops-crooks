@@ -24,11 +24,12 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	/**
 	 * Create a new instance of travel agency.
 	 * @param position the position
+	 * @param value 
 	 * @param mediator the mediator
 	 */
-	public static void createTravelAgency(Point position, IMediator mediator){
+	public static void createTravelAgency(Point position, IMediator mediator, int value){
 		if(travelAgencyInstance == null){
-			travelAgencyInstance = new TravelAgencyTile(position, mediator);
+			travelAgencyInstance = new TravelAgencyTile(position, mediator, value);
 		}
 	}
 
@@ -36,8 +37,8 @@ public class TravelAgencyTile extends RobbableBuildingTile {
 	 * Create a new travel agency tile.
 	 * @param position the position
 	 */
-	private TravelAgencyTile(Point position, IMediator mediator) {
-		super(position, mediator, 0);
+	private TravelAgencyTile(Point position, IMediator mediator, int value) {
+		super(position, mediator, value);
 	}
 
 	@Override
