@@ -109,7 +109,7 @@ public class LobbyActivity extends Activity {
 	
 	private void checkForHost(){
 		if(gameItem != null){
-			if(gameItem.getHostId().equals(Installation.id(getApplicationContext()))){ 
+			if(gameItem.getHostId().equals(GameClient.getInstance().getClientID())){ 
 				System.out.println("Host for this game item");
 				joinGameButton.setClickable(false);
 				joinGameButton.setEnabled(false);
@@ -164,7 +164,7 @@ public class LobbyActivity extends Activity {
 	 * @param v the view that calls this method (joinGameButton)
 	 */
 	public void joinGame(View v){
-		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()));
+		PlayerItem player = new PlayerItem(GameClient.getInstance().getPlayerName(), GameClient.getInstance().getClientID());
 		gameItem.addPlayer(player);
 		joinGameButton.setEnabled(false);
 		joinGameButton.setClickable(false);
@@ -181,7 +181,7 @@ public class LobbyActivity extends Activity {
 	 * @param item the playerItem to change the role of
 	 */
 	public void changeRole(PlayerItem item) {
-		if(gameItem.getHostId().equals(Installation.id(getApplicationContext())) && !gameItem.hasGameStarted() && gameItem.getCurrentPlayerCount() >1){
+		if(gameItem.getHostId().equals(GameClient.getInstance().getClientID()) && !gameItem.hasGameStarted() && gameItem.getCurrentPlayerCount() >1){
 			for(PlayerItem pi : gameItem.getPlayers()){
 				pi.setRole(Role.Crook);
 			}

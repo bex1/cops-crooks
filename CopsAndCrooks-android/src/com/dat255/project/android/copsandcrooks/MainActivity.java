@@ -10,10 +10,10 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
+      
+      
         GameClient.getInstance().setClientID(Installation.id(getApplicationContext()));
-        
+          
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();

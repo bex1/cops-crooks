@@ -270,7 +270,7 @@ public class GameClient{
 	 * @return
 	 */
 	public String getClientID(){
-		return clientID + "";
+		return clientID;
 	}
 
 	public void sendTurn(Turn currentTurn) {

@@ -68,19 +68,7 @@ public class CopsAndCrooks extends Game {
         	game = ModelFactory.getInstance().loadLocalGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         } else {
-        	GameItem gameToPlay;
-        	if (Gdx.app.getType() == ApplicationType.Android) {
-        		gameToPlay = GameClient.getInstance().getChosenGameItem();
-
-        	} else {
-        		gameToPlay = new GameItem("spel", 2);
-        		PlayerItem player = new PlayerItem("Kalle", "1ad");
-        		player.setRole(Role.Cop);
-        		PlayerItem player2 = new PlayerItem("Kalle", "2ad");
-        		player2.setRole(Role.Crook);
-        		gameToPlay.addPlayer(player);
-        		gameToPlay.addPlayer(player2);
-        	}
+        	GameItem gameToPlay = GameClient.getInstance().getChosenGameItem();
     		GameFactory factory = GameFactory.getInstance();
     		ModelFactory modelFactory = ModelFactory.getInstance();
     		if(!gameToPlay.hasGameStarted()){
