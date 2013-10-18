@@ -79,9 +79,11 @@ public class GameBrowseActivity extends Activity {
 			for(GameItem gi: GameClient.getInstance().getGameItems()){
 				boolean inGame = false;
 				for(PlayerItem pi : gi.getPlayers()){
-					if(pi.getID().equals(GameClient.getInstance().getClientID())){
-						//Check to see if the client has joined the game
-						inGame = true;
+					if (pi.getID() != null) {
+						if(pi.getID().equals(GameClient.getInstance().getClientID())){
+							//Check to see if the client has joined the game
+							inGame = true;
+						}
 					}
 				}
 				if(displayActiveGames && inGame){
