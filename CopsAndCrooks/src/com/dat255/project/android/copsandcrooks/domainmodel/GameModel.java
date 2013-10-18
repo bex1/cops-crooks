@@ -13,7 +13,12 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
-
+/**
+ * A crook pawn in the game Cops&Crooks.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public final class GameModel implements IObservable, Serializable{
 
 	private final String id;
@@ -105,7 +110,9 @@ public final class GameModel implements IObservable, Serializable{
 		}
 		pcs = new PropertyChangeSupport(this);
 	}
-
+/**
+ * Starts the game
+ */
 	public void startGame(){
 		if(currentPlayer == null){
 			for (Player player : players) {
@@ -117,13 +124,19 @@ public final class GameModel implements IObservable, Serializable{
 		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+	    	currentTurn.setEndTile(pawn.getCurrentTile());
 			currentPlayer.updateState();
 		} else {
 			state = GameState.Waiting;
 		}
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
-	
+	/**
+	 * Updates the game
+	 * @param deltaTime - a timer
+	 */
 	public void update(float deltaTime) {
 		if (isChangingPlayer) {
 			changePlayerTimer += deltaTime;
@@ -135,7 +148,10 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		}
 	}
-	
+	/**
+	 * Adds turn to replay
+	 * @param turns - a list of turns to be replayed 
+	 */
 	public void addReplayTurns(LinkedList<Turn> turns) {
 		if(turns==null || turns.size()==0)
 			return;
@@ -144,7 +160,9 @@ public final class GameModel implements IObservable, Serializable{
 		state = GameState.Replay;
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
-	
+	/**
+	 * Replays what has happened.
+	 */
 	public void replay() {
 		state = GameState.Replay;
 		replay(replayTurns.removeFirst());	
@@ -240,11 +258,17 @@ public final class GameModel implements IObservable, Serializable{
 	private boolean isLocalPlayersTurn() {
 		return currentPlayer == playerClient;
 	}
-
+	/**
+	 * Returns the current game state
+	 * @return the current game state
+	 */
 	public GameState getGameState() {
 		return state;
 	}
-	
+	/**
+	 * Returns the current turn
+	 * @return the current turn
+	 */
 	public Turn getCurrentTurn() {
 		return currentTurn;
 	}
@@ -252,11 +276,17 @@ public final class GameModel implements IObservable, Serializable{
 	private void endGame(){
 		pcs.firePropertyChange(PROPERTY_GAME_ENDED, null, currentPlayer);
 	}
-
+	/**
+	 * Returns the current player
+	 * @return the current player
+	 */
 	public IPlayer getCurrentPlayer(){
 		return currentPlayer;
 	}
-	
+	/**
+	 * Returns the player associated with a certain client
+	 * @return the player associated with a certain client
+	 */
 	public IPlayer getPlayerClient(){
 		return playerClient;
 	}
@@ -322,7 +352,10 @@ public final class GameModel implements IObservable, Serializable{
 			currentPlayer.setCurrentPawn(pawn);
 		}
 	}
-
+	/**
+	 * Returns all the players
+	 * @return all the players
+	 */
 	public Collection<? extends IPlayer> getPlayers(){
 		return Collections.unmodifiableCollection(this.players);
 	}
@@ -346,7 +379,10 @@ public final class GameModel implements IObservable, Serializable{
 	Collection<TramLine> getTramLines() {
 		return Collections.unmodifiableCollection(tramLines);
 	}
-
+	/**
+	 * Returns all of the hideout tiles
+	 * @return all of the hideout tiles
+	 */
 	public Collection<HideoutTile> getHideouts() {
 		return Collections.unmodifiableCollection(hideoutTiles);
 	}
@@ -362,11 +398,17 @@ public final class GameModel implements IObservable, Serializable{
 	private void incrementTurnID(){
 		turnID += 1;
 	}
-	
+	/**
+	 * Returns the ID of the turn
+	 * @return the ID of the turn
+	 */
 	public int getTurnID(){
 		return turnID;
 	}
-
+	/**
+	 * Returns the name of the player
+	 * @return the name of player
+	 */
 	public String getName() {
 		return gameName +"";
 	}
@@ -379,7 +421,11 @@ public final class GameModel implements IObservable, Serializable{
 	public String getID() {
 		return id;
 	}
-	
+	/**
+	 * Returns the player that has the pawn.
+	 * @param pawn - the pawn to find the owner to.
+	 * @return the player that has the pawn
+	 */
 	public IPlayer getPlayerFor(IMovable pawn) {
 		for (IPlayer player : players) {
 			if (player.getPawns().contains(pawn)) {

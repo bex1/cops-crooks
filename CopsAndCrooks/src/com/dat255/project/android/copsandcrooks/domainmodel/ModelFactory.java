@@ -22,6 +22,12 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 // WILL be used to further encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
 // It should instead be connected to this factory to get its model instances.
+/**
+ * A crook pawn in the game Cops&Crooks.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class ModelFactory {
 	
 	private static ModelFactory instance = null;
@@ -288,7 +294,10 @@ public class ModelFactory {
 		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
 	}
 	
-
+	/**
+	 * Saves the current game model to a file
+	 * @param game the model to be saved to a file
+	 */
 	public void saveModelToFile(GameModel game){
 		File dir = new File(absolutPath, game.getName());
 		if(!dir.exists()){
@@ -304,7 +313,11 @@ public class ModelFactory {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Loads a game model from a file
+	 * @param name the name of the file
+	 * @return a game model loaded from a file
+	 */
 	public GameModel loadModelFromFile(String name){
 		File fileToLoad = new File(absolutPath, name + "/model.ser");
 		System.out.println(fileToLoad.getPath() + "\n" + fileToLoad.exists());
@@ -321,7 +334,11 @@ public class ModelFactory {
 			return null;
 		} 
 	}
-	
+	/**
+	 * Checks to see if the game has loaded a certain game model
+	 * @param item the game 
+	 * @return true- if the game has loaded the game model
+	 */
 	public boolean hasLoadedThisGameModel(GameItem item){
 		return new File(absolutPath, item.getName() + "/model.ser").exists();
 	}

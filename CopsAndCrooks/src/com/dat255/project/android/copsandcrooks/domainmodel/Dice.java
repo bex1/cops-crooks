@@ -7,7 +7,12 @@ import java.util.Random;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Values;
-
+/**
+ * A crook pawn in the game Cops&Crooks.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public final class Dice implements IObservable, Serializable {
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -25,14 +30,20 @@ public final class Dice implements IObservable, Serializable {
 	// Only added to make class singleton
 	private Dice() {
 	}
-	
+	/**
+	 * Returns an instance of Dice
+	 * @return an instance of Dice
+	 */
 	public static Dice getInstance(){
 		if(instance == null){
 			instance = new Dice();
 		}
 		return instance;
 	}
-	
+	/**
+	 * Checks to see wether the die is rolling and with that helps the animation.
+	 * @param deltaTime - time to animate the die.
+	 */
 	public void update(float deltaTime) {
 		if (isRolling) {
 			isRollingTimer += deltaTime;
@@ -62,7 +73,10 @@ public final class Dice implements IObservable, Serializable {
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.removePropertyChangeListener(l);
 	}
-
+	/**
+	 * Returns the result of the rolled die.
+	 * @return - the result of the rolled die.
+	 */
 	public int getResult() {
 		return diceResult;
 	}
