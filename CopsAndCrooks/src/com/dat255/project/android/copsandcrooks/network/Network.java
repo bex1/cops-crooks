@@ -45,6 +45,7 @@ public class Network {
 		kryo.register(Pck8_ClientStartGame.class);
 		kryo.register(Pck9_ClientEditedGame.class);
 		kryo.register(PawnItem.class);
+		kryo.register(Pck10_ClientEndGame.class);
 	}
 
 	/** Super-class packet */
