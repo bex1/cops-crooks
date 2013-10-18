@@ -81,7 +81,7 @@ public class Network {
 	
 	/** Super-class for game item packets */
 	public static class Pck_ExistingGame extends Packet {
-		public int gameID;
+		public String gameID;
 	}
 	
 	/** Player item */
