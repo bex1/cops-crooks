@@ -14,19 +14,19 @@
     <string name="title_activity_instructions">Instructions</string>
     
     <string name="instructions"><b>Intro</b>\n
-		Cops and Crooks is about getting the most money.
-		One of the players controls the law enforcement (Cops) and the rest of the players are thieves (Crooks).
-		The Crooks get money by robbing banks, post offices etc., while the Cops get money by catching and arresting Crooks. 
-		When a Cop arrests a Crook, he receives a share of the Crooks cash.
+		Cops and Crooks is about getting the most money.\n
+		One of the players controls the law enforcement (Cops) and the rest of the players are thieves (Crooks).\n
+		The Crooks get money by robbing banks, post offices etc., while the Cops get money by catching and arresting Crooks.\n
+		When a Cop arrests a Crook, he receives a share of the Crooks cash.\n
 		The winner is the player with the most money when the game ends.\n
 		
 		\n<b>How the Cops move</b>\n
-		The player playing as the Cops get to move only  one of his or hers pawns each turn, either a policeman or the paddy wagon (which is two tiles big). 
-		The pawn can move either vertically or horizontally.
-		The paddy wagons move two steps for every dot on the die, however, it can only move forward. 
+		The player playing as the Cops get to move only one of his or hers pawns each turn, either a policeman or the cop car (which is two tiles big). 
+		The pawn can move either vertically or horizontally. 
+		The cop car move two steps for every dot on the die, however, it can only move forward. 
 		A policeman can go through a building that is open to two direction. 
-		The paddy wagon cannot do this, it is limited to driving on the road. 
-		The policemen and paddy wagon can pass by each other but not stop on the same tile.\n
+		The cop car cannot do this, it is limited to driving on the road. 
+		The policemen and cop car can pass by each other but not stop on the same tile.\n
 		
 		\n<b>How the Crooks move</b>\n
 		The player playing as a Crook move his or her pawn the same as the policeman, either vertically or horizontally.
@@ -50,8 +50,30 @@
 		A Crook is arrested if a policeman or the paddy wagon stops on the same tile as the Wanted Crook. 
 		The paddy wagon can arrest on both of its tiles, even two Crooks at the same time.
 		The Cops can also arrest Crooks by stopping on tiles that are right by Banks and Post offices\n
-	</string>
+		The Cops receive some of the money the crook had on him, the rest of the money goes to the bank.\n
 		
+		\n<b>Escape from jail</b>\n
+		To escape from jail a crook has to either wait 3 turns or roll a six. In the latter case the crook can walk these six steps immediately.\n
+
+		\n<b>Metro</b>\n
+		Both the Crooks and Cops (excluding the cop car) can travel around the city by metro. They do this by stopping on a Metro tile and then travel on their next turn.\n
+
+		\n<b>Hideout</b>\n
+		Only the Crooks can enter the Hideouts. When entering a hideout they can show whether to withdraw or deposit money. Keep in mind that there are multiple separate hideouts. Stored money in one hideout cannot be accessed in another.\n
+
+
+		\n<b>Getaway</b>\n
+		When a Crook as decided that they have enough money, they can try to get away. To do this they must on land on a Getaway tile and pay for a ticket (the money goes to the Travel Agency, which can now be robbed) and on their next turn they get away.
+
+		\n\nHowever, they can be stopped by the Cops. If a Cop reaches an Intelligence Agency before the Crooks next turn, the getaway attempt will be thwarted and the Crook arrested.
+
+		\nIf the getaway is successful, the Crook keeps his money and is out of reach from the Cops and waiting for the game to end.\n
+
+		\n<b>Game end</b>\n
+		The game ends when all crooks have either been caught four times or successfully fled from the map. When this happens the player with the most money wins.\n\n
+		
+	</string>
+	
     <string name="title_activity_options">Options</string>
     <string name="options_name">Name:</string>
     <string name="options_volume">Volume:</string>
