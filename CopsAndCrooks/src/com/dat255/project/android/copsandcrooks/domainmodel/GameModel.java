@@ -215,10 +215,13 @@ public final class GameModel implements IObservable, Serializable{
 			changePlayer();
 			dice.setResult(-1);
 		}
-		incrementTurnID();
 	}
 
-	private void changePlayer() {		
+	private void changePlayer() {
+		if (state == GameState.Playing) {
+			currentTurn.setTurnID(turnID);
+		}
+		incrementTurnID();
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
