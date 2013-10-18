@@ -3,10 +3,11 @@ package com.dat255.project.android.copsandcrooks.network;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GameItem implements Serializable{
 
-	private int id;
+	private final String id;
 	private String name;
 	private int playerCap;
 	private boolean gameStarted;
@@ -15,7 +16,7 @@ public class GameItem implements Serializable{
 	private List<PlayerItem> playerList;
 	
 	public GameItem(String name, int playerCap) {
-		id = (int) (Math.random()*1000);
+		id = UUID.randomUUID().toString();
 		this.name = name;
 		this.playerCap = playerCap;
 		gameStarted = false;
@@ -24,9 +25,10 @@ public class GameItem implements Serializable{
 	
 	public GameItem(){
 		playerList = new ArrayList<PlayerItem>();
+		id = "";
 	}
 	
-	public int getID(){
+	public String getID(){
 		return id;
 	}
 	
