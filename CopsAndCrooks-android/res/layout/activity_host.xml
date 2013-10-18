@@ -40,11 +40,12 @@
 
         <EditText
             android:id="@+id/gameNameEditText"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/game_name_hint"
             android:layout_width="0dp"
-            android:layout_weight="70" >
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:hint="@string/game_name_hint"
+            android:inputType="text"
+            android:maxLength="10" >
 
             <requestFocus />
         </EditText>
