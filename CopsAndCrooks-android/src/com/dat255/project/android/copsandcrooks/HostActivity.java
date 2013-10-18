@@ -68,22 +68,23 @@ public class HostActivity extends AbstractActivity {
 		return true;
 	}
 	
-	public OnSeekBarChangeListener playerCapListener = new OnSeekBarChangeListener(){
+	private OnSeekBarChangeListener playerCapListener = new OnSeekBarChangeListener(){
 
 		@Override
 		public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+			//Retrieve the playercap from the seekbar and update the seekbartextview
 			playerCap = arg0.getProgress() + 2;
 			seekBarTextView.setText("[ "+playerCap+" ]");
 		}
 
 		@Override
 		public void onStartTrackingTouch(SeekBar arg0) {
-			// TODO Auto-generated method stub
+			
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar arg0) {
-			// TODO Auto-generated method stub
+			
 		}
 	};
 	
@@ -103,6 +104,7 @@ public class HostActivity extends AbstractActivity {
 	    public void afterTextChanged(Editable editable) {
 	    	//Retrieve the entered string.
 	    	gameName = editable.toString();
+	    	//trim the string to avoid whitespace in gamenames
 	    	gameName = gameName.trim();
 	    	hostButtonEnabled(!gameName.equals(null) && gameName.length() != 0);
 	    	if(!gameName.equals(null) && gameName.length() != 0){
@@ -111,10 +113,18 @@ public class HostActivity extends AbstractActivity {
 	    }
 	};
 	
+	/**
+	 * Return the state of ThisTask.
+	 * @return the enum value of ThisTask
+	 */
 	public ThisTask getThisTask(){
 		return thisTask;
 	}
 	
+	/**
+	 * Check to see if the desired gamename is available or not.
+	 * @param gameName
+	 */
 	private void canHostGame(String gameName){
 		GameItem gameItem = new GameItem(gameName, 0);
 		thisTask = ThisTask.checkName;
@@ -124,6 +134,10 @@ public class HostActivity extends AbstractActivity {
 			new CommunicateTask(this).execute(gameItem);
 	}
 	
+	/**
+	 * Set the clickable and enabled status of the hostbutton.
+	 * @param status the new status for the hostbutton
+	 */
 	public void hostButtonEnabled(boolean status){
 		if(status){
 			hostGameButton.setClickable(true);
@@ -135,6 +149,13 @@ public class HostActivity extends AbstractActivity {
 		}
 	}
 	
+	/**
+	 * Gets called when hostGameButton is clicked, creating a new game.
+	 * This method also adds the client as the host and adds the host to the game.
+	 * Finally, a LobbyActivity is started and this activity is finished preventing
+	 * a user from going back to the hosting stage.
+	 * @param v the view that is calling this method
+	 */
 	public void hostGame(View v){
 		System.out.println("Network: Creating game");
 		

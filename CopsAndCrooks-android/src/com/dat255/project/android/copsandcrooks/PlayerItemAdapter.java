@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 /**
@@ -88,7 +89,9 @@ public class PlayerItemAdapter extends BaseAdapter{
         roleText.setText("Role: " + data.get(position).getRole().toString());
         
         
-        final ImageButton button = (ImageButton) vi.findViewById(R.id.setCopImageButton);
+        ImageButton button = (ImageButton) vi.findViewById(R.id.setCopImageButton);
+        button.setClickable(getItem(position).getRole() != Role.Cop);
+        button.setEnabled(getItem(position).getRole() != Role.Cop);
         
         button.setOnClickListener(new OnClickListener(){
 

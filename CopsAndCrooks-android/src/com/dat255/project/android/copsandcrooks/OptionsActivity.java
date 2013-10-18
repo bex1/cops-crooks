@@ -100,6 +100,7 @@ public class OptionsActivity extends Activity {
 			GameClient.getInstance().stopClient();
 		}
 		
+		//Store the name and serverIP in SharedPreferences.
 		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 
