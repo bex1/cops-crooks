@@ -82,7 +82,6 @@ public class GameServer {
 						}
 						Turn turn = gamePck.turns.get(0);
 						if (!oldTurns.contains(turn)) {
-							System.out.println("Added turn to list");
 							oldTurns.add(turn);
 						}
 					}
@@ -107,7 +106,7 @@ public class GameServer {
 						responsePck.gameID = gamePck.gameID;
 						responsePck.gameTurns = turns.get(gamePck.gameID).size();
 
-						printMsg("\t\t\t\t\tResponded with a list of "+replayTurns.size()+" turns");
+						printMsg("\t\t\tResponded with a list of "+replayTurns.size()+" turns");
 						gamePck.getConnection().sendTCP(responsePck);
 					}
 					
