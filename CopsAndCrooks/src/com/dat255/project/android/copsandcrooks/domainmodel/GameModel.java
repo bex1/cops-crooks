@@ -16,7 +16,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public final class GameModel implements IObservable, Serializable{
 
-	private final int id;
+	private final String id;
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
@@ -50,7 +50,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID, int diceResult) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, int diceResult) {
 		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
 		for(Player player: this.players){
 			if(player.getID().equals(this.currentPlayer)){
@@ -60,7 +60,7 @@ public final class GameModel implements IObservable, Serializable{
 		
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -372,7 +372,12 @@ public final class GameModel implements IObservable, Serializable{
 		return gameName +"";
 	}
 
-	public int getID() {
+	
+	/**
+	 * 
+	 * @return - A String that is the id for this model
+	 */
+	public String getID() {
 		return id;
 	}
 }
