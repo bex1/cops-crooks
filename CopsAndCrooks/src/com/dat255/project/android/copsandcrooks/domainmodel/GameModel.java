@@ -117,6 +117,9 @@ public final class GameModel implements IObservable, Serializable{
 		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+	    	currentTurn.setEndTile(pawn.getCurrentTile());
 			currentPlayer.updateState();
 		} else {
 			state = GameState.Waiting;
