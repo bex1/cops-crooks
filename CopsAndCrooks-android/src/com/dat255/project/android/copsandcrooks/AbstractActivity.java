@@ -10,6 +10,9 @@ public abstract class AbstractActivity extends Activity {
 	Toast toast;
 	
 	public void showMessage(String text){
+		try{
+			toast.cancel();
+		}catch(Exception e){}
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
 		toast = Toast.makeText(context, text, duration);

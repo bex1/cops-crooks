@@ -71,7 +71,7 @@ final class PathFinder implements Serializable {
 
 		// temporary store direction to restore state after calculation,
 		// since the direction is changed when calculating
-		Direction _direction = direction;
+		Direction pawnDirection= direction;
 
 		List<TilePath> subPathsAllDirections = new ArrayList<TilePath>();
 		AbstractWalkableTile nextTile = null;
@@ -81,36 +81,36 @@ final class PathFinder implements Serializable {
 			case 0:
 				if(x+1<tiles.length && isAllowedDirection(Direction.EAST, pawn, direction)){
 					nextTile = tiles[x+1][y];
-					direction = Direction.EAST;
+					pawnDirection = Direction.EAST;
 				}else
 					nextTile = null;
 				break;
 			case 1:
 				if(y+1<tiles[x].length && isAllowedDirection(Direction.NORTH, pawn, direction)){
 					nextTile = tiles[x][y+1];
-					direction = Direction.NORTH;
+					pawnDirection = Direction.NORTH;
 				}else
 					nextTile = null;
 				break;
 			case 2:
 				if(x-1>=0 && isAllowedDirection(Direction.WEST, pawn, direction)){
 					nextTile = tiles[x-1][y];
-					direction = Direction.WEST;
+					pawnDirection = Direction.WEST;
 				}else
 					nextTile = null;
 				break;
 			case 3:
 				if(y-1>=0 && isAllowedDirection(Direction.SOUTH, pawn, direction)){
 					nextTile = tiles[x][y-1];
-					direction = Direction.SOUTH;
+					pawnDirection = Direction.SOUTH;
 				}else
 					nextTile = null;
 				break;
 			}
 			if(canMoveTo(nextTile, previousTile, pawn, pawnType, startTile, stepsRemaining)){
-				List<TilePath> subPaths = calculateActualPossiblePaths(pawn, pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile, direction);
-				direction = _direction; // restore current direction
+				List<TilePath> subPaths = calculateActualPossiblePaths(pawn, pawnType, stepsRemaining-1, stepsToMove, nextTile, startTile, currentTile, pawnDirection);
 				subPathsAllDirections.addAll(subPaths);
+				pawnDirection = direction;
 				if(stepsToMove != stepsRemaining){
 					for(TilePath subPath : subPaths){
 						if(subPath.contains(currentTile))
