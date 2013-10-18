@@ -246,6 +246,8 @@ public final class GameModel implements IObservable, Serializable{
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;
+			}else{
+				nextPlayer(0);
 			}
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 		} else if (state == GameState.Replay) {
