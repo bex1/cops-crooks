@@ -1,9 +1,5 @@
 package com.dat255.project.android.copsandcrooks;
 
-import com.dat255.project.android.copsandcrooks.network.GameClient;
-import com.dat255.project.android.copsandcrooks.network.GameItem;
-import com.dat255.project.android.copsandcrooks.network.Network;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +7,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.Network;
 
 public class MenuActivity extends AbstractActivity {
 	
