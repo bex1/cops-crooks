@@ -192,7 +192,6 @@ public class ModelFactory {
 	 * @throws Exception
 	 */
 	public GameModel loadLocalGameModel(GameModel model){
-		System.out.println(model.getName());
 		String gameName = model.getName();
 		// Creates a mediator
 		Mediator mediator = new Mediator();
@@ -325,5 +324,13 @@ public class ModelFactory {
 	
 	public boolean hasLoadedThisGameModel(GameItem item){
 		return new File(absolutPath, item.getName() + "/model.ser").exists();
+	}
+
+	public void deleteModelFile(GameModel model) {
+		File mapToDelete = new File(absolutPath, model.getName());
+		File fileToDelete = new File(absolutPath, model.getName() + "/model.ser");
+		
+		mapToDelete.delete();
+		fileToDelete.delete();
 	}
 }
