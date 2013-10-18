@@ -91,7 +91,7 @@ public class GameServer {
 					else if(packet instanceof Pck6_ClientRequestTurns){
 						Pck6_ClientRequestTurns gamePck = ((Pck6_ClientRequestTurns)packet);
 						
-						if(turns.get(gamePck.gameID).equals(null)){
+						if(turns.get(gamePck.gameID) == null){
 							printMsg(con.toString() + " #" + clientID + ": requested a list of turns of INVALID game #" + gamePck.gameID);
 							return;
 						}
