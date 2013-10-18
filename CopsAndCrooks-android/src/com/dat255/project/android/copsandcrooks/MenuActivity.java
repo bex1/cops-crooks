@@ -73,8 +73,6 @@ public class MenuActivity extends AbstractActivity {
 		super.onDestroy();
 	}
 
-
-
 	public void storeVariable(String variableID, String variableValue){
 		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();

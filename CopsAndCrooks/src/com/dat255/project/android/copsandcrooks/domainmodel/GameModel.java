@@ -16,7 +16,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public final class GameModel implements IObservable, Serializable{
 
-	private final int id;
+	private final String id;
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
@@ -50,7 +50,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 	
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID, int diceResult) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, int diceResult) {
 		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
 		for(Player player: this.players){
 			if(player.getID().equals(this.currentPlayer)){
@@ -60,7 +60,7 @@ public final class GameModel implements IObservable, Serializable{
 		
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, int id, int turnID) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -221,20 +221,20 @@ public final class GameModel implements IObservable, Serializable{
 				return;
 			}
 		}while (!currentPlayer.isActive());
-		this.currentTurn = new Turn();
 		currentPlayer.updateState();
-		if (currentPlayer.isActive()) {
-			if (playerClient == currentPlayer) {
-				state = GameState.Playing;
-				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
-			} else if (state == GameState.Replay) {
-				replay(replayTurns.removeFirst());
-			} else {
-				state = GameState.Waiting;
-				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
+		if (playerClient == currentPlayer) {
+			this.currentTurn = new Turn();
+			if (!currentPlayer.isActive()) {
+				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
+				return;
 			}
+			state = GameState.Playing;
+			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
+		} else if (state == GameState.Replay) {
+			replay(replayTurns.removeFirst());
 		} else {
-			nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
+			state = GameState.Waiting;
+			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 		}
 	}
 
@@ -246,7 +246,7 @@ public final class GameModel implements IObservable, Serializable{
 		return state;
 	}
 	
-	Turn getCurrentTurn() {
+	public Turn getCurrentTurn() {
 		return currentTurn;
 	}
 
@@ -372,7 +372,21 @@ public final class GameModel implements IObservable, Serializable{
 		return gameName +"";
 	}
 
-	public int getID() {
+	
+	/**
+	 * 
+	 * @return - A String that is the id for this model
+	 */
+	public String getID() {
 		return id;
+	}
+	
+	public IPlayer getPlayerFor(IMovable pawn) {
+		for (IPlayer player : players) {
+			if (player.getPawns().contains(pawn)) {
+				return player;
+			}
+		}
+		return null;
 	}
 }

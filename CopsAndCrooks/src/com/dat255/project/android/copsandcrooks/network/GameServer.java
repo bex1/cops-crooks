@@ -13,13 +13,13 @@ public class GameServer {
 
 	private Server server;
 	private ArrayList<GameItem> gameItems;
-	private Map<Integer, LinkedList<Turn>> turns;
+	private Map<String, LinkedList<Turn>> turns;
 	
 	public GameServer(){
 		// initialize server
 		server = new Server();
 		gameItems = new ArrayList<GameItem>();
-		turns = new TreeMap<Integer, LinkedList<Turn>>();
+		turns = new TreeMap<String, LinkedList<Turn>>();
 		
 		// register network classes (in the same way as the client)
 		Network.register(server);
@@ -68,7 +68,7 @@ public class GameServer {
 					else if(packet instanceof Pck4_PlayerItem){
 						Pck4_PlayerItem gamePck = ((Pck4_PlayerItem)packet);
 						for(GameItem game : gameItems){
-							if(game.getID() == gamePck.gameID){
+							if(game.getID().equals(gamePck.gameID)){
 								printMsg(con.toString() + " #" + clientID + ": joins game \"" + game.getName() + "\"");
 								game.addPlayer(gamePck.playerItem);
 								break;
@@ -91,15 +91,11 @@ public class GameServer {
 					else if(packet instanceof Pck6_ClientRequestTurns){
 						Pck6_ClientRequestTurns gamePck = ((Pck6_ClientRequestTurns)packet);
 						
-						if(turns.get(gamePck.gameID) == null){
+						if(turns.get(gamePck.gameID).equals(null)){
 							printMsg(con.toString() + " #" + clientID + ": requested a list of turns of INVALID game #" + gamePck.gameID);
 							return;
 						}
 						printMsg(con.toString() + " #" + clientID + " requested a list of turns of game #" + gamePck.gameID + ", has turn ID "+gamePck.clientTurnID + " turn size: " + turns.get(gamePck.gameID).size());
-
-						// don't send empty lists
-						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size())
-							return;
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
 						for(int i = gamePck.clientTurnID; i < turns.get(gamePck.gameID).size(); i++)
@@ -119,7 +115,7 @@ public class GameServer {
 						printMsg(con.toString() + " #" + clientID + ": started game: " + gamePck.gameID);
 						
 						for(GameItem gi : gameItems){
-							if(gi.getID() == gamePck.gameID){
+							if(gi.getID().equals(gamePck.gameID)){
 								turns.put(gamePck.gameID, new LinkedList<Turn>());
 							}
 						}
@@ -139,7 +135,7 @@ public class GameServer {
 					// client ends the game
 					else if(packet instanceof Pck10_ClientEndGame){
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == ((Pck10_ClientEndGame) packet).gameID){
+							if(gameItems.get(i).getID().equals(((Pck10_ClientEndGame) packet).gameID)){
 								gameItems.remove(i);
 								// TODO Remove associated turns from this game when all clients have received last turn
 							}
@@ -148,7 +144,7 @@ public class GameServer {
 				}
 			}
 			
-			// a client connected
+			// a client connecteds
 			@Override
 			public void connected(Connection connection) {
 				printMsg("New connection! Client #" + connection.getID());

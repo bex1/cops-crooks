@@ -142,7 +142,7 @@ public class ModelFactory {
 						playerItem.addPawn(listOfPolicestationtile.get(k).getPosition(), Values.ID_OFFICER + j);
 						listOfPolicestationtile.remove(k);
 					} else {
-						Point point = playerItem.getPawnItem(10 + j).position;
+						Point point = playerItem.getPawnItem(Values.ID_OFFICER + j).position;
 						pawns.add(new Officer(walkable[point.x][point.y], mediator, Values.ID_OFFICER + j));
 					}
 				}

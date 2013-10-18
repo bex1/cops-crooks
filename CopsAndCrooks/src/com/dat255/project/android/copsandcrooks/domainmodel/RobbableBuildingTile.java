@@ -27,7 +27,10 @@ public class RobbableBuildingTile extends AbstractWalkableTile implements IInter
 	@Override
 	public void interact(IMovable target) {
 		if(value > 0 && target instanceof Crook){
-			getRobbedBy((Crook) target); 
+			Crook crook = (Crook) target;
+			if (crook.getWallet().getCash() == 0) {
+				getRobbedBy(crook); 
+			}
 		}
 	}
 	
