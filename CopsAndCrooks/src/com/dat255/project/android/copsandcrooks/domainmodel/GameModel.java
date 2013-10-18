@@ -124,6 +124,9 @@ public final class GameModel implements IObservable, Serializable{
 		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+	    	currentTurn.setEndTile(pawn.getCurrentTile());
 			currentPlayer.updateState();
 		} else {
 			state = GameState.Waiting;
@@ -215,11 +218,7 @@ public final class GameModel implements IObservable, Serializable{
 		incrementTurnID();
 	}
 
-	private void changePlayer() {
-		// sent the latest turn to the server
-		if(isLocalPlayersTurn())
-			GameClient.getInstance().sendTurn(currentTurn);
-		
+	private void changePlayer() {		
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
