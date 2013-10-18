@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
@@ -53,7 +56,8 @@ public class HostActivity extends AbstractActivity {
 		hostGameButton = (Button) findViewById(R.id.hostGameButton);
 		
 		playerCapSeekBar.setOnSeekBarChangeListener(playerCapListener);
-		gameNameEditText.setOnKeyListener(gameNameListener);
+		//gameNameEditText.setOnKeyListener(gameNameListener);
+		gameNameEditText.addTextChangedListener(textWatcher);
 		
 		hostGameButton.setClickable(false);
 		hostGameButton.setEnabled(false);
@@ -87,7 +91,7 @@ public class HostActivity extends AbstractActivity {
 		}
 	};
 	
-	public OnKeyListener gameNameListener = new OnKeyListener(){
+	/*public OnKeyListener gameNameListener = new OnKeyListener(){
 
 		@Override
 		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
@@ -102,6 +106,29 @@ public class HostActivity extends AbstractActivity {
 			return false;
 		}
 		
+	};*/
+	
+	private TextWatcher textWatcher = new TextWatcher() {
+		 
+	    @Override
+	    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+	 
+	    }
+	 
+	    @Override
+	    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+	 
+	    }
+	 
+	    @Override
+	    public void afterTextChanged(Editable editable) {
+	    	//Retrieve the entered string.
+	    	gameName = editable.toString();  
+	    	hostButtonEnabled(!gameName.equals(null) && gameName.length() != 0);
+	    	if(!gameName.equals(null) && gameName.length() != 0){
+				canHostGame(gameName);
+			}      
+	    }
 	};
 	
 	public ThisTask getThisTask(){
