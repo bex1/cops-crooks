@@ -160,15 +160,14 @@ public class HostActivity extends AbstractActivity {
 		System.out.println("Network: Creating game");
 		
 		GameItem gameItem = new GameItem(gameName, playerCap);
-		gameItem.setHostId(Installation.id(getApplicationContext()));
-		System.out.println(Installation.id(getApplicationContext()));
+		gameItem.setHostId(GameClient.getInstance().getClientID());
 		
 		
 		PlayerItem player;
 		if(GameClient.getInstance().getPlayerName() != null)
-			player = new PlayerItem(GameClient.getInstance().getPlayerName(), Installation.id(getApplicationContext()) );
+			player = new PlayerItem(GameClient.getInstance().getPlayerName(), GameClient.getInstance().getClientID());
 		else
-			player = new PlayerItem("DefaultPlayerName", Installation.id(getApplicationContext()));
+			player = new PlayerItem("DefaultPlayerName", GameClient.getInstance().getClientID());
 		player.setRole(Role.Cop);
 		gameItem.addPlayer(player);
 		thisTask = ThisTask.hostGame;
