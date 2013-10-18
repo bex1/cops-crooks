@@ -292,7 +292,7 @@ public class ModelFactory {
 		}
 		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID());
+		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getCurrentTurn());
 	}
 	
 	/**
