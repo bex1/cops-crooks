@@ -224,6 +224,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				case Playing:
 					// New turn -> show buttons where the player can select its next move
 					showActButtons();
+					ModelFactory.getInstance().saveModelToFile(model);
 					break;
 				case Replay:
 					hudStage.addActor(replayTable);
