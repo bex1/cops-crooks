@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 
 /**
@@ -20,7 +21,7 @@ public class Crook extends AbstractWalkingPawn {
 	public static final String PROPERTY_TURNS_IN_PRISON = "TurnsInPrison";
 	
 	Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
-		super(startTile, Role.Crook, PawnType.Crook, mediator, 1, id);
+		super(startTile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
 		wallet = new Wallet();
 	}
 	
@@ -106,7 +107,6 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setTurnsInPrison(int turns){
 		turnsInPrison = turns;
-		pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
 	}
 	/**
 	 * The number of turns left in prison

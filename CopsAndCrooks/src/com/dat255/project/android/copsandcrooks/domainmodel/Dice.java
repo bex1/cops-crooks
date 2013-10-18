@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public final class Dice implements IObservable, Serializable {
 	
@@ -14,10 +15,9 @@ public final class Dice implements IObservable, Serializable {
 	private int diceResult = -1;
 	private boolean isRolling;
 	private float isRollingTimer;
-	private static final float ROLL_DELAY = 1.4f;
 	private Player player;
 	
-	private static Dice instance= null;
+	private static Dice instance;
 	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
@@ -36,10 +36,10 @@ public final class Dice implements IObservable, Serializable {
 	public void update(float deltaTime) {
 		if (isRolling) {
 			isRollingTimer += deltaTime;
-			if (isRollingTimer >= ROLL_DELAY) {
+			if (isRollingTimer >= Values.ROLL_DELAY) {
 				isRolling = false;
 				isRollingTimer = 0;
-				diceResult = 1 + rand.nextInt(6);
+				diceResult = 1 + rand.nextInt(Values.MAX_DICE_ROLL);
 				pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
 				player.diceResult(diceResult);
 			}
@@ -68,7 +68,7 @@ public final class Dice implements IObservable, Serializable {
 	}
 	
 	void setResult(int i){
-		diceResult = (i%6) + 1;
+		diceResult = (i%Values.MAX_DICE_ROLL) + 1;
 		// Added to prevent you can close the app to get one more try to roll dice
 		if(i == -1){			
 			diceResult = -1;		
