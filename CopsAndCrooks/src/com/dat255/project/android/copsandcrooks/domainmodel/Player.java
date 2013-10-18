@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -107,8 +108,6 @@ public class Player implements IPlayer, Serializable {
     	checkIfCrookIsEscaping();
     	checkIfLifeTimeInPrison();
     	checkIfCrookStillInPrison();
-    	mediator.getCurrentTurn().setPawnID(currentPawn.getID());
-    	mediator.getCurrentTurn().setEndTile(currentPawn.getCurrentTile());
     }
     
     private void checkIfCrookStillInPrison() {
@@ -182,11 +181,13 @@ public class Player implements IPlayer, Serializable {
     public boolean isGoingByDice() {
     	return goByDice;
     }
-    
+
     @Override
     public void goByMetro() {
     	goByMetro = true;
-    	mediator.getCurrentTurn().setMoveType(MoveType.Metro);
+    	if (mediator.checkState() == GameState.Playing) {
+    		mediator.getCurrentTurn().setMoveType(MoveType.Metro);
+    	}
     	updatePossiblePaths();
     }
     
@@ -228,9 +229,11 @@ public class Player implements IPlayer, Serializable {
     public void choosePath(TilePath path){
     	if (possiblePaths != null && possiblePaths.contains(path) && goByDice) {
     		possiblePaths = null;
-    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
-    		mediator.getCurrentTurn().setPathWalked(new TilePath(path));
-    		mediator.getCurrentTurn().setEndTile(path.getTile(0));
+    		if (mediator.checkState() == GameState.Playing) {
+    			mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    			mediator.getCurrentTurn().setPathWalked(new TilePath(path));
+    			mediator.getCurrentTurn().setEndTile(path.getTile(0));
+    		}
     		// The path passed the test -> move
     		currentPawn.move(path);
     		diceResult = 0;
@@ -249,8 +252,10 @@ public class Player implements IPlayer, Serializable {
     				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
-    				mediator.getCurrentTurn().setPawnID(currentPawn.getID());
-    				mediator.getCurrentTurn().setEndTile(metroStop);
+    				if (mediator.checkState() == GameState.Playing) {
+    					mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    					mediator.getCurrentTurn().setEndTile(metroStop);
+    				}
     				return;
     			}
     		}
@@ -265,7 +270,9 @@ public class Player implements IPlayer, Serializable {
      */
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
-    		mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    		if (mediator.checkState() == GameState.Playing) {
+    			mediator.getCurrentTurn().setPawnID(currentPawn.getID());
+    		}
     		currentPawn.setIsActivePawn(false);
     		AbstractPawn oldValue = currentPawn;
     		currentPawn = pawn;
@@ -295,15 +302,17 @@ public class Player implements IPlayer, Serializable {
 		pcs.firePropertyChange(PROPERTY_DICE_RESULT, -1, diceResult);
 		// checks to see if the player's pawn is in prison
     	// if so then the player isn't able to move unless rolling a six.
-    	if(this.currentPawn instanceof Crook){
-    		Crook crook = ((Crook)this.currentPawn);
-    		if(crook.isInPrison() && diceResult!=Values.DICE_RESULT_TO_ESCAPE && crook.getTurnsInPrison() > 0){
-    			mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
-    			return;
-    		}
-    	}
-    	goByDice = true;
-    	mediator.getCurrentTurn().setMoveType(MoveType.Walk);
+		if(this.currentPawn instanceof Crook){
+			Crook crook = ((Crook)this.currentPawn);
+			if(crook.isInPrison() && diceResult!=Values.DICE_RESULT_TO_ESCAPE && crook.getTurnsInPrison() > 0){
+				mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
+				return;
+			}
+		}
+		goByDice = true;
+		if (mediator.checkState() == GameState.Playing) {
+			mediator.getCurrentTurn().setMoveType(MoveType.Walk);
+		}
     	updatePossiblePaths();
 	}
 

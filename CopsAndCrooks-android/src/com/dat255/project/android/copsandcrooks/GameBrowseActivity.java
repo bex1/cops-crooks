@@ -68,6 +68,10 @@ public class GameBrowseActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * Refresh the list of games. Retrieving games from the server and add them
+	 * to the list, if the client is eligible to join.
+	 */
 	public void refreshGameList(){
 		if(GameClient.getInstance().getGameItems() != null){
 			System.out.println("Game list not null");
@@ -95,10 +99,19 @@ public class GameBrowseActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Called from the GameItemAdapter when a GameItem is clicked in order to
+	 * enter a lobby.
+	 * @param gameItem the gameitem to enter the lobby with
+	 */
 	public void itemAnswer(GameItem gameItem){
 		enterLobby(gameItem);
 	}
 	
+	/**
+	 * Enter a lobby, creating a new LobbyActivity with the selected GameItem.
+	 * @param gameItem the GameItem that holds the info about the game
+	 */
 	public void enterLobby(GameItem gameItem){
 		Intent intent = new Intent(this, LobbyActivity.class);
 		intent.putExtra(FROM_LOBBY, true);
@@ -106,10 +119,11 @@ public class GameBrowseActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	public OnCheckedChangeListener activeGamesListener = new OnCheckedChangeListener() {
+	private OnCheckedChangeListener activeGamesListener = new OnCheckedChangeListener() {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        	//This determines if activegames will be displayed or not.
         	displayActiveGames = isChecked;
         }
     };

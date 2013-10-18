@@ -73,9 +73,8 @@ public class MenuActivity extends AbstractActivity {
 		super.onDestroy();
 	}
 
-
-
-	public void storeVariable(String variableID, String variableValue){
+	private void storeVariable(String variableID, String variableValue){
+		//Store the variables in the SharedPreferences.
 		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 
@@ -90,7 +89,7 @@ public class MenuActivity extends AbstractActivity {
 		return true;
 	}
 	
-	public void firstTimeSetup(){
+	private void firstTimeSetup(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("First time setup");
@@ -106,6 +105,7 @@ public class MenuActivity extends AbstractActivity {
 				if(name.length() <= 0){
 					firstTimeSetup();
 				}
+				//stores the entered and a default IP
 				storeVariable("NAME", name);
 				GameClient.getInstance().setPlayerName(name);
 				storeVariable("IP", Network.DEFAULT_IP);
@@ -116,21 +116,37 @@ public class MenuActivity extends AbstractActivity {
 		alert.show();
 	}
 	
+	/**
+	 * Start a new HostActivity when host_game_button is clicked.
+	 * @param v the view that calls this method
+	 */
 	public void enterGame(View v){
 		Intent intent = new Intent(this, HostActivity.class);
 		startActivity(intent);
 	}
-	
+
+	/**
+	 * Start a new InstructionsActivity when instructions_button is clicked.
+	 * @param v the view that calls this method
+	 */
 	public void openInstructions(View v){
 		Intent intent = new Intent(this, InstructionsActivity.class);
 		startActivity(intent);
 	}
-	
+
+	/**
+	 * Start a new OptionsActivity when options_button is clicked.
+	 * @param v the view that calls this method
+	 */
 	public void openOptions(View v){
 		Intent intent = new Intent(this, OptionsActivity.class);
 		startActivity(intent);
 	}
 	
+	/**
+	 * Start a new GameBrowseActivity when game_browse_button is clicked.
+	 * @param v the view that calls this method
+	 */
 	public void openSearchGame(View v){
 		Intent intent = new Intent(this, GameBrowseActivity.class);
 		startActivity(intent);

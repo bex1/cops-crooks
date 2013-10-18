@@ -29,7 +29,9 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 	@Override
 	protected Void doInBackground(GameItem... params) {
 		while(true){
-			System.out.println(this.getStatus() + "*************************************************************************");			
+			//SleepTimee is added so some activitys can make the thread sleep longer
+			int sleepTime = 1000;
+			//This checks which activity tha task is created in and what is should do
 			if(activity instanceof MenuActivity){
 				gameClient.connectToServer();
 			}else if(activity instanceof GameBrowseActivity){
@@ -65,8 +67,10 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 					}
 					return null;
 				}
-				
 			}else if(activity instanceof GameActivity){
+				sleepTime = 4000;
+				if(!gameClient.isConnected())
+					gameClient.connectToServer();
 				if(gameClient.getCurrentGameModel()!=null){
 					if(gameClient.getCurrentGameModel().getGameState() == GameModel.GameState.Waiting){
 						gameClient.requestTurns();
@@ -77,7 +81,7 @@ public class CommunicateTask extends AsyncTask<GameItem, Boolean, Void> {
 			if(!gameClient.isConnected())
 				this.publishProgress();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(sleepTime);
 			} catch (InterruptedException e){
 				e.printStackTrace();
 				return null;
