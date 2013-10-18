@@ -215,13 +215,10 @@ public final class GameModel implements IObservable, Serializable{
 			changePlayer();
 			dice.setResult(-1);
 		}
+		incrementTurnID();
 	}
 
 	private void changePlayer() {
-		if (state == GameState.Playing) {
-			currentTurn.setTurnID(turnID);
-		}
-		incrementTurnID();
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
@@ -240,15 +237,16 @@ public final class GameModel implements IObservable, Serializable{
 		}while (!currentPlayer.isActive());
 		currentPlayer.updateState();
 		if (playerClient == currentPlayer) {
+			state = GameState.Playing;
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
 	    	currentTurn.setEndTile(pawn.getCurrentTile());
+	    	currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;
 			}
-			state = GameState.Playing;
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 		} else if (state == GameState.Replay) {
 			replay(replayTurns.removeFirst());
