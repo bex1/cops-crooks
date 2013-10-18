@@ -90,7 +90,7 @@ public class ModelFactory {
 						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, Values.CASH_BANK_HIGHEST);
 						break;
 					case 7: 	// According to the tileset case 8 is the Travelagency tiles
-						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
+						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator, 0);
 						walkable[i][j] = TravelAgencyTile.getInstance();
 						break;
 					case 8: 	// According to the tileset case 8 is the blue metro line tile
@@ -234,7 +234,7 @@ public class ModelFactory {
 					newWalkableTile[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 
 							((RobbableBuildingTile)oldWalkableTile[i][j]).getValue());
 				}else if(oldWalkableTile[i][j] instanceof TravelAgencyTile){
-					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
+					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator, ((TravelAgencyTile)oldWalkableTile[i][j]).getValue());
 					newWalkableTile[i][j] = TravelAgencyTile.getInstance();
 				}else if(oldWalkableTile[i][j] instanceof TramStopTile){
 					newWalkableTile[i][j] = new TramStopTile(new Point(i, j),mediator);
