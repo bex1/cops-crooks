@@ -12,6 +12,7 @@ import java.util.List;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public final class GameModel implements IObservable, Serializable{
 
@@ -26,7 +27,7 @@ public final class GameModel implements IObservable, Serializable{
 	private boolean isChangingPlayer;
 	private float changePlayerTimer;
 	private float changePlayerDelay;
-	private int turnID = 0;
+	private int turnID;
 	
 	private Dice dice;
 	
@@ -158,7 +159,7 @@ public final class GameModel implements IObservable, Serializable{
 			case Metro:
 				if (end instanceof TramStopTile) {
 					pawn.moveByTram((TramStopTile)end);
-					nextPlayer(3f);
+					nextPlayer(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
 				}
 				break;
 			case Walk:
@@ -169,7 +170,7 @@ public final class GameModel implements IObservable, Serializable{
 				pawn.move(tilePathWalked);
 				break;
 			default:
-				nextPlayer(2f);
+				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				break;
 			}
 		}
@@ -220,10 +221,10 @@ public final class GameModel implements IObservable, Serializable{
 				return;
 			}
 		}while (!currentPlayer.isActive());
+		this.currentTurn = new Turn();
 		currentPlayer.updateState();
 		if (currentPlayer.isActive()) {
 			if (playerClient == currentPlayer) {
-				this.currentTurn = new Turn();
 				state = GameState.Playing;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 			} else if (state == GameState.Replay) {
@@ -233,7 +234,7 @@ public final class GameModel implements IObservable, Serializable{
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 			}
 		} else {
-			nextPlayer(3f);
+			nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 		}
 	}
 
