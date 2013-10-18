@@ -101,6 +101,7 @@ public class GameServer {
 						Pck5_Turns responsePck = new Pck5_Turns();
 						responsePck.turns = replayTurns;
 						responsePck.gameID = gamePck.gameID;
+						responsePck.gameTurns = turns.get(gamePck.gameID).size();
 
 						printMsg("\t\t\t\t\tResponded with a list of "+replayTurns.size()+" turns");
 						gamePck.getConnection().sendTCP(responsePck);

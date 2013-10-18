@@ -10,8 +10,26 @@ import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.ISelectablePawn;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 
+/**
+ * A cop actor in cops and crooks. 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class CopActor extends MovableActor{
 	
+	/**
+	 * Inits a CopActor.
+	 * 
+	 * @param assets The assets for cops and crooks
+	 * @param drawable The first drawable of this actor
+	 * @param scaling The scaling used for the drawable
+	 * @param pawn The selectable pawn that this actor represents
+	 * @param animations The animations for the actor.
+	 */
 	public CopActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final ISelectablePawn pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(assets, drawable, scaling, pawn, animations);
