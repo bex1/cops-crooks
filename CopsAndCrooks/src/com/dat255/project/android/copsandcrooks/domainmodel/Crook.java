@@ -106,7 +106,6 @@ public class Crook extends AbstractWalkingPawn {
 	 */
 	void setTurnsInPrison(int turns){
 		turnsInPrison = turns;
-		pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
 	}
 	/**
 	 * The number of turns left in prison
