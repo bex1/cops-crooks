@@ -1,17 +1,29 @@
 package com.dat255.project.android.copsandcrooks;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.dat255.project.android.copsandcrooks.screens.SplashScreen;
-import com.dat255.project.android.copsandcrooks.utils.Utilities;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
+import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.network.GameItem;
+import com.dat255.project.android.copsandcrooks.network.PlayerItem;
+import com.dat255.project.android.copsandcrooks.screens.Assets;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
+
 
 /**
  * TODO docs here
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
+@SuppressWarnings("unused")
 public class CopsAndCrooks extends Game {
 	// constant useful for logging
     public static final String LOG = CopsAndCrooks.class.getSimpleName();
@@ -21,13 +33,60 @@ public class CopsAndCrooks extends Game {
 
     // a libgdx helper class that logs the current FPS each second
     private FPSLogger fpsLogger;
+    private Assets assets;
+    private GameModel game;
 	
+    public CopsAndCrooks(){
+    	this(null);
+    }
+    
+    public CopsAndCrooks(GameModel game){
+    	super();
+    	this.game = game;
+    }
+    
     @Override
     public void create()
     {
         Gdx.app.log( CopsAndCrooks.LOG, "Creating game on " + Gdx.app.getType() );
+
+        PreferencesManager prefs = PreferencesManager.getInstance();
+        
+        // create the music manager
+        MusicManager musicManager = MusicManager.getInstance();
+        musicManager.setVolume( prefs.getVolume() );
+
+        // create the sound manager
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.setVolume( prefs.getVolume() );
+        soundManager.setEnabled( prefs.isSoundEnabled() );
+        
+        GameFactory.getInstance().init(new Assets());
         fpsLogger = new FPSLogger();
-        setScreen(new SplashScreen(this));
+        assets = GameFactory.getInstance().getAssets();
+        if (game != null) {
+        	game = ModelFactory.getInstance().loadLocalGameModel(game);
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
+        } else {
+        	GameItem gameToPlay = GameClient.getInstance().getChosenGameItem();
+    		GameFactory factory = GameFactory.getInstance();
+    		ModelFactory modelFactory = ModelFactory.getInstance();
+    		if(!gameToPlay.hasGameStarted()){
+    			System.out.println("host skapar ett spela");
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
+    		}else if(gameToPlay.hasGameStarted() && !modelFactory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("spelare går med i ett spela för första gången");
+    			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
+    		}else if(gameToPlay.hasGameStarted() && modelFactory.hasLoadedThisGameModel(gameToPlay)){
+    			System.out.println("detta såelet har jag sparat lokalt!!!!!");
+    			game = modelFactory.loadLocalGameModel(modelFactory.loadModelFromFile(gameToPlay.getName()));
+    		}else{
+    			assert false;
+    			game = null;
+    		}
+    		GameClient.getInstance().setCurrentGameModel(game);
+        	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
+        }
     }
 
     @Override
@@ -42,8 +101,8 @@ public class CopsAndCrooks extends Game {
     {
         super.render();
         // output the current FPS if in dev mode
-        if( DEV_MODE ) 
-        	fpsLogger.log();
+        //if( DEV_MODE ) 
+        //	fpsLogger.log();
     }
 
     @Override
@@ -72,6 +131,15 @@ public class CopsAndCrooks extends Game {
     {
         super.dispose();
         Gdx.app.log( CopsAndCrooks.LOG, "Disposing game" );
-        Utilities.disposeUtils();
+        
+        // dispose some services
+        MusicManager.getInstance().dispose();
+        SoundManager.getInstance().dispose();
     }
+
+	public GameModel getModel() {
+		return game;
+	}
+	
+	
 }

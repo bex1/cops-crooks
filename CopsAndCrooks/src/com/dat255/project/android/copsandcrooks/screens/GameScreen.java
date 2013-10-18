@@ -4,62 +4,71 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
+import com.dat255.project.android.copsandcrooks.actors.DiceActor;
+import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
+import com.dat255.project.android.copsandcrooks.actors.MovableActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
+import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.Player;
+import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
+import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager;
+import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
+import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
 	private OrthogonalTiledMapRenderer renderer;
-	private OrthographicCamera camera;
+	private GameCamera camera;
 	private final GameModel model;
 	private final TiledMap mapToRender;
-	private final TiledMapTileLayer gameBackground; //kan heta layertorender
 	private final Stage hudStage;
 
-	private Table actionsTable;
-	private TextButton rollTheDiceButton;
-	private TextButton goByTramButton;
+	private MoveByDiceOrMetroTable moveByDiceOrMetro;
+	private MoveByDiceTable moveByDice;
+	private HUDTable hudTable;
+	private ReplayTable replayTable;
+	private final GameFactory factory;
+	
+	private boolean gameEnded = false;
 
 	private final int mapWidth, mapHeight;
 
-	public GameScreen(final CopsAndCrooks game, final GameModel gameModel,
-			final TiledMap tiledmap, final TiledMapTileLayer backgroundLayer,
-			final List<Actor> actors) {
-		super(game, backgroundLayer.getWidth() * backgroundLayer.getTileWidth(), 
-				backgroundLayer.getHeight() * backgroundLayer.getTileHeight());
-
+	public GameScreen(Assets assets, final CopsAndCrooks game, final GameModel gameModel,
+			final TiledMap tiledmap, final float mapWidth, final float mapHeight,
+			final List<Actor> actors, final Stage hudStage, final DiceActor dice) {
+		super(assets, game, mapWidth, mapHeight);
+		this.factory = GameFactory.getInstance();
 		this.model = gameModel;
 		this.mapToRender = tiledmap;
-		this.gameBackground = backgroundLayer;
+		this.hudStage = hudStage;
+		this.mapWidth = (int) mapWidth;
+		this.mapHeight = (int) mapHeight;
 
-		mapWidth = (int) (gameBackground.getWidth() * gameBackground.getTileWidth());
-		mapHeight = (int) (gameBackground.getHeight() * gameBackground.getTileHeight());
-
-		hudStage = new Stage(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, true);
 
 		model.addObserver(this);
-		for(Player player : model.getPlayers()){
+		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
+			for (IMovable pawn : player.getPawns()) {
+				pawn.addObserver(this);
+			}
 		}
 
 		for (Actor actor : actors) {
@@ -70,85 +79,74 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	}
 
 	private void initGuiElements() {
-		actionsTable = new Table(getSkin());
-		actionsTable.setFillParent(true);
-		// register the button "roll dice"
-		rollTheDiceButton = new TextButton("Roll the dice", getSkin());
-		rollTheDiceButton.addListener(new ClickListener() {
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				super.touchUp(event, x, y, pointer, button);
-				// TODO click sound
-				rollTheDiceButton.getParent().clear();
-				model.getCurrentPlayer().rollDice();
-				
-			}
-		});
-
-		// register the button "go by tram"
-		goByTramButton = new TextButton("Go by tram", getSkin());
-		goByTramButton.addListener(new ClickListener() {
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				super.touchUp(event, x, y, pointer, button);
-				// TODO click sound
-				// TODO go by tram
-				goByTramButton.getParent().clear();
-			}
-		} );
+		moveByDice = new MoveByDiceTable(assets, model, hudStage);
+		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
+		hudTable = new HUDTable(assets, model.getPlayerClient(), model, hudStage, model.getPlayers());
+		replayTable = new ReplayTable(assets, model);
 	}
 
 	@Override
 	public void render(float delta){
+		model.update(delta);
 
 		stage.setCamera(camera);
 		renderer.setView(camera);
-		renderer.getSpriteBatch().begin();
-		renderer.renderTileLayer(gameBackground);
-		renderer.getSpriteBatch().end();
+		renderer.render();
 
 		super.render(delta);
 
 		hudStage.act(delta);
 		hudStage.draw();
+		Table.drawDebug(hudStage);
 	}
+
 
 	@Override
 	public void show(){
 		super.show();
-		model.startGame();
+
 		renderer = new OrthogonalTiledMapRenderer(mapToRender);
-		camera = new OrthographicCamera(Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT);
+		camera = new GameCamera(mapWidth, mapHeight);
+		// Show actors at right start pos, ie sync with model
+		for (Actor actor : stage.getActors()) {
+			if (actor instanceof MovableActor) {
+				MovableActor pawn = (MovableActor)actor;
+				pawn.refresh();
+				pawn.setCamera(camera);
+			}
+		}
+
 		GestureDetector gestureDetector = new GestureDetector(gestureListener);
-		camera.position.set(mapWidth/2, mapHeight/2, 0);
+
+		hudStage.addActor(hudTable);
 
 		// Allows input via stage and gestures
 		InputMultiplexer inputMulti = new InputMultiplexer(hudStage, gestureDetector, stage);
 		Gdx.input.setInputProcessor(inputMulti);
+		model.startGame();
+		
+		MusicManager.getInstance().play(CopsAndCrooksMusic.GAME);
+
 	}
 
 	@Override
 	public void dispose(){
+		MusicManager.getInstance().dispose();
+		SoundManager.getInstance().dispose();
+		if(!gameEnded)
+			ModelFactory.getInstance().saveModelToFile(model);
 		renderer.dispose();
 		mapToRender.dispose();
+		hudStage.dispose();
+		//TODO dispose replay so it will finish before we dispose and save them model
 		super.dispose();
 	}
 
-	private float getCameraBoundryRight() {
-		return  mapWidth - camera.viewportWidth*camera.zoom/2;
+	@Override
+	public void resume() {
+		super.resume();
 	}
 
-	private float getCameraBoundryLeft() {
-		return camera.viewportWidth*camera.zoom/2;
-	}
-
-	private float getCameraBoundryDown() {
-		return camera.viewportHeight*camera.zoom/2;
-	}
-
-	private float getCameraBoundryUp() {
-		return mapHeight - camera.viewportHeight*camera.zoom/2;
-	}
 
 	private GestureListener gestureListener = new GestureDetector.GestureAdapter() {
 
@@ -168,16 +166,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			float moveY = deltaY * camera.zoom;
 			float toY = camera.position.y + moveY;
 
-			if(toX> getCameraBoundryRight())
-				toX =  getCameraBoundryRight();
-			if(toX < getCameraBoundryLeft())
-				toX = getCameraBoundryLeft();
-			if(toY > getCameraBoundryUp())
-				toY = getCameraBoundryUp();
-			if(toY < getCameraBoundryDown())
-				toY = getCameraBoundryDown();
-			camera.position.x = toX;
-			camera.position.y = toY;
+			camera.setCameraPosition(toX, toY);
 
 			return false;
 		}
@@ -189,14 +178,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 			if(zoom < 2.2f  && zoom > 0.6f) {
 				camera.zoom = zoom;
 				// Keep within map
-				if(camera.position.x > getCameraBoundryRight())
-					camera.position.x = getCameraBoundryRight();
-				if(camera.position.x < getCameraBoundryLeft())
-					camera.position.x = getCameraBoundryLeft();
-				if(camera.position.y > getCameraBoundryUp())
-					camera.position.y = getCameraBoundryUp();
-				if(camera.position.y < getCameraBoundryDown())
-					camera.position.y = getCameraBoundryDown();
+				camera.setCameraPosition(camera.position.x, camera.position.y);
 			}
 
 			return false;
@@ -204,75 +186,110 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	};
 
+
 	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		if (camera != null && Gdx.app.getType() == ApplicationType.Android) {
+			// needed on android to relocate camera after pause
+			camera.setCameraPosition(camPauseX, camPauseY);
+		}
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		System.out.println("********************Pause");
+		if(!gameEnded)
+			ModelFactory.getInstance().saveModelToFile(model);
+		if (camera != null) {
+			camPauseX = camera.position.x;
+			camPauseY = camera.position.y;
+		}
+	}
+
+	private float camPauseX;
+	private float camPauseY;
+
+	@SuppressWarnings("incomplete-switch")
+    @Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
+		Object source = evt.getSource();
+		IPlayer currPlayer = model.getCurrentPlayer();
 
 		// Check source, i.e. Who sent the event?
-		if(evt.getSource() == model) {
-			if(property == GameModel.PROPERTY_CURRENT_PLAYER){
-				// New turn -> show buttons where the player can select its next move
-				showActButtons();
-			}
-		} else if (model.getCurrentPlayer() == evt.getSource()) {
-
-			// Extract relevant data
-			Player currPlayer = model.getCurrentPlayer();
-			Role playerRole = currPlayer.getPlayerRole();
-
-			if(property == Player.PROPERTY_DICE_RESULT){ 
-				//TODO show the results
-				if(playerRole == Role.Police){
-
+		if(source == model) {
+			if(property == GameModel.PROPERTY_GAMESTATE){
+				switch (model.getGameState()) {
+				case Playing:
+					// New turn -> show buttons where the player can select its next move
+					showActButtons();
+					ModelFactory.getInstance().saveModelToFile(model);
+					break;
+				case Replay:
+					hudStage.addActor(replayTable);
+					break;
 				}
-			} else if (property == Player.PROPERTY_POSSIBLE_PATHS){
+			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
+				ModelFactory.getInstance().deleteModelFile(model);
+				GameClient.getInstance().sendGameEnd();
+				gameEnded = true;
+				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
+			}
+		} else if (currPlayer == source) {
+
+			Role playerRole = currPlayer.getPlayerRole();
+			if (property == IPlayer.PROPERTY_POSSIBLE_PATHS){
 				// Show the possible paths for the current player.
 				clearVisiblePaths();
 				showPossiblePaths(currPlayer);
 
-			}else if(property == Player.PROPERTY_CHOOSEN_PAWN){
-				if(playerRole == Role.Police){
+			}else if(property == IPlayer.PROPERTY_SELECTED_PAWN){
+				if(playerRole == Role.Cop){
 					clearVisiblePaths();
-					currPlayer.updatePossiblePaths();
 				}
 			}
-		}
+		}  if (source instanceof Crook) {
+			Crook crook = (Crook)source;
+			if (currPlayer.getPawns().contains(source) && property == Crook.PROPERTY_TURNS_IN_PRISON) {
+				// Will remove itself
+				hudStage.addActor(new IsInPrisonTable(assets, currPlayer, crook));
+			} else if (property == Crook.PROPERTY_TIMES_ARRESTED) {
+				// Will remove itself
+				hudStage.addActor(new ArrestedTable(assets, model.getPlayerFor(crook), crook));
+			}
+		} 
 	}
 
 	private void clearVisiblePaths() {
 		// Finds all other PathActors in stage and remove them.
 		if (stage != null) {
 			for (Actor actor : stage.getActors()) {
-				if (actor instanceof PathActor) {
-					PathActor pathActor = (PathActor)actor;
-					pathActor.clear();
-				}
+				if (actor instanceof PathActor || actor instanceof MetroLineActor) {
+					actor.addAction(Actions.sequence(Actions.removeActor(), Actions.delay(0.1f), Actions.removeActor()));
+				} 
 			}
 		}
 	}
 
 	private void showActButtons() {
-		hudStage.addActor(actionsTable);
-
-		Player currentPlayer = model.getCurrentPlayer();
-
-		actionsTable.add(currentPlayer.getName() + " it's your turn\nplease roll the dice").spaceBottom(50);
-		actionsTable.row();
-
-		actionsTable.add(rollTheDiceButton).size(360, 60).uniform().padBottom(10);
-		actionsTable.row();
-
-		//TODO if the player is standing at a tramstop
-		if(currentPlayer.isAnyWalkingPawnOnTramstop()){
-			actionsTable.add(goByTramButton).size(360, 60).uniform().padBottom(10);
-			actionsTable.row();
+		if(model.getCurrentPlayer().isAnyWalkingPawnOnMetro()){
+			hudStage.addActor(moveByDiceOrMetro);
+		}else {
+			hudStage.addActor(moveByDice);
 		}
 	}
 
-	private void showPossiblePaths(Player player) {
-		List<PathActor> tmp = GameFactory.getPathActorsFor(player.getPossiblePaths(), player);
+	private void showPossiblePaths(IPlayer player) {
+		List<? extends Actor> tmp = null;
+		if (player.isGoingByDice()) {
+			tmp = factory.getPathActorsFor(player.getPossiblePaths(), player);
+		} else if (player.isGoingByMetro()) {
+			tmp = factory.getMetroActorsFor(player.getPossiblePaths(), player);
+		}
 		if (tmp != null) {
-			for(PathActor pathActor: tmp){
+			for(Actor pathActor: tmp){
 				stage.addActor(pathActor);
 			}
 		}
