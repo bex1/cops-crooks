@@ -32,8 +32,7 @@ public class GameServer {
 				if (msg instanceof Packet) {
 					Packet packet = (Packet)msg;
 					packet.setConnection(con);
-					int clientID = con.getID();
-					
+
 					// client sent a handshake
 					if(packet instanceof Pck0_ClientHandshake){
 						con.setName(((Pck0_ClientHandshake) packet).playerName);
@@ -108,7 +107,7 @@ public class GameServer {
 						responsePck.gameID = gamePck.gameID;
 						responsePck.gameTurns = turns.get(gamePck.gameID).size();
 
-						printMsg("\tResponded with a list of "+replayTurns.size()+" turns");
+						printMsg("\t\t\t\t\tResponded with a list of "+replayTurns.size()+" turns");
 						gamePck.getConnection().sendTCP(responsePck);
 					}
 					
