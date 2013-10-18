@@ -85,31 +85,27 @@ public class OptionsActivity extends Activity {
 	}
 	
 	@Override
-	public void onDestroy(){
-		super.onDestroy();
-		System.out.println("OptionsActivity: onDestroy()");
+	protected void onStop(){
+		super.onStop();
 		
 		name = nameEditText.getText().toString();
 		if(!name.equals(""))
 			GameClient.getInstance().setPlayerName(name);
 		
-		String serverIP = editTextIP.getText().toString();
-		GameClient.getInstance().setServerIP(serverIP);
+		String oldServerIP = GameClient.getInstance().getServerIP();
+		String newServerIP = editTextIP.getText().toString();
+
+		if(!oldServerIP.equals(newServerIP)){
+			GameClient.getInstance().setServerIP(newServerIP);
+			GameClient.getInstance().stopClient();
+		}
 		
 		SharedPreferences preferences = getSharedPreferences("options", MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 
 		editor.putString("NAME", name);
-		editor.putString("IP", serverIP);
+		editor.putString("IP", newServerIP);
 		editor.commit();
-	}
-	
-	
-
-	@Override
-	protected void onStop() {
-		GameClient.getInstance().stopClient();
-		super.onStop();
 	}
 
 	@Override
