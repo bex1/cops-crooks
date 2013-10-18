@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 /**
  * A class representing a hideout.
@@ -61,7 +62,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		crook.setWanted(false);
 		pcs.firePropertyChange(PROPERTY_HIDEOUT_MONEY, null, crook);
 		
-		mediator.playerTurnDone(2f);
+		mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_STANDARD);
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 		
 		crook.setWanted(crook.getWallet().getCash() > 0);
 		
-		mediator.playerTurnDone(2f);
+		mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_STANDARD);
 	}
 	
 	/**
@@ -117,7 +118,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 */
 	public void cancelInteraction(){
 		mediator.getCurrentTurn().setHideoutChoice(HideoutChoice.Cancel);
-		mediator.playerTurnDone(2f);
+		mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_STANDARD);
 	}
 	
 	@Override

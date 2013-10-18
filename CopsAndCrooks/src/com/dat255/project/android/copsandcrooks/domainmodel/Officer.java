@@ -10,7 +10,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
 public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 	
 	Officer(AbstractWalkableTile startTile, IMediator mediator, int id) {
-		super(startTile, Role.Cop, PawnType.Officer, mediator, 1, id);
+		super(startTile, Role.Cop, PawnType.Officer, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
 		// All officers start in the police house
 		this.setIsInPoliceStation(true);
 	}
@@ -22,7 +22,7 @@ public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 			if (crook.isWanted()) {
 				// We collided with a wanted crook -> Arrest
 				// Officer takes the crook to the police station
-				if(crook.getTimesArrested() != 4)
+				if(crook.getTimesArrested() != Values.MAX_TIMES_ARRESTED)
 					crook.incrementTimesArrested();
 					
 				mediator.moveToPoliceStation(crook);
