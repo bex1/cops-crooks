@@ -230,10 +230,6 @@ public final class GameModel implements IObservable, Serializable{
 			// The game should end then.
 			if(currentPlayer==previousPlayer) {
 				endGame();
-				// tell server that the game has ended
-				if(isLocalPlayersTurn())
-					GameClient.getInstance().sendGameEnd();
-				return;
 			}
 		}while (!currentPlayer.isActive());
 		currentPlayer.updateState();
