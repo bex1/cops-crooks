@@ -46,14 +46,14 @@ public class GameServer {
 
 					// client requested a list of game items
 					else if(packet instanceof Pck2_ClientRequestGames){
-						printMsg("Client #" + clientID + ": requesting list of games");
+//						printMsg("Client #" + clientID + ": requesting list of games");
 						
 						// send the games to the client
 						Pck3_GameItems pck = new Pck3_GameItems();
 						pck.gameItems = new ArrayList<GameItem>(gameItems);
 						packet.getConnection().sendTCP(pck);
 
-						printMsg("Client #" + clientID + ": sent list of games");
+//						printMsg("Client #" + clientID + ": sent list of games");
 				    }
 					
 					// client sent a created game
@@ -97,11 +97,12 @@ public class GameServer {
 						}
 
 						// don't send empty lists
-						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size()-1)
+						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size()-1)
 							return;
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
-						for(int i=gamePck.clientTurnID; i<turns.get(gamePck.gameID).size(); i++)
+						
+						for(int i = gamePck.clientTurnID; i < turns.get(gamePck.gameID).size(); i++)
 							replayTurns.add(turns.get(gamePck.gameID).get(i));
 
 						Pck5_Turns responsePck = new Pck5_Turns();
