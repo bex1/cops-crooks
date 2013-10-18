@@ -97,6 +97,9 @@ public class GameServer {
 						}
 						printMsg(con.toString() + " #" + clientID + " requested a list of turns of game #" + gamePck.gameID + ", has turn ID "+gamePck.clientTurnID + " turn size: " + turns.get(gamePck.gameID).size());
 
+						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size())
+							return;
+						
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
 						for(int i = gamePck.clientTurnID; i < turns.get(gamePck.gameID).size(); i++)
 							replayTurns.add(turns.get(gamePck.gameID).get(i));
