@@ -96,8 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:text="@string/host_game"
-            android:onClick="hostGame" />
+            android:onClick="hostGame"
+            android:text="@string/menu_host_game" />
 
     </TableRow>
 
