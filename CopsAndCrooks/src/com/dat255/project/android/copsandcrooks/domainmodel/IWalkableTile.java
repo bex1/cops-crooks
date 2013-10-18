@@ -1,5 +1,7 @@
 package com.dat255.project.android.copsandcrooks.domainmodel;
 
+import java.util.Map;
+
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 

@@ -44,8 +44,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null, null);
 		ArrayList <Player>players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -76,8 +76,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null, null);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -108,8 +108,8 @@ public class GameModelTest {
 		LinkedList <AbstractPawn> officerPlayer = new LinkedList<AbstractPawn>();
 		officerPlayer.add(officer);
 		crookPlayer.add(crook);		
-		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null);
-		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null);
+		Player player1 = new Player("tjuv", crookPlayer, Role.Crook, mediator, null, null);
+		Player player2 = new Player("polis", officerPlayer, Role.Cop, mediator, null, null);
 		LinkedList <Player>players = new LinkedList<Player>();
 		players.add(player1);
 		//to specify where officer is in the list
