@@ -43,7 +43,10 @@ public class LobbyActivity extends Activity {
 
 		Intent intent = getIntent();
 		gameItem = (GameItem) intent.getSerializableExtra("GAME_ITEM");
-		GameClient.getInstance().setChosenGameItem(gameItem);
+		if (gameItem == null){
+			gameItem = (GameItem) savedInstanceState.getSerializable("GameItem");		
+		}
+		GameClient.getInstance().setChosenGameItem(gameItem);	
 		
 		gameNameTextView = (TextView) findViewById(R.id.gameNameDisplayTextView);
 		playerCapTextView = (TextView) findViewById(R.id.playerCapDisplayTextView);
@@ -52,6 +55,12 @@ public class LobbyActivity extends Activity {
 		joinGameButton = (Button) findViewById(R.id.joinGameButton);
 		
 		gameNameTextView.setText(gameItem.getName());
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("GameItem", gameItem);
 	}
 
 	@Override
