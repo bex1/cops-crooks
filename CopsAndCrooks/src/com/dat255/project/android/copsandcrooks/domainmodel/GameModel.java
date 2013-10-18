@@ -153,7 +153,7 @@ public final class GameModel implements IObservable, Serializable{
 	private void replay(Turn turn) {
 		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
-		IWalkableTile end = getWalkabletiles()[turn.getEndTilePos().x][turn.getEndTilePos().y];
+		IWalkableTile end = walkable[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null && end != null) {
 			switch (turn.getMoveType()) {
 			case Metro:
@@ -224,6 +224,9 @@ public final class GameModel implements IObservable, Serializable{
 		currentPlayer.updateState();
 		if (playerClient == currentPlayer) {
 			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+	    	currentTurn.setEndTile(pawn.getCurrentTile());
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;

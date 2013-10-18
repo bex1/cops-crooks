@@ -121,7 +121,9 @@ public class Crook extends AbstractWalkingPawn {
 	void decrementTurnsInPrison(){
 		if(turnsInPrison > 0) {
 			--turnsInPrison;
-			pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
+			if (mediator.isItMyPlayerTurn(this) && mediator.checkState() == GameState.Playing) {
+				pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
+			}
 		}
 	}
 	/**
