@@ -55,17 +55,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, int diceResult) {
-		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
-		for(Player player: this.players){
-			if(player.getID().equals(this.currentPlayer)){
-				break;
-			}
-		}
-
-	}
-
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, Turn currentTurn) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -86,6 +76,10 @@ public final class GameModel implements IObservable, Serializable{
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
 
+		if(currentTurn != null){
+			this.currentTurn = currentTurn;
+		}
+		
 		if(currentPlayer != null){
 			for(Player player: this.players){
 				if(player.getID() == currentPlayer.getID()){
@@ -115,6 +109,11 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		}
 		pcs = new PropertyChangeSupport(this);
+	}
+
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
+		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID, null);
+		
 	}
 	/**
 	 * Starts the game
@@ -230,6 +229,7 @@ public final class GameModel implements IObservable, Serializable{
 			// The game should end then.
 			currentPlayer.updateState();
 			if(currentPlayer==previousPlayer) {
+				GameClient.getInstance().sendTurn(getCurrentTurn());
 				endGame();
 			}
 		}while (!currentPlayer.isActive());
