@@ -109,7 +109,7 @@ public class ModelFactory {
 						walkable[i][j] = new IntelligenceAgencyTile(new Point(i, j), mediator);
 						break;
 					case 12: 	// According to the tileset case 12 is the Hiding tiles
-						walkable[i][j] = new HideoutTile(new Point(i, j), mediator);
+						walkable[i][j] = new HideoutTile(new Point(i, j), null, mediator);
 						listOfHideouts.add((HideoutTile) walkable[i][j]);
 						break;
 					case 13: 	// According to tileset case 13 will be the coordinate of the policeCar (this will be a road tile)
@@ -159,7 +159,7 @@ public class ModelFactory {
 					Point point = playerItem.getPawnItem(Values.ID_COP_CAR).position;
 					pawns.add(new CopCar(walkable[point.x][point.y], mediator, Values.ID_COP_CAR));
 				}
-				players.add(new Player(playerItem.getName(), pawns, Role.Cop, mediator, playerItem.getID()));
+				players.add(new Player(playerItem.getName(), pawns, Role.Cop, mediator, new Wallet(),playerItem.getID()));
 
 			} else if (playerItem.getRole() == Role.Crook) {
 				if (!isGameHosted) {
@@ -172,7 +172,7 @@ public class ModelFactory {
 					pawns.add(new Crook(walkable[point.x][point.y], mediator, crookID));
 				}
 
-				players.add(new Player(playerItem.getName(), pawns, Role.Crook, mediator, playerItem.getID()));
+				players.add(new Player(playerItem.getName(), pawns, Role.Crook, mediator, new Wallet(),playerItem.getID()));
 				++crookID;
 			}
 		}
@@ -207,7 +207,7 @@ public class ModelFactory {
 		List<Player> newPlayers = new ArrayList<Player>();
 		
 		// Get the old 2d array of tiles and creates an 2D array as big as the old
-		IWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
+		AbstractWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
 		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[oldWalkableTile.length-1]
 				[oldWalkableTile[1].length-1];
 		
@@ -237,7 +237,8 @@ public class ModelFactory {
 					TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
 					newWalkableTile[i][j] = TravelAgencyTile.getInstance();
 				}else if(oldWalkableTile[i][j] instanceof TramStopTile){
-					newWalkableTile[i][j] = new TramStopTile(new Point(i, j), mediator);
+					newWalkableTile[i][j] = new TramStopTile(new Point(i, j),mediator);
+					
 					if(oldStop1.contains(oldWalkableTile[i][j])){
 						stop1.add((TramStopTile) newWalkableTile[i][j]);
 					}else if(oldStop2.contains(oldWalkableTile[i][j])){
@@ -248,7 +249,7 @@ public class ModelFactory {
 				}else if(oldWalkableTile[i][j] instanceof IntelligenceAgencyTile){
 					newWalkableTile[i][j] = new IntelligenceAgencyTile(new Point(i,j), mediator);
 				}else if(oldWalkableTile[i][j] instanceof HideoutTile){
-					newWalkableTile[i][j] = new HideoutTile(new Point(i,j), mediator);
+					newWalkableTile[i][j] = new HideoutTile(new Point(i,j), ((HideoutTile)oldWalkableTile[i][j]).getStoredCash(), mediator);
 				}else if(oldWalkableTile[i][j] instanceof PoliceStationTile){
 					newWalkableTile[i][j] = new PoliceStationTile(new Point(i,j), mediator);
 				}else{
@@ -275,9 +276,9 @@ public class ModelFactory {
 				else if(pawn instanceof CopCar)
 					pawns.add(new CopCar(tile, mediator, pawn.getID()));
 				else if(pawn instanceof Crook)
-					pawns.add(new Crook(tile, mediator, pawn.getID()));
+					pawns.add(new Crook(tile, mediator, ((Crook)pawn).getWallet(),pawn.getID()));
 			}
-			Player newPlayer = new Player(player.getName(), pawns, player.getPlayerRole(), mediator, player.getID());
+			Player newPlayer = new Player(player.getName(), pawns, player.getPlayerRole(), mediator, player.getWallet(),player.getID());
 			if(newPlayer.getID().equals(GameClient.getInstance().getClientID()))
 				playerClient = newPlayer;				
 			newPlayers.add(newPlayer);

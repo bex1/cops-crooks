@@ -46,8 +46,9 @@ public class Player implements IPlayer, Serializable {
 	 * The role of the pawns must match the role of the player.
 	 * @param role the role of the player.
 	 * @param mediator module communication unit. Not allowed to be null.
+	 * @param wallet 
 	 */
-	Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator, String id) {
+	Player(String name, List<AbstractPawn> pawns, Role role, IMediator mediator, Wallet wallet, String id) {
 		if (pawns == null || pawns.isEmpty()) {
 			throw new IllegalArgumentException("pawns not allowed to be null or empty");
 		}
@@ -71,7 +72,10 @@ public class Player implements IPlayer, Serializable {
 		this.currentPawn = pawns.get(0);
 		this.isActive = true;
 		this.playerID = id;
-		wallet = new Wallet();
+		if(wallet == null)
+			this.wallet = new Wallet();
+		else
+			this.wallet = wallet;
 	}
 
 

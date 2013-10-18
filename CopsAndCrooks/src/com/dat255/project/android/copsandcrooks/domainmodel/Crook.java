@@ -21,10 +21,15 @@ public class Crook extends AbstractWalkingPawn {
 	public static final String PROPERTY_TURNS_IN_PRISON = "TurnsInPrison";
 	
 	Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
-		super(startTile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
-		wallet = new Wallet();
+		this(startTile, mediator, new Wallet(), id);
 	}
 	
+	public Crook(AbstractWalkableTile tile, IMediator mediator, Wallet wallet, int id) {
+		super(tile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
+		this.wallet = wallet;
+		
+	}
+
 	/**
 	 * Returns true if the crook is wanted.
 	 * @return true if the crook is wanted.

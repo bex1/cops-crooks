@@ -24,7 +24,7 @@ public class PlayerItem implements Serializable{
 	
 	public PlayerItem() {
 		name = "";
-		playerID ="-1";
+		playerID ="";
 	}
 	
 	public String getName(){

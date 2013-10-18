@@ -77,7 +77,7 @@ public class CopCarTest {
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), mediator), mediator, 10);
 		List<AbstractPawn> pawnList = new ArrayList<AbstractPawn>();
 		pawnList.add(test);
-		Player player = new Player(null, pawnList, Role.Cop, mediator, null);
+		Player player = new Player(null, pawnList, Role.Cop, mediator, null, null);
 		crook.setWanted(true);
 		crook.getWallet().setCash(20000);
 		
