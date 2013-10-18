@@ -92,6 +92,7 @@ public class Network {
 	/** Turn item */
 	public static class Pck5_Turns extends Pck_ExistingGame{
 		public LinkedList<Turn> turns;
+		public int gameTurns;
 	}
 
 	/** Client request a list of turns */
