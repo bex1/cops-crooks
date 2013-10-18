@@ -128,7 +128,7 @@ public class ModelFactory {
 		
 		List<Player> players = new ArrayList<Player>();
 		List<PlayerItem> playerItems = gameitem.getPlayers();
-		int numberOfOfficers = gameitem.getCurrentPlayerCount();
+		int numberOfOfficers = gameitem.getCurrentPlayerCount()-1;
 		int crookID = 1;
 		Random rand = new Random();
 		for (PlayerItem playerItem : playerItems) {

@@ -281,7 +281,7 @@ public class GameClient{
 	 */
 	public void requestTurns(){
 		System.out.println("Network: Requesting turns");
-		Pck6_RequestTurns requestPck = new Pck6_RequestTurns();
+		Pck6_ClientRequestTurns requestPck = new Pck6_ClientRequestTurns();
 		requestPck.gameID = getCurrentGameModel().getID();
 		requestPck.clientTurnID = getCurrentGameModel().getTurnID();
 		
@@ -309,7 +309,7 @@ public class GameClient{
 	 */
 	public void startGame() {
 	    System.out.println("Network: Starting game");
-		Pck8_StartGame pck = new Pck8_StartGame();
+		Pck8_ClientStartGame pck = new Pck8_ClientStartGame();
 		pck.gameID = chosenGameItem.getID();
 		
 		sendPacket(pck);
@@ -331,7 +331,7 @@ public class GameClient{
 	 * Send a packet telling the server a game has ended
 	 */
 	public void sendGameEnd() {
-		Pck10_EndGame pck = new Pck10_EndGame();
+		Pck10_ClientEndGame pck = new Pck10_ClientEndGame();
 		pck.gameID = chosenGameItem.getID();
 		sendPacket(pck);
 	}

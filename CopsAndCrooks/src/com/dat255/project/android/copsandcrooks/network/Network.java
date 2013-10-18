@@ -19,7 +19,7 @@ public class Network {
 	public static final String DEFAULT_IP = "192.168.1.2";
 	
 	/**
-	 * Register the network classes.
+	 * Register the classes so they can be sent over a network.
 	 * @param endPoint
 	 */
 	static public void register(EndPoint endPoint) {
@@ -35,14 +35,14 @@ public class Network {
 		kryo.register(Role.class);
 		kryo.register(Pck5_Turns.class);
 		kryo.register(Turn.class);
-		kryo.register(Pck6_RequestTurns.class);
+		kryo.register(Pck6_ClientRequestTurns.class);
 		kryo.register(TilePath.class);
 		kryo.register(Point.class);
 		kryo.register(LinkedList.class);
 		kryo.register(PropertyChangeSupport.class);
 		kryo.register(HideoutChoice.class);
 		kryo.register(MoveType.class);
-		kryo.register(Pck8_StartGame.class);
+		kryo.register(Pck8_ClientStartGame.class);
 		kryo.register(Pck9_ClientEditedGame.class);
 		kryo.register(PawnItem.class);
 	}
@@ -95,12 +95,12 @@ public class Network {
 	}
 
 	/** Client request a list of turns */
-	public static class Pck6_RequestTurns extends Pck_ExistingGame{
+	public static class Pck6_ClientRequestTurns extends Pck_ExistingGame{
 		public int clientTurnID;
 	}
 
 	/** Client starts a game */
-	public static class Pck8_StartGame extends Pck_ExistingGame{}
+	public static class Pck8_ClientStartGame extends Pck_ExistingGame{}
 	
 	/** Client sends an edited game */
 	public static class Pck9_ClientEditedGame extends Packet {
@@ -108,5 +108,5 @@ public class Network {
 	}
 
 	/** Game has ended */
-	public static class Pck10_EndGame extends Pck_ExistingGame{}
+	public static class Pck10_ClientEndGame extends Pck_ExistingGame{}
 }
