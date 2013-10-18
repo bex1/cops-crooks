@@ -248,7 +248,7 @@ public class Player implements IPlayer, Serializable {
     				// The path passed the test -> move directly
     				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
-    				mediator.playerTurnDone(3f);
+    				mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
     				mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     				mediator.getCurrentTurn().setEndTile(metroStop);
     				return;
@@ -298,7 +298,7 @@ public class Player implements IPlayer, Serializable {
     	if(this.currentPawn instanceof Crook){
     		Crook crook = ((Crook)this.currentPawn);
     		if(crook.isInPrison() && diceResult!=Values.DICE_RESULT_TO_ESCAPE && crook.getTurnsInPrison() > 0){
-    			mediator.playerTurnDone(3f);
+    			mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
     			return;
     		}
     	}

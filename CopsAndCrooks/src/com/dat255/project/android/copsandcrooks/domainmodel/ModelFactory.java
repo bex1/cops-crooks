@@ -17,6 +17,7 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
+import com.dat255.project.android.copsandcrooks.utils.Values;
 
 // WILL be used to further encapsulate model.
 // The GameFactory accesses model from outside which limits encapsulation.
@@ -71,16 +72,16 @@ public class ModelFactory {
 						walkable[i][j] = new GetAwayTile(new Point(i, j), mediator);
 						break;
 					case 3: 	// According to the tileset case 3 is the Bank tiles containing 2000
-						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, 2000);
+						walkable[i][j] = new RobbableBuildingTile(new Point(i, j), mediator, Values.CASH_BANK_LOWEST);
 						break;
 					case 4: 	// According to the tileset case 4 is the Bank tiles containing 5000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 5000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, Values.CASH_BANK_LOW);
 						break;
 					case 5: 	// According to the tileset case 5 is the Bank tiles containing 10000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 10000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, Values.CASH_BANK_HIGH);
 						break;
 					case 6: 	// According to the tileset case 6 is the Bank tiles containing 20000
-						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, 20000);
+						walkable[i][j] = new  RobbableBuildingTile(new Point(i, j), mediator, Values.CASH_BANK_HIGHEST);
 						break;
 					case 7: 	// According to the tileset case 8 is the Travelagency tiles
 						TravelAgencyTile.createTravelAgency(new Point(i, j), mediator);
@@ -137,20 +138,20 @@ public class ModelFactory {
 				for (int j = 0; j < numberOfOfficers; j++) {
 					if (!isGameHosted) {
 						int k = rand.nextInt(listOfPolicestationtile.size() - 1);
-						pawns.add(new Officer(listOfPolicestationtile.get(k), mediator, 10 + j));
-						playerItem.addPawn(listOfPolicestationtile.get(k).getPosition(), 10 + j);
+						pawns.add(new Officer(listOfPolicestationtile.get(k), mediator, Values.ID_OFFICER + j));
+						playerItem.addPawn(listOfPolicestationtile.get(k).getPosition(), Values.ID_OFFICER + j);
 						listOfPolicestationtile.remove(k);
 					} else {
-						Point point = playerItem.getPawnItem(10 + j).position;
-						pawns.add(new Officer(walkable[point.x][point.y], mediator, 10 + j));
+						Point point = playerItem.getPawnItem(Values.ID_OFFICER + j).position;
+						pawns.add(new Officer(walkable[point.x][point.y], mediator, Values.ID_OFFICER + j));
 					}
 				}
 				if (!isGameHosted) {
-					pawns.add(new CopCar(policeCarStart, mediator, 20));
-					playerItem.addPawn(policeCarStart.getPosition(), 20);
+					pawns.add(new CopCar(policeCarStart, mediator, Values.ID_COP_CAR));
+					playerItem.addPawn(policeCarStart.getPosition(), Values.ID_COP_CAR);
 				} else {
-					Point point = playerItem.getPawnItem(20).position;
-					pawns.add(new CopCar(walkable[point.x][point.y], mediator, 20));
+					Point point = playerItem.getPawnItem(Values.ID_COP_CAR).position;
+					pawns.add(new CopCar(walkable[point.x][point.y], mediator, Values.ID_COP_CAR));
 				}
 				players.add(new Player(playerItem.getName(), pawns, Role.Cop, mediator, playerItem.getID()));
 
