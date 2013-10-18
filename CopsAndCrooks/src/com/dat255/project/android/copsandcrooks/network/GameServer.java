@@ -86,8 +86,8 @@ public class GameServer {
 					}
 					
 					// client requests a list of turns
-					else if(packet instanceof Pck6_RequestTurns){
-						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
+					else if(packet instanceof Pck6_ClientRequestTurns){
+						Pck6_ClientRequestTurns gamePck = ((Pck6_ClientRequestTurns)packet);
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
 						printMsg("Client #" + clientID + " has turn ID "+gamePck.clientTurnID);
 
@@ -113,8 +113,8 @@ public class GameServer {
 					}
 					
 					// client starts a game
-					else if(packet instanceof Pck8_StartGame){
-						Pck8_StartGame gamePck = ((Pck8_StartGame)packet);
+					else if(packet instanceof Pck8_ClientStartGame){
+						Pck8_ClientStartGame gamePck = ((Pck8_ClientStartGame)packet);
 						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
 						
 						for(GameItem gi : gameItems){
@@ -136,9 +136,9 @@ public class GameServer {
 					}
 
 					// client ends the game
-					else if(packet instanceof Pck10_EndGame){
+					else if(packet instanceof Pck10_ClientEndGame){
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == ((Pck10_EndGame) packet).gameID){
+							if(gameItems.get(i).getID() == ((Pck10_ClientEndGame) packet).gameID){
 								gameItems.remove(i);
 								// TODO Remove associated turns from this game when all clients have received last turn
 							}
