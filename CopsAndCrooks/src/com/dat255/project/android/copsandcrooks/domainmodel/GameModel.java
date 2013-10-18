@@ -28,33 +28,33 @@ public final class GameModel implements IObservable, Serializable{
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
-	
+
 	private boolean isChangingPlayer;
 	private float changePlayerTimer;
 	private float changePlayerDelay;
 	private int turnID;
-	
+
 	private Dice dice;
-	
+
 	// Added only because you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
 	private final Collection<TramLine> tramLines;
-	
+
 	private GameState state;
 	private Turn currentTurn;
 	private LinkedList<Turn> replayTurns;
-	
+
 	public static final String PROPERTY_GAME_ENDED = "GameEnded";
 	public static final String PROPERTY_GAMESTATE = "GameState";
-	
+
 	private final String gameName;
-	
+
 	public enum GameState {
 		Replay,
 		Playing,
 		Waiting,
 	}
-	
+
 	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, int diceResult) {
 		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID);
 		for(Player player: this.players){
@@ -62,7 +62,7 @@ public final class GameModel implements IObservable, Serializable{
 				break;
 			}
 		}
-		
+
 	}
 
 	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
@@ -85,12 +85,18 @@ public final class GameModel implements IObservable, Serializable{
 		this.turnID = turnID;
 		mediator.registerDice(Dice.getInstance());
 		mediator.registerGameModel(this);
-		
+
 		if(currentPlayer != null){
 			for(Player player: this.players){
 				if(player.getID() == currentPlayer.getID()){
 					this.currentPlayer = player;
 					break;
+				}
+			}
+		} else{ 
+			for (Player player : players) {
+				if (player.getPlayerRole() == Role.Cop) {
+					this.currentPlayer = player;
 				}
 			}
 		}
@@ -110,23 +116,16 @@ public final class GameModel implements IObservable, Serializable{
 		}
 		pcs = new PropertyChangeSupport(this);
 	}
-/**
- * Starts the game
- */
+	/**
+	 * Starts the game
+	 */
 	public void startGame(){
-		if(currentPlayer == null){
-			for (Player player : players) {
-				if (player.getPlayerRole() == Role.Cop) {
-					this.currentPlayer = player;
-				}
-			}
-		}
 		if (isLocalPlayersTurn()) {
 			state = GameState.Playing;
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
-	    	currentTurn.setEndTile(pawn.getCurrentTile());
+			currentTurn.setEndTile(pawn.getCurrentTile());
 			currentPlayer.updateState();
 		} else {
 			state = GameState.Waiting;
@@ -155,7 +154,7 @@ public final class GameModel implements IObservable, Serializable{
 	public void addReplayTurns(LinkedList<Turn> turns) {
 		if(turns==null || turns.size()==0)
 			return;
-		
+
 		this.replayTurns = turns;
 		state = GameState.Replay;
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
@@ -167,7 +166,7 @@ public final class GameModel implements IObservable, Serializable{
 		state = GameState.Replay;
 		replay(replayTurns.removeFirst());	
 	}
-	
+
 	private void replay(Turn turn) {
 		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
@@ -241,8 +240,8 @@ public final class GameModel implements IObservable, Serializable{
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
-	    	currentTurn.setEndTile(pawn.getCurrentTile());
-	    	currentTurn.setTurnID(turnID);
+			currentTurn.setEndTile(pawn.getCurrentTile());
+			currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				return;
@@ -335,12 +334,12 @@ public final class GameModel implements IObservable, Serializable{
 	public void addObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
 	}
-	
+
 	@Override
 	public void removeObserver(PropertyChangeListener l) {
 		pcs.addPropertyChangeListener(l);
 	}
-	
+
 	void hinderGetAway(IntelligenceAgencyTile intelligenceAgencyTile) {
 		if (intelligenceAgencyTile == null) {
 			throw new IllegalArgumentException("Intelligence Agency not allowed to be null");
@@ -372,7 +371,7 @@ public final class GameModel implements IObservable, Serializable{
 		}
 		return false;
 	}
-	
+
 	AbstractWalkableTile[][] getWalkabletiles(){
 		return walkable.clone();
 	}
@@ -391,11 +390,11 @@ public final class GameModel implements IObservable, Serializable{
 	boolean isCurrentPlayerOwnerOfPawn(AbstractPawn movable) {
 		return currentPlayer != null && currentPlayer.getPawns().contains(movable);
 	}
-	
+
 	int getDiceResults(){
 		return dice.getResult();
 	}
-	
+
 	private void incrementTurnID(){
 		turnID += 1;
 	}
@@ -414,7 +413,7 @@ public final class GameModel implements IObservable, Serializable{
 		return gameName +"";
 	}
 
-	
+
 	/**
 	 * 
 	 * @return - A String that is the id for this model
