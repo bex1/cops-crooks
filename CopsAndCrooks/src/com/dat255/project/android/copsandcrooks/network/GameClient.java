@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
 import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
@@ -76,7 +77,12 @@ public class GameClient{
 					// server sent a list of turns
 					if(pck instanceof Pck5_Turns){
 						System.out.println("Network: Received a list of turns.");
-						getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
+						if (getCurrentGameModel().getGameState() == GameState.Waiting) {
+							if(((Pck5_Turns) pck).turns.size() < getCurrentGameModel().getTurnID())
+								sendTurn(currentGameModel.getCurrentTurn());
+							else if(((Pck5_Turns) pck).turns.size() > getCurrentGameModel().getTurnID())
+								getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
+						}
 					}
 				}
 			}
@@ -164,7 +170,7 @@ public class GameClient{
 	 */
 	public void updateChosenGameItem(){
 		for(GameItem gameItem: gameItems){
-			if(gameItem.getID() == chosenGameItem.getID()){
+			if(gameItem.getID().equals(chosenGameItem.getID())){
 				chosenGameItem = gameItem;
 				break;
 			}
@@ -207,7 +213,7 @@ public class GameClient{
 	 * @param gameID
 	 * @param player
 	 */
-	public void joinGame(int gameID, PlayerItem player) {
+	public void joinGame(String gameID, PlayerItem player) {
 		if(client.isConnected()){
 			System.out.println("Network: Joining remote game");
 			Pck4_PlayerItem pck = new Pck4_PlayerItem();
