@@ -62,7 +62,7 @@ public class Network {
 	
 	/** Sent by the client upon connection */		
 	public static class Pck0_ClientHandshake extends Packet{
-		public String message;
+		public String playerName;
 	}
 
 	/** Handshake sent by the server */
