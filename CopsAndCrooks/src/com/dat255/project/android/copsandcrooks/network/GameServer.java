@@ -46,14 +46,14 @@ public class GameServer {
 
 					// client requested a list of game items
 					else if(packet instanceof Pck2_ClientRequestGames){
-						printMsg("Client #" + clientID + ": requesting list of games");
+//						printMsg("Client #" + clientID + ": requesting list of games");
 						
 						// send the games to the client
 						Pck3_GameItems pck = new Pck3_GameItems();
 						pck.gameItems = new ArrayList<GameItem>(gameItems);
 						packet.getConnection().sendTCP(pck);
 
-						printMsg("Client #" + clientID + ": sent list of games");
+//						printMsg("Client #" + clientID + ": sent list of games");
 				    }
 					
 					// client sent a created game
@@ -86,8 +86,8 @@ public class GameServer {
 					}
 					
 					// client requests a list of turns
-					else if(packet instanceof Pck6_RequestTurns){
-						Pck6_RequestTurns gamePck = ((Pck6_RequestTurns)packet);
+					else if(packet instanceof Pck6_ClientRequestTurns){
+						Pck6_ClientRequestTurns gamePck = ((Pck6_ClientRequestTurns)packet);
 						printMsg("Client #" + clientID + ": requested a list of turns of game: " + gamePck.gameID);
 						printMsg("Client #" + clientID + " has turn ID "+gamePck.clientTurnID);
 
@@ -97,11 +97,12 @@ public class GameServer {
 						}
 
 						// don't send empty lists
-						if(gamePck.clientTurnID==turns.get(gamePck.gameID).size()-1)
+						if(gamePck.clientTurnID >= turns.get(gamePck.gameID).size()-1)
 							return;
 
 						LinkedList<Turn> replayTurns = new LinkedList<Turn>();
-						for(int i=gamePck.clientTurnID; i<turns.get(gamePck.gameID).size(); i++)
+						
+						for(int i = gamePck.clientTurnID; i < turns.get(gamePck.gameID).size(); i++)
 							replayTurns.add(turns.get(gamePck.gameID).get(i));
 
 						Pck5_Turns responsePck = new Pck5_Turns();
@@ -113,8 +114,8 @@ public class GameServer {
 					}
 					
 					// client starts a game
-					else if(packet instanceof Pck8_StartGame){
-						Pck8_StartGame gamePck = ((Pck8_StartGame)packet);
+					else if(packet instanceof Pck8_ClientStartGame){
+						Pck8_ClientStartGame gamePck = ((Pck8_ClientStartGame)packet);
 						printMsg("Client #" + clientID + ": started game: " + gamePck.gameID);
 						
 						for(GameItem gi : gameItems){
@@ -136,9 +137,9 @@ public class GameServer {
 					}
 
 					// client ends the game
-					else if(packet instanceof Pck10_EndGame){
+					else if(packet instanceof Pck10_ClientEndGame){
 						for(int i = 0; i < gameItems.size(); i++){
-							if(gameItems.get(i).getID() == ((Pck10_EndGame) packet).gameID){
+							if(gameItems.get(i).getID() == ((Pck10_ClientEndGame) packet).gameID){
 								gameItems.remove(i);
 								// TODO Remove associated turns from this game when all clients have received last turn
 							}
