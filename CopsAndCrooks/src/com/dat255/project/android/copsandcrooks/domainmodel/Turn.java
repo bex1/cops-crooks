@@ -113,8 +113,8 @@ public class Turn implements Serializable{
 	 * Sets the ID of the pawn
 	 * @param pawnID the ID of the pawn
 	 */
-	public void setTurnID(int pawnID) {
-		this.pawnID = pawnID;
+	public void setTurnID(int turnID) {
+		this.turnID = turnID;
 	}
 	
 	/**
