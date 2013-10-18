@@ -83,6 +83,7 @@ public class GameBrowseActivity extends Activity {
 						if(pi.getID().equals(GameClient.getInstance().getClientID())){
 							//Check to see if the client has joined the game
 							inGame = true;
+							break;
 						}
 					}
 				}

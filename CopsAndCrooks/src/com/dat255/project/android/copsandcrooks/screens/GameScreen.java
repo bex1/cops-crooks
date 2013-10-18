@@ -27,6 +27,7 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
@@ -232,6 +233,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				}
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
 				ModelFactory.getInstance().deleteModelFile(model);
+				GameClient.getInstance().sendGameEnd();
 				gameEnded = true;
 				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 			}
