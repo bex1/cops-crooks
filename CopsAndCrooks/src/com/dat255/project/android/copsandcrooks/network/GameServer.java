@@ -32,8 +32,7 @@ public class GameServer {
 				if (msg instanceof Packet) {
 					Packet packet = (Packet)msg;
 					packet.setConnection(con);
-					int clientID = con.getID();
-					
+
 					// client sent a handshake
 					if(packet instanceof Pck0_ClientHandshake){
 						con.setName(((Pck0_ClientHandshake) packet).playerName);

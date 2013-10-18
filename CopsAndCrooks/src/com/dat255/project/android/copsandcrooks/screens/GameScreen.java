@@ -25,7 +25,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
-import com.dat255.project.android.copsandcrooks.domainmodel.Player;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager;
