@@ -56,7 +56,6 @@ public class HostActivity extends AbstractActivity {
 		hostGameButton = (Button) findViewById(R.id.hostGameButton);
 		
 		playerCapSeekBar.setOnSeekBarChangeListener(playerCapListener);
-		//gameNameEditText.setOnKeyListener(gameNameListener);
 		gameNameEditText.addTextChangedListener(textWatcher);
 		
 		hostGameButton.setClickable(false);
@@ -90,23 +89,6 @@ public class HostActivity extends AbstractActivity {
 			// TODO Auto-generated method stub
 		}
 	};
-	
-	/*public OnKeyListener gameNameListener = new OnKeyListener(){
-
-		@Override
-		public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
-			gameName = gameNameEditText.getText().toString();
-			if(!gameName.equals(null) && gameName.length() != 0){
-				canHostGame(gameName);
-			}else{
-				hostGameButton.setClickable(false);
-				hostGameButton.setEnabled(false);
-				showMessage("Enter a Game Name");
-			}		
-			return false;
-		}
-		
-	};*/
 	
 	private TextWatcher textWatcher = new TextWatcher() {
 		 
