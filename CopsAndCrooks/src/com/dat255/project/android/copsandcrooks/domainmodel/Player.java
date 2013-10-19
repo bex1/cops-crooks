@@ -288,9 +288,13 @@ public class Player implements IPlayer, Serializable {
     	// if so then the player isn't able to move unless rolling a six.
 		if(this.currentPawn instanceof Crook){
 			Crook crook = ((Crook)this.currentPawn);
-			if(crook.isInPrison() && diceResult!=Values.DICE_RESULT_TO_ESCAPE && crook.getTurnsInPrison() > 0){
-				mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
-				return;
+			if(crook.isInPrison() && crook.getTurnsInPrison() > 0){
+				if (diceResult!=Values.DICE_RESULT_TO_ESCAPE) {
+					mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
+					return;
+				} else {
+					crook.setWanted(true);
+				}
 			}
 		}
 		goByDice = true;

@@ -46,8 +46,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private HUDTable hudTable;
 	private ReplayTable replayTable;
 	private final GameFactory factory;
-	
-	private boolean gameEnded = false;
 
 	private final int mapWidth, mapHeight;
 
@@ -133,7 +131,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	public void dispose(){
 		MusicManager.getInstance().dispose();
 		SoundManager.getInstance().dispose();
-		if(!gameEnded)
+		if(!model.gameEnded())
 			ModelFactory.getInstance().saveModelToFile(model);
 		renderer.dispose();
 		mapToRender.dispose();
@@ -168,7 +166,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 			camera.setCameraPosition(toX, toY);
 
-			return false;
+			return true;
 		}
 
 		@Override
@@ -181,7 +179,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				camera.setCameraPosition(camera.position.x, camera.position.y);
 			}
 
-			return false;
+			return true;
 		}
 
 	};
@@ -200,7 +198,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	public void pause() {
 		super.pause();
 		System.out.println("********************Pause");
-		if(!gameEnded)
+		if(!model.gameEnded())
 			ModelFactory.getInstance().saveModelToFile(model);
 		if (camera != null) {
 			camPauseX = camera.position.x;
@@ -232,9 +230,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					break;
 				}
 			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				ModelFactory.getInstance().deleteModelFile(model);
 				GameClient.getInstance().sendGameEnd();
-				gameEnded = true;
+				ModelFactory.getInstance().deleteModelFile(model);
 				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 			}
 		} else if (currPlayer == source) {

@@ -58,7 +58,7 @@ final class PathFinder implements Serializable {
 			int stepsRemaining, int stepsToMove, AbstractWalkableTile currentTile, AbstractWalkableTile startTile, AbstractWalkableTile previousTile, Direction direction) {
 
 		if(stepsRemaining==0 || (previousTile != null && (currentTile instanceof HideoutTile || currentTile instanceof RobbableBuildingTile 
-				||(pawn.getPawnRole() == Role.Cop && mediator.isWantedCrookOn(currentTile))))){
+				|| currentTile instanceof GetAwayTile ||(pawn.getPawnRole() == Role.Cop && mediator.isWantedCrookOn(currentTile))))){
 			TilePath path = new TilePath();
 			path.addTileLast(currentTile);
 			List<TilePath> subPaths = new ArrayList<TilePath>();
