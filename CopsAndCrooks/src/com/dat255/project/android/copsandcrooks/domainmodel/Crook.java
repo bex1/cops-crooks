@@ -27,7 +27,6 @@ public class Crook extends AbstractWalkingPawn {
 	public Crook(AbstractWalkableTile tile, IMediator mediator, Wallet wallet, int id) {
 		super(tile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
 		this.wallet = wallet;
-		
 	}
 
 	/**

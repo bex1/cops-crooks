@@ -33,10 +33,10 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  *
  */
 public class MovableActor extends Image implements PropertyChangeListener {
-	private final IMovable pawn;
+	protected final IMovable pawn;
 	private final EnumMap<Animations, Animation> animations;
 	protected final TextureRegionDrawable currentDrawable;
-	private float animTimer;
+	protected float animTimer;
 	private Animations currentAnimation;
 	private GameCamera camera;
 	private final MovableActor thisActor;
@@ -121,10 +121,13 @@ public class MovableActor extends Image implements PropertyChangeListener {
 				}
 			} else if (property == IMovable.PROPERTY_IS_ACTIVE_PAWN) {
 				if (pawn.isActivePawn()) {
-					Point currentPos = pawn.getCurrentTile().getPosition();
-					float x = currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2);
-					float y = currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2);
-					this.addAction(new CameraMove(0, x, y));
+					IWalkableTile tile = pawn.getCurrentTile();
+					if (tile != null) {
+						Point currentPos = tile.getPosition();
+						float x = currentPos.x * Values.TILE_WIDTH - ((this.getWidth() - Values.TILE_WIDTH)/2);
+						float y = currentPos.y * Values.TILE_HEIGTH - ((this.getHeight() - Values.TILE_HEIGTH)/2);
+						this.addAction(new CameraMove(0, x, y));
+					}
 				} 
 			}
 		}
