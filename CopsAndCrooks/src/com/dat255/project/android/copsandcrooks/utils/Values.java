@@ -30,7 +30,7 @@ public class Values {
 
 	public static final int WALKING_PAWN_MOVE_FACTOR = 1;
 
-	public static final int MAX_DICE_ROLL = 10;
+	public static final int MAX_DICE_ROLL = 6;
 
 	public static final float ROLL_DELAY = 1.4f;
 
