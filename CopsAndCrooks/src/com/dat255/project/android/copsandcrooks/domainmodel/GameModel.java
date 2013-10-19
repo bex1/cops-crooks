@@ -33,6 +33,8 @@ public final class GameModel implements IObservable, Serializable{
 	private float changePlayerTimer;
 	private float changePlayerDelay;
 	private int turnID;
+	
+	private boolean gameEnded = false;
 
 	private Dice dice;
 
@@ -165,7 +167,8 @@ public final class GameModel implements IObservable, Serializable{
 	 */
 	public void replay() {
 		state = GameState.Replay;
-		if(replayTurns.size() != 0)
+		if(!replayTurns.isEmpty())
+			currentPlayer.updateState();
 			replay(replayTurns.removeFirst());
 	}
 
@@ -173,7 +176,7 @@ public final class GameModel implements IObservable, Serializable{
 		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
 		IWalkableTile end = walkable[turn.getEndTilePos().x][turn.getEndTilePos().y];
-		if (pawn != null && end != null) {
+		if (pawn != null) {
 			switch (turn.getMoveType()) {
 			case Metro:
 				if (end instanceof TramStopTile) {
@@ -220,6 +223,9 @@ public final class GameModel implements IObservable, Serializable{
 	}
 
 	private void changePlayer() {
+		if(checkIfGameEnded()) {
+			return;
+		}
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
@@ -228,15 +234,11 @@ public final class GameModel implements IObservable, Serializable{
 			// and all players are inactive (all crooks have escaped),
 			// currentPlayer is the same as before (police player).
 			// The game should end then.
-			currentPlayer.updateState();
-			if(currentPlayer==previousPlayer) {
-				GameClient.getInstance().sendTurn(getCurrentTurn());
-				endGame();
-			}
 		}while (!currentPlayer.isActive());
-		
 		if (playerClient == currentPlayer) {
+			System.out.println(0);
 			state = GameState.Playing;
+			currentPlayer.updateState();
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
 			currentTurn.setPawnID(pawn.getID());
@@ -245,16 +247,47 @@ public final class GameModel implements IObservable, Serializable{
 			}
 			currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
+				System.out.println(1);
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
+				state = GameState.Waiting;
+				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 				return;
 			}
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
 		} else if (state == GameState.Replay && replayTurns.size() != 0) {
+			currentPlayer.updateState();
 			replay(replayTurns.removeFirst());
+			if (checkIfGameEnded()) {
+				return;
+			}
 		} else {
 			state = GameState.Waiting;
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 		}
+	}
+	
+	private boolean checkIfGameEnded() {
+		int numberOfActivePlayers = 0;
+		for (Player player : players) {
+			if (player.isActive()) {
+				numberOfActivePlayers++;
+			}
+		}
+		if (numberOfActivePlayers < 2) {
+			this.currentTurn = new Turn();
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			currentTurn.setPawnID(pawn.getID());
+			if (pawn.getCurrentTile() != null) {
+				currentTurn.setEndTile(pawn.getCurrentTile());
+			}
+			currentTurn.setTurnID(turnID);
+			GameClient.getInstance().sendTurn(currentTurn);
+			state = GameState.Waiting;
+			gameEnded = true;
+			endGame();
+			return true;
+		}
+		return false;
 	}
 
 	private boolean isLocalPlayersTurn() {
@@ -435,5 +468,13 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns true if game has ended, false otherwise.
+	 * @return true if game has ended, false otherwise.
+	 */
+	public boolean gameEnded() {
+		return gameEnded;
 	}
 }
