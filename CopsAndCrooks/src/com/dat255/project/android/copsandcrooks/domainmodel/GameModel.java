@@ -57,7 +57,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, Turn currentTurn) {
+	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, Turn currentTurn, GameState state) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -80,7 +80,7 @@ public final class GameModel implements IObservable, Serializable{
 
 		if(currentTurn != null){
 			this.currentTurn = currentTurn;
-		}
+		} 
 		
 		if(currentPlayer != null){
 			for(Player player: this.players){
@@ -111,28 +111,36 @@ public final class GameModel implements IObservable, Serializable{
 			}
 		}
 		pcs = new PropertyChangeSupport(this);
+
+		if (state != null) {
+			this.state = state;
+		} else {
+			if (isLocalPlayersTurn()) {
+				this.state = GameState.Playing;
+				if (this.currentTurn == null) {
+					this.currentTurn = new Turn();
+					AbstractPawn pawn = this.currentPlayer.getCurrentPawn();
+					this.currentTurn.setPawnID(pawn.getID());
+					if (pawn.getCurrentTile() != null) {
+						this.currentTurn.setEndTile(pawn.getCurrentTile());
+					}
+					this.currentTurn.setTurnID(turnID);
+					this.currentPlayer.updateState();
+				}
+			} else {
+				this.state = GameState.Waiting;
+			}
+		}
 	}
 
 	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
-		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID, null);
+		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID, null, null);
 		
 	}
 	/**
 	 * Starts the game
 	 */
 	public void startGame(){
-		if (isLocalPlayersTurn()) {
-			state = GameState.Playing;
-			this.currentTurn = new Turn();
-			AbstractPawn pawn = currentPlayer.getCurrentPawn();
-			currentTurn.setPawnID(pawn.getID());
-			if (pawn.getCurrentTile() != null) {
-				currentTurn.setEndTile(pawn.getCurrentTile());
-			}
-			currentPlayer.updateState();
-		} else {
-			state = GameState.Waiting;
-		}
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
 	/**
