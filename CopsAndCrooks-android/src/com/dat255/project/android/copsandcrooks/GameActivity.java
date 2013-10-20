@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
 public class GameActivity extends AndroidApplication {
@@ -14,7 +15,7 @@ public class GameActivity extends AndroidApplication {
 	public static final String GAME = "game";
 
 	private CopsAndCrooks cops;
-	CommunicateTask turnUpdateTask ;
+	private CommunicateTask turnUpdateTask ;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,19 +45,20 @@ public class GameActivity extends AndroidApplication {
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 		this.turnUpdateTask.cancel(true);
-		super.onStop();
+		super.onPause();
 	}
 
 	@Override
-	protected void onStart() {
+	protected void onResume() {
+		GameClient.getInstance().setCurrentGameModel(cops.getModel());
 		turnUpdateTask = new CommunicateTask(this);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			turnUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new GameItem[0]);
 		else
 			turnUpdateTask.execute();
-		super.onStart();
+		super.onResume();
 	}
 	
 }

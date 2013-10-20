@@ -29,6 +29,7 @@ public class ArrestedTable extends Table {
 		} else {
 			isArrestedLabel = new Label(player.getName() + " was sentenced to lifetime", assets.getSkin());
 		}
+		isArrestedLabel.setFontScale(0.7f);
 		isArrestedLabel.setAlignment(Align.center);
 		isArrestedLabel.setColor(Color.BLACK);
 		add(isArrestedLabel);
@@ -38,7 +39,7 @@ public class ArrestedTable extends Table {
 	protected void setStage(Stage stage) {
 		super.setStage(stage);
 		
-		this.addAction(sequence(delay(1.5f), fadeOut(0.5f), Actions.removeActor()));
+		this.addAction(sequence(delay(2.5f), fadeOut(0.5f), Actions.removeActor()));
 	}
 
 }

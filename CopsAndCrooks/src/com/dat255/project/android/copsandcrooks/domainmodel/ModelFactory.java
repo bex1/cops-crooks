@@ -208,11 +208,11 @@ public class ModelFactory {
 		
 		// Get the old 2d array of tiles and creates an 2D array as big as the old
 		AbstractWalkableTile[][] oldWalkableTile = model.getWalkabletiles();
-		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[oldWalkableTile.length-1]
-				[oldWalkableTile[1].length-1];
+		AbstractWalkableTile[][] newWalkableTile = new AbstractWalkableTile[oldWalkableTile.length]
+				[oldWalkableTile[0].length];
 		
 		// Get All the metro lines and puts it in a array of size 3
-		TramLine[] oldMetroLines = new TramLine[model.getTramLines().size()-1];
+		TramLine[] oldMetroLines = new TramLine[model.getTramLines().size()];
 		oldMetroLines = model.getTramLines().toArray(oldMetroLines);
 		
 		// gets the old tramstop tiles arrays och creates 3 new tramstop to put them in with the new mediator
@@ -224,8 +224,8 @@ public class ModelFactory {
 		List<TramStopTile> stop3 = new ArrayList<TramStopTile>();
 		
 		//Loads all the tiles again to give them the new mediator
-		for(int i = 0 ; i <oldWalkableTile.length-1; i ++){
-			for(int j = 0; j < oldWalkableTile[i].length- 1; j ++){
+		for(int i = 0 ; i <oldWalkableTile.length; i ++){
+			for(int j = 0; j < oldWalkableTile[i].length; j ++){
 				if(oldWalkableTile[i][j] instanceof RoadTile){
 					newWalkableTile[i][j] = new RoadTile(new Point(i, j), mediator);
 				}else if(oldWalkableTile[i][j] instanceof GetAwayTile){
@@ -292,7 +292,7 @@ public class ModelFactory {
 		}
 		System.out.println(model.getDiceResults());
 		new PathFinder((AbstractWalkableTile[][]) newWalkableTile, mediator, newTramLines);
-		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getCurrentTurn());
+		return new GameModel(mediator, playerClient, currentPlayer, newPlayers, newWalkableTile, newTramLines, gameName, model.getID(), model.getTurnID(), model.getCurrentTurn(), model.getGameState());
 	}
 	
 	/**

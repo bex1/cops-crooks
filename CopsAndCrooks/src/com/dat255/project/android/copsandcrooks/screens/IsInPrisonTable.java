@@ -27,6 +27,7 @@ public class IsInPrisonTable extends Table {
 																" turns\nroll a " +
 																Values.DICE_RESULT_TO_ESCAPE + 
 																" to escape", assets.getSkin());
+		isInPrisonLabel.setFontScale(0.7f);
 		isInPrisonLabel.setAlignment(Align.center);
 		isInPrisonLabel.setColor(Color.BLACK);
 		add(isInPrisonLabel);
@@ -36,6 +37,6 @@ public class IsInPrisonTable extends Table {
 	protected void setStage(Stage stage) {
 		super.setStage(stage);
 		
-		this.addAction(sequence(delay(1.5f), fadeOut(0.5f), Actions.removeActor()));
+		this.addAction(sequence(delay(2.5f), fadeOut(0.5f), Actions.removeActor()));
 	}
 }
