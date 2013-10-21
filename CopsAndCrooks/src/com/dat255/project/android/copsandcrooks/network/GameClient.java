@@ -78,11 +78,17 @@ public class GameClient{
 					if(pck instanceof Pck5_Turns){
 						System.out.println("Network: Received a list of turns.");
 						System.out.println(((Pck5_Turns) pck).gameTurns + "=" + getCurrentGameModel().getTurnID());
-						if (getCurrentGameModel().getGameState() == GameState.Waiting) {
-							if(((Pck5_Turns) pck).gameTurns > getCurrentGameModel().getTurnID())
+						GameModel game = getCurrentGameModel();
+						GameState state = game.getGameState();
+						int turnID = game.getTurnID();
+						if (state == GameState.Waiting || state == GameState.Ended) {
+							if(((Pck5_Turns) pck).gameTurns > turnID)
 								getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
-							else if(((Pck5_Turns) pck).gameTurns < getCurrentGameModel().getTurnID())
-								sendTurn(getCurrentGameModel().getCurrentTurn());
+							else if(((Pck5_Turns) pck).gameTurns < turnID)
+								sendTurn(game.getCurrentTurn());
+							if (state == GameState.Ended) {
+								 sendGameEnd();
+							}
 						}
 					}
 				}

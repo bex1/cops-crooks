@@ -236,11 +236,12 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 				case Replay:
 					hudStage.addActor(replayTable);
 					break;
+				case Ended:
+					GameClient.getInstance().sendGameEnd();
+					ModelFactory.getInstance().deleteModelFile(model);
+					game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
+					break;
 				}
-			} else if (property == GameModel.PROPERTY_GAME_ENDED) {
-				GameClient.getInstance().sendGameEnd();
-				ModelFactory.getInstance().deleteModelFile(model);
-				game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 			}
 		} else if (currPlayer == source) {
 

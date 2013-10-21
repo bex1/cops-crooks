@@ -19,9 +19,6 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
-// WILL be used to further encapsulate model.
-// The GameFactory accesses model from outside which limits encapsulation.
-// It should instead be connected to this factory to get its model instances.
 /**
  * A crook pawn in the game Cops&Crooks.
  * 
