@@ -13,7 +13,11 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 /**
- * A crook pawn in the game Cops&Crooks.
+ * The game model in cops & crooks.
+ * 
+ * Note that all instances in the domainmodel can only be instantiated via the modelfactory outside of the module.
+ * The functionality of the domainmodel instances are limited via public API (mostly interfaces), to only give the view and control
+ * the access they need and secure the state of the model instances.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
@@ -34,8 +38,6 @@ public final class GameModel implements IObservable{
 	private float changePlayerTimer;
 	private float changePlayerDelay;
 	private int turnID;
-	
-	private boolean gameEnded;
 
 	// Added only because you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
@@ -45,7 +47,6 @@ public final class GameModel implements IObservable{
 	private Turn currentTurn;
 	private LinkedList<Turn> replayTurns;
 
-	public static final String PROPERTY_GAME_ENDED = "GameEnded";
 	public static final String PROPERTY_GAMESTATE = "GameState";
 
 	private final String gameName;
@@ -55,9 +56,11 @@ public final class GameModel implements IObservable{
 		Replay,
 		Playing,
 		Waiting,
+		Ended,
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, final Collection<MetroLine> metroLines, final Dice dice, String gameName, String id) {
+	GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, 
+			  final Collection<MetroLine> metroLines, final Dice dice, String gameName, String id) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -274,8 +277,6 @@ public final class GameModel implements IObservable{
 			}
 			currentTurn.setTurnID(turnID);
 			GameClient.getInstance().sendTurn(currentTurn);
-			state = GameState.Waiting;
-			gameEnded = true;
 			endGame();
 			return true;
 		}
@@ -301,8 +302,10 @@ public final class GameModel implements IObservable{
 	}
 
 	private void endGame(){
-		pcs.firePropertyChange(PROPERTY_GAME_ENDED, null, currentPlayer);
+		state = GameState.Ended;
+		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
+	
 	/**
 	 * Returns the current player
 	 * @return the current player
@@ -463,7 +466,7 @@ public final class GameModel implements IObservable{
 	 * @return true if game has ended, false otherwise.
 	 */
 	public boolean gameEnded() {
-		return gameEnded;
+		return state == GameState.Ended;
 	}
 
 	public Dice getDice() {
