@@ -1,13 +1,14 @@
 package com.dat255.project.android.copsandcrooks.utils;
 
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 
 /**
  * Interface allowing registering listeners for changes in state.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public interface IObservable {
+public interface IObservable extends Serializable {
     
         /**
          * Add a PropertyChangeListener to the listener list. The listener is registered for all properties. 

@@ -19,7 +19,7 @@ import com.dat255.project.android.copsandcrooks.screens.Assets;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public class CopActor extends MovableActor{
+public class CopActor extends PawnActor{
 	
 	/**
 	 * Inits a CopActor.

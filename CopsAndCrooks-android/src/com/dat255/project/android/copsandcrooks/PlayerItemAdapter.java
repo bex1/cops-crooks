@@ -22,7 +22,7 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
  */
 public class PlayerItemAdapter extends BaseAdapter{
 	
-	Context context;
+	private Context context;
 	private static LayoutInflater inflater = null;
 	private List<PlayerItem> data;
 

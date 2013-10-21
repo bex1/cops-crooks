@@ -20,7 +20,7 @@ import com.dat255.project.android.copsandcrooks.network.GameItem;
  */
 public class GameItemAdapter extends BaseAdapter{
 	
-	Context context;
+	private Context context;
 	private static LayoutInflater inflater = null;
 	private List<GameItem> data;
 

@@ -25,12 +25,10 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	 * Create a new hideout.
 	 * @param position the hideout's position
 	 */
-	HideoutTile(Point position, Map<Crook, Integer> storedCash,IMediator mediator) {
+	HideoutTile(Point position, IMediator mediator) {
 		super(position, mediator);
-		if(storedCash != null)
-			this.storedCash = storedCash;
-		else
-			this.storedCash = new HashMap<Crook, Integer>();
+
+		this.storedCash = new HashMap<Crook, Integer>();
 
 		pawnTypes.add(PawnType.Crook);
 	}
@@ -42,7 +40,7 @@ public class HideoutTile extends AbstractWalkableTile implements IInteractiveTil
 	}
 
 	@Override
-	public void interact(IMovable target) {
+	public void interact(IPawn target) {
 		//this needs to be listened to by something
 		pcs.firePropertyChange(PROPERTY_HIDEOUT_INTERACT, null, target);
 		if(target instanceof Crook){

@@ -65,21 +65,20 @@ public class CopsAndCrooks extends Game {
         fpsLogger = new FPSLogger();
         assets = GameFactory.getInstance().getAssets();
         if (game != null) {
-        	game = ModelFactory.getInstance().loadLocalGameModel(game);
         	setScreen(GameFactory.getInstance().loadGameScreen(game, this));
         } else {
         	GameItem gameToPlay = GameClient.getInstance().getChosenGameItem();
     		GameFactory factory = GameFactory.getInstance();
     		ModelFactory modelFactory = ModelFactory.getInstance();
     		if(!gameToPlay.hasGameStarted()){
-    			System.out.println("host skapar ett spela");
+    			// Clients hosts a game
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), false);
     		}else if(gameToPlay.hasGameStarted() && !modelFactory.hasLoadedThisGameModel(gameToPlay)){
-    			System.out.println("spelare går med i ett spela för första gången");
+    			// Client joins a hosted game
     			game = modelFactory.loadGameModel(gameToPlay, factory.getInteract(), true);
     		}else if(gameToPlay.hasGameStarted() && modelFactory.hasLoadedThisGameModel(gameToPlay)){
-    			System.out.println("detta såelet har jag sparat lokalt!!!!!");
-    			game = modelFactory.loadLocalGameModel(modelFactory.loadModelFromFile(gameToPlay.getName()));
+    			// Localy loaded game
+    			game = modelFactory.loadModelFromFile(gameToPlay.getName());
     		}else{
     			assert false;
     			game = null;

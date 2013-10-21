@@ -16,7 +16,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class Player implements IPlayer, Serializable {
+public class Player implements IPlayer {
 	private final IMediator mediator;
 
 	private final List<AbstractPawn> pawns;
@@ -236,7 +236,7 @@ public class Player implements IPlayer, Serializable {
     }
     
     @Override
-    public void chooseMetroStop(TramStopTile metroStop){
+    public void chooseMetroStop(MetroStopTile metroStop){
     	if (possiblePaths != null && goByMetro) {
     		for (TilePath path : possiblePaths) {
     			if (path.contains(metroStop)) {
@@ -291,6 +291,7 @@ public class Player implements IPlayer, Serializable {
 			if(crook.isInPrison() && crook.getTurnsInPrison() > 0){
 				if (diceResult!=Values.DICE_RESULT_TO_ESCAPE) {
 					mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_IN_PRISON);
+					mediator.getCurrentTurn().setEscapeFromPrison(true);
 					return;
 				} else {
 					crook.setWanted(true);

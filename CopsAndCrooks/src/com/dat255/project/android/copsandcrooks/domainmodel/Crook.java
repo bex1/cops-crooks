@@ -21,12 +21,8 @@ public class Crook extends AbstractWalkingPawn {
 	public static final String PROPERTY_TURNS_IN_PRISON = "TurnsInPrison";
 	
 	Crook(AbstractWalkableTile startTile, IMediator mediator, int id) {
-		this(startTile, mediator, new Wallet(), id);
-	}
-	
-	public Crook(AbstractWalkableTile tile, IMediator mediator, Wallet wallet, int id) {
-		super(tile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
-		this.wallet = wallet;
+		super(startTile, Role.Crook, PawnType.Crook, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
+		this.wallet = new Wallet();
 	}
 
 	/**
@@ -77,7 +73,7 @@ public class Crook extends AbstractWalkingPawn {
 	}
 
 	@Override
-	public void collisionAfterMove(IMovable pawn) {
+	public void collisionAfterMove(IPawn pawn) {
 		if (!(currentTile instanceof HideoutTile && pawn instanceof Crook)) {
 			// Should not happen, crooks can only move to an occupied tile when its an Hideout.
 			assert false;

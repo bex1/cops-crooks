@@ -45,8 +45,7 @@ public class TravelAgencyTileTest {
 
 	@Test
 	public void testRobBuilding(){
-		TravelAgencyTile.createTravelAgency(new Point(), new Mediator(), 0);
-		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
+		TravelAgencyTile travelAgency = new TravelAgencyTile(new Point(), new Mediator());
 		// Reset to avoid failure if other tests have been run before,
 		// since TravelAgencyTile is singleton
 		travelAgency.setValue(0);
@@ -65,8 +64,7 @@ public class TravelAgencyTileTest {
 	
 	@Test
 	public void testAddCash(){
-		TravelAgencyTile.createTravelAgency(new Point(), new Mediator(), 0);
-		TravelAgencyTile travelAgency = TravelAgencyTile.getInstance();
+		TravelAgencyTile travelAgency = new TravelAgencyTile(new Point(), new Mediator());
 		//Default value should be zero
 		travelAgency.addCash(5000);
 		

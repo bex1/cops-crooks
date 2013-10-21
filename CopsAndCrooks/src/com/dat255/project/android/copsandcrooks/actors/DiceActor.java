@@ -22,6 +22,15 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
+/**
+ * A visual actor for the dice in the game Cops&Crooks.
+ * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class DiceActor extends Image implements PropertyChangeListener{
 	private final Animation animation;
 	private final Dice dice;

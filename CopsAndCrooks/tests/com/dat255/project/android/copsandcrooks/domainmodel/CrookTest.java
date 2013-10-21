@@ -94,7 +94,7 @@ public class CrookTest {
 	}
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#collisionAfterMove(com.dat255.project.android.copsandcrooks.domainmodel.IMovable)}.
+	 * Test method for {@link com.dat255.project.android.copsandcrooks.domainmodel.Crook#collisionAfterMove(com.dat255.project.android.copsandcrooks.domainmodel.IPawn)}.
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
@@ -140,7 +140,7 @@ public class CrookTest {
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IPawn.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});

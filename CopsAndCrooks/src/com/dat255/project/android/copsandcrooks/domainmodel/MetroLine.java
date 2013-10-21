@@ -9,11 +9,11 @@ import java.util.List;
  * @author Grupp 25, course DAT255 at Chalmers Uni.
  *
  */
-public class TramLine implements Serializable{
+public class MetroLine implements Serializable {
 	
-	private List<TramStopTile> tramLine;
+	private List<MetroStopTile> tramLine;
 
-	TramLine(List<TramStopTile> tramLine){
+	MetroLine(List<MetroStopTile> tramLine){
 		this.tramLine = tramLine;
 	}
 	
@@ -27,7 +27,7 @@ public class TramLine implements Serializable{
 	 */
 	TilePath getPossibleStops(){
 		TilePath path = new TilePath();
-		for(TramStopTile stopTile: tramLine){
+		for(MetroStopTile stopTile: tramLine){
 			if(!stopTile.isOccupied()){
 				path.addTileLast(stopTile);
 			}
@@ -35,7 +35,7 @@ public class TramLine implements Serializable{
 		return path;
 	}
 	
-	List<TramStopTile> getTramStops(){
+	List<MetroStopTile> getTramStops(){
 		return tramLine;
 	}
 	

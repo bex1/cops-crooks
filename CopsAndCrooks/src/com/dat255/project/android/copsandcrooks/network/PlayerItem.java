@@ -12,7 +12,7 @@ public class PlayerItem implements Serializable{
 	private final String name;
 	private Role role;
 	private final String playerID;
-	private List<PawnItem> pawns = new ArrayList<PawnItem>();
+	private final List<PawnItem> pawns = new ArrayList<PawnItem>();
 	
 	public PlayerItem(String name, String playerID) {
 		this.name = name;

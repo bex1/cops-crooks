@@ -19,7 +19,7 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class TilePath implements IObservable, Serializable {
+public final class TilePath implements IObservable{
 
 	private final LinkedList<AbstractWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);

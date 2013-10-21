@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,28 +18,28 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class GameModel implements IObservable, Serializable{
+public final class GameModel implements IObservable{
 
 	private final String id;
 	private final List<Player> players;
 	private final List<PoliceStationTile> policeStationTiles;
 	private final List<HideoutTile> hideoutTiles;
+	private final List<TravelAgencyTile> travelAgencyTiles;
 	private Player currentPlayer;
 	private final Player playerClient;
 	private final PropertyChangeSupport pcs;
+	private final Dice dice;
 
 	private boolean isChangingPlayer;
 	private float changePlayerTimer;
 	private float changePlayerDelay;
 	private int turnID;
 	
-	private boolean gameEnded = false;
-
-	private Dice dice;
+	private boolean gameEnded;
 
 	// Added only because you need to be able to get them when you load a hosted game
 	private final AbstractWalkableTile[][] walkable;
-	private final Collection<TramLine> tramLines;
+	private final Collection<MetroLine> metroLines;
 
 	private GameState state;
 	private Turn currentTurn;
@@ -50,6 +49,7 @@ public final class GameModel implements IObservable, Serializable{
 	public static final String PROPERTY_GAMESTATE = "GameState";
 
 	private final String gameName;
+	
 
 	public enum GameState {
 		Replay,
@@ -57,7 +57,7 @@ public final class GameModel implements IObservable, Serializable{
 		Waiting,
 	}
 
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID, Turn currentTurn, GameState state) {
+	GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, final Collection<MetroLine> metroLines, final Dice dice, String gameName, String id) {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (players == null || players.isEmpty())
@@ -71,72 +71,53 @@ public final class GameModel implements IObservable, Serializable{
 		this.playerClient = playerClient;
 		this.players = players;
 		this.walkable = tiles;
-		this.tramLines = tramLines;
-		this.dice = Dice.getInstance();
+		this.metroLines = metroLines;
+		this.dice = dice;
 		this.id = id;
-		this.turnID = turnID;
-		mediator.registerDice(Dice.getInstance());
+		this.pcs = new PropertyChangeSupport(this);
 		mediator.registerGameModel(this);
-
-		if(currentTurn != null){
-			this.currentTurn = currentTurn;
-		} 
 		
-		if(currentPlayer != null){
-			for(Player player: this.players){
-				if(player.getID() == currentPlayer.getID()){
-					this.currentPlayer = player;
-					break;
-				}
-			}
-		} else{ 
-			for (Player player : players) {
-				if (player.getPlayerRole() == Role.Cop) {
-					this.currentPlayer = player;
-				}
+		for (Player player : players) {
+			if (player.getPlayerRole() == Role.Cop) {
+				this.currentPlayer = player;
 			}
 		}
 
 		policeStationTiles = new ArrayList<PoliceStationTile>();
 		hideoutTiles = new ArrayList<HideoutTile>();
+		travelAgencyTiles = new ArrayList<TravelAgencyTile>();
 
 		// Extract police station tiles
 		for (IWalkableTile[] tileArray : tiles) {
 			for (IWalkableTile tile : tileArray) {
 				if (tile instanceof PoliceStationTile) {
 					policeStationTiles.add((PoliceStationTile)tile);
-				} else if (tile instanceof HideoutTile){
+				} else if (tile instanceof HideoutTile) {
 					hideoutTiles.add((HideoutTile)tile);
+				} else if (tile instanceof TravelAgencyTile) {
+					travelAgencyTiles.add((TravelAgencyTile)tile);
 				}
 			}
 		}
-		pcs = new PropertyChangeSupport(this);
-
-		if (state != null) {
-			this.state = state;
-		} else {
-			if (isLocalPlayersTurn()) {
-				this.state = GameState.Playing;
-				if (this.currentTurn == null) {
-					this.currentTurn = new Turn();
-					AbstractPawn pawn = this.currentPlayer.getCurrentPawn();
-					this.currentTurn.setPawnID(pawn.getID());
-					if (pawn.getCurrentTile() != null) {
-						this.currentTurn.setEndTile(pawn.getCurrentTile());
-					}
-					this.currentTurn.setTurnID(turnID);
-					this.currentPlayer.updateState();
-				}
-			} else {
-				this.state = GameState.Waiting;
-			}
-		}
-	}
-
-	GameModel(final IMediator mediator, final Player playerClient, final Player currentPlayer, final List<Player> players, final AbstractWalkableTile[][] tiles, Collection<TramLine> tramLines, String gameName, String id, int turnID) {
-		this(mediator, playerClient, currentPlayer ,players, tiles, tramLines, gameName, id, turnID, null, null);
 		
+
+		if (isLocalPlayersTurn()) {
+			this.state = GameState.Playing;
+			if (this.currentTurn == null) {
+				this.currentTurn = new Turn();
+				AbstractPawn pawn = this.currentPlayer.getCurrentPawn();
+				this.currentTurn.setPawnID(pawn.getID());
+				if (pawn.getCurrentTile() != null) {
+					this.currentTurn.setEndTile(pawn.getCurrentTile());
+				}
+				this.currentTurn.setTurnID(turnID);
+				this.currentPlayer.updateState();
+			}
+		} else {
+			this.state = GameState.Waiting;
+		}
 	}
+
 	/**
 	 * Starts the game
 	 */
@@ -183,12 +164,16 @@ public final class GameModel implements IObservable, Serializable{
 	private void replay(Turn turn) {
 		this.currentTurn = turn;
 		AbstractPawn pawn = findPawnByID(turn.getPawnID());
+		if (turn.didEscapeFromPrison() && pawn instanceof Crook) {
+			Crook crook = (Crook)pawn;
+			crook.setWanted(true);
+		}
 		IWalkableTile end = walkable[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null) {
 			switch (turn.getMoveType()) {
 			case Metro:
-				if (end instanceof TramStopTile) {
-					pawn.moveByTram((TramStopTile)end);
+				if (end instanceof MetroStopTile) {
+					pawn.moveByTram((MetroStopTile)end);
 					nextPlayer(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
 				}
 				break;
@@ -225,7 +210,6 @@ public final class GameModel implements IObservable, Serializable{
 		} else {
 			currentPlayer.getCurrentPawn().setIsActivePawn(false);
 			changePlayer();
-			dice.setResult(-1);
 		}
 		incrementTurnID();
 	}
@@ -419,8 +403,8 @@ public final class GameModel implements IObservable, Serializable{
 		return walkable.clone();
 	}
 
-	Collection<TramLine> getTramLines() {
-		return Collections.unmodifiableCollection(tramLines);
+	Collection<MetroLine> getTramLines() {
+		return Collections.unmodifiableCollection(metroLines);
 	}
 	/**
 	 * Returns all of the hideout tiles
@@ -432,10 +416,6 @@ public final class GameModel implements IObservable, Serializable{
 
 	boolean isCurrentPlayerOwnerOfPawn(AbstractPawn movable) {
 		return currentPlayer != null && currentPlayer.getPawns().contains(movable);
-	}
-
-	int getDiceResults(){
-		return dice.getResult();
 	}
 
 	private void incrementTurnID(){
@@ -469,7 +449,7 @@ public final class GameModel implements IObservable, Serializable{
 	 * @param pawn - the pawn to find the owner to.
 	 * @return the player that has the pawn
 	 */
-	public IPlayer getPlayerFor(IMovable pawn) {
+	public IPlayer getPlayerFor(IPawn pawn) {
 		for (IPlayer player : players) {
 			if (player.getPawns().contains(pawn)) {
 				return player;
@@ -484,5 +464,15 @@ public final class GameModel implements IObservable, Serializable{
 	 */
 	public boolean gameEnded() {
 		return gameEnded;
+	}
+
+	public Dice getDice() {
+		return dice;
+	}
+
+	void addCashToTravelAgency(int cash) {
+		for (TravelAgencyTile tile : travelAgencyTiles) {
+			tile.addCash(cash);
+		}
 	}
 }

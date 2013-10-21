@@ -7,7 +7,12 @@ import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
 /**
- * The base class for all game screens.
+ * This class is and abstraction of a screen, with the purpose to remove duplicated code between the screens.
+ * 
+ * Also makes it easier to implement more screens.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
  */
 public abstract class AbstractScreen implements Screen {
 

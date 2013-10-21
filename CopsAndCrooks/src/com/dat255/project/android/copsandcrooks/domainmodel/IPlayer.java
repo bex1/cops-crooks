@@ -21,14 +21,14 @@ public interface IPlayer extends IObservable {
 	 * 
 	 * @return an unmodifiable collection of the pawns which the player controls.
 	 */
-	Collection<? extends IMovable> getPawns();
+	Collection<? extends IPawn> getPawns();
 
 	/**
 	 * Returns the current pawn of the player.
 	 * 
 	 * @return the current pawn of the player.
 	 */
-	IMovable getCurrentPawn();
+	IPawn getCurrentPawn();
 
 	/**
 	 * Returns the name of the player.
@@ -100,7 +100,7 @@ public interface IPlayer extends IObservable {
 	 * 
 	 * @param metroStop the metroStop that the selected pawn shall move to.
 	 */
-	void chooseMetroStop(TramStopTile metroStop);
+	void chooseMetroStop(MetroStopTile metroStop);
 
 	/**
 	 * Sets whether the player is active or not,

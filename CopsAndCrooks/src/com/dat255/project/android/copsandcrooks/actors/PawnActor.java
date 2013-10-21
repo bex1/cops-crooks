@@ -1,6 +1,7 @@
 package com.dat255.project.android.copsandcrooks.actors;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
@@ -20,31 +21,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.dat255.project.android.copsandcrooks.domainmodel.Direction;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.screens.GameCamera;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
+
 /**
- * This class represents an abstract pawn in the game Cops&Crooks.
+ * A visual actor for pawns in the game Cops&Crooks.
+ * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
- *
  */
-public class MovableActor extends Image implements PropertyChangeListener {
-	protected final IMovable pawn;
+public class PawnActor extends Image implements PropertyChangeListener {
+	protected final IPawn pawn;
 	private final EnumMap<Animations, Animation> animations;
 	protected final TextureRegionDrawable currentDrawable;
 	protected float animTimer;
 	private Animations currentAnimation;
 	private GameCamera camera;
-	private final MovableActor thisActor;
+	private final PawnActor thisActor;
 	private Image selectedBackground;
 	protected final Assets assets;
 	
-	
-
 	public enum Animations{
 		IDLE_ANIM,
 		MOVE_NORTH_ANIM,
@@ -53,7 +56,7 @@ public class MovableActor extends Image implements PropertyChangeListener {
 		MOVE_SOUTH_ANIM,
 	}
 
-	public MovableActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final IMovable pawn, 
+	public PawnActor(final Assets assets, final TextureRegionDrawable drawable, final Scaling scaling, final IPawn pawn, 
 			final EnumMap<Animations, Animation> animations){
 		super(drawable, scaling);
 		this.pawn = pawn;
@@ -92,8 +95,6 @@ public class MovableActor extends Image implements PropertyChangeListener {
 			selectedBackground.setPosition(getX(), getY());
 			selectedBackground.draw(batch, parentAlpha);
 		} 
-
-			
 		super.draw(batch, parentAlpha);
 	}
 
@@ -102,24 +103,22 @@ public class MovableActor extends Image implements PropertyChangeListener {
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if (evt.getSource() == this.pawn) {
 			String property = evt.getPropertyName();
-			if (property == IMovable.PROPERTY_NEXT_TILE) {
+			if (property == IPawn.PROPERTY_NEXT_TILE) {
 				animateWalk();
-			} else if (property == IMovable.PROPERTY_CURRENT_TILE) {
+			} else if (property == IPawn.PROPERTY_CURRENT_TILE) {
 				if (!pawn.isMoving()) {
 					moveDirectly();
 				}
-			} else if (property == IMovable.PROPERTY_IS_MOVING) {
+			} else if (property == IPawn.PROPERTY_IS_MOVING) {
 				if (!pawn.isMoving()) {
 					animTimer = 0;
 					currentAnimation = Animations.IDLE_ANIM;
 				} 
-			} else if (property == IMovable.PROPERTY_IS_PLAYING) {
-				// Ofc u still have to check that the property was changed to what u wanted....
-				// As a visual element u dont know how the model was implemented.. Please dont remove these types of safety checks
+			} else if (property == IPawn.PROPERTY_IS_PLAYING) {
 				if (!pawn.isPlaying()) {
 					this.addAction(sequence(fadeOut(1f), removeActor()));
 				}
-			} else if (property == IMovable.PROPERTY_IS_ACTIVE_PAWN) {
+			} else if (property == IPawn.PROPERTY_IS_ACTIVE_PAWN) {
 				if (pawn.isActivePawn()) {
 					IWalkableTile tile = pawn.getCurrentTile();
 					if (tile != null) {
@@ -131,7 +130,6 @@ public class MovableActor extends Image implements PropertyChangeListener {
 				} 
 			}
 		}
-
 	}
 	
 	public void refresh() {

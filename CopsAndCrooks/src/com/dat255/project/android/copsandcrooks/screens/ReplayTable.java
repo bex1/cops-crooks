@@ -6,6 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 
+/**
+ * The replay table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class ReplayTable extends Table{
 	
 	public ReplayTable(final Assets assets, final GameModel model) {

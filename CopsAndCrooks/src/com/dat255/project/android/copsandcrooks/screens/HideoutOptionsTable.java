@@ -18,6 +18,16 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
+/**
+ * The hideout options table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class HideoutOptionsTable extends Table implements PropertyChangeListener {
 	
 	private final HideoutTile hideout;

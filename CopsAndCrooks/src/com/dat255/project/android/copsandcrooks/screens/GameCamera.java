@@ -3,6 +3,14 @@ package com.dat255.project.android.copsandcrooks.screens;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
+/**
+ * The game camera of cops and crooks.
+ * 
+ * It is an orthographic camera which always makes sure that it stays within the map.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class GameCamera extends OrthographicCamera {
 	private final int mapWidth, mapHeight;
 	

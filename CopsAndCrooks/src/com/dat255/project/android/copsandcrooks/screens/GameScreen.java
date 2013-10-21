@@ -18,11 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
-import com.dat255.project.android.copsandcrooks.actors.MovableActor;
+import com.dat255.project.android.copsandcrooks.actors.PawnActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
@@ -33,6 +33,14 @@ import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooks
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
+/**
+ * The game screen of cops and crooks. 
+ * 
+ * Renders itself using passive MVC according to the state of the model.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class GameScreen extends AbstractScreen implements PropertyChangeListener{
 
 	private OrthogonalTiledMapRenderer renderer;
@@ -41,7 +49,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 	private final TiledMap mapToRender;
 	private final Stage hudStage;
 
-	private MoveByDiceOrMetroTable moveByDiceOrMetro;
+	private MoveSelectTable moveByDiceOrMetro;
 	private MoveByDiceTable moveByDice;
 	private HUDTable hudTable;
 	private ReplayTable replayTable;
@@ -64,7 +72,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		model.addObserver(this);
 		for(IPlayer player : model.getPlayers()){
 			player.addObserver(this);
-			for (IMovable pawn : player.getPawns()) {
+			for (IPawn pawn : player.getPawns()) {
 				pawn.addObserver(this);
 			}
 		}
@@ -78,7 +86,7 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 
 	private void initGuiElements() {
 		moveByDice = new MoveByDiceTable(assets, model, hudStage);
-		moveByDiceOrMetro = new MoveByDiceOrMetroTable(assets, model);
+		moveByDiceOrMetro = new MoveSelectTable(assets, model);
 		hudTable = new HUDTable(assets, model.getPlayerClient(), model, hudStage, model.getPlayers());
 		replayTable = new ReplayTable(assets, model);
 	}
@@ -107,8 +115,8 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		camera = new GameCamera(mapWidth, mapHeight);
 		// Show actors at right start pos, ie sync with model
 		for (Actor actor : stage.getActors()) {
-			if (actor instanceof MovableActor) {
-				MovableActor pawn = (MovableActor)actor;
+			if (actor instanceof PawnActor) {
+				PawnActor pawn = (PawnActor)actor;
 				pawn.refresh();
 				pawn.setCamera(camera);
 			}

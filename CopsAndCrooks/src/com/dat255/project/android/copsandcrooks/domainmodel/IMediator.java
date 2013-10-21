@@ -147,4 +147,12 @@ interface IMediator extends Serializable{
 	 * @return a the current turn being played.
 	 */
 	Turn getCurrentTurn();
+
+	/**
+	 * Ask the mediator to communicate with the necessary objects
+	 * to add cash to the travel agency.
+	 * 
+	 * @param cash the cash to add.
+	 */
+	void addCashToTravelAgency(int cash);
 }

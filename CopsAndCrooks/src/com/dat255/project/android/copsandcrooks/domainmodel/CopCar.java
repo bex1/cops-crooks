@@ -15,7 +15,7 @@ public class CopCar extends AbstractPawn implements ISelectablePawn {
 	}
 
 	@Override
-	public void collisionAfterMove(IMovable pawn) {
+	public void collisionAfterMove(IPawn pawn) {
 		if (pawn instanceof Crook) {
 			Crook crook = (Crook)pawn;
 			if (crook.isWanted()) {

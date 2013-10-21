@@ -12,8 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.IWalkableTile;
 import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.TramStopTile;
+import com.dat255.project.android.copsandcrooks.domainmodel.MetroStopTile;
 
+/**
+ * A visual actor for metro lines in the game Cops&Crooks.
+ * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class MetroLineActor extends Group {
 	private final MetroLineActor thisActor;
 
@@ -35,8 +44,8 @@ public class MetroLineActor extends Group {
 		for (final Image img : pathImages) {
 			this.addActor(img);
 			IWalkableTile tile = path.getTile(i);
-			if (tile instanceof TramStopTile) {
-				final TramStopTile metroStop = (TramStopTile)tile;
+			if (tile instanceof MetroStopTile) {
+				final MetroStopTile metroStop = (MetroStopTile)tile;
 				img.addListener(new ClickListener() {
 					
 					@Override
