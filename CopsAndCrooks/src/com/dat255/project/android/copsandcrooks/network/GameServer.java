@@ -11,9 +11,9 @@ import com.esotericsoftware.kryonet.*;
 /** Server application */
 public class GameServer {
 
-	private Server server;
-	private ArrayList<GameItem> gameItems;
-	private Map<String, LinkedList<Turn>> turns;
+	private final Server server;
+	private final ArrayList<GameItem> gameItems;
+	private final Map<String, LinkedList<Turn>> turns;
 	
 	public GameServer(){
 		// initialize server

@@ -12,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Wallet implements IObservable, Serializable {
+public final class Wallet implements IObservable {
 	
 	private int cash;
 	

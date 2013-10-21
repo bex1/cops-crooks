@@ -16,6 +16,10 @@ import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
 /**
  * A visual actor for paths in the game Cops&Crooks.
  * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class PathActor extends Group {

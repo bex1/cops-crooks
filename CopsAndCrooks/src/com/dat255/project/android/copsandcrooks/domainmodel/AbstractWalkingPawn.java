@@ -31,6 +31,6 @@ abstract class AbstractWalkingPawn extends AbstractPawn {
 	 */
 
 	boolean isWaitingOnTram(){
-		return currentTile instanceof TramStopTile;
+		return currentTile instanceof MetroStopTile;
 	}
 }

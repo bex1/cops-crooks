@@ -7,7 +7,7 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public interface IMovable extends IObservable {
+public interface IPawn extends IObservable {
 	
 	/**
 	 * Updates the state of the movable.

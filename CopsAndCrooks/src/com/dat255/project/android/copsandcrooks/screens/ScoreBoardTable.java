@@ -18,12 +18,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager.CopsAndCrooksSound;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 
+/**
+ * The scoreboard table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class ScoreBoardTable extends Table implements PropertyChangeListener {
 
 	private final Map<Wallet, Label> scoreLabels;
@@ -58,7 +68,7 @@ public class ScoreBoardTable extends Table implements PropertyChangeListener {
 		row();
 
 		for (IPlayer player : players) {
-			IMovable pawn = player.getCurrentPawn();
+			IPawn pawn = player.getCurrentPawn();
 			Wallet wallet;
 			if (pawn instanceof Crook) {
 				Crook crook = (Crook)pawn;

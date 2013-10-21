@@ -23,14 +23,14 @@ import com.dat255.project.android.copsandcrooks.actors.CrookActor;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.HideoutActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
-import com.dat255.project.android.copsandcrooks.actors.MovableActor.Animations;
+import com.dat255.project.android.copsandcrooks.actors.PawnActor.Animations;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.CopCar;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.Dice;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Officer;
@@ -98,8 +98,8 @@ public class GameFactory {
 	private List<Actor> addActor(Collection<? extends IPlayer> players){
 		List<Actor> actors = new ArrayList<Actor>();
 		for(IPlayer player: players){	
-			Collection<? extends IMovable> pawns = player.getPawns();
-			for(IMovable pawn : pawns){
+			Collection<? extends IPawn> pawns = player.getPawns();
+			for(IPawn pawn : pawns){
 				if(pawn instanceof Officer){
 					// Get animations
 					EnumMap<Animations, Animation> pawnAnimations = getOfficerAnimations();
@@ -412,6 +412,6 @@ public class GameFactory {
 		ModelFactory.getInstance().saveModelToFile(game);
 
 		return new GameScreen(assets, copsAndCrooks, game, map, mapLayerBack.getWidth()*mapLayerBack.getTileWidth(),
-				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(Dice.getInstance(), hudStage));
+				mapLayerBack.getHeight()* mapLayerBack.getTileHeight(), actors, hudStage, getDiceActorFor(game.getDice(), hudStage));
 	}
 }

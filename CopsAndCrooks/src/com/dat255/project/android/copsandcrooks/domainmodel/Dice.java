@@ -13,7 +13,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public final class Dice implements IObservable, Serializable {
+public final class Dice implements IObservable{
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();
@@ -22,24 +22,13 @@ public final class Dice implements IObservable, Serializable {
 	private float isRollingTimer;
 	private Player player;
 	
-	private static Dice instance;
-	
 	public static final String PROPERTY_DICE_ROLLING = "DiceRolling";
 	public static final String PROPERTY_DICE_RESULT = "DiceResult";
 
-	// Only added to make class singleton
-	private Dice() {
+	Dice(IMediator mediator) {
+		mediator.registerDice(this);
 	}
-	/**
-	 * Returns an instance of Dice
-	 * @return an instance of Dice
-	 */
-	public static Dice getInstance(){
-		if(instance == null){
-			instance = new Dice();
-		}
-		return instance;
-	}
+
 	/**
 	 * Checks to see wether the die is rolling and with that helps the animation.
 	 * @param deltaTime - time to animate the die.

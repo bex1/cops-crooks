@@ -6,6 +6,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+/**
+ * The assets class provides assets access.
+ * 
+ * We use a TextureAtlas for textures, a skin for ui, and a Tiledmap for the map.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class Assets {
 	private final TextureAtlas atlas;
 	private final Skin skin;

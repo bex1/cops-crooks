@@ -25,7 +25,7 @@ public class PoliceStationTile extends AbstractWalkableTile implements IInteract
 	}
 
 	@Override
-	public void interact(IMovable target) {
+	public void interact(IPawn target) {
 		if(target instanceof Crook){
 			Crook crook = (Crook)target;
 			crook.setTurnsInPrison(Values.TURNS_IN_PRISON);

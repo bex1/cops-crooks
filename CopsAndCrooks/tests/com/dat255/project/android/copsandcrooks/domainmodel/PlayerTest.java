@@ -186,8 +186,8 @@ public class PlayerTest {
 		pawns.add(c);
 		Mediator mediator = new Mediator();
 		final Player player = new Player("Kalle", pawns, Role.Crook, mediator, null, null);
-		PathFinder pathFinder = new PathFinder(new AbstractWalkableTile[1][1], mediator, new ArrayList<TramLine>());
-		Dice dice = Dice.getInstance();
+		PathFinder pathFinder = new PathFinder(new AbstractWalkableTile[1][1], mediator, new ArrayList<MetroLine>());
+		Dice dice = new Dice(mediator);
 		player.addObserver(new PropertyChangeListener() {
 
 			@Override

@@ -61,7 +61,7 @@ public class OfficerTest {
 
 
 	/**
-	 * Test method for {@link com.dat255.project.android.copsandOfficers.domainmodel.Officer#collisionAfterMove(com.dat255.project.android.copsandOfficers.domainmodel.IMovable)}.
+	 * Test method for {@link com.dat255.project.android.copsandOfficers.domainmodel.Officer#collisionAfterMove(com.dat255.project.android.IPawn.domainmodel.IMovable)}.
 	 */
 	@Test
 	public final void testCollisionAfterMove() {
@@ -107,7 +107,7 @@ public class OfficerTest {
 		test.addObserver(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg) {
-				assertSame("Wrong propety", IMovable.PROPERTY_CURRENT_TILE, arg.getPropertyName());
+				assertSame("Wrong propety", IPawn.PROPERTY_CURRENT_TILE, arg.getPropertyName());
 				assertSame("The new value does not match the current tile", arg.getNewValue(), test.currentTile);
 			}
 		});

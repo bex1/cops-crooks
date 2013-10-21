@@ -6,9 +6,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 
-public class MoveByDiceOrMetroTable extends Table {
+/**
+ * The move select table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
+public class MoveSelectTable extends Table {
 
-	public MoveByDiceOrMetroTable(final Assets assets, final GameModel model) {
+	public MoveSelectTable(final Assets assets, final GameModel model) {
 		this.setFillParent(true);
 		
 		// register the button "roll dice"

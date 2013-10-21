@@ -14,17 +14,17 @@ public class TramLineTest {
 	@Test
 	public void test() {
 		Mediator mediator = new Mediator();
-		List<TramStopTile> tramStops = new ArrayList<TramStopTile>();
-		TramStopTile occupiedStop = new TramStopTile(new Point(3,3), mediator);
+		List<MetroStopTile> tramStops = new ArrayList<MetroStopTile>();
+		MetroStopTile occupiedStop = new MetroStopTile(new Point(3,3), mediator);
 		tramStops.add(occupiedStop);
-		tramStops.add(new TramStopTile(new Point(0,0), mediator));
-		tramStops.add(new TramStopTile(new Point(1,1), mediator));
-		tramStops.add(new TramStopTile(new Point(2,2), mediator));
-		TramLine tramLine = new TramLine(tramStops);
+		tramStops.add(new MetroStopTile(new Point(0,0), mediator));
+		tramStops.add(new MetroStopTile(new Point(1,1), mediator));
+		tramStops.add(new MetroStopTile(new Point(2,2), mediator));
+		MetroLine metroLine = new MetroLine(tramStops);
 		
-		assertTrue(tramLine.getPossibleStops().getPathLength() == 4);
+		assertTrue(metroLine.getPossibleStops().getPathLength() == 4);
 		occupiedStop.setOccupiedBy(PawnType.Crook);
-		assertTrue(tramLine.getPossibleStops().getPathLength() == 3);
+		assertTrue(metroLine.getPossibleStops().getPathLength() == 3);
 		
 	}
 

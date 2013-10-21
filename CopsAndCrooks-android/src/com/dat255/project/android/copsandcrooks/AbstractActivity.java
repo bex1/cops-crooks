@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public abstract class AbstractActivity extends Activity {
 	
-	Toast toast;
+	private Toast toast;
 	
 	public void showMessage(String text){
 		try{

@@ -21,11 +21,11 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class HostActivity extends AbstractActivity {
 	
-	SeekBar playerCapSeekBar;
-	TextView seekBarTextView;
-	EditText gameNameEditText;
+	private SeekBar playerCapSeekBar;
+	private TextView seekBarTextView;
+	private EditText gameNameEditText;
 	
-	Button hostGameButton;
+	private Button hostGameButton;
 	
 	private int playerCap;
 	private String gameName;

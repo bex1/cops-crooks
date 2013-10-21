@@ -12,9 +12,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.HideoutTile;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 
+/**
+ * The hideout status table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class HideoutStatusTable extends Table implements PropertyChangeListener {
 	private final HideoutTile hideout;
 	private final Map<Crook, Label> moneyLabels;
@@ -37,7 +47,7 @@ public class HideoutStatusTable extends Table implements PropertyChangeListener 
 		
 
 		for (IPlayer player : players) {
-			for (IMovable pawn : player.getPawns()) {
+			for (IPawn pawn : player.getPawns()) {
 				if (pawn instanceof Crook) {
 					
 					Crook crook = (Crook)pawn;

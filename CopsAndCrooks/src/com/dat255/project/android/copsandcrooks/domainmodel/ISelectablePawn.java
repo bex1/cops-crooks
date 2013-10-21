@@ -5,6 +5,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public interface ISelectablePawn extends IMovable {
+public interface ISelectablePawn extends IPawn {
 	void gotSelected();
 }

@@ -16,12 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager.CopsAndCrooksSound;
 
+/**
+ * The score screen shown at the end of the game.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class ScoreScreen extends AbstractScreen {
 	
 	private final Map<Wallet, Label> scoreLabels;
@@ -58,7 +64,7 @@ public class ScoreScreen extends AbstractScreen {
 		table.row();
 
 		for (IPlayer player : players) {
-			IMovable pawn = player.getCurrentPawn();
+			IPawn pawn = player.getCurrentPawn();
 			Wallet wallet;
 			if (pawn instanceof Crook) {
 				Crook crook = (Crook)pawn;

@@ -23,7 +23,7 @@ public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTil
 	}
 
 	@Override
-	public void interact(IMovable target) {
+	public void interact(IPawn target) {
 		if(target instanceof Crook){
 			Crook crook = (Crook)target;
 			if(crook.getWallet().getCash() >= Values.GETAWAY_TICKET_COST){
@@ -41,6 +41,6 @@ public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTil
 	 */
 	private void purchaseTicket(Crook crook){
 		crook.getWallet().decrementCash(Values.GETAWAY_TICKET_COST);
-		TravelAgencyTile.getInstance().addCash(Values.GETAWAY_TICKET_COST);
+		mediator.addCashToTravelAgency(Values.GETAWAY_TICKET_COST);
 	}
 }

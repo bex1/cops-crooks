@@ -18,12 +18,12 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class LobbyActivity extends Activity {
 	
-	TextView gameNameTextView;
-	TextView playerCapTextView;
-	ListView playerListView;
-	Button startGameButton;
-	Button joinGameButton;
-	CommunicateTask receiveTask, sendTask;
+	private TextView gameNameTextView;
+	private TextView playerCapTextView;
+	private ListView playerListView;
+	private Button startGameButton;
+	private Button joinGameButton;
+	private CommunicateTask receiveTask, sendTask;
 	
 	private GameItem gameItem;
 

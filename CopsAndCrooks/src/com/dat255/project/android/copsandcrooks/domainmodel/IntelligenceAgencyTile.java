@@ -23,7 +23,7 @@ public class IntelligenceAgencyTile extends AbstractWalkableTile implements IInt
 	}
 
 	@Override
-	public void interact(IMovable target) {
+	public void interact(IPawn target) {
 		mediator.hinderGetAway(this);
 		// Call the mediator so the gameModel can provide us with the players.
 	}
@@ -39,9 +39,9 @@ public class IntelligenceAgencyTile extends AbstractWalkableTile implements IInt
 			//Check the role of the player, 
 			//if it's a crook you stop the get away attempt.
 			if(player.getPlayerRole().equals(Role.Crook)){
-				IMovable movable = player.getPawns().iterator().next();
-				if(movable instanceof Crook){
-					Crook crook = (Crook)movable;
+				IPawn pawn = player.getPawns().iterator().next();
+				if(pawn instanceof Crook){
+					Crook crook = (Crook)pawn;
 					if(crook.isAttemptingGetAway()){
 						crook.setAttemptingGetAway(false);
 						

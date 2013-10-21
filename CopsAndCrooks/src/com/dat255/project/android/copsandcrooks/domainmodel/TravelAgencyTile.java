@@ -10,39 +10,16 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class TravelAgencyTile extends RobbableBuildingTile {
-	
-	private static TravelAgencyTile travelAgencyInstance;
-	
-	/**
-	 * Get the travel agency instance.
-	 * @return the travel agency instance
-	 */
-	public static TravelAgencyTile getInstance(){
-		return travelAgencyInstance;
-	}
-	
-	/**
-	 * Create a new instance of travel agency.
-	 * @param position the position
-	 * @param value 
-	 * @param mediator the mediator
-	 */
-	public static void createTravelAgency(Point position, IMediator mediator, int value){
-		if(travelAgencyInstance == null){
-			travelAgencyInstance = new TravelAgencyTile(position, mediator, value);
-		}
-	}
-
 	/**
 	 * Create a new travel agency tile.
 	 * @param position the position
 	 */
-	private TravelAgencyTile(Point position, IMediator mediator, int value) {
-		super(position, mediator, value);
+	TravelAgencyTile(Point position, IMediator mediator) {
+		super(position, mediator, 0);
 	}
 
 	@Override
-	public void interact(IMovable target){
+	public void interact(IPawn target){
 		getRobbedBy((Crook) target);
 	}
 	

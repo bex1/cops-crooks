@@ -13,6 +13,17 @@ import com.dat255.project.android.copsandcrooks.screens.HideoutStatusTable;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
+/**
+ * A visual actor for hideouts in the game Cops&Crooks.
+ * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
+ * Clickable empty image, which shows a table of hideout status when touch is down.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class HideoutActor extends Actor {
 	private final HideoutStatusTable statusTable;
 	

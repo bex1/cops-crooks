@@ -124,4 +124,10 @@ final class Mediator implements IMediator {
 			return gameModel.getCurrentTurn();
 		return null;
 	}
+
+	@Override
+	public void addCashToTravelAgency(int cash) {
+		if (gameModel != null) 
+			gameModel.addCashToTravelAgency(cash);
+	}
 }

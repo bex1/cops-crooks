@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
@@ -13,7 +12,7 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public abstract class AbstractPawn implements IMovable, Serializable {
+public abstract class AbstractPawn implements IPawn {
 	
 	private Role pawnRole;
 	private PawnType pawnType;
@@ -34,7 +33,8 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 	
 	protected final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep, int id) {		if (mediator == null) {
+	protected AbstractPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType pawnType, IMediator mediator, int tilesMovedEachStep, int id) {		
+		if (mediator == null) {
 			throw new IllegalArgumentException("mediator not allowed to be null");
 		}
 		this.currentTile = startTile;
@@ -241,12 +241,12 @@ public abstract class AbstractPawn implements IMovable, Serializable {
 	}
 
 	/**
-	 * Alerts the IMovable that it has collided with another IMovable after it has moved.
-	 * @param pawn the IMovable pawn that collided with this one.
+	 * Alerts the IPawn that it has collided with another IPawn after it has moved.
+	 * @param pawn the IPawn pawn that collided with this one.
 	 */
-	protected abstract void collisionAfterMove(IMovable pawn);
+	protected abstract void collisionAfterMove(IPawn pawn);
 
-	protected void moveByTram(TramStopTile metroStop) {
+	protected void moveByTram(MetroStopTile metroStop) {
 		currentTile.setNotOccupied();
 		currentTile = metroStop;
 		this.interactWithTile();

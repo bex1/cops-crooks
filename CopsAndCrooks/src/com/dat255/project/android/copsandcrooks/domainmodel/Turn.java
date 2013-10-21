@@ -29,14 +29,13 @@ public class Turn implements Serializable{
 	private int pawnID, turnID;
 	private HideoutChoice hideoutChoice;
 	private MoveType moveType;
+	private boolean escapedFromPrison;
 	
 	public Turn(){
 		moveType = MoveType.None;
 		hideoutChoice = HideoutChoice.Cancel;
 		endTilePos = new Point(0, 0);
 	}
-	
-	
 	
 	/**
 	 * Returns the type of how the pawn is moving
@@ -45,6 +44,7 @@ public class Turn implements Serializable{
 	public MoveType getMoveType() {
 		return moveType;
 	}
+	
 	/**
 	 * Sets the type of how the pawn is moving
 	 * @param moveType the type that the pawn will be moving
@@ -52,6 +52,7 @@ public class Turn implements Serializable{
 	public void setMoveType(MoveType moveType) {
 		this.moveType = moveType;
 	}
+	
 	/**
 	 * Returns what the players does inside a hideout
 	 * @return what the player does inside a hideout
@@ -59,6 +60,7 @@ public class Turn implements Serializable{
 	public HideoutChoice getHideoutChoice() {
 		return hideoutChoice;
 	}
+	
 	/**
 	 * Sets what the player does inside a hideout
 	 * @param hideoutChoice what the player does inside a hideout
@@ -66,6 +68,7 @@ public class Turn implements Serializable{
 	public void setHideoutChoice(HideoutChoice hideoutChoice) {
 		this.hideoutChoice = hideoutChoice;
 	}
+	
 	/**
 	 * Returns the path that the pawn has walked
 	 * @return the path that the pawn has walked
@@ -73,6 +76,7 @@ public class Turn implements Serializable{
 	public List<Point> getPathWalked() {
 		return pathWalked;
 	}
+	
 	/**
 	 * Sets the path that the pawn has walked
 	 * @param tilePathWalked - the path that the pawns has walked
@@ -83,6 +87,7 @@ public class Turn implements Serializable{
 			this.pathWalked.add(tilePathWalked.getTile(i).getPosition());
 		}
 	}
+	
 	/**
 	 * Returns the last tile on the path
 	 * @return the last tile on the path
@@ -90,6 +95,7 @@ public class Turn implements Serializable{
 	public Point getEndTilePos() {
 		return endTilePos;
 	}
+	
 	/**
 	 * Sets the end tile on the path
 	 * @param endTile the end tile of the path
@@ -97,6 +103,7 @@ public class Turn implements Serializable{
 	public void setEndTile(IWalkableTile endTile) {
 		endTilePos = endTile.getPosition();
 	}
+	
 	/**
 	 * Returns the ID of the pawn
 	 * @return the ID of the pawn
@@ -104,6 +111,7 @@ public class Turn implements Serializable{
 	public int getPawnID() {
 		return pawnID;
 	}
+	
 	/**
 	 * Sets the ID of the pawn
 	 * @param pawnID the ID of the pawn
@@ -119,12 +127,29 @@ public class Turn implements Serializable{
 	public int getTurnID() {
 		return turnID;
 	}
+	
 	/**
 	 * Sets the ID of the pawn
 	 * @param pawnID the ID of the pawn
 	 */
 	public void setTurnID(int turnID) {
 		this.turnID = turnID;
+	}
+	
+	/**
+	 * Checks if the player of the turn escaped from prison.
+	 * @returns true if escaped, false otherwise;
+	 */
+	public boolean didEscapeFromPrison() {
+		return escapedFromPrison;
+	}
+	
+	/**
+	 * Checks if the player of the turn escaped from prison.
+	 * @returns true if escaped, false otherwise;
+	 */
+	public void setEscapeFromPrison(boolean escaped) {
+		this.escapedFromPrison = escaped;
 	}
 	
 	/**

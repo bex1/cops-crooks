@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
-import com.dat255.project.android.copsandcrooks.domainmodel.IMovable;
+import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.domainmodel.Wallet;
@@ -27,6 +27,16 @@ import com.dat255.project.android.copsandcrooks.utils.PreferencesManager;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
 
+/**
+ * The hud table of cops and crooks.
+ * 
+ * A table is a way to layout images, Ui items etc.
+ * 
+ * The table can then be placed in a scene to be rendered.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class HUDTable extends Table implements PropertyChangeListener {
 	private Wallet wallet;
 	private Label scoreLabel;
@@ -71,7 +81,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 		// Extract the right wallet
 		Role role = player.getPlayerRole();
 		if (role == Role.Crook) {
-			IMovable pawn = player.getCurrentPawn();
+			IPawn pawn = player.getCurrentPawn();
 			if (pawn instanceof Crook) {
 				Crook crook = (Crook)pawn;
 				wallet = crook.getWallet();

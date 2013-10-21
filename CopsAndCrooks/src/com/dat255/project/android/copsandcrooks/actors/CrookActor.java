@@ -12,7 +12,16 @@ import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.screens.Assets;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
-public class CrookActor extends MovableActor {
+/**
+ * A visual actor for crooks in the game Cops&Crooks.
+ * 
+ * An actor is both view and controller in the MVC model.
+ * 
+ * It can act, respond to input and render itself.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
+public class CrookActor extends PawnActor {
 	private final Crook crook;
 	private Image wanted;
 

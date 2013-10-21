@@ -13,10 +13,10 @@ import java.util.List;
  */
 final class PathFinder implements Serializable {
 	private final AbstractWalkableTile[][] tiles;
-	private final List<TramLine> metroLines;
+	private final List<MetroLine> metroLines;
 	private final IMediator mediator;
 
-	PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<TramLine> metroLines) {
+	PathFinder(final AbstractWalkableTile[][] tiles, final IMediator mediator, final List<MetroLine> metroLines) {
 		if (tiles == null)
 			throw new IllegalArgumentException("Tiles not allowed to be null");
 		if (mediator == null)
@@ -33,8 +33,8 @@ final class PathFinder implements Serializable {
 	Collection<TilePath> calculatePossibleMetroPaths(AbstractPawn pawn) {
 		Collection<TilePath> paths = new ArrayList<TilePath>();
 		AbstractWalkableTile currentTile = pawn.getCurrentTile();
-		if (currentTile instanceof TramStopTile) {
-			for (TramLine metroLine : metroLines) {
+		if (currentTile instanceof MetroStopTile) {
+			for (MetroLine metroLine : metroLines) {
 				TilePath path = metroLine.getPossibleStops();
 				if (path != null && metroLine.contains(currentTile)) {
 					paths.add(path);

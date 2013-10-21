@@ -19,10 +19,10 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 public class GameBrowseActivity extends Activity {
 	
-	ListView gameListView;
-	GameItemAdapter gameItemAdapter;
-	CheckBox displayActiveGamesCheckBox;
-	CommunicateTask task;
+	private ListView gameListView;
+	private GameItemAdapter gameItemAdapter;
+	private CheckBox displayActiveGamesCheckBox;
+	private CommunicateTask task;
 	
 	@Override
 	protected void onStart() {

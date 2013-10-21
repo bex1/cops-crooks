@@ -18,7 +18,7 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  *
  */
-public abstract class AbstractWalkableTile implements IWalkableTile, Serializable{
+public abstract class AbstractWalkableTile implements IWalkableTile {
 
 	private PawnType occupiedBy;
 	private Point position;
@@ -44,7 +44,7 @@ public abstract class AbstractWalkableTile implements IWalkableTile, Serializabl
 	}
 
 	/**
-	 * Checks if the tile is occupied by an IMovable object
+	 * Checks if the tile is occupied by an IPawn object
 	 * @return true if this tile is occupied
 	 */
 	boolean isOccupied(){
