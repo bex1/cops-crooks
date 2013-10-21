@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dat255.project.android.copsandcrooks.CopsAndCrooks;
 import com.dat255.project.android.copsandcrooks.actors.DiceActor;
 import com.dat255.project.android.copsandcrooks.actors.MetroLineActor;
-import com.dat255.project.android.copsandcrooks.actors.PawnActor;
 import com.dat255.project.android.copsandcrooks.actors.PathActor;
+import com.dat255.project.android.copsandcrooks.actors.PawnActor;
 import com.dat255.project.android.copsandcrooks.domainmodel.Crook;
 import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.domainmodel.IPawn;
@@ -27,7 +27,6 @@ import com.dat255.project.android.copsandcrooks.domainmodel.IPlayer;
 import com.dat255.project.android.copsandcrooks.domainmodel.ModelFactory;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.map.GameFactory;
-import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager;
 import com.dat255.project.android.copsandcrooks.utils.MusicManager.CopsAndCrooksMusic;
 import com.dat255.project.android.copsandcrooks.utils.SoundManager;
@@ -237,7 +236,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 					hudStage.addActor(replayTable);
 					break;
 				case Ended:
-					GameClient.getInstance().sendGameEnd();
 					ModelFactory.getInstance().deleteModelFile(model);
 					game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 					break;
