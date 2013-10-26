@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**	
+ * Class used to describe a game
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class GameItem implements Serializable{
 
 	private final String id;

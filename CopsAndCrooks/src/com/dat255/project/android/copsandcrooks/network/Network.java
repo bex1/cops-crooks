@@ -13,7 +13,11 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;
 
-/** Network utility class */
+/**	
+ * Network utility class
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class Network {
 	
 	/** The port that server and client uses */

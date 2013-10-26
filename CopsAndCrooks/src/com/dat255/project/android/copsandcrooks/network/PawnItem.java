@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
+/**	
+ * Class used to describe a pawn
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class PawnItem implements Serializable{
 	
 	/**

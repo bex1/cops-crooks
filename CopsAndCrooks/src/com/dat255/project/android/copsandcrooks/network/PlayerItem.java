@@ -7,6 +7,11 @@ import java.util.List;
 import com.dat255.project.android.copsandcrooks.domainmodel.Role;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
+/**	
+ * Class used to desribe a player
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class PlayerItem implements Serializable{
 
 	private final String name;
