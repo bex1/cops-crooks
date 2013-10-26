@@ -8,13 +8,21 @@ import java.util.*;
 
 import com.esotericsoftware.kryonet.*;
 
-/** Server application */
+/** 
+ * Server class
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class GameServer {
-
+	
 	private final Server server;
 	private final ArrayList<GameItem> gameItems;
 	private final Map<String, LinkedList<Turn>> turns;
 	
+
+	/**
+	 * Create a new GameServer
+	 */
 	public GameServer(){
 		// initialize server
 		server = new Server();
