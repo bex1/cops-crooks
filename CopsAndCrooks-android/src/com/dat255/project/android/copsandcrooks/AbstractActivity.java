@@ -5,6 +5,13 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
 
+/**
+ * This is an abstraction of the activity class. It only contains a showMessage
+ * method used to displayed for example an error-message.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public abstract class AbstractActivity extends Activity {
 	
 	private Toast toast;
