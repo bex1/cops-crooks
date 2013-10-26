@@ -15,12 +15,16 @@ import com.esotericsoftware.kryonet.*;
 
 /** Network utility class */
 public class Network {
+	
+	/** The port that server and client uses */
 	public static final int PORT = 54555;
+	
+	/** The default IP that client attempts to connect to */
 	public static final String DEFAULT_IP = "192.168.1.2";
 	
 	/**
 	 * Register the classes so they can be sent over a network.
-	 * @param endPoint
+	 * @param endPoint the end point (server/client) to register the classes on 
 	 */
 	static public void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
