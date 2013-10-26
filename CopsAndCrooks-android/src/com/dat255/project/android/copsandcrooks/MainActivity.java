@@ -6,7 +6,14 @@ import android.os.Bundle;
 
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 
+/**
+ * This is the activity that runs on start.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class MainActivity extends Activity {
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

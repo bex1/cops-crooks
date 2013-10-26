@@ -10,6 +10,13 @@ import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
+/**
+ * This activity represents the game itself. This is where the game is
+ * displayed.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class GameActivity extends AndroidApplication {
 	
 	public static final String GAME = "game";
