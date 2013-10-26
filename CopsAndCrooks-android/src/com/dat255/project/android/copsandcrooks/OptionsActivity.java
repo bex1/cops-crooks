@@ -16,6 +16,13 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+/**
+ * This activity represents the options.
+ * Handles input for server-ip and player-name.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class OptionsActivity extends Activity {
 	
 	private CheckBox soundCheckBox;

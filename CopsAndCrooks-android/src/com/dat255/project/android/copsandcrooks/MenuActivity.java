@@ -15,6 +15,12 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.Network;
 
+/**
+ * This activity represents the main menu.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class MenuActivity extends AbstractActivity {
 	
 	private CommunicateTask task;
