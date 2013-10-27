@@ -12,6 +12,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  *
  */
 public class PoliceStationTile extends AbstractWalkableTile implements IInteractiveTile {
+	
+	private static final long serialVersionUID = 73221455775217L;
 
 	/**
 	 * Create a new PoliceStationTile.

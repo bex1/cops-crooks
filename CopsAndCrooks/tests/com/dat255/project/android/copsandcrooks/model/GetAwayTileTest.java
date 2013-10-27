@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,11 +8,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.model.Crook;
-import com.dat255.project.android.copsandcrooks.model.GetAwayTile;
-import com.dat255.project.android.copsandcrooks.model.Mediator;
-import com.dat255.project.android.copsandcrooks.model.RoadTile;
-import com.dat255.project.android.copsandcrooks.model.TravelAgencyTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class GetAwayTileTest {

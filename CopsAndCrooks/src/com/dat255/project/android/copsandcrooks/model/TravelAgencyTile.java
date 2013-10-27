@@ -10,6 +10,9 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class TravelAgencyTile extends RobbableBuildingTile {
+	
+	private static final long serialVersionUID = 19884664358500457L;
+	
 	/**
 	 * Create a new travel agency tile.
 	 * @param position the position

@@ -11,6 +11,9 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class IntelligenceAgencyTile extends AbstractWalkableTile implements IInteractiveTile {
+	
+	private static final long serialVersionUID = 11257766225618843L;
+	
 	/**
 	 * Create a new IntelligenceAgencyTile.
 	 * @param position the position of this tile

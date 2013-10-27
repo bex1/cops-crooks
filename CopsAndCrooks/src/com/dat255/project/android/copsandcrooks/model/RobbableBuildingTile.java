@@ -10,6 +10,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  */
 public class RobbableBuildingTile extends AbstractWalkableTile implements IInteractiveTile {
 	
+	private static final long serialVersionUID = 125625500558L;
+	
 	private int value;
 
 	/**

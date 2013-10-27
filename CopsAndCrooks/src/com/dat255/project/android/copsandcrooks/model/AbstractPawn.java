@@ -14,6 +14,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public abstract class AbstractPawn implements IPawn {
 	
+	private static final long serialVersionUID = 75267835662324327L;
+	
 	private Role pawnRole;
 	private PawnType pawnType;
 	

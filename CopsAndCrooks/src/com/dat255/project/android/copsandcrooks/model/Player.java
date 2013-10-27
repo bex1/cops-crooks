@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +16,9 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class Player implements IPlayer {
+	
+	private static final long serialVersionUID = 18977777754412357L;
+	
 	private final IMediator mediator;
 
 	private final List<AbstractPawn> pawns;

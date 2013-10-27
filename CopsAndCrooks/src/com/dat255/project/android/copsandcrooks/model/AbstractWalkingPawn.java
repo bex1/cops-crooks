@@ -8,6 +8,9 @@ package com.dat255.project.android.copsandcrooks.model;
  *
  */
 abstract class AbstractWalkingPawn extends AbstractPawn {
+	
+	private static final long serialVersionUID = 1234883312324327L;
+	
 	private boolean isInPoliceHouse;
 
 	protected AbstractWalkingPawn(AbstractWalkableTile startTile, Role pawnRole, PawnType type, IMediator mediator, int tilesMovedEachStep, int id) {

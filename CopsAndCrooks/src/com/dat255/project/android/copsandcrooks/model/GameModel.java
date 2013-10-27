@@ -23,6 +23,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  *
  */
 public final class GameModel implements IObservable{
+	
+	private static final long serialVersionUID = 88415277521336454L;
 
 	private final String id;
 	private final List<Player> players;
@@ -221,7 +223,6 @@ public final class GameModel implements IObservable{
 		if(checkIfGameEnded()) {
 			return;
 		}
-		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
 			currentPlayer = players.get((++i) % players.size());
@@ -231,7 +232,6 @@ public final class GameModel implements IObservable{
 			// The game should end then.
 		}while (!currentPlayer.isActive());
 		if (playerClient == currentPlayer) {
-			System.out.println(0);
 			state = GameState.Playing;
 			currentPlayer.updateState();
 			this.currentTurn = new Turn();

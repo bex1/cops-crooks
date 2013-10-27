@@ -12,6 +12,9 @@ import java.util.List;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 final class PathFinder implements Serializable {
+	
+	private static final long serialVersionUID = 459233655414227L;
+	
 	private final AbstractWalkableTile[][] tiles;
 	private final List<MetroLine> metroLines;
 	private final IMediator mediator;

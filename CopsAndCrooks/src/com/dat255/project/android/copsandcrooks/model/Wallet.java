@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
 
@@ -13,6 +12,8 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  *
  */
 public final class Wallet implements IObservable {
+	
+	private static final long serialVersionUID = 8552221330055127L;
 	
 	private int cash;
 	

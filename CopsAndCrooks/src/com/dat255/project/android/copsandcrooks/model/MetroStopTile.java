@@ -11,6 +11,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  */
 public class MetroStopTile extends AbstractWalkableTile{
 	
+	private static final long serialVersionUID = 12289645622564327L;
+	
 	/**
 	 * Create a MetroStopTile with a position.
 	 * @param position the position of this tile

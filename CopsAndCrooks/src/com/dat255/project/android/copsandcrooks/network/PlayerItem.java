@@ -13,6 +13,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class PlayerItem implements Serializable{
+	
+	private static final long serialVersionUID = 8824775206655227L;
 
 	private final String name;
 	private Role role;

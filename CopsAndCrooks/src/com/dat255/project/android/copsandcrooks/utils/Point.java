@@ -8,6 +8,9 @@ import java.io.Serializable;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public final class Point implements Serializable{
+	
+	private static final long serialVersionUID = 188533447833369527L;
+	
 	public int x, y;
 	
 	public Point() {

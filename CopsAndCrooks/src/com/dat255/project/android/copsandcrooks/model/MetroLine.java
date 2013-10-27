@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class MetroLine implements Serializable {
 	
+	private static final long serialVersionUID = 2268515654782127L;
+	
 	private List<MetroStopTile> tramLine;
 
 	MetroLine(List<MetroStopTile> tramLine){

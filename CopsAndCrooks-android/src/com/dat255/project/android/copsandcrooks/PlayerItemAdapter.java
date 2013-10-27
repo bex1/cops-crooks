@@ -21,8 +21,7 @@ import com.dat255.project.android.copsandcrooks.network.PlayerItem;
  *
  */
 public class PlayerItemAdapter extends BaseAdapter{
-	
-	private Context context;
+
 	private static LayoutInflater inflater = null;
 	private List<PlayerItem> data;
 
@@ -32,7 +31,6 @@ public class PlayerItemAdapter extends BaseAdapter{
 	 * @param list a list of PlayerItems
 	 */
 	public PlayerItemAdapter(Context context, List<PlayerItem> list) {
-        this.context = context;
         this.data = list;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

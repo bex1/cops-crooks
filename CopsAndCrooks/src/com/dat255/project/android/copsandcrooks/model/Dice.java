@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.Random;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
@@ -14,6 +13,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  *
  */
 public final class Dice implements IObservable{
+	
+	private static final long serialVersionUID = 418875355814327L;
 	
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Random rand = new Random();

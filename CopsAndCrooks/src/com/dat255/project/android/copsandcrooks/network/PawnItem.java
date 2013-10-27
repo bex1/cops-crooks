@@ -11,6 +11,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  */
 public class PawnItem implements Serializable{
 	
+	private static final long serialVersionUID = 4882004331125447L;
+	
 	/**
 	 * The position of the PawnItem
 	 */
