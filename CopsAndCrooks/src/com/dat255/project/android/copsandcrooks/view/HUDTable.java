@@ -131,7 +131,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 		add(waitingLabel).colspan(3).expandY().bottom().padBottom(50);
 		row();
 		add();
-		add(soundLabel).padBottom(6).right().bottom().expand();
+		add(soundLabel).padBottom(6).right().bottom().expandX();
 		add(checkBox).pad(10).left().bottom();
 	}
 
