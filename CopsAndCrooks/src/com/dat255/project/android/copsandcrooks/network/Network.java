@@ -4,11 +4,11 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
-import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+import com.dat255.project.android.copsandcrooks.model.Role;
+import com.dat255.project.android.copsandcrooks.model.TilePath;
+import com.dat255.project.android.copsandcrooks.model.Turn;
+import com.dat255.project.android.copsandcrooks.model.Turn.HideoutChoice;
+import com.dat255.project.android.copsandcrooks.model.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;

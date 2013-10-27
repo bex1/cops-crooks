@@ -1,7 +1,8 @@
 package com.dat255.project.android.copsandcrooks.network;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
+import com.dat255.project.android.copsandcrooks.model.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;

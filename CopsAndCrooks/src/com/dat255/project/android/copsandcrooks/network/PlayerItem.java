@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.model.Role;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 /**	
