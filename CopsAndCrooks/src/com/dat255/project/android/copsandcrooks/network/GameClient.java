@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
+import com.dat255.project.android.copsandcrooks.model.GameModel;
+import com.dat255.project.android.copsandcrooks.model.Turn;
+import com.dat255.project.android.copsandcrooks.model.GameModel.GameState;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
-/**	Client used to communicate between application and server **/
+/**	
+ * Class used to communicate between application and server 
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class GameClient{
 	
 	private static GameClient instance;
@@ -23,6 +27,10 @@ public class GameClient{
 	private String serverIP;
 	private String playerName;
 
+	/**
+	 * Get the instance of the class
+	 * @return instance
+	 */
 	public static GameClient getInstance(){
 		if(instance == null)
 			instance = new GameClient();
@@ -105,7 +113,11 @@ public class GameClient{
 	}
 	
 
-	/** Check if a game with a given name exist */
+	/**
+	 * Check if a game with a given name exist 
+	 * @param name name of the game
+	 * @return true if the game exist, false otherwise 
+	 */
 	public boolean hasGame(String name){
 		for(GameItem gameItem: gameItems){
 			if(gameItem.getName().equals(name))
@@ -115,7 +127,7 @@ public class GameClient{
 	}
 	
 	/**
-	 * Connect to the server if connection is not already established
+	 * Connect to the server if the connection is not already established
 	 */
 	public void connectToServer(){
 		if(!client.isConnected()){
@@ -158,7 +170,7 @@ public class GameClient{
 	
 	/**
 	 * Returns a list of games
-	 * @return gameItems
+	 * @return gameItems a list of games
 	 */
 	public ArrayList<GameItem> getGameItems(){
 		return gameItems;
@@ -166,7 +178,7 @@ public class GameClient{
 	
 	/**
 	 * Return the connection status
-	 * @return isConnected
+	 * @return true if the connection is established or false otherwise
 	 */
 	public boolean isConnected(){
 		return client.isConnected();
@@ -186,7 +198,7 @@ public class GameClient{
 	
 	/**
 	 * Set the chosen game item
-	 * @param gameItem
+	 * @param gameItem the chosen GameItem
 	 */
 	public void setChosenGameItem(GameItem gameItem){
 		chosenGameItem = gameItem;
@@ -217,8 +229,8 @@ public class GameClient{
 
 	/**
 	 * Send a request to the server to join a game (with a player)
-	 * @param gameID
-	 * @param player
+	 * @param gameID ID of the game
+	 * @param player The player to join
 	 */
 	public void joinGame(String gameID, PlayerItem player) {
 		if(client.isConnected()){
@@ -241,7 +253,7 @@ public class GameClient{
 	
 	/**
 	 * Return the players name
-	 * @return
+	 * @return name
 	 */
 	public String getPlayerName(){
 		return playerName;
@@ -273,12 +285,16 @@ public class GameClient{
 	
 	/**
 	 * Return the ID of the client
-	 * @return
+	 * @return clientID
 	 */
 	public String getClientID(){
 		return clientID;
 	}
 
+	/**
+	 * Send turn to the server
+	 * @param currentTurn the turn to be sent
+	 */
 	public void sendTurn(Turn currentTurn) {
 		System.out.println("Network: Sending turn");
 	    Pck5_Turns turnPck = new Pck5_Turns();

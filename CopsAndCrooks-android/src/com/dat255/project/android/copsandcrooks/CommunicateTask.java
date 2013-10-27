@@ -1,6 +1,6 @@
 package com.dat255.project.android.copsandcrooks;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
+import com.dat255.project.android.copsandcrooks.model.GameModel;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 
