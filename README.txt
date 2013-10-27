@@ -5,7 +5,7 @@ Commits made by (git username)
 
 Christoffer Henriksson (Christoffer Henriksson)
 Erik Lundholm (Kirtez)
-Daniel Bäckström (unknown and Daniel Bäckström)
+Daniel Bäckström (Daniel Backstrom and Daniel Bäckström)
 Marcus Lagerstedt (MarcusLagerstedt)
 Tobias Olausson (Tobias)
 Victor Sandell (Victor)
