@@ -14,7 +14,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.model.Role;
 import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;

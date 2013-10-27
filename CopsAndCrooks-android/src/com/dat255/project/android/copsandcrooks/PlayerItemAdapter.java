@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
+import com.dat255.project.android.copsandcrooks.model.Role;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
 /**

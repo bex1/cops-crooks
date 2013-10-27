@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel;
-import com.dat255.project.android.copsandcrooks.domainmodel.GameModel.GameState;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
+import com.dat255.project.android.copsandcrooks.model.GameModel;
+import com.dat255.project.android.copsandcrooks.model.Turn;
+import com.dat255.project.android.copsandcrooks.model.GameModel.GameState;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
 import com.esotericsoftware.kryonet.*;
 
