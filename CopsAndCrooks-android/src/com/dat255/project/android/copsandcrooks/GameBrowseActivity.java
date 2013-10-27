@@ -17,6 +17,13 @@ import com.dat255.project.android.copsandcrooks.network.GameClient;
 import com.dat255.project.android.copsandcrooks.network.GameItem;
 import com.dat255.project.android.copsandcrooks.network.PlayerItem;
 
+/**
+ * This activity represents a gamebrowser. It's where active games can be found
+ * and joined.
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ *
+ */
 public class GameBrowseActivity extends Activity {
 	
 	private ListView gameListView;

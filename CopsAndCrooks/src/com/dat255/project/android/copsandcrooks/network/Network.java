@@ -4,23 +4,31 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Role;
-import com.dat255.project.android.copsandcrooks.domainmodel.TilePath;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.HideoutChoice;
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn.MoveType;
+import com.dat255.project.android.copsandcrooks.model.Role;
+import com.dat255.project.android.copsandcrooks.model.TilePath;
+import com.dat255.project.android.copsandcrooks.model.Turn;
+import com.dat255.project.android.copsandcrooks.model.Turn.HideoutChoice;
+import com.dat255.project.android.copsandcrooks.model.Turn.MoveType;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.esotericsoftware.kryo.*;
 import com.esotericsoftware.kryonet.*;
 
-/** Network utility class */
+/**	
+ * Network utility class
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class Network {
+	
+	/** The port that server and client uses */
 	public static final int PORT = 54555;
+	
+	/** The default IP that client attempts to connect to */
 	public static final String DEFAULT_IP = "192.168.1.2";
 	
 	/**
 	 * Register the classes so they can be sent over a network.
-	 * @param endPoint
+	 * @param endPoint the end point (server/client) to register the classes on 
 	 */
 	static public void register(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();

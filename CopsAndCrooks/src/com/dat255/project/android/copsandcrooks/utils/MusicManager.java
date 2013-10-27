@@ -28,14 +28,27 @@ public class MusicManager implements Disposable {
             this.fileName = fileName;
         }
 
+        /**
+         * 
+         * @return The file name.
+         */
         public String getFileName() {
             return fileName;
         }
 
+        /**
+         * 
+         * @return The music resource.
+         */
         public Music getMusicResource() {
             return musicResource;
         }
 
+        /**
+         * Sets the music resource.
+         * 
+         * @param musicBeingPlayed the music resource.
+         */
         public void setMusicResource(Music musicBeingPlayed ) {
             this.musicResource = musicBeingPlayed;
         }

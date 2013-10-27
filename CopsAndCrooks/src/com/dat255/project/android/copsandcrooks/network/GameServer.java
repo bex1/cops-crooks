@@ -1,20 +1,29 @@
 package com.dat255.project.android.copsandcrooks.network;
 
-import com.dat255.project.android.copsandcrooks.domainmodel.Turn;
+import com.dat255.project.android.copsandcrooks.model.Turn;
 import com.dat255.project.android.copsandcrooks.network.Network.*;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
 import com.esotericsoftware.kryonet.*;
 
-/** Server application */
+/** 
+ * Server class
+ * 
+ * @author Group 25, course DAT255 at Chalmers Uni.
+ */
 public class GameServer {
-
+	
 	private final Server server;
 	private final ArrayList<GameItem> gameItems;
 	private final Map<String, LinkedList<Turn>> turns;
 	
+
+	/**
+	 * Create a new GameServer
+	 */
 	public GameServer(){
 		// initialize server
 		server = new Server();
