@@ -13,13 +13,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.model.AbstractWalkableTile;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 
 public class AbstractTileTest {
 	
 	//Mockup class
 	public class AbstractTileMock extends AbstractWalkableTile{
+		
+		private static final long serialVersionUID = 11555885222227L;
 
 		public AbstractTileMock(Point position) {
 			super(position, new Mediator());

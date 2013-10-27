@@ -9,6 +9,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
 public class CopCar extends AbstractPawn implements ISelectablePawn {
+	
+	private static final long serialVersionUID = 6542214448855427L;
 
 	CopCar(AbstractWalkableTile startTile, IMediator mediator, int id) {
 		super(startTile, Role.Cop, PawnType.Car, mediator, Values.CAR_MOVE_FACTOR, id);

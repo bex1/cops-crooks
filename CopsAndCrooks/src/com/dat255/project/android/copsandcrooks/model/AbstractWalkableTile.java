@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +18,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public abstract class AbstractWalkableTile implements IWalkableTile {
+	
+	private static final long serialVersionUID = 1772399434324327L;
 
 	private PawnType occupiedBy;
 	private Point position;

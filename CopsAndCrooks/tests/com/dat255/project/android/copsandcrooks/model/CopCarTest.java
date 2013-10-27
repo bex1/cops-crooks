@@ -18,17 +18,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dat255.project.android.copsandcrooks.model.AbstractPawn;
-import com.dat255.project.android.copsandcrooks.model.AbstractWalkableTile;
-import com.dat255.project.android.copsandcrooks.model.CopCar;
-import com.dat255.project.android.copsandcrooks.model.Crook;
-import com.dat255.project.android.copsandcrooks.model.IPawn;
-import com.dat255.project.android.copsandcrooks.model.Officer;
-import com.dat255.project.android.copsandcrooks.model.Player;
-import com.dat255.project.android.copsandcrooks.model.PoliceStationTile;
-import com.dat255.project.android.copsandcrooks.model.RoadTile;
-import com.dat255.project.android.copsandcrooks.model.Role;
-import com.dat255.project.android.copsandcrooks.model.TilePath;
 import com.dat255.project.android.copsandcrooks.utils.Point;
 import com.dat255.project.android.copsandcrooks.utils.Values;
 
@@ -88,7 +77,6 @@ public class CopCarTest {
 		Crook crook = new Crook(new RoadTile(new Point(0, 0), mediator), mediator, 10);
 		List<AbstractPawn> pawnList = new ArrayList<AbstractPawn>();
 		pawnList.add(test);
-		Player player = new Player(null, pawnList, Role.Cop, mediator, null, null);
 		crook.setWanted(true);
 		crook.getWallet().setCash(20000);
 		

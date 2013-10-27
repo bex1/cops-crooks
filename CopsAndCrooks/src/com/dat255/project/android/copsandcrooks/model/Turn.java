@@ -12,6 +12,9 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class Turn implements Serializable{
+	
+	private static final long serialVersionUID = 55812236448851327L;
+	
 	public enum HideoutChoice {
 		Withdraw,
 		Deposit,

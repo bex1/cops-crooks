@@ -9,6 +9,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public class Officer extends AbstractWalkingPawn implements ISelectablePawn {
 	
+	private static final long serialVersionUID = 129884344851327L;
+	
 	Officer(AbstractWalkableTile startTile, IMediator mediator, int id) {
 		super(startTile, Role.Cop, PawnType.Officer, mediator, Values.WALKING_PAWN_MOVE_FACTOR, id);
 		// All officers start in the police house

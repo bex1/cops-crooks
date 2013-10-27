@@ -16,6 +16,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public class HideoutTile extends AbstractWalkableTile implements IInteractiveTile {
 	
+	private static final long serialVersionUID = 8711266762352368L;
+	
 	private Map<Crook, Integer> storedCash;
 	
 	public static final String PROPERTY_HIDEOUT_INTERACT = "Hideout_Interact";

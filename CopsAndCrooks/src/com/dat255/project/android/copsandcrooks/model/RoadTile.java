@@ -10,6 +10,8 @@ import com.dat255.project.android.copsandcrooks.utils.Point;
  *
  */
 public class RoadTile extends AbstractWalkableTile {
+	
+	private static final long serialVersionUID = 8001224843327L;
 
 	/**
 	 * Create a new RoadTile.

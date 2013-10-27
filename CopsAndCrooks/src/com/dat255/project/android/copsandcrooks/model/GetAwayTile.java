@@ -12,6 +12,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public class GetAwayTile extends AbstractWalkableTile implements IInteractiveTile {
 	
+	private static final long serialVersionUID = 44188775226986327L;
+	
 	/**
 	 * Create a new GetAway with a position.
 	 * @param position the position

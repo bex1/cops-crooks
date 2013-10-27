@@ -12,6 +12,8 @@ import com.dat255.project.android.copsandcrooks.utils.Values;
  */
 public class Crook extends AbstractWalkingPawn {
 	
+	private static final long serialVersionUID = 1885673316944527L;
+	
 	private Wallet wallet;
 	private boolean attemptingGetAway, isWanted;
 	private int turnsInPrison, timesArrested;

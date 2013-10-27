@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.LinkedList;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
@@ -20,6 +19,8 @@ import com.dat255.project.android.copsandcrooks.utils.IObservable;
  *
  */
 public final class TilePath implements IObservable{
+	
+	private static final long serialVersionUID = 51285225665893L;
 
 	private final LinkedList<AbstractWalkableTile> pathList;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);

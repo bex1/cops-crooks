@@ -17,6 +17,10 @@ import com.dat255.project.android.copsandcrooks.model.GameModel.GameState;
  *
  */
 final class Mediator implements IMediator {
+	
+	private static final long serialVersionUID = 112548962226547L;
+	
+	
 	private GameModel gameModel;
 	private Dice dice;
 	private PathFinder pathFinder;

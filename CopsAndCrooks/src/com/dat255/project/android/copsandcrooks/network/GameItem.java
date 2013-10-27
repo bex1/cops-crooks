@@ -10,7 +10,9 @@ import java.util.UUID;
  * 
  * @author Group 25, course DAT255 at Chalmers Uni.
  */
-public class GameItem implements Serializable{
+public class GameItem implements Serializable {
+	
+	private static final long serialVersionUID = 12248652341327L;
 
 	private final String id;
 	private String name;
