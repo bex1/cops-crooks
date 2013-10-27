@@ -72,12 +72,12 @@ public class GameModelTest {
 		
 		gameModel.startGame();
 		
-		assertTrue(gameModel.getCurrentPlayer() == player1);
+		assertTrue(gameModel.getCurrentPlayer() == player2);
 		
 		gameModel.nextPlayer(0f);
 		
 		
-		assertTrue(gameModel.getCurrentPlayer() == player2);
+		assertTrue(gameModel.getCurrentPlayer() == player1);
 	}
 	
 	@Test
