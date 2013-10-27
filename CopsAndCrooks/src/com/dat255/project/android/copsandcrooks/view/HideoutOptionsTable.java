@@ -36,8 +36,8 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 	private final Table thisTable;
 	private final Stage hudStage;
 
-	private static final String withFormat = "Withdraw %d $";
-	private static final String depFormat = "Deposit %d $";
+	private static final String withFormat = "WITHDRAW %d $";
+	private static final String depFormat = "DEPOSIT %d $";
 	private static final String withEmpty = "Nothing to withdraw";
 	private static final String depEmpty = "Nothing to deposit";
 
@@ -83,7 +83,7 @@ public class HideoutOptionsTable extends Table implements PropertyChangeListener
 		Drawable canClickDraw = new TextureRegionDrawable(canClickReg);
 		Button cancelButton = new Button(canDraw, canClickDraw);
 		cancelButton.addListener(cancelListener);
-		Label cancelLabel = new Label("Cancel", assets.getSkin());
+		Label cancelLabel = new Label("CANCEL", assets.getSkin());
 		cancelLabel.setFontScale(0.7f);
 		cancelLabel.setColor(Color.BLACK);
 		

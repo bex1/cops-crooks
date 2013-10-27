@@ -37,17 +37,17 @@ public class Crook extends AbstractWalkingPawn {
 	
 	@Override
 	protected void interactWithTile() {
-		if (mediator.checkState() == GameState.Replay) {
+		if (mediator.checkState() == GameState.REPLAYING) {
 			if (currentTile instanceof HideoutTile) {
 				HideoutTile hideout = (HideoutTile)currentTile;
 				switch (mediator.getCurrentTurn().getHideoutChoice()) {
-				case Deposit:
+				case DEPOSIT:
 					hideout.depositCash(this);
 					break;
-				case Withdraw:
+				case WITHDRAW:
 					hideout.withdrawCash(this);
 					break;
-				case Cancel:
+				case CANCEL:
 					hideout.cancelInteraction();
 					break;
 				}
@@ -123,7 +123,7 @@ public class Crook extends AbstractWalkingPawn {
 	void decrementTurnsInPrison(){
 		if(turnsInPrison > 0) {
 			--turnsInPrison;
-			if (mediator.isItMyPlayerTurn(this) && mediator.checkState() == GameState.Playing) {
+			if (mediator.isItMyPlayerTurn(this) && mediator.checkState() == GameState.PLAYING) {
 				pcs.firePropertyChange(PROPERTY_TURNS_IN_PRISON, -1, turnsInPrison);
 			}
 		}

@@ -128,7 +128,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 		add(coin).minWidth(coin.getWidth()).top().right().pad(10);
 
 		row();
-		add(waitingLabel).colspan(3).expandY().top().padTop(30);
+		add(waitingLabel).colspan(3).expandY().bottom().padBottom(50);
 		row();
 		add();
 		add(soundLabel).padBottom(6).right().bottom().expand();
@@ -144,7 +144,7 @@ public class HUDTable extends Table implements PropertyChangeListener {
 			}
 		} else if (obj == model) {
 			if (evt.getPropertyName() == GameModel.PROPERTY_GAMESTATE) {
-				if (model.getGameState() == GameState.Waiting) {
+				if (model.getGameState() == GameState.WAITING) {
 					waitingLabel.setVisible(true);
 				} else {
 					waitingLabel.setVisible(false);

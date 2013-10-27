@@ -89,12 +89,12 @@ public class GameClient{
 						GameModel game = getCurrentGameModel();
 						GameState state = game.getGameState();
 						int turnID = game.getTurnID();
-						if (state == GameState.Waiting || state == GameState.Ended) {
+						if (state == GameState.WAITING || state == GameState.ENDED) {
 							if(((Pck5_Turns) pck).gameTurns > turnID)
 								getCurrentGameModel().addReplayTurns(((Pck5_Turns) pck).turns);
 							else if(((Pck5_Turns) pck).gameTurns < turnID)
 								sendTurn(game.getCurrentTurn());
-							if (state == GameState.Ended) {
+							if (state == GameState.ENDED) {
 								 sendGameEnd();
 							}
 						}
