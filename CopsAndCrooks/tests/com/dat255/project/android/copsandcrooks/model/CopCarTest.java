@@ -94,8 +94,7 @@ public class CopCarTest {
 		
 		test.collisionAfterMove(crook);
 		
-		assertTrue(crook.getTimesArrested() == 1 && crook.getCurrentTile() instanceof PoliceStationTile 
-				&& crook.getWallet().getCash() == 0 && player.getWallet().getCash() == 5000);
+		assertTrue(crook.getTimesArrested() == 1 && crook.getWallet().getCash() == 0);
 		
 		try {
 			test.collisionAfterMove(new Officer(new RoadTile(new Point(0, 0), mediator), mediator, 10));
