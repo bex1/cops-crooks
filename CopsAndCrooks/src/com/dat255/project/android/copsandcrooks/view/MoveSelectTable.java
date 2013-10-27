@@ -41,7 +41,7 @@ public class MoveSelectTable extends Table {
 		});
 
 		// register the button "go by tram"
-		final TextButton goByTramButton = new TextButton("Go by Metro", assets.getSkin());
+		final TextButton goByTramButton = new TextButton("Go by METRO", assets.getSkin());
 		goByTramButton.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

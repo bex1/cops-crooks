@@ -16,15 +16,15 @@ public class Turn implements Serializable{
 	private static final long serialVersionUID = 55812236448851327L;
 	
 	public enum HideoutChoice {
-		Withdraw,
-		Deposit,
-		Cancel,
+		WITHDRAW,
+		DEPOSIT,
+		CANCEL,
 	}
 	
 	public enum MoveType {
-		Metro,
-		Walk,
-		None,
+		METRO,
+		WALK,
+		NONE,
 	}
 
 	private List<Point> pathWalked;
@@ -35,8 +35,8 @@ public class Turn implements Serializable{
 	private boolean escapedFromPrison;
 	
 	public Turn(){
-		moveType = MoveType.None;
-		hideoutChoice = HideoutChoice.Cancel;
+		moveType = MoveType.NONE;
+		hideoutChoice = HideoutChoice.CANCEL;
 		endTilePos = new Point(0, 0);
 	}
 	

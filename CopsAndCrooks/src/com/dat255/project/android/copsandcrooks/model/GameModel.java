@@ -55,10 +55,11 @@ public final class GameModel implements IObservable{
 	
 
 	public enum GameState {
-		Replay,
-		Playing,
-		Waiting,
-		Ended,
+		REPLAY_RECEIVED,
+		REPLAYING,
+		PLAYING,
+		WAITING,
+		ENDED,
 	}
 
 	GameModel(final IMediator mediator, final Player playerClient, final List<Player> players, final AbstractWalkableTile[][] tiles, 
@@ -107,7 +108,7 @@ public final class GameModel implements IObservable{
 		
 
 		if (isLocalPlayersTurn()) {
-			this.state = GameState.Playing;
+			this.state = GameState.PLAYING;
 			if (this.currentTurn == null) {
 				this.currentTurn = new Turn();
 				AbstractPawn pawn = this.currentPlayer.getCurrentPawn();
@@ -119,7 +120,7 @@ public final class GameModel implements IObservable{
 				this.currentPlayer.updateState();
 			}
 		} else {
-			this.state = GameState.Waiting;
+			this.state = GameState.WAITING;
 		}
 	}
 
@@ -133,13 +134,14 @@ public final class GameModel implements IObservable{
 				// Just to trigger camera focus.
 				pawn.setIsActivePawn(true);
 			}
+			// Resume related
+			if (pawn.isMoving() || (state == GameState.REPLAYING)) {
+				return;
+			}
 			if (currentPlayer == playerClient) {
-				// Resume related
+				
 				if (currentPlayer.isGoingByDice() || currentPlayer.isGoingByMetro()) {
 					currentPlayer.updatePossiblePaths();
-					return;
-				}
-				if (pawn.isMoving()) {
 					return;
 				}
 				if (pawn instanceof Crook) {
@@ -178,14 +180,14 @@ public final class GameModel implements IObservable{
 			return;
 
 		this.replayTurns = turns;
-		state = GameState.Replay;
+		state = GameState.REPLAY_RECEIVED;
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
 	/**
 	 * Replays what has happened.
 	 */
 	public void replay() {
-		state = GameState.Replay;
+		state = GameState.REPLAYING;
 		if(!replayTurns.isEmpty())
 			currentPlayer.updateState();
 			replay(replayTurns.removeFirst());
@@ -201,20 +203,20 @@ public final class GameModel implements IObservable{
 		IWalkableTile end = walkable[turn.getEndTilePos().x][turn.getEndTilePos().y];
 		if (pawn != null) {
 			switch (turn.getMoveType()) {
-			case Metro:
+			case METRO:
 				if (end instanceof MetroStopTile) {
 					pawn.moveByTram((MetroStopTile)end);
 					nextPlayer(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
 				}
 				break;
-			case Walk:
+			case WALK:
 				List<Point> pathWalked = turn.getPathWalked();
 				TilePath tilePathWalked = new TilePath();
 				for(Point point : pathWalked)
 					tilePathWalked.addTileLast(getWalkabletiles()[point.x][point.y]);
 				pawn.move(tilePathWalked);
 				break;
-			case None:
+			case NONE:
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				break;
 			}
@@ -258,7 +260,7 @@ public final class GameModel implements IObservable{
 			// The game should end then.
 		}while (!currentPlayer.isActive());
 		if (playerClient == currentPlayer) {
-			state = GameState.Playing;
+			state = GameState.PLAYING;
 			currentPlayer.updateState();
 			this.currentTurn = new Turn();
 			AbstractPawn pawn = currentPlayer.getCurrentPawn();
@@ -269,19 +271,19 @@ public final class GameModel implements IObservable{
 			currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
-				state = GameState.Waiting;
+				state = GameState.WAITING;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 				return;
 			}
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, currentPlayer);
-		} else if (state == GameState.Replay && replayTurns.size() != 0) {
+		} else if (state == GameState.REPLAYING && replayTurns.size() != 0) {
 			currentPlayer.updateState();
 			replay(replayTurns.removeFirst());
 			if (checkIfGameEnded()) {
 				return;
 			}
 		} else {
-			state = GameState.Waiting;
+			state = GameState.WAITING;
 			pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 		}
 	}
@@ -327,7 +329,7 @@ public final class GameModel implements IObservable{
 	}
 
 	private void endGame(){
-		state = GameState.Ended;
+		state = GameState.ENDED;
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
 	
@@ -491,7 +493,7 @@ public final class GameModel implements IObservable{
 	 * @return true if game has ended, false otherwise.
 	 */
 	public boolean gameEnded() {
-		return state == GameState.Ended;
+		return state == GameState.ENDED;
 	}
 
 	public Dice getDice() {

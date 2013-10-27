@@ -25,7 +25,7 @@ final class PathFinder implements Serializable {
 		if (mediator == null)
 			throw new IllegalArgumentException("Mediator not allowed to be null");
 		if (metroLines == null)
-			throw new IllegalArgumentException("Metro not allowed to be null");
+			throw new IllegalArgumentException("METRO not allowed to be null");
 
 		this.tiles = tiles;
 		this.mediator = mediator;

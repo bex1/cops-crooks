@@ -180,8 +180,8 @@ public class Player implements IPlayer {
     @Override
     public void goByMetro() {
     	goByMetro = true;
-    	if (mediator.checkState() == GameState.Playing) {
-    		mediator.getCurrentTurn().setMoveType(MoveType.Metro);
+    	if (mediator.checkState() == GameState.PLAYING) {
+    		mediator.getCurrentTurn().setMoveType(MoveType.METRO);
     	}
     	updatePossiblePaths();
     }
@@ -224,7 +224,7 @@ public class Player implements IPlayer {
     public void choosePath(TilePath path){
     	if (possiblePaths != null && possiblePaths.contains(path) && goByDice) {
     		possiblePaths = null;
-    		if (mediator.checkState() == GameState.Playing) {
+    		if (mediator.checkState() == GameState.PLAYING) {
     			mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     			mediator.getCurrentTurn().setPathWalked(new TilePath(path));
     			mediator.getCurrentTurn().setEndTile(path.getTile(0));
@@ -247,7 +247,7 @@ public class Player implements IPlayer {
     				currentPawn.moveByTram(metroStop);
     				goByMetro = false;
     				mediator.playerTurnDone(Values.DELAY_CHANGE_PLAYER_MOVE_BY_METRO);
-    				if (mediator.checkState() == GameState.Playing) {
+    				if (mediator.checkState() == GameState.PLAYING) {
     					mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     					mediator.getCurrentTurn().setEndTile(metroStop);
     				}
@@ -260,7 +260,7 @@ public class Player implements IPlayer {
     
     void setCurrentPawn(AbstractPawn pawn){
     	if (pawns.contains(pawn)) {
-    		if (mediator.checkState() == GameState.Playing) {
+    		if (mediator.checkState() == GameState.PLAYING) {
     			mediator.getCurrentTurn().setPawnID(currentPawn.getID());
     		}
     		currentPawn.setIsActivePawn(false);
@@ -301,8 +301,8 @@ public class Player implements IPlayer {
 			}
 		}
 		goByDice = true;
-		if (mediator.checkState() == GameState.Playing) {
-			mediator.getCurrentTurn().setMoveType(MoveType.Walk);
+		if (mediator.checkState() == GameState.PLAYING) {
+			mediator.getCurrentTurn().setMoveType(MoveType.WALK);
 		}
     	updatePossiblePaths();
 	}

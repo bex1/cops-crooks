@@ -232,15 +232,15 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		if(source == model) {
 			if(property == GameModel.PROPERTY_GAMESTATE){
 				switch (model.getGameState()) {
-				case Playing:
+				case PLAYING:
 					// New turn -> show buttons where the player can select its next move
 					showActButtons();
 					ModelFactory.getInstance().saveModelToFile(model);
 					break;
-				case Replay:
+				case REPLAY_RECEIVED:
 					hudStage.addActor(replayTable);
 					break;
-				case Ended:
+				case ENDED:
 					ModelFactory.getInstance().deleteModelFile(model);
 					game.setScreen(new ScoreScreen(assets, game, Values.GAME_VIEWPORT_WIDTH, Values.GAME_VIEWPORT_HEIGHT, model.getPlayers()));
 					break;

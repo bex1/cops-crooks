@@ -24,7 +24,7 @@ public class Network {
 	public static final int PORT = 54555;
 	
 	/** The default IP that client attempts to connect to */
-	public static final String DEFAULT_IP = "192.168.1.2";
+	public static final String DEFAULT_IP = "81.228.55.131";
 	
 	/**
 	 * Register the classes so they can be sent over a network.

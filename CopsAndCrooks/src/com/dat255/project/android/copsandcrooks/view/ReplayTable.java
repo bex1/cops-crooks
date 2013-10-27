@@ -28,7 +28,7 @@ public class ReplayTable extends Table{
 		this.setFillParent(true);
 		
 		// register the button "roll dice"
-		final TextButton replayButton = new TextButton("Replay", assets.getSkin());
+		final TextButton replayButton = new TextButton("REPLAY", assets.getSkin());
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
