@@ -140,4 +140,10 @@ public class Crook extends AbstractWalkingPawn {
 	public int getTimesArrested(){
 		return timesArrested;
 	}
+	/**
+	 * Checks if the crook is standing on a hideout.
+	 */
+	boolean isInHideout() {
+		return currentTile instanceof HideoutTile;
+	}
 }

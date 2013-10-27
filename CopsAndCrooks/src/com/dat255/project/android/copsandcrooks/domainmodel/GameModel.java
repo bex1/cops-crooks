@@ -125,6 +125,32 @@ public final class GameModel implements IObservable{
 	 * Starts the game
 	 */
 	public void startGame(){
+		if (currentPlayer != null) {
+			AbstractPawn pawn = currentPlayer.getCurrentPawn();
+			if (pawn.isActivePawn()) {
+				// Just to trigger camera focus.
+				pawn.setIsActivePawn(true);
+			}
+			if (currentPlayer == playerClient) {
+				// Resume related
+				if (currentPlayer.isGoingByDice() || currentPlayer.isGoingByMetro()) {
+					currentPlayer.updatePossiblePaths();
+					return;
+				}
+				if (pawn.isMoving()) {
+					return;
+				}
+				if (pawn instanceof Crook) {
+					Crook crook = (Crook)pawn;
+					// When on hideout and the crook has not selected any option, we show the table again.
+					if (crook.isInHideout() && !isChangingPlayer) {
+						HideoutTile hideout = (HideoutTile)crook.getCurrentTile();
+						hideout.interact(crook);
+						return;
+					}
+				}
+			}
+		}
 		pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);
 	}
 	/**
@@ -135,7 +161,6 @@ public final class GameModel implements IObservable{
 		if (isChangingPlayer) {
 			changePlayerTimer += deltaTime;
 			if (changePlayerTimer >= changePlayerDelay) {
-				currentPlayer.getCurrentPawn().setIsActivePawn(false);
 				changePlayer();
 				isChangingPlayer = false;
 				changePlayerTimer = 0;
@@ -211,7 +236,7 @@ public final class GameModel implements IObservable{
 			changePlayerDelay = delay;
 			changePlayerTimer = 0;
 		} else {
-			currentPlayer.getCurrentPawn().setIsActivePawn(false);
+			
 			changePlayer();
 		}
 		incrementTurnID();
@@ -221,6 +246,7 @@ public final class GameModel implements IObservable{
 		if(checkIfGameEnded()) {
 			return;
 		}
+		currentPlayer.getCurrentPawn().setIsActivePawn(false);
 		Player previousPlayer = currentPlayer;
 		int i = players.indexOf(currentPlayer);
 		do{
@@ -231,7 +257,6 @@ public final class GameModel implements IObservable{
 			// The game should end then.
 		}while (!currentPlayer.isActive());
 		if (playerClient == currentPlayer) {
-			System.out.println(0);
 			state = GameState.Playing;
 			currentPlayer.updateState();
 			this.currentTurn = new Turn();
@@ -242,7 +267,6 @@ public final class GameModel implements IObservable{
 			}
 			currentTurn.setTurnID(turnID);
 			if (!currentPlayer.isActive()) {
-				System.out.println(1);
 				nextPlayer(Values.DELAY_CHANGE_PLAYER_STANDARD);
 				state = GameState.Waiting;
 				pcs.firePropertyChange(PROPERTY_GAMESTATE, null, state);

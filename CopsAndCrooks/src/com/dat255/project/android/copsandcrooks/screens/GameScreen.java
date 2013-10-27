@@ -152,7 +152,6 @@ public class GameScreen extends AbstractScreen implements PropertyChangeListener
 		super.resume();
 	}
 
-
 	private GestureListener gestureListener = new GestureDetector.GestureAdapter() {
 
 		private float initialScale = 1;

@@ -2,7 +2,6 @@ package com.dat255.project.android.copsandcrooks.domainmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.Random;
 
 import com.dat255.project.android.copsandcrooks.utils.IObservable;
